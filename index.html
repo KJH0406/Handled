@@ -1596,8 +1596,8 @@
     /* ═══════════════════════════════════════════════
        FORMAT HELPERS
        ═══════════════════════════════════════════════ */
-    const krw = (n) =>
-      '₩' + new Intl.NumberFormat('ko-KR').format(Math.round(n));
+    const usd = (n) =>
+      '$' + new Intl.NumberFormat('en-US').format(Math.round(n));
 
     const formatDate = (d) => {
       if (!d) return '';
@@ -1635,7 +1635,7 @@
         district: 'Hongdae · Insadong',
         rating: 4.97,
         reviews: 124,
-        hourlyRate: 65000,
+        hourlyRate: 50,
         yearsHosting: 4,
         superhost: true,
         languages: ['Korean', 'English', 'Japanese'],
@@ -1663,7 +1663,7 @@
         district: 'Gangnam · Itaewon',
         rating: 4.93,
         reviews: 89,
-        hourlyRate: 70000,
+        hourlyRate: 55,
         yearsHosting: 3,
         superhost: true,
         languages: ['Korean', 'English', 'French'],
@@ -1691,7 +1691,7 @@
         district: 'Haeundae · Gamcheon',
         rating: 4.99,
         reviews: 67,
-        hourlyRate: 60000,
+        hourlyRate: 45,
         yearsHosting: 5,
         superhost: true,
         languages: ['Korean', 'English'],
@@ -1722,7 +1722,7 @@
         district: 'Jeju City · Mt. Hallasan',
         rating: 4.95,
         reviews: 41,
-        hourlyRate: 70000,
+        hourlyRate: 55,
         yearsHosting: 2,
         superhost: false,
         languages: ['Korean', 'English'],
@@ -1754,7 +1754,7 @@
         district: 'Bukchon · Gyeongbokgung',
         rating: 4.91,
         reviews: 156,
-        hourlyRate: 65000,
+        hourlyRate: 50,
         yearsHosting: 6,
         superhost: true,
         languages: ['Korean', 'English', 'Mandarin'],
@@ -1785,7 +1785,7 @@
         district: 'Chinatown · Songdo',
         rating: 4.88,
         reviews: 52,
-        hourlyRate: 55000,
+        hourlyRate: 40,
         yearsHosting: 2,
         superhost: false,
         languages: ['Korean', 'English'],
@@ -1940,7 +1940,7 @@
         title: 'Real Seoul Food Crawl',
         photo: photo('photo-1517994112540-009c47ea476b'),
         duration: 4,
-        price: 220000,
+        price: 169,
         maxGuests: 6,
         category: 'Food',
         summary:
@@ -1953,7 +1953,7 @@
         title: 'K-Beauty Shopping & Makeover',
         photo: photo('photo-1517248135467-4c7edcad34c4'),
         duration: 4,
-        price: 220000,
+        price: 169,
         maxGuests: 4,
         category: 'Shopping',
         summary:
@@ -1966,7 +1966,7 @@
         title: 'Hongdae Hanbok & Café Hopping',
         photo: photo('photo-1517256064527-09c73fc73e38'),
         duration: 5,
-        price: 270000,
+        price: 209,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -1980,7 +1980,7 @@
         title: 'Seoul Architecture Walk — DDP to Hanok',
         photo: photo('photo-1517694712202-14dd9538aa97'),
         duration: 5,
-        price: 320000,
+        price: 245,
         maxGuests: 6,
         category: 'Architecture',
         summary:
@@ -1993,7 +1993,7 @@
         title: 'Gallery Tour & Contemporary Art',
         photo: photo('photo-1545987796-200677ee1011'),
         duration: 4,
-        price: 260000,
+        price: 199,
         maxGuests: 4,
         category: 'Art',
         summary:
@@ -2006,7 +2006,7 @@
         title: 'Hannam · Itaewon Rooftop Bar Crawl',
         photo: photo('photo-1543007631-283050bb3e8c'),
         duration: 4,
-        price: 280000,
+        price: 215,
         maxGuests: 4,
         category: 'Nightlife',
         summary:
@@ -2020,7 +2020,7 @@
         title: 'Jagalchi Dawn Market Tour',
         photo: photo('photo-1554072675-66db59dba46f'),
         duration: 3,
-        price: 150000,
+        price: 115,
         maxGuests: 5,
         category: 'Food',
         summary:
@@ -2033,7 +2033,7 @@
         title: 'Gamcheon Village Photo Walk',
         photo: photo('photo-1583417319070-4a69db38a482'),
         duration: 4,
-        price: 200000,
+        price: 155,
         maxGuests: 6,
         category: 'Photo',
         summary:
@@ -2046,7 +2046,7 @@
         title: 'Gwangalli Sunset Sailing',
         photo: photo('photo-1554072675-66db59dba46f'),
         duration: 3,
-        price: 260000,
+        price: 199,
         maxGuests: 4,
         category: 'Beach',
         summary:
@@ -2060,7 +2060,7 @@
         title: 'Mt. Hallasan Sunrise Hike',
         photo: photo('photo-1538485399081-7191377e8241'),
         duration: 8,
-        price: 520000,
+        price: 399,
         maxGuests: 4,
         category: 'Nature',
         summary:
@@ -2073,7 +2073,7 @@
         title: 'Haenyeo Village & Sea Experience',
         photo: photo('photo-1502920917128-1aa500764cbd'),
         duration: 4,
-        price: 260000,
+        price: 199,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -2086,7 +2086,7 @@
         title: 'Jeju Black-Pork BBQ Night',
         photo: photo('photo-1565299624946-b28f40a0ae38'),
         duration: 3,
-        price: 180000,
+        price: 139,
         maxGuests: 8,
         category: 'Food',
         summary:
@@ -2100,7 +2100,7 @@
         title: 'Hanbok Stroll at Gyeongbokgung',
         photo: photo('photo-1517256064527-09c73fc73e38'),
         duration: 4,
-        price: 250000,
+        price: 195,
         maxGuests: 6,
         category: 'Traditional',
         summary:
@@ -2113,7 +2113,7 @@
         title: 'Bukchon · Insadong Tea Ceremony',
         photo: photo('photo-1517994112540-009c47ea476b'),
         duration: 4,
-        price: 240000,
+        price: 185,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -2126,7 +2126,7 @@
         title: 'Gwangjang Market & Rice Cake Class',
         photo: photo('photo-1601121141461-9d6647bca1ed'),
         duration: 4,
-        price: 220000,
+        price: 169,
         maxGuests: 5,
         category: 'Food',
         summary:
@@ -2140,7 +2140,7 @@
         title: 'Incheon Chinatown Food Walk',
         photo: photo('photo-1488646953014-85cb44e25828'),
         duration: 4,
-        price: 200000,
+        price: 155,
         maxGuests: 8,
         category: 'Food',
         summary:
@@ -2153,7 +2153,7 @@
         title: 'Songdo Central Park & Incheon Bridge',
         photo: photo('photo-1535139262971-c51845709a48'),
         duration: 4,
-        price: 220000,
+        price: 169,
         maxGuests: 6,
         category: 'Urban',
         summary:
@@ -2459,7 +2459,7 @@
               <span className="row row-gap-xs t-caption-sm ink">
                 <Icon name="globe" size={14} /> English
               </span>
-              <span className="t-caption-sm ink">₩ KRW</span>
+              <span className="t-caption-sm ink">$ USD</span>
             </div>
           </div>
         </div>
@@ -2497,7 +2497,7 @@
             </div>
             <div className="row" style={{ gap: 4 }}>
               <span className="t-body-sm ink" style={{ fontWeight: 600 }}>
-                {krw(guide.hourlyRate)}
+                {usd(guide.hourlyRate)}
               </span>
               <span className="t-body-sm muted">/ hour</span>
             </div>
@@ -2613,7 +2613,7 @@
               }}
             >
               <div>
-                <div className="t-title-md ink">{krw(exp.price)}</div>
+                <div className="t-title-md ink">{usd(exp.price)}</div>
                 <div className="t-caption-sm muted">Per group</div>
               </div>
               <span
@@ -2888,7 +2888,7 @@
                 Find a local guide
               </h1>
               <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
-                Match with vetted local guides by the hour. From ₩55,000 / hour.
+                Match with vetted local guides by the hour. From $40 / hour.
               </p>
 
               {/* Search */}
@@ -3328,7 +3328,7 @@
             className="row"
             style={{ alignItems: 'baseline', marginBottom: 4, gap: 4 }}
           >
-            <span className="t-display-md ink">{krw(guide.hourlyRate)}</span>
+            <span className="t-display-md ink">{usd(guide.hourlyRate)}</span>
             <span className="t-body-md muted">/ hour</span>
           </div>
           <p className="t-caption-sm muted" style={{ marginBottom: 20 }}>
@@ -3527,13 +3527,13 @@
           <div className="stack-sm">
             <div className="row between">
               <span className="t-body-sm body">
-                {krw(guide.hourlyRate)} × {hours}h
+                {usd(guide.hourlyRate)} × {hours}h
               </span>
-              <span className="t-body-sm ink">{krw(subtotal)}</span>
+              <span className="t-body-sm ink">{usd(subtotal)}</span>
             </div>
             <div className="row between">
               <span className="t-body-sm body">Service fee</span>
-              <span className="t-body-sm ink">{krw(fee)}</span>
+              <span className="t-body-sm ink">{usd(fee)}</span>
             </div>
             <div
               className="row between"
@@ -3543,7 +3543,7 @@
               }}
             >
               <span className="t-title-md ink">Total</span>
-              <span className="t-title-md ink">{krw(total)}</span>
+              <span className="t-title-md ink">{usd(total)}</span>
             </div>
           </div>
         </aside>
@@ -3591,7 +3591,7 @@
             className="row"
             style={{ alignItems: 'baseline', marginBottom: 4, gap: 4 }}
           >
-            <span className="t-display-md ink">{krw(exp.price)}</span>
+            <span className="t-display-md ink">{usd(exp.price)}</span>
             <span className="t-body-md muted">
               · {exp.duration}h package
             </span>
@@ -3748,12 +3748,12 @@
                 {exp.title}
               </span>
               <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
-                {krw(subtotal)}
+                {usd(subtotal)}
               </span>
             </div>
             <div className="row between">
               <span className="t-body-sm body">Service fee</span>
-              <span className="t-body-sm ink">{krw(fee)}</span>
+              <span className="t-body-sm ink">{usd(fee)}</span>
             </div>
             <div
               className="row between"
@@ -3763,7 +3763,7 @@
               }}
             >
               <span className="t-title-md ink">Total</span>
-              <span className="t-title-md ink">{krw(total)}</span>
+              <span className="t-title-md ink">{usd(total)}</span>
             </div>
           </div>
         </aside>
@@ -3864,14 +3864,14 @@
           <div className="row" style={{ alignItems: 'baseline', marginBottom: 20, flexWrap: 'wrap', gap: 4 }}>
             {isExp ? (
               <>
-                <span className="t-display-md ink">{krw(selectedExp.price)}</span>
+                <span className="t-display-md ink">{usd(selectedExp.price)}</span>
                 <span className="t-body-md muted">
                   · {selectedExp.duration}h package
                 </span>
               </>
             ) : (
               <>
-                <span className="t-display-md ink">{krw(guide.hourlyRate)}</span>
+                <span className="t-display-md ink">{usd(guide.hourlyRate)}</span>
                 <span className="t-body-md muted">/ hour</span>
               </>
             )}
@@ -3957,7 +3957,7 @@
                         </div>
                       </div>
                       <div className="t-body-sm ink" style={{ fontWeight: 700, flexShrink: 0 }}>
-                        {krw(exp.price)}
+                        {usd(exp.price)}
                       </div>
                     </button>
                   ))}
@@ -4134,15 +4134,15 @@
               >
                 {isExp
                   ? selectedExp.title
-                  : `${krw(guide.hourlyRate)} × ${hours}h`}
+                  : `${usd(guide.hourlyRate)} × ${hours}h`}
               </span>
               <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
-                {krw(subtotal)}
+                {usd(subtotal)}
               </span>
             </div>
             <div className="row between">
               <span className="t-body-sm body">Service fee</span>
-              <span className="t-body-sm ink">{krw(fee)}</span>
+              <span className="t-body-sm ink">{usd(fee)}</span>
             </div>
             <div
               className="row between"
@@ -4152,7 +4152,7 @@
               }}
             >
               <span className="t-title-md ink">Total</span>
-              <span className="t-title-md ink">{krw(total)}</span>
+              <span className="t-title-md ink">{usd(total)}</span>
             </div>
           </div>
         </aside>
@@ -5099,7 +5099,7 @@
                       <span className="spinner" /> Processing...
                     </>
                   ) : (
-                    `Pay ${krw(booking.total)}`
+                    `Pay ${usd(booking.total)}`
                   )}
                 </button>
               </div>
@@ -5158,15 +5158,15 @@
                       >
                         {booking.experience
                           ? `${booking.experience.title}`
-                          : `${krw(guide.hourlyRate)} × ${booking.hours}h`}
+                          : `${usd(guide.hourlyRate)} × ${booking.hours}h`}
                       </span>
                       <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
-                        {krw(booking.subtotal)}
+                        {usd(booking.subtotal)}
                       </span>
                     </div>
                     <div className="row between">
                       <span className="t-body-sm body">Service fee</span>
-                      <span className="t-body-sm ink">{krw(booking.fee)}</span>
+                      <span className="t-body-sm ink">{usd(booking.fee)}</span>
                     </div>
                   </div>
                   <div
@@ -5176,8 +5176,8 @@
                       borderTop: '1px solid var(--hairline-soft)',
                     }}
                   >
-                    <span className="t-title-md ink">Total (KRW)</span>
-                    <span className="t-display-sm ink">{krw(booking.total)}</span>
+                    <span className="t-title-md ink">Total (USD)</span>
+                    <span className="t-display-sm ink">{usd(booking.total)}</span>
                   </div>
                 </div>
               </aside>
@@ -5324,7 +5324,7 @@
                   <SummaryRow
                     icon="lock"
                     label="Payment"
-                    value={`${krw(booking.total)} · Card ending in ${
+                    value={`${usd(booking.total)} · Card ending in ${
                       booking.cardLast4 || '****'
                     }`}
                   />
