@@ -1940,7 +1940,7 @@
         title: 'Real Seoul Food Crawl',
         photo: photo('photo-1517994112540-009c47ea476b'),
         duration: 4,
-        price: 169,
+        price: 65,
         maxGuests: 6,
         category: 'Food',
         summary:
@@ -1953,7 +1953,7 @@
         title: 'K-Beauty Shopping & Makeover',
         photo: photo('photo-1517248135467-4c7edcad34c4'),
         duration: 4,
-        price: 169,
+        price: 75,
         maxGuests: 4,
         category: 'Shopping',
         summary:
@@ -1966,7 +1966,7 @@
         title: 'Hongdae Hanbok & Café Hopping',
         photo: photo('photo-1517256064527-09c73fc73e38'),
         duration: 5,
-        price: 209,
+        price: 85,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -1980,7 +1980,7 @@
         title: 'Seoul Architecture Walk — DDP to Hanok',
         photo: photo('photo-1517694712202-14dd9538aa97'),
         duration: 5,
-        price: 245,
+        price: 95,
         maxGuests: 6,
         category: 'Architecture',
         summary:
@@ -1993,7 +1993,7 @@
         title: 'Gallery Tour & Contemporary Art',
         photo: photo('photo-1545987796-200677ee1011'),
         duration: 4,
-        price: 199,
+        price: 85,
         maxGuests: 4,
         category: 'Art',
         summary:
@@ -2006,7 +2006,7 @@
         title: 'Hannam · Itaewon Rooftop Bar Crawl',
         photo: photo('photo-1543007631-283050bb3e8c'),
         duration: 4,
-        price: 215,
+        price: 115,
         maxGuests: 4,
         category: 'Nightlife',
         summary:
@@ -2020,7 +2020,7 @@
         title: 'Jagalchi Dawn Market Tour',
         photo: photo('photo-1554072675-66db59dba46f'),
         duration: 3,
-        price: 115,
+        price: 55,
         maxGuests: 5,
         category: 'Food',
         summary:
@@ -2033,7 +2033,7 @@
         title: 'Gamcheon Village Photo Walk',
         photo: photo('photo-1583417319070-4a69db38a482'),
         duration: 4,
-        price: 155,
+        price: 69,
         maxGuests: 6,
         category: 'Photo',
         summary:
@@ -2046,7 +2046,7 @@
         title: 'Gwangalli Sunset Sailing',
         photo: photo('photo-1554072675-66db59dba46f'),
         duration: 3,
-        price: 199,
+        price: 145,
         maxGuests: 4,
         category: 'Beach',
         summary:
@@ -2060,7 +2060,7 @@
         title: 'Mt. Hallasan Sunrise Hike',
         photo: photo('photo-1538485399081-7191377e8241'),
         duration: 8,
-        price: 399,
+        price: 185,
         maxGuests: 4,
         category: 'Nature',
         summary:
@@ -2073,7 +2073,7 @@
         title: 'Haenyeo Village & Sea Experience',
         photo: photo('photo-1502920917128-1aa500764cbd'),
         duration: 4,
-        price: 199,
+        price: 95,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -2086,7 +2086,7 @@
         title: 'Jeju Black-Pork BBQ Night',
         photo: photo('photo-1565299624946-b28f40a0ae38'),
         duration: 3,
-        price: 139,
+        price: 69,
         maxGuests: 8,
         category: 'Food',
         summary:
@@ -2100,7 +2100,7 @@
         title: 'Hanbok Stroll at Gyeongbokgung',
         photo: photo('photo-1517256064527-09c73fc73e38'),
         duration: 4,
-        price: 195,
+        price: 79,
         maxGuests: 6,
         category: 'Traditional',
         summary:
@@ -2113,7 +2113,7 @@
         title: 'Bukchon · Insadong Tea Ceremony',
         photo: photo('photo-1517994112540-009c47ea476b'),
         duration: 4,
-        price: 185,
+        price: 79,
         maxGuests: 6,
         category: 'Culture',
         summary:
@@ -2126,7 +2126,7 @@
         title: 'Gwangjang Market & Rice Cake Class',
         photo: photo('photo-1601121141461-9d6647bca1ed'),
         duration: 4,
-        price: 169,
+        price: 65,
         maxGuests: 5,
         category: 'Food',
         summary:
@@ -2140,7 +2140,7 @@
         title: 'Incheon Chinatown Food Walk',
         photo: photo('photo-1488646953014-85cb44e25828'),
         duration: 4,
-        price: 155,
+        price: 55,
         maxGuests: 8,
         category: 'Food',
         summary:
@@ -2153,7 +2153,7 @@
         title: 'Songdo Central Park & Incheon Bridge',
         photo: photo('photo-1535139262971-c51845709a48'),
         duration: 4,
-        price: 169,
+        price: 55,
         maxGuests: 6,
         category: 'Urban',
         summary:
@@ -2619,7 +2619,7 @@
             >
               <div>
                 <div className="t-title-md ink">{usd(exp.price)}</div>
-                <div className="t-caption-sm muted">Per group</div>
+                <div className="t-caption-sm muted">Per person</div>
               </div>
               <span
                 className="t-caption"
@@ -2657,7 +2657,7 @@
                   className="t-body-md muted"
                   style={{ maxWidth: 540, margin: '0 auto 36px', fontSize: 17 }}
                 >
-                  Discover handpicked Korean experiences, hosted by vetted locals. From $115 per group.
+                  Discover handpicked Korean experiences, hosted by vetted locals. From $55 per person.
                 </p>
               </div>
 
@@ -3566,7 +3566,8 @@
       const [showCal, setShowCal] = useState(false);
       const [requests, setRequests] = useState('');
 
-      const subtotal = exp.price;
+      const effectiveGuests = Math.min(guests, exp.maxGuests);
+      const subtotal = exp.price * effectiveGuests;
       const fee = Math.round(subtotal * 0.1);
       const total = subtotal + fee;
 
@@ -3595,15 +3596,14 @@
         <aside className="reservation" id="reservation-panel">
           <div
             className="row"
-            style={{ alignItems: 'baseline', marginBottom: 4, gap: 4 }}
+            style={{ alignItems: 'baseline', marginBottom: 4, gap: 4, flexWrap: 'wrap' }}
           >
             <span className="t-display-md ink">{usd(exp.price)}</span>
-            <span className="t-body-md muted">
-              · {exp.duration}h package
-            </span>
+            <span className="t-body-md muted">/ person</span>
+            <span className="t-body-md muted">· {exp.duration}h package</span>
           </div>
           <p className="t-caption-sm muted" style={{ marginBottom: 20 }}>
-            Per group · Up to {exp.maxGuests}
+            Up to {exp.maxGuests} guests · small group
           </p>
 
           {/* date */}
@@ -3741,17 +3741,8 @@
           <div className="divider" />
           <div className="stack-sm">
             <div className="row between" style={{ gap: 8 }}>
-              <span
-                className="t-body-sm body"
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {exp.title}
+              <span className="t-body-sm body">
+                {usd(exp.price)} × {effectiveGuests} {effectiveGuests === 1 ? 'guest' : 'guests'}
               </span>
               <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
                 {usd(subtotal)}
@@ -5163,7 +5154,7 @@
                         }}
                       >
                         {booking.experience
-                          ? `${booking.experience.title}`
+                          ? `${usd(booking.experience.price)} × ${booking.guests} ${booking.guests === 1 ? 'guest' : 'guests'}`
                           : `${usd(guide.hourlyRate)} × ${booking.hours}h`}
                       </span>
                       <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
