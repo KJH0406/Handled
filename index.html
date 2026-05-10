@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Handled — Korean local guide matching</title>
+  <title>Handled — Korean local experiences</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link
     rel="stylesheet"
@@ -2359,8 +2359,8 @@
     const TopNav = ({ navigate, route }) => {
       const tabs = [
         { id: 'home', label: 'Home', icon: 'home', target: 'home' },
-        { id: 'guides', label: 'Guides', icon: 'user', target: 'list' },
         { id: 'experiences', label: 'Experiences', icon: 'sparkles', target: 'experiences' },
+        { id: 'guides', label: 'Guides', icon: 'user', target: 'list' },
       ];
       const isActive = (tab) => {
         if (tab.id === 'home') return route.name === 'home';
@@ -2402,7 +2402,7 @@
 
             <div className="nav-actions">
               <a className="nav-host-link hide-mobile" href="#">
-                Become a guide
+                Become a host
               </a>
               <button className="icon-btn hide-mobile" aria-label="Language">
                 <Icon name="globe" size={16} />
@@ -2435,8 +2435,8 @@
             </div>
             <div className="stack-md">
               <div className="t-title-md ink">Hosting</div>
-              <a className="t-body-sm body" href="#">Become a guide</a>
-              <a className="t-body-sm body" href="#">Host guide</a>
+              <a className="t-body-sm body" href="#">Become a host</a>
+              <a className="t-body-sm body" href="#">Host an experience</a>
               <a className="t-body-sm body" href="#">Community forum</a>
               <a className="t-body-sm body" href="#">Responsible hosting</a>
             </div>
@@ -2453,7 +2453,7 @@
             style={{ paddingTop: 24, flexWrap: 'wrap', gap: 16 }}
           >
             <span className="t-caption-sm muted">
-              © 2026 Handled, Inc. · Korean local guides for international travelers
+              © 2026 Handled, Inc. · Korean local experiences for international travelers
             </span>
             <div className="row row-gap-base">
               <span className="row row-gap-xs t-caption-sm ink">
@@ -2633,9 +2633,9 @@
        ═══════════════════════════════════════════════ */
     const HomeScreen = ({ navigate }) => {
       const [where, setWhere] = useState('');
-      const featured = GUIDES.slice(0, 3);
+      const featured = EXPERIENCES.slice(0, 3);
 
-      const onSearch = () => navigate('list', { initialQuery: where });
+      const onSearch = () => navigate('experiences', { initialQuery: where });
 
       return (
         <main className="fade-in">
@@ -2652,7 +2652,7 @@
                   className="t-body-md muted"
                   style={{ maxWidth: 540, margin: '0 auto 36px', fontSize: 17 }}
                 >
-                  Match with vetted local guides by the hour. The easiest way to discover real Korea.
+                  Discover handpicked Korean experiences, hosted by vetted locals. From $115 per group.
                 </p>
               </div>
 
@@ -2716,7 +2716,7 @@
                   <button
                     key={c}
                     className="chip"
-                    onClick={() => navigate('list', { initialCity: c })}
+                    onClick={() => navigate('experiences', { initialCity: c })}
                   >
                     <Icon name="pin" size={14} />
                     {c}
@@ -2732,21 +2732,21 @@
               <div className="feature-grid">
                 {[
                   {
-                    icon: 'shield',
-                    title: 'Verified guides',
+                    icon: 'sparkles',
+                    title: 'Curated experiences',
                     desc:
-                      'Every guide passes ID verification, interview, and must keep a 4.8★+ rating.',
+                      'Every package is designed and tested by a vetted local — no generic tour-bus stops.',
                   },
                   {
-                    icon: 'clock',
-                    title: 'Hourly booking',
+                    icon: 'users',
+                    title: 'Small groups',
                     desc:
-                      'From 1 to 8 hours. Enjoy only the part of the day you want.',
+                      'Up to 4–8 guests so you actually get to ask questions and stop where you want.',
                   },
                   {
                     icon: 'globe',
-                    title: 'Multilingual guides',
-                    desc: 'English, Japanese, Mandarin, French. Communicate in your preferred language.',
+                    title: 'Multilingual hosts',
+                    desc: 'English, Japanese, Mandarin, French. Book in the language you are most comfortable in.',
                   },
                 ].map((f) => (
                   <div key={f.title} className="card card-pad-lg" style={{ border: 'none' }}>
@@ -2774,25 +2774,26 @@
             </div>
           </section>
 
-          {/* Featured guides */}
+          {/* Featured experiences */}
           <section style={{ padding: '32px 0' }}>
             <div className="container">
               <div className="section-header" style={{ marginBottom: 24 }}>
-                <h2 className="t-display-md ink">Top guides this week</h2>
+                <h2 className="t-display-md ink">Top experiences this week</h2>
                 <button
                   className="btn-tertiary t-body-sm"
                   style={{ textDecoration: 'underline' }}
-                  onClick={() => navigate('list')}
+                  onClick={() => navigate('experiences')}
                 >
-                  View all guides
+                  View all experiences
                 </button>
               </div>
-              <div className="guide-grid">
-                {featured.map((g) => (
-                  <GuideCard
-                    key={g.id}
-                    guide={g}
-                    onClick={() => navigate('profile', { guideId: g.id })}
+              <div className="exp-grid">
+                {featured.map((exp) => (
+                  <ExperienceCard
+                    key={exp.id}
+                    exp={exp}
+                    showGuide
+                    onPick={() => navigate('experience', { expId: exp.id })}
                   />
                 ))}
               </div>
@@ -3030,10 +3031,10 @@
       ...Array.from(new Set(EXPERIENCES.map((e) => e.category))),
     ];
 
-    const ExperiencesScreen = ({ navigate, initialCity, initialCategory }) => {
+    const ExperiencesScreen = ({ navigate, initialCity, initialCategory, initialQuery }) => {
       const [city, setCity] = useState(initialCity || 'All');
       const [category, setCategory] = useState(initialCategory || 'All');
-      const [q, setQ] = useState('');
+      const [q, setQ] = useState(initialQuery || '');
 
       const filtered = useMemo(
         () =>
@@ -5429,6 +5430,7 @@
             navigate={navigate}
             initialCity={route.initialCity}
             initialCategory={route.initialCategory}
+            initialQuery={route.initialQuery}
           />
         );
       else if (route.name === 'profile')
