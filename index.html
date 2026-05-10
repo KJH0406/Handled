@@ -2360,14 +2360,19 @@
       const tabs = [
         { id: 'home', label: 'Home', icon: 'home', target: 'home' },
         { id: 'experiences', label: 'Experiences', icon: 'sparkles', target: 'experiences' },
-        { id: 'guides', label: 'Guides', icon: 'user', target: 'list' },
       ];
+      // Guide list / profile screens are still reachable (e.g. tapping a host
+      // avatar from an experience), so we keep the Experiences tab highlighted
+      // while the user is anywhere inside that exploration flow.
       const isActive = (tab) => {
         if (tab.id === 'home') return route.name === 'home';
-        if (tab.id === 'guides')
-          return route.name === 'list' || route.name === 'profile';
         if (tab.id === 'experiences')
-          return route.name === 'experiences' || route.name === 'experience';
+          return (
+            route.name === 'experiences' ||
+            route.name === 'experience' ||
+            route.name === 'list' ||
+            route.name === 'profile'
+          );
         return false;
       };
       return (
@@ -2646,7 +2651,7 @@
                 <h1 className="t-display-xl ink" style={{ marginBottom: 16 }}>
                   Korea, made local —
                   <br />
-                  <span style={{ color: 'var(--rausch)' }}>guided by people you trust.</span>
+                  <span style={{ color: 'var(--rausch)' }}>experiences hosted by people you trust.</span>
                 </h1>
                 <p
                   className="t-body-md muted"
