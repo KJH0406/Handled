@@ -1,7 +1,7 @@
 ---
 id: ISSUE-05
 title: TypeScript 도입 (점진적 마이그레이션)
-status: open
+status: done
 priority: medium
 effort: L
 depends_on: []
@@ -147,4 +147,14 @@ export interface Booking {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- 한 번에 전체 마이그레이션 진행 (strict: true 적용, allowJs는 켜둠).
+- `lib/types/domain.ts` 신설: `Guide`, `Experience`, `Review`, `HomeReview`, `Booking`, `BookingMode`, `City`, `Language`, `ExperienceCategory`, `CategoryFallback`, `ScheduleItem`.
+- 필터 enum(`CITIES`/`STYLES`/`LANGUAGES`/`TIMES`/`INTEREST_TAGS`)은 `as const` + `(typeof X)[number]` 패턴으로 narrow.
+- `FilterRow`는 제네릭 제약을 풀고 `value: string`/`options: readonly string[]`로 단순화 (호출부와의 마찰 최소화).
+- `BookingProvider`에서 `sessionStorage` 하이드레이션 시 `date` 필드가 string으로 부활하는 회귀 버그 발견 → `reviveBooking()`으로 `Date` 객체로 복원 (타입 정합성 + payment/confirm 화면 새로고침 시 `formatDate` 호출 안전).
+- `Avatar.alt`는 optional로 두고 `name`을 fallback alt로 사용 (기존 JS 호출부 시그니처 유지).
+- `app/lib/navigation.ts`: route name별 params 타입을 `RouteParamsByName` 맵으로 명시, `useAppNavigate`에 conditional tuple로 정확한 호출 시그니처 부여.
+- `next-env.d.ts`는 next가 자동 생성. 추가로 `globals.d.ts`에 `declare module "*.css"` 한 줄 필요.
+- `jsconfig.json` 삭제, `tsconfig.json`으로 대체 (path alias `@/*` 유지).
+- `any` 사용 0건, `React.FC` 미사용. `unknown` + narrowing 1곳(`reviveBooking`).
+- 빌드 통과: 9개 라우트 (`/`, `/checkout`, `/checkout/confirmed`, `/experiences`, `/experiences/[expId]`, `/guides`, `/guides/[guideId]`, `/_not-found`).

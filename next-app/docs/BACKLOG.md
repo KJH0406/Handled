@@ -21,7 +21,7 @@
 
 | ID | Title | Status | Effort | Depends on |
 |----|-------|--------|--------|------------|
-| [05](backlog/ISSUE-05-typescript.md) | TypeScript 도입 (점진적) | open | L | — |
+| [05](backlog/ISSUE-05-typescript.md) | TypeScript 도입 (점진적) | done | L | — |
 | [06](backlog/ISSUE-06-inline-styles.md) | 인라인 스타일 정리 → CSS class 추출 | open | M | — |
 | [07](backlog/ISSUE-07-accessibility.md) | 접근성 — 클릭 가능 div를 button으로 | open | S | — |
 | [08](backlog/ISSUE-08-tests.md) | E2E + 유닛 테스트 도입 | open | M | — |
