@@ -1,7 +1,7 @@
 ---
 id: ISSUE-15
 title: app/error.js, app/not-found.js 추가
-status: open
+status: done
 priority: low
 effort: S
 depends_on: []
@@ -152,4 +152,11 @@ export default function NotFound() {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- 파일: `app/error.tsx` + `app/not-found.tsx` (TS, 기존 프로젝트 컨벤션과 일치)
+- 인라인 스타일 대신 `globals.css`에 `.status-page` / `.status-page__icon` / `.status-page__actions` 유틸 클래스 추가 (ISSUE-06 정신 유지)
+- TopNav + Footer는 root `layout.tsx`에서 렌더되므로 자동 포함됨 → 별도 작업 불필요
+- `<a href="/">` 대신 `next/link` 사용 (클라이언트 사이드 네비)
+- `not-found.tsx` 는 server component (Icon은 hook 없는 SVG라 서버 호환). metadata `title: "Page not found"` 도 같이 설정 → layout의 template으로 `Page not found — Handled`
+- 글로벌 `error.tsx`만 추가. `global-error.tsx` (root layout 자체 에러용), `loading.tsx` 는 현 시점 불필요로 판단 → 후속 이슈 대상
+- 라우트별 not-found (`guides/[guideId]/not-found.tsx` 등)는 이번 범위 제외. 기존 in-app fallback (ProfileScreen/ExperienceDetailScreen) 그대로 유지
+- 빌드: `/_not-found` 142 B / 87.4 kB First Load JS (가벼움)

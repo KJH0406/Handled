@@ -1528,6 +1528,31 @@ a {
   padding-bottom: var(--s-section);
 }
 
+/* Status pages — full-page fallbacks (error / not-found) */
+.status-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  text-align: center;
+}
+.status-page__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.status-page__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
 /* ─────────────────────────────────────────────
        Hero
        ───────────────────────────────────────────── */
