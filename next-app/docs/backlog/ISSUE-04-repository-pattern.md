@@ -1,7 +1,7 @@
 ---
 id: ISSUE-04
 title: 데이터 레이어 추상화 (Repository pattern)
-status: open
+status: done
 priority: high
 effort: M
 depends_on: []
@@ -30,16 +30,16 @@ updated: 2026-05-17
 
 ## 수락 기준
 
-- [ ] `lib/repositories/guides.js`, `lib/repositories/experiences.js`, `lib/repositories/reviews.js` 생성
-- [ ] 각 repository는 다음 표준 인터페이스 제공:
+- [x] `lib/repositories/guides.js`, `lib/repositories/experiences.js`, `lib/repositories/reviews.js` 생성
+- [x] 각 repository는 다음 표준 인터페이스 제공:
   - `findById(id)` → 단건
   - `list(filters?)` → 다건 (필터링 포함)
   - `listByGuideId(guideId)` (experiences/reviews 전용)
-- [ ] 필터 로직(city/style/lang/query 매칭)이 repository 내부로 이동
-- [ ] 화면 컴포넌트는 직접 `GUIDES`/`EXPERIENCES`를 import하지 않음
-- [ ] 모든 함수가 동기 (현재는 in-memory). 단, 추후 async로 전환 가능하도록 signature는 Promise 친화적으로 유지 가능 (선택)
-- [ ] `npm run build` 통과
-- [ ] 기존 필터링 결과/순서 동일 (회귀 없음)
+- [x] 필터 로직(city/style/lang/query 매칭)이 repository 내부로 이동
+- [x] 화면 컴포넌트는 직접 `GUIDES`/`EXPERIENCES`를 import하지 않음
+- [x] 모든 함수가 동기 (현재는 in-memory). 단, 추후 async로 전환 가능하도록 signature는 Promise 친화적으로 유지 가능 (선택)
+- [x] `npm run build` 통과
+- [x] 기존 필터링 결과/순서 동일 (회귀 없음)
 
 ## 구현 메모
 
@@ -135,4 +135,8 @@ const filtered = useMemo(
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- 2026-05-17 완료. 신규 파일 3개 (`lib/repositories/{guides,experiences,reviews}.js`), 소비자 6개 파일(`ProfileScreen`, `ExperienceDetailScreen`, `ListScreen`, `ExperiencesScreen`, `HomeScreen`, `ExperienceCard`) 마이그레이션.
+- 검색 매칭은 기존 동작 보존을 우선해 case-sensitive `String.prototype.includes`로 유지. case-insensitive 전환은 별도 이슈로 분리 권장.
+- `expGallery`, `meetingPlace` (pure 데이터 변환 헬퍼)와 `EXP_CATEGORIES` (파생 상수)는 `lib/data/experiences.js`에 그대로 둠 — repository 책임이 아니라 데이터 모듈의 정적 파생물이라 판단.
+- `experiencesRepo.list()` 가 `guidesRepo.findById()`를 호출하지만 모듈 의존 방향이 단방향(experiences → guides)이라 순환 없음. 향후 review/booking이 양방향 의존을 요구하면 service 레이어 도입 검토.
+- `npm run build` 통과 (Next 14.2.35, 5 페이지 정적 생성).

@@ -4,8 +4,8 @@ import { useMemo, useState } from "react"
 import Icon from "../components/ui/Icon"
 import FilterRow from "../components/ui/FilterRow"
 import ExperienceCard from "../components/cards/ExperienceCard"
-import { EXPERIENCES, EXP_CATEGORIES } from "../lib/data/experiences"
-import { GUIDES } from "../lib/data/guides"
+import { EXP_CATEGORIES } from "../lib/data/experiences"
+import { experiencesRepo } from "../lib/repositories/experiences"
 import { CITIES } from "../lib/data/filters"
 
 export default function ExperiencesScreen({
@@ -19,21 +19,7 @@ export default function ExperiencesScreen({
   const [q, setQ] = useState(initialQuery || "")
 
   const filtered = useMemo(
-    () =>
-      EXPERIENCES.filter((e) => {
-        const guide = GUIDES.find((g) => g.id === e.guideId)
-        if (!guide) return false
-        const cityMatch = city === "All" || guide.city === city
-        const catMatch = category === "All" || e.category === category
-        const qMatch =
-          !q ||
-          e.title.includes(q) ||
-          e.summary.includes(q) ||
-          e.category.includes(q) ||
-          guide.name.includes(q) ||
-          guide.city.includes(q)
-        return cityMatch && catMatch && qMatch
-      }),
+    () => experiencesRepo.list({ city, category, query: q }),
     [city, category, q],
   )
 
@@ -57,7 +43,7 @@ export default function ExperiencesScreen({
             All Korean experiences
           </h1>
           <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
-            Pick from {EXPERIENCES.length} experience packages hosted by local
+            Pick from {experiencesRepo.list().length} experience packages hosted by local
             guides.
           </p>
 

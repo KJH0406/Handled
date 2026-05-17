@@ -7,17 +7,14 @@ import Stars from "../components/ui/Stars"
 import Avatar from "../components/ui/Avatar"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import CustomQuotePanel from "../components/booking/CustomQuotePanel"
-import { GUIDES } from "../lib/data/guides"
-import { EXPERIENCES } from "../lib/data/experiences"
-import { REVIEWS_BY_GUIDE } from "../lib/data/reviews"
+import { guidesRepo } from "../lib/repositories/guides"
+import { experiencesRepo } from "../lib/repositories/experiences"
+import { reviewsRepo } from "../lib/repositories/reviews"
 
 export default function ProfileScreen({ navigate, guideId, onReserve }) {
-  const guide = useMemo(
-    () => GUIDES.find((g) => g.id === guideId),
-    [guideId],
-  )
+  const guide = useMemo(() => guidesRepo.findById(guideId), [guideId])
   const experiences = useMemo(
-    () => EXPERIENCES.filter((e) => e.guideId === guideId),
+    () => experiencesRepo.listByGuideId(guideId),
     [guideId],
   )
 
@@ -40,7 +37,7 @@ export default function ProfileScreen({ navigate, guideId, onReserve }) {
       </main>
     )
   }
-  const reviews = REVIEWS_BY_GUIDE[guide.id] || []
+  const reviews = reviewsRepo.listByGuideId(guide.id)
 
   return (
     <main className="fade-in">

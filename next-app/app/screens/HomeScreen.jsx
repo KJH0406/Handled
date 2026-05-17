@@ -5,8 +5,8 @@ import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import Avatar from "../components/ui/Avatar"
 import ExperienceCard from "../components/cards/ExperienceCard"
-import { EXPERIENCES } from "../lib/data/experiences"
-import { HOME_REVIEWS } from "../lib/data/reviews"
+import { experiencesRepo } from "../lib/repositories/experiences"
+import { reviewsRepo } from "../lib/repositories/reviews"
 
 const QUICK_CITIES = ["Seoul", "Busan", "Jeju", "Incheon"]
 
@@ -30,7 +30,7 @@ const WHY_FEATURES = [
 
 export default function HomeScreen({ navigate }) {
   const [where, setWhere] = useState("")
-  const featured = EXPERIENCES.slice(0, 3)
+  const featured = experiencesRepo.featured(3)
 
   const onSearch = () => navigate("experiences", { initialQuery: where })
 
@@ -224,7 +224,7 @@ export default function HomeScreen({ navigate }) {
             </div>
           </div>
           <div className="review-grid">
-            {HOME_REVIEWS.map((r, i) => (
+            {reviewsRepo.listHome().map((r, i) => (
               <div key={i} className="stack-sm">
                 <div className="row row-gap-sm">
                   <Avatar size={36} name={r.name} src="" />

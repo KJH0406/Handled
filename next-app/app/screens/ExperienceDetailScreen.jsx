@@ -6,9 +6,10 @@ import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import Avatar from "../components/ui/Avatar"
 import ExpBookingPanel from "../components/booking/ExpBookingPanel"
-import { EXPERIENCES, expGallery, meetingPlace } from "../lib/data/experiences"
-import { GUIDES } from "../lib/data/guides"
-import { REVIEWS_BY_GUIDE } from "../lib/data/reviews"
+import { expGallery, meetingPlace } from "../lib/data/experiences"
+import { experiencesRepo } from "../lib/repositories/experiences"
+import { guidesRepo } from "../lib/repositories/guides"
+import { reviewsRepo } from "../lib/repositories/reviews"
 import { SCHEDULE_BY_CATEGORY } from "../lib/data/schedules"
 import { CAT_FALLBACK } from "../lib/data/categories"
 
@@ -17,9 +18,9 @@ export default function ExperienceDetailScreen({
   expId,
   onReserve,
 }) {
-  const exp = useMemo(() => EXPERIENCES.find((e) => e.id === expId), [expId])
+  const exp = useMemo(() => experiencesRepo.findById(expId), [expId])
   const guide = useMemo(
-    () => (exp ? GUIDES.find((g) => g.id === exp.guideId) : null),
+    () => (exp ? guidesRepo.findById(exp.guideId) : null),
     [exp],
   )
   const [heroErr, setHeroErr] = useState(false)
@@ -46,7 +47,7 @@ export default function ExperienceDetailScreen({
 
   const gallery = expGallery(exp, guide)
   const schedule = SCHEDULE_BY_CATEGORY[exp.category] || []
-  const reviews = REVIEWS_BY_GUIDE[guide.id] || []
+  const reviews = reviewsRepo.listByGuideId(guide.id)
 
   return (
     <main className="fade-in">

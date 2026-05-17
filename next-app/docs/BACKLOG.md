@@ -15,7 +15,7 @@
 | [01](backlog/ISSUE-01-app-router.md) | Next.js App Router 실 라우팅 전환 | open | L | — |
 | [02](backlog/ISSUE-02-next-image.md) | `next/image`로 이미지 전환 | done | M | — |
 | [03](backlog/ISSUE-03-next-font.md) | Pretendard 셀프 호스팅 (`next/font/local`) | done | S | — |
-| [04](backlog/ISSUE-04-repository-pattern.md) | 데이터 레이어 추상화 (Repository pattern) | open | M | — |
+| [04](backlog/ISSUE-04-repository-pattern.md) | 데이터 레이어 추상화 (Repository pattern) | done | M | — |
 
 ## Medium priority
 

@@ -4,10 +4,10 @@ import Icon from "../ui/Icon"
 import Avatar from "../ui/Avatar"
 import ExpPhoto from "./ExpPhoto"
 import { usd } from "../../lib/format"
-import { GUIDES } from "../../lib/data/guides"
+import { guidesRepo } from "../../lib/repositories/guides"
 
 export default function ExperienceCard({ exp, onPick, showGuide = false }) {
-  const guide = showGuide ? GUIDES.find((g) => g.id === exp.guideId) : null
+  const guide = showGuide ? guidesRepo.findById(exp.guideId) : null
   return (
     <div className="exp-card" onClick={onPick} role="button" tabIndex={0}>
       <div className="exp-card-photo">

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import Icon from "../components/ui/Icon"
 import FilterRow from "../components/ui/FilterRow"
 import GuideCard from "../components/cards/GuideCard"
-import { GUIDES } from "../lib/data/guides"
+import { guidesRepo } from "../lib/repositories/guides"
 import { CITIES, STYLES, LANGUAGES } from "../lib/data/filters"
 
 export default function ListScreen({ navigate, initialCity, initialQuery }) {
@@ -14,20 +14,7 @@ export default function ListScreen({ navigate, initialCity, initialQuery }) {
   const [q, setQ] = useState(initialQuery || "")
 
   const filtered = useMemo(
-    () =>
-      GUIDES.filter((g) => {
-        const cityMatch = city === "All" || g.city === city
-        const styleMatch = style === "All" || g.styles.includes(style)
-        const langMatch = lang === "All" || g.languages.includes(lang)
-        const qMatch =
-          !q ||
-          g.name.includes(q) ||
-          g.city.includes(q) ||
-          g.district.includes(q) ||
-          g.styles.some((s) => s.includes(q)) ||
-          g.oneLiner.includes(q)
-        return cityMatch && styleMatch && langMatch && qMatch
-      }),
+    () => guidesRepo.list({ city, style, language: lang, query: q }),
     [city, style, lang, q],
   )
 
