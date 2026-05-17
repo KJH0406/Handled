@@ -1,13 +1,15 @@
 ---
 id: ISSUE-08
 title: E2E + 유닛 테스트 도입
-status: open
+status: dropped
 priority: medium
 effort: M
 depends_on: []
 labels: ["test"]
 created: 2026-05-17
 updated: 2026-05-17
+dropped: 2026-05-17
+dropped_reason: 사용자 결정으로 현 시점 테스트 프레임워크 도입 제외 (Playwright 브라우저 다운로드/dev server 의존 등 셋업 부담). 필요 시점에 새 이슈로 재개.
 ---
 
 # ISSUE-08: E2E + 유닛 테스트 도입
