@@ -1,7 +1,7 @@
 ---
 id: ISSUE-11
 title: PaymentScreen dynamic import로 코드 스플릿
-status: open
+status: dropped
 priority: low
 effort: S
 depends_on: []
@@ -9,6 +9,13 @@ labels: ["perf", "bundle"]
 created: 2026-05-17
 updated: 2026-05-17
 ---
+
+> **DROPPED (2026-05-17)** — ISSUE-01 (App Router 전환) 완료로 자연 해결됨.
+> `PaymentScreen`은 이제 `/checkout` 라우트에서만 import되어 Next.js의 라우트별 자동 코드 스플릿 대상이 됨.
+> 빌드 결과 확인:
+> - `/` First Load JS = 114 kB (PaymentScreen 미포함)
+> - `/checkout` own size = 5.05 kB (PaymentScreen 포함)
+> 별도의 `next/dynamic` 적용은 불필요. (이슈 메모의 "ISSUE-01 완료 시 dropped 후보" 시나리오대로 진행)
 
 # ISSUE-11: PaymentScreen dynamic import로 코드 스플릿
 

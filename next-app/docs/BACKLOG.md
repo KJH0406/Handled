@@ -32,7 +32,7 @@
 | ID                                               | Title                                   | Status | Effort | Depends on |
 | ------------------------------------------------ | --------------------------------------- | ------ | ------ | ---------- |
 | [10](backlog/ISSUE-10-eslint-prettier.md)        | ESLint + Prettier 설정                  | done   | S      | —          |
-| [11](backlog/ISSUE-11-payment-dynamic-import.md) | PaymentScreen dynamic import            | open   | S      | —          |
+| [11](backlog/ISSUE-11-payment-dynamic-import.md) | PaymentScreen dynamic import            | dropped | S      | —          |
 | [12](backlog/ISSUE-12-search-debounce.md)        | 검색 인풋 디바운싱                      | open   | S      | —          |
 | [13](backlog/ISSUE-13-payment-mock-extract.md)   | 결제 mock 분리 → `lib/payments/`        | open   | S      | —          |
 | [14](backlog/ISSUE-14-i18n.md)                   | i18n 준비 (`next-intl`)                 | open   | L      | —          |
