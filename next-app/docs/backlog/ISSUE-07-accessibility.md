@@ -1,13 +1,14 @@
 ---
 id: ISSUE-07
 title: 접근성 — 클릭 가능 div를 button으로 변경
-status: open
+status: done
 priority: medium
 effort: S
 depends_on: []
 labels: ["a11y"]
 created: 2026-05-17
 updated: 2026-05-17
+completed: 2026-05-17
 ---
 
 # ISSUE-07: 접근성 — 클릭 가능 div를 button으로 변경
@@ -112,4 +113,26 @@ const handleKey = (e) => {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- **TopNav** — `nav-logo`, `nav-tab` div → `<Link>`로 교체. 활성 탭에 `aria-current="page"` 추가. `useAppNavigate` 의존 제거 → 컴포넌트 client 분리 그대로 유지 (usePathname 필요).
+- **GuideCard** — risks 항에 명시된 nested-interactive 문제를 회피하기 위해 **stretched-link 패턴** 채택. 카드 본문은 `<article>`, 맨 마지막에 absolute로 깔린 `<Link className="card-stretched-link">`가 클릭 영역을 덮음. Heart는 `z-index: 2`로 위에 떠 그대로 동작 (Heart 컴포넌트는 이미 `e.stopPropagation()` 보유).
+  - `onClick` prop 제거 → 컴포넌트 자체가 `guide.id`로 라우팅. 호출부(`ListScreen`)에서 navigate 의존 제거.
+  - Image `alt`를 `guide.name`에서 빈 문자열로 변경 — Link의 `aria-label`이 동일 정보를 제공하므로 스크린리더에 중복되지 않게.
+- **ExperienceCard** — 내부에 nested interactive 없으므로 카드 전체를 `<Link>`로 교체. `role="button"`, `tabIndex`, `onPick` 모두 제거. 호출부 4곳 (`Home/Profile/Experiences/List` 중 Experience 사용처) 정리.
+- **ExperienceDetailScreen** — host span 2곳 모두 `<Link>`로:
+  - 페이지 상단의 underline span → `<Link className="host-inline-link">`
+  - "About your host" 카드의 "View profile" 버튼 → `<Link className="host-mini-card-link">`
+- **globals.css**
+  - 전역 `:focus-visible` 추가 (`outline: 2px solid var(--rausch)`, offset 2px) — 키보드 포커스 가시화.
+  - `.card-stretched-link` 유틸 (absolute inset:0, z-index:1, font-size:0, focus시 inset outline).
+  - `.guide-card` `position: relative` + `:has(.card-stretched-link:focus-visible)`로 카드 전체 포커스 ring 표시.
+  - `.heart-btn` `z-index: 2` — stretched link 위로.
+  - `.exp-card` `color: inherit; text-decoration: none` — anchor 기본 스타일 무력화.
+  - `.sr-only` 유틸 (현재 미사용이지만 후속 작업 대비).
+  - `.host-inline-link` (underline 스타일을 inline style에서 클래스로).
+- **수락 기준 충족**
+  - ✅ 모든 클릭 가능 div/span 제거됨 (grep 결과 0건).
+  - ✅ 키보드 Tab → Enter로 모든 라우팅 가능 (Link/button 기본 거동).
+  - ✅ `:focus-visible` 전역 outline 적용.
+  - ✅ aria-label / aria-current 추가.
+  - ⏭️ axe-core / Lighthouse 점수 측정은 별도 측정 도구 필요 — 본 작업 범위에서는 코드 레벨 a11y 적용 확인까지.
+- **검증** — `npm run build` 통과 (Next 14.2.35, 9 routes 모두 정상 생성).

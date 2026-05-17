@@ -6,11 +6,9 @@ import GuideCard from "../components/cards/GuideCard"
 import FilterRow from "../components/ui/FilterRow"
 import Icon from "../components/ui/Icon"
 import { CITIES, LANGUAGES, STYLES } from "../lib/data/filters"
-import { useAppNavigate } from "../lib/navigation"
 import { guidesRepo } from "../lib/repositories/guides"
 
 export default function ListScreen() {
-  const navigate = useAppNavigate()
   const searchParams = useSearchParams()
   const initialCity = searchParams.get("city") ?? undefined
   const initialQuery = searchParams.get("q") ?? undefined
@@ -140,11 +138,7 @@ export default function ListScreen() {
           ) : (
             <div className="guide-grid">
               {filtered.map((g) => (
-                <GuideCard
-                  key={g.id}
-                  guide={g}
-                  onClick={() => navigate("profile", { guideId: g.id })}
-                />
+                <GuideCard key={g.id} guide={g} />
               ))}
             </div>
           )}

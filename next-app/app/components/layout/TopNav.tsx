@@ -1,23 +1,23 @@
 "use client"
 
+import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useAppNavigate, type RouteName } from "../../lib/navigation"
 import Icon, { type IconName } from "../ui/Icon"
 
 interface NavTab {
   id: "home" | "experiences"
   label: string
   icon: IconName
-  target: Extract<RouteName, "home" | "experiences">
+  href: string
 }
 
 const TABS: NavTab[] = [
-  { id: "home", label: "Home", icon: "home", target: "home" },
+  { id: "home", label: "Home", icon: "home", href: "/" },
   {
     id: "experiences",
     label: "Experiences",
     icon: "sparkles",
-    target: "experiences",
+    href: "/experiences",
   },
 ]
 
@@ -32,12 +32,11 @@ const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
 }
 
 export default function TopNav() {
-  const navigate = useAppNavigate()
   const pathname = usePathname()
   return (
     <header className="nav">
       <div className="container nav-inner">
-        <div className="nav-logo" onClick={() => navigate("home")}>
+        <Link href="/" className="nav-logo" aria-label="Handled — home">
           <Icon
             name="pin"
             size={28}
@@ -55,19 +54,23 @@ export default function TopNav() {
           >
             handled
           </span>
-        </div>
+        </Link>
 
         <nav className="nav-tabs hide-mobile">
-          {TABS.map((t) => (
-            <div
-              key={t.id}
-              className={`nav-tab ${isActive(t.id, pathname) ? "active" : ""}`}
-              onClick={() => navigate(t.target)}
-            >
-              <Icon name={t.icon} size={20} sw={1.6} />
-              <span>{t.label}</span>
-            </div>
-          ))}
+          {TABS.map((t) => {
+            const active = isActive(t.id, pathname)
+            return (
+              <Link
+                key={t.id}
+                href={t.href}
+                className={`nav-tab ${active ? "active" : ""}`}
+                aria-current={active ? "page" : undefined}
+              >
+                <Icon name={t.icon} size={20} sw={1.6} />
+                <span>{t.label}</span>
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="nav-actions">

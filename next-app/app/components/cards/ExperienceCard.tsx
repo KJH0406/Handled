@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { usd } from "../../lib/format"
 import { guidesRepo } from "../../lib/repositories/guides"
 import type { Experience } from "../../lib/types/domain"
@@ -9,18 +10,16 @@ import ExpPhoto from "./ExpPhoto"
 
 export interface ExperienceCardProps {
   exp: Experience
-  onPick?: () => void
   showGuide?: boolean
 }
 
 export default function ExperienceCard({
   exp,
-  onPick,
   showGuide = false,
 }: ExperienceCardProps) {
   const guide = showGuide ? guidesRepo.findById(exp.guideId) : null
   return (
-    <div className="exp-card" onClick={onPick} role="button" tabIndex={0}>
+    <Link href={`/experiences/${exp.id}`} className="exp-card">
       <div className="exp-card-photo">
         <ExpPhoto src={exp.photo} alt={exp.title} category={exp.category} />
         <span className="exp-card-cat badge-pill">{exp.category}</span>
@@ -81,6 +80,6 @@ export default function ExperienceCard({
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

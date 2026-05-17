@@ -7,11 +7,9 @@ import FilterRow from "../components/ui/FilterRow"
 import Icon from "../components/ui/Icon"
 import { EXP_CATEGORIES } from "../lib/data/experiences"
 import { CITIES } from "../lib/data/filters"
-import { useAppNavigate } from "../lib/navigation"
 import { experiencesRepo } from "../lib/repositories/experiences"
 
 export default function ExperiencesScreen() {
-  const navigate = useAppNavigate()
   const searchParams = useSearchParams()
   const initialCity = searchParams.get("city") ?? undefined
   const initialCategory = searchParams.get("category") ?? undefined
@@ -136,12 +134,7 @@ export default function ExperiencesScreen() {
           ) : (
             <div className="exp-grid">
               {filtered.map((exp) => (
-                <ExperienceCard
-                  key={exp.id}
-                  exp={exp}
-                  showGuide
-                  onPick={() => navigate("experience", { expId: exp.id })}
-                />
+                <ExperienceCard key={exp.id} exp={exp} showGuide />
               ))}
             </div>
           )}

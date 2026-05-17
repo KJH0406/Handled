@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 import { usd } from "../../lib/format"
 import type { Guide } from "../../lib/types/domain"
@@ -10,17 +11,16 @@ import Stars from "../ui/Stars"
 
 export interface GuideCardProps {
   guide: Guide
-  onClick?: () => void
 }
 
-export default function GuideCard({ guide, onClick }: GuideCardProps) {
+export default function GuideCard({ guide }: GuideCardProps) {
   const [saved, setSaved] = useState(false)
   return (
-    <div className="guide-card" onClick={onClick}>
+    <article className="guide-card">
       <div className="guide-card-photo">
         <Image
           src={guide.photo}
-          alt={guide.name}
+          alt=""
           fill
           sizes="(max-width: 744px) 50vw, (max-width: 1200px) 33vw, 25vw"
           style={{ objectFit: "cover" }}
@@ -55,6 +55,11 @@ export default function GuideCard({ guide, onClick }: GuideCardProps) {
           <span className="t-body-sm muted">/ hour</span>
         </div>
       </div>
-    </div>
+      <Link
+        href={`/guides/${guide.id}`}
+        className="card-stretched-link"
+        aria-label={`${guide.name} — ${guide.city} guide`}
+      />
+    </article>
   )
 }

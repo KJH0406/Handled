@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useMemo, useState } from "react"
 import { useBooking } from "../components/booking/BookingProvider"
 import ExpBookingPanel from "../components/booking/ExpBookingPanel"
@@ -83,10 +84,9 @@ export default function ExperienceDetailScreen({
             <Stars rating={guide.rating} />
             <span className="t-body-sm body">· {guide.reviews} reviews</span>
             <span className="t-body-sm body">·</span>
-            <span
-              className="row row-gap-xs t-body-sm body"
-              style={{ cursor: "pointer", textDecoration: "underline" }}
-              onClick={() => navigate("profile", { guideId: guide.id })}
+            <Link
+              href={`/guides/${guide.id}`}
+              className="row row-gap-xs t-body-sm body host-inline-link"
             >
               <Avatar
                 src={guide.photo}
@@ -95,7 +95,7 @@ export default function ExperienceDetailScreen({
                 size={20}
               />
               <span>Hosted by {guide.name}</span>
-            </span>
+            </Link>
           </div>
         </div>
 
@@ -256,12 +256,12 @@ export default function ExperienceDetailScreen({
                   {guide.rating.toFixed(2)}
                 </div>
               </div>
-              <button
+              <Link
+                href={`/guides/${guide.id}`}
                 className="host-mini-card-link hide-mobile"
-                onClick={() => navigate("profile", { guideId: guide.id })}
               >
                 View profile
-              </button>
+              </Link>
             </div>
             <p className="t-body-sm body mb-xl">{guide.bio}</p>
 

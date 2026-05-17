@@ -256,11 +256,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
             </p>
             <div className="exp-grid">
               {experiences.map((exp) => (
-                <ExperienceCard
-                  key={exp.id}
-                  exp={exp}
-                  onPick={() => navigate("experience", { expId: exp.id })}
-                />
+                <ExperienceCard key={exp.id} exp={exp} />
               ))}
             </div>
           </section>

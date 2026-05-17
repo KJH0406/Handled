@@ -177,12 +177,7 @@ export default function HomeScreen() {
           </div>
           <div className="exp-grid">
             {featured.map((exp) => (
-              <ExperienceCard
-                key={exp.id}
-                exp={exp}
-                showGuide
-                onPick={() => navigate("experience", { expId: exp.id })}
-              />
+              <ExperienceCard key={exp.id} exp={exp} showGuide />
             ))}
           </div>
         </div>
