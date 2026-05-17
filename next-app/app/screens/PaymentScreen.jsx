@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import { usd, formatDate } from "../lib/format"
@@ -400,6 +401,7 @@ export default function PaymentScreen({ booking, navigate, onConfirm }) {
               >
                 <div
                   style={{
+                    position: "relative",
                     width: 92,
                     height: 92,
                     borderRadius: "var(--r-md)",
@@ -407,7 +409,7 @@ export default function PaymentScreen({ booking, navigate, onConfirm }) {
                     flexShrink: 0,
                   }}
                 >
-                  <img
+                  <Image
                     src={
                       booking.experience
                         ? booking.experience.photo
@@ -418,11 +420,9 @@ export default function PaymentScreen({ booking, navigate, onConfirm }) {
                         ? booking.experience.title
                         : guide.name
                     }
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                    fill
+                    sizes="92px"
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>

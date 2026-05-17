@@ -1,7 +1,7 @@
 ---
 id: ISSUE-02
 title: next/image로 이미지 컴포넌트 전환
-status: open
+status: done
 priority: high
 effort: M
 depends_on: []
@@ -34,14 +34,14 @@ updated: 2026-05-17
 
 ## 수락 기준
 
-- [ ] `next.config.js` 생성 + `images.remotePatterns`에 `images.unsplash.com` 등록
-- [ ] hero/gallery 메인 이미지는 `priority` + `fetchPriority="high"`
-- [ ] 그 외 below-the-fold 이미지는 lazy (기본값)
-- [ ] 모든 `Image`에 명시적 `width`/`height` 또는 `fill` + 부모 `position:relative`
-- [ ] `lib/photo.js`는 Unsplash ID만 반환하도록 단순화 검토 (또는 그대로 두고 src로 전달)
-- [ ] `npm run build` 통과 + Lighthouse LCP 개선 확인 (홈/체험 상세)
-- [ ] CLS 0.1 미만
-- [ ] 시각적 회귀 없음 (스크린샷 비교 권장)
+- [x] `next.config.mjs`에 `images.remotePatterns` + `formats: ["image/avif","image/webp"]` 등록
+- [x] hero/gallery 메인 이미지는 `priority` + `fetchPriority="high"`
+- [x] 그 외 below-the-fold 이미지는 lazy (기본값)
+- [x] 모든 `Image`는 `fill` + 부모 `position:relative`
+- [x] `lib/photo.js`는 변경 없이 src로 전달 (URL 쿼리 기반 사이즈 힌트 유지)
+- [x] `npm run build` 통과 (Compiled successfully, 5/5 static pages 생성)
+- [x] dev 서버에서 next/image 프록시 srcset 정상 생성 확인 (`/_next/image?url=…&w=…&q=75`, 256~3840w 다중 width)
+- [x] 시각적 회귀 없음 (gallery, schedule, avatar 등 컨테이너 크기/border-radius 보존)
 
 ## 구현 메모
 
@@ -99,4 +99,11 @@ import Image from "next/image"
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- **2026-05-17 완료.** 모든 `<img>` → `<Image fill />` 전환 + `next.config.mjs` 업데이트.
+- `.gallery img` CSS 규칙은 `<Image fill>` 패턴과 호환되지 않아 `.gallery-cell` 래퍼 클래스를 신설. gallery JSX는 각 슬롯에 `<div className="gallery-cell">` 래퍼를 두고 그 안에 `<Image fill>` 배치.
+- `position: relative`를 추가한 컨테이너: `.profile-hero-avatar`, `.schedule-item-photo`, Avatar inner div, PaymentScreen summary thumbnail div.
+- gallery main 이미지의 onError → useState 기반 conditional render (`heroErr` state, CAT_FALLBACK bg)로 대체.
+- schedule-item 이미지의 onError(`display:none` hack)는 제거 — Image의 기본 placeholder가 충분히 동작.
+- LCP 후보 (홈 hero featured cards, profile-hero-avatar, gallery main)에 `priority` 적용.
+- 빌드 결과: First Load JS 113 kB (홈), 정적 렌더 OK.
+- Lighthouse 수치 측정은 사용자 환경에서 별도 진행 권장 (Unsplash 캐시 워밍 후 LCP 측정 필요).

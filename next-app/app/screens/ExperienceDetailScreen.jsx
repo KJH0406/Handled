@@ -1,6 +1,7 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
+import Image from "next/image"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import Avatar from "../components/ui/Avatar"
@@ -21,6 +22,7 @@ export default function ExperienceDetailScreen({
     () => (exp ? GUIDES.find((g) => g.id === exp.guideId) : null),
     [exp],
   )
+  const [heroErr, setHeroErr] = useState(false)
 
   if (!exp || !guide) {
     return (
@@ -112,34 +114,79 @@ export default function ExperienceDetailScreen({
 
         {/* gallery */}
         <div className="gallery" style={{ marginBottom: 32 }}>
-          <img
-            className="gallery-main"
-            src={gallery[0]}
-            alt={exp.title}
+          <div
+            className="gallery-cell gallery-main"
             style={{ borderRadius: "14px 0 0 14px" }}
-            onError={(e) => {
-              e.currentTarget.style.background =
-                CAT_FALLBACK[exp.category]?.bg ||
-                "linear-gradient(135deg, #ff385c, #ffa07a)"
-              e.currentTarget.style.objectFit = "none"
-              e.currentTarget.removeAttribute("src")
-            }}
-          />
-          <div className="gallery-side">
-            <img src={gallery[1] || gallery[0]} alt="" />
-            <img src={gallery[3] || gallery[0]} alt="" />
+          >
+            {heroErr ? (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background:
+                    CAT_FALLBACK[exp.category]?.bg ||
+                    "linear-gradient(135deg, #ff385c, #ffa07a)",
+                }}
+                aria-label={exp.title}
+              />
+            ) : (
+              <Image
+                src={gallery[0]}
+                alt={exp.title}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 744px) 100vw, 50vw"
+                style={{ objectFit: "cover" }}
+                onError={() => setHeroErr(true)}
+              />
+            )}
           </div>
           <div className="gallery-side">
-            <img
-              src={gallery[2] || gallery[0]}
-              alt=""
+            <div className="gallery-cell">
+              <Image
+                src={gallery[1] || gallery[0]}
+                alt=""
+                fill
+                sizes="(max-width: 744px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div className="gallery-cell">
+              <Image
+                src={gallery[3] || gallery[0]}
+                alt=""
+                fill
+                sizes="(max-width: 744px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </div>
+          <div className="gallery-side">
+            <div
+              className="gallery-cell"
               style={{ borderRadius: "0 14px 0 0" }}
-            />
-            <img
-              src={gallery[4] || gallery[0]}
-              alt=""
+            >
+              <Image
+                src={gallery[2] || gallery[0]}
+                alt=""
+                fill
+                sizes="(max-width: 744px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div
+              className="gallery-cell"
               style={{ borderRadius: "0 0 14px 0" }}
-            />
+            >
+              <Image
+                src={gallery[4] || gallery[0]}
+                alt=""
+                fill
+                sizes="(max-width: 744px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
           </div>
         </div>
 
@@ -180,12 +227,12 @@ export default function ExperienceDetailScreen({
               {schedule.map((s, i) => (
                 <div key={i} className="schedule-item">
                   <div className="schedule-item-photo">
-                    <img
+                    <Image
                       src={gallery[(i + 1) % gallery.length]}
                       alt=""
-                      onError={(e) =>
-                        (e.currentTarget.style.display = "none")
-                      }
+                      fill
+                      sizes="96px"
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                   <div style={{ flex: 1 }}>

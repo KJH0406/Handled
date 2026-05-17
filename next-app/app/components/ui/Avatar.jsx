@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 
 const COLORS = [
   "#ff385c",
@@ -21,6 +22,7 @@ export default function Avatar({ src, alt, size = 48, name = "?" }) {
   return (
     <div
       style={{
+        position: "relative",
         width: size,
         height: size,
         borderRadius: "50%",
@@ -37,10 +39,12 @@ export default function Avatar({ src, alt, size = 48, name = "?" }) {
           {initial}
         </div>
       ) : (
-        <img
+        <Image
           src={src}
           alt={alt}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          fill
+          sizes={`${size}px`}
+          style={{ objectFit: "cover" }}
           onError={() => setErr(true)}
         />
       )}

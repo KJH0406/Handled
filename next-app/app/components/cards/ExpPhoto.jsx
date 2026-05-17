@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { CAT_FALLBACK } from "../../lib/data/categories"
 
 const DEFAULT_FALLBACK = {
@@ -27,6 +28,13 @@ export default function ExpPhoto({ src, alt, category }) {
       {fb.emoji}
     </div>
   ) : (
-    <img src={src} alt={alt} loading="lazy" onError={() => setErr(true)} />
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes="(max-width: 744px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      style={{ objectFit: "cover" }}
+      onError={() => setErr(true)}
+    />
   )
 }

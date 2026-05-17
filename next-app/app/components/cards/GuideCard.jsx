@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Icon from "../ui/Icon"
 import Stars from "../ui/Stars"
 import Heart from "../ui/Heart"
@@ -11,7 +12,13 @@ export default function GuideCard({ guide, onClick }) {
   return (
     <div className="guide-card" onClick={onClick}>
       <div className="guide-card-photo">
-        <img src={guide.photo} alt={guide.name} loading="lazy" />
+        <Image
+          src={guide.photo}
+          alt={guide.name}
+          fill
+          sizes="(max-width: 744px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          style={{ objectFit: "cover" }}
+        />
         {guide.superhost && (
           <span className="superhost-badge badge-pill">
             <Icon name="award" size={11} /> Superhost

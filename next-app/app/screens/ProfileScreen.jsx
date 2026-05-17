@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
+import Image from "next/image"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import Avatar from "../components/ui/Avatar"
@@ -65,7 +66,14 @@ export default function ProfileScreen({ navigate, guideId, onReserve }) {
         {/* Profile hero — guide-centric (large avatar + name) */}
         <div className="profile-hero">
           <div className="profile-hero-avatar">
-            <img src={guide.photo} alt={guide.name} />
+            <Image
+              src={guide.photo}
+              alt={guide.name}
+              fill
+              priority
+              sizes="128px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div
