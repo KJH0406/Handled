@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { INTEREST_TAGS, TIMES } from "../../lib/data/booking"
 import { formatDate, usd } from "../../lib/format"
@@ -16,6 +17,7 @@ export default function CustomQuotePanel({
   guide,
   onReserve,
 }: CustomQuotePanelProps) {
+  const t = useTranslations("booking.custom")
   const [hours, setHours] = useState(3)
   const [date, setDate] = useState<Date | null>(null)
   const [time, setTime] = useState<string>("10:00")
@@ -60,35 +62,35 @@ export default function CustomQuotePanel({
         className="t-caption muted"
         style={{ fontWeight: 600, marginBottom: 4 }}
       >
-        Custom tour quote
+        {t("label")}
       </div>
       <div
         className="row"
         style={{ alignItems: "baseline", marginBottom: 4, gap: 4 }}
       >
         <span className="t-display-md ink">{usd(guide.hourlyRate)}</span>
-        <span className="t-body-md muted">/ hour</span>
+        <span className="t-body-md muted">{t("perHour")}</span>
       </div>
       <p className="t-caption-sm muted" style={{ marginBottom: 20 }}>
-        Build a tour with your preferred hours and interests
+        {t("subtitle")}
       </p>
 
       <div className="stack-sm" style={{ marginBottom: 16 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Tour hours
+          {t("tourHours")}
         </label>
         <div className="stepper-bar">
           <div>
             <div className="t-body-md ink" style={{ fontWeight: 600 }}>
-              {hours}h
+              {t("tourHoursValue", { hours })}
             </div>
-            <div className="t-caption-sm muted">Min 1h · Max 8h</div>
+            <div className="t-caption-sm muted">{t("tourHoursRange")}</div>
           </div>
           <div className="stepper">
             <button
               disabled={hours <= 1}
               onClick={() => setHours(Math.max(1, hours - 1))}
-              aria-label="Decrease hours"
+              aria-label={t("decHoursAria")}
             >
               <Icon name="minus" size={14} />
             </button>
@@ -101,7 +103,7 @@ export default function CustomQuotePanel({
             <button
               disabled={hours >= 8}
               onClick={() => setHours(Math.min(8, hours + 1))}
-              aria-label="Increase hours"
+              aria-label={t("incHoursAria")}
             >
               <Icon name="plus" size={14} />
             </button>
@@ -111,7 +113,7 @@ export default function CustomQuotePanel({
 
       <div className="stack-sm" style={{ marginBottom: 16 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Date
+          {t("date")}
         </label>
         <button
           onClick={() => setShowCal(!showCal)}
@@ -132,7 +134,7 @@ export default function CustomQuotePanel({
                 fontWeight: date ? 600 : 400,
               }}
             >
-              {date ? formatDate(date) : "Select date"}
+              {date ? formatDate(date) : t("selectDate")}
             </span>
             <Icon
               name={showCal ? "chevronDown" : "calendar"}
@@ -163,16 +165,16 @@ export default function CustomQuotePanel({
 
       <div className="stack-sm" style={{ marginBottom: 16 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Start time
+          {t("startTime")}
         </label>
         <div className="time-grid">
-          {TIMES.map((t) => (
+          {TIMES.map((time2) => (
             <button
-              key={t}
-              className={`time-cell ${t === time ? "active" : ""}`}
-              onClick={() => setTime(t)}
+              key={time2}
+              className={`time-cell ${time2 === time ? "active" : ""}`}
+              onClick={() => setTime(time2)}
             >
-              {t}
+              {time2}
             </button>
           ))}
         </div>
@@ -180,7 +182,7 @@ export default function CustomQuotePanel({
 
       <div className="stack-sm" style={{ marginBottom: 16 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Guests
+          {t("guests")}
         </label>
         <div className="stepper-bar">
           <span className="t-body-md ink" style={{ fontWeight: 600 }}>
@@ -190,7 +192,7 @@ export default function CustomQuotePanel({
             <button
               disabled={guests <= 1}
               onClick={() => setGuests(Math.max(1, guests - 1))}
-              aria-label="Decrease guests"
+              aria-label={t("decGuestsAria")}
             >
               <Icon name="minus" size={14} />
             </button>
@@ -203,7 +205,7 @@ export default function CustomQuotePanel({
             <button
               disabled={guests >= 8}
               onClick={() => setGuests(Math.min(8, guests + 1))}
-              aria-label="Increase guests"
+              aria-label={t("incGuestsAria")}
             >
               <Icon name="plus" size={14} />
             </button>
@@ -213,7 +215,7 @@ export default function CustomQuotePanel({
 
       <div className="stack-sm" style={{ marginBottom: 16 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Interests (multi-select)
+          {t("interests")}
         </label>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {INTEREST_TAGS.map((i) => (
@@ -231,12 +233,12 @@ export default function CustomQuotePanel({
 
       <div className="stack-sm" style={{ marginBottom: 24 }}>
         <label className="t-caption muted" style={{ fontWeight: 500 }}>
-          Special requests (optional)
+          {t("specialRequests")}
         </label>
         <textarea
           className="input"
           style={{ resize: "vertical", minHeight: 72, fontSize: 14 }}
-          placeholder="e.g. Vegetarian · with a 4-year-old · please take lots of photos"
+          placeholder={t("requestsPlaceholder")}
           value={requests}
           onChange={(e) => setRequests(e.target.value)}
         />
@@ -247,25 +249,25 @@ export default function CustomQuotePanel({
         onClick={onClickReserve}
         style={{ padding: "16px", fontSize: 16, fontWeight: 600 }}
       >
-        {date ? "Reserve custom tour" : "Select a date"}
+        {date ? t("reserveCta") : t("selectDateCta")}
       </button>
       <p
         className="t-caption-sm muted"
         style={{ textAlign: "center", marginTop: 12 }}
       >
-        No charge until you confirm
+        {t("noCharge")}
       </p>
 
       <div className="divider" />
       <div className="stack-sm">
         <div className="row between">
           <span className="t-body-sm body">
-            {usd(guide.hourlyRate)} × {hours}h
+            {t("lineHourly", { rate: usd(guide.hourlyRate), hours })}
           </span>
           <span className="t-body-sm ink">{usd(subtotal)}</span>
         </div>
         <div className="row between">
-          <span className="t-body-sm body">Service fee</span>
+          <span className="t-body-sm body">{t("serviceFee")}</span>
           <span className="t-body-sm ink">{usd(fee)}</span>
         </div>
         <div
@@ -275,7 +277,7 @@ export default function CustomQuotePanel({
             borderTop: "1px solid var(--hairline-soft)",
           }}
         >
-          <span className="t-title-md ink">Total</span>
+          <span className="t-title-md ink">{t("total")}</span>
           <span className="t-title-md ink">{usd(total)}</span>
         </div>
       </div>

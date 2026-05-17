@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useState } from "react"
 import { useBooking } from "../components/booking/BookingProvider"
@@ -13,6 +14,8 @@ import { processPayment } from "../lib/payments/mock"
 import { validateCard, type CardFieldErrors } from "../lib/payments/validate"
 
 export default function PaymentScreen() {
+  const t = useTranslations("payment")
+  const tCommon = useTranslations("common")
   const navigate = useAppNavigate()
   const { booking, setBooking, hydrated } = useBooking()
   const [name, setName] = useState("")
@@ -31,12 +34,12 @@ export default function PaymentScreen() {
     return (
       <main className="fade-in">
         <div className="container empty-state">
-          <p className="t-body-md muted">No booking information.</p>
+          <p className="t-body-md muted">{t("empty.title")}</p>
           <button
             className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
           >
-            Home
+            {t("empty.cta")}
           </button>
         </div>
       </main>
@@ -46,7 +49,16 @@ export default function PaymentScreen() {
   const { guide } = booking
 
   const submit = async () => {
-    const errors = validateCard({ name, card, exp, cvc, zip })
+    const errors = validateCard(
+      { name, card, exp, cvc, zip },
+      {
+        name: t("errors.name"),
+        card: t("errors.card"),
+        exp: t("errors.exp"),
+        cvc: t("errors.cvc"),
+        zip: t("errors.zip"),
+      },
+    )
     if (Object.keys(errors).length > 0) {
       setErrs(errors)
       return
@@ -78,23 +90,27 @@ export default function PaymentScreen() {
               : navigate("profile", { guideId: guide.id })
           }
         >
-          {booking.experience ? "Back to experience" : "Back to guide"}
+          {booking.experience ? t("backToExperience") : t("backToGuide")}
         </Breadcrumb>
 
-        <h1 className="t-display-md ink mb-xl">Checkout</h1>
+        <h1 className="t-display-md ink mb-xl">{t("heading")}</h1>
 
         <div className="pay-grid">
           <div>
             <div className="mb-xl">
-              <h2 className="t-display-sm ink mb-base">Booking summary</h2>
+              <h2 className="t-display-sm ink mb-base">
+                {t("summary.heading")}
+              </h2>
               <div className="stack-md summary-box">
                 <div className="row between">
-                  <span className="t-body-sm body">Type</span>
+                  <span className="t-body-sm body">{t("summary.type")}</span>
                   <span
                     className="t-body-md value-strong"
                     style={{ color: "var(--rausch)" }}
                   >
-                    {booking.experience ? "Experience package" : "Custom tour"}
+                    {booking.experience
+                      ? t("summary.typeExperience")
+                      : t("summary.typeCustom")}
                   </span>
                 </div>
                 {booking.experience && (
@@ -103,7 +119,7 @@ export default function PaymentScreen() {
                     style={{ alignItems: "flex-start", gap: 16 }}
                   >
                     <span className="t-body-sm body" style={{ flexShrink: 0 }}>
-                      Experience
+                      {t("summary.experience")}
                     </span>
                     <span
                       className="t-body-md ink"
@@ -120,21 +136,24 @@ export default function PaymentScreen() {
                   </div>
                 )}
                 <div className="row between">
-                  <span className="t-body-sm body">Date</span>
+                  <span className="t-body-sm body">{t("summary.date")}</span>
                   <span className="t-body-md ink value-strong">
                     {formatDate(booking.date)}
                   </span>
                 </div>
                 <div className="row between">
-                  <span className="t-body-sm body">Time</span>
+                  <span className="t-body-sm body">{t("summary.time")}</span>
                   <span className="t-body-md ink value-strong">
-                    {booking.time} · {booking.hours} hours
+                    {t("summary.timeValue", {
+                      time: booking.time,
+                      hours: booking.hours,
+                    })}
                   </span>
                 </div>
                 <div className="row between">
-                  <span className="t-body-sm body">Guests</span>
+                  <span className="t-body-sm body">{t("summary.guests")}</span>
                   <span className="t-body-md ink value-strong">
-                    {booking.guests} {booking.guests === 1 ? "guest" : "guests"}
+                    {t("summary.guestsValue", { count: booking.guests })}
                   </span>
                 </div>
                 {booking.interests && booking.interests.length > 0 && (
@@ -147,7 +166,7 @@ export default function PaymentScreen() {
                     }}
                   >
                     <span className="t-body-sm body" style={{ flexShrink: 0 }}>
-                      Interests
+                      {t("summary.interests")}
                     </span>
                     <div
                       className="row"
@@ -174,30 +193,32 @@ export default function PaymentScreen() {
                       borderTop: "1px solid var(--hairline-soft)",
                     }}
                   >
-                    <span className="t-caption muted">Special requests</span>
+                    <span className="t-caption muted">
+                      {t("summary.specialRequests")}
+                    </span>
                     <span className="t-body-sm ink">{booking.requests}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            <h2 className="t-display-sm ink mb-base">Payment method</h2>
+            <h2 className="t-display-sm ink mb-base">{t("method.heading")}</h2>
             <div className="stack-base mb-xl">
               <div className="field">
-                <label>Cardholder name</label>
+                <label>{t("method.cardholder")}</label>
                 <input
                   className={`input ${errs.name ? "error" : ""}`}
-                  placeholder="HONG GILDONG"
+                  placeholder={t("method.cardholderPlaceholder")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 {errs.name && <span className="help-error">{errs.name}</span>}
               </div>
               <div className="field">
-                <label>Card number</label>
+                <label>{t("method.cardNumber")}</label>
                 <input
                   className={`input ${errs.card ? "error" : ""}`}
-                  placeholder="1234 5678 9012 3456"
+                  placeholder={t("method.cardNumberPlaceholder")}
                   value={card}
                   onChange={(e) => setCard(fmtCard(e.target.value))}
                   inputMode="numeric"
@@ -206,10 +227,10 @@ export default function PaymentScreen() {
               </div>
               <div className="pay-card-row">
                 <div className="field">
-                  <label>Expiry</label>
+                  <label>{t("method.expiry")}</label>
                   <input
                     className={`input ${errs.exp ? "error" : ""}`}
-                    placeholder="MM/YY"
+                    placeholder={t("method.expiryPlaceholder")}
                     value={exp}
                     onChange={(e) => setExp(fmtExp(e.target.value))}
                     inputMode="numeric"
@@ -217,10 +238,10 @@ export default function PaymentScreen() {
                   {errs.exp && <span className="help-error">{errs.exp}</span>}
                 </div>
                 <div className="field">
-                  <label>CVC</label>
+                  <label>{t("method.cvc")}</label>
                   <input
                     className={`input ${errs.cvc ? "error" : ""}`}
-                    placeholder="123"
+                    placeholder={t("method.cvcPlaceholder")}
                     value={cvc}
                     onChange={(e) =>
                       setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))
@@ -230,10 +251,10 @@ export default function PaymentScreen() {
                   {errs.cvc && <span className="help-error">{errs.cvc}</span>}
                 </div>
                 <div className="field">
-                  <label>ZIP code</label>
+                  <label>{t("method.zip")}</label>
                   <input
                     className={`input ${errs.zip ? "error" : ""}`}
-                    placeholder="10001"
+                    placeholder={t("method.zipPlaceholder")}
                     value={zip}
                     onChange={(e) => setZip(e.target.value)}
                   />
@@ -242,25 +263,21 @@ export default function PaymentScreen() {
               </div>
             </div>
 
-            <h2 className="t-display-sm ink mb-md">Cancellation policy</h2>
+            <h2 className="t-display-sm ink mb-md">{t("policy.heading")}</h2>
             <div className="stack-md summary-box summary-box--soft mb-xl">
               <div className="row row-gap-sm">
                 <Icon name="shield" size={18} stroke="var(--ink)" />
-                <span className="t-body-sm body">
-                  Free cancellation up to 24h before — full refund.
-                </span>
+                <span className="t-body-sm body">{t("policy.free24h")}</span>
               </div>
               <div className="row row-gap-sm">
                 <Icon name="clock" size={18} stroke="var(--ink)" />
                 <span className="t-body-sm body">
-                  Cancellations within 24h get a 50% refund.
+                  {t("policy.within24h")}
                 </span>
               </div>
               <div className="row row-gap-sm">
                 <Icon name="lock" size={18} stroke="var(--ink)" />
-                <span className="t-body-sm body">
-                  All payments are SSL-encrypted and secure.
-                </span>
+                <span className="t-body-sm body">{t("policy.ssl")}</span>
               </div>
             </div>
 
@@ -268,10 +285,14 @@ export default function PaymentScreen() {
               className="t-caption-sm muted mb-base"
               style={{ lineHeight: 1.6 }}
             >
-              By continuing, you agree to the Handled{" "}
-              <span className="link-inline">Terms</span>,{" "}
-              <span className="link-inline">Privacy Policy</span>, and
-              cancellation policy.
+              {t.rich("terms", {
+                terms: (chunks) => (
+                  <span className="link-inline">{chunks}</span>
+                ),
+                privacy: (chunks) => (
+                  <span className="link-inline">{chunks}</span>
+                ),
+              })}
             </p>
 
             <button
@@ -281,10 +302,10 @@ export default function PaymentScreen() {
             >
               {loading ? (
                 <>
-                  <span className="spinner" /> Processing...
+                  <span className="spinner" /> {t("ctaLoading")}
                 </>
               ) : (
-                `Pay ${usd(booking.total)}`
+                t("cta", { amount: usd(booking.total) })
               )}
             </button>
           </div>
@@ -309,12 +330,15 @@ export default function PaymentScreen() {
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="t-caption muted">
-                    {guide.city} · Guided by {guide.name}
+                    {t("sideCard.guidedBy", {
+                      city: guide.city,
+                      name: guide.name,
+                    })}
                   </div>
                   <div className="t-title-md ink" style={{ marginTop: 2 }}>
                     {booking.experience
                       ? booking.experience.title
-                      : `Custom tour with ${guide.name}`}
+                      : t("sideCard.customTourWith", { name: guide.name })}
                   </div>
                   <div className="row row-gap-xs" style={{ marginTop: 4 }}>
                     <Stars rating={guide.rating} />
@@ -323,7 +347,9 @@ export default function PaymentScreen() {
                 </div>
               </div>
               <div className="divider divider--tight" />
-              <div className="t-display-sm ink mb-base">Price details</div>
+              <div className="t-display-sm ink mb-base">
+                {t("sideCard.priceDetails")}
+              </div>
               <div className="stack-sm mb-base">
                 <div className="row between" style={{ gap: 8 }}>
                   <span
@@ -337,17 +363,23 @@ export default function PaymentScreen() {
                     }}
                   >
                     {booking.experience
-                      ? `${usd(booking.experience.price)} × ${booking.guests} ${
-                          booking.guests === 1 ? "guest" : "guests"
-                        }`
-                      : `${usd(guide.hourlyRate)} × ${booking.hours}h`}
+                      ? t("sideCard.linePerPerson", {
+                          amount: usd(booking.experience.price),
+                          count: booking.guests,
+                        })
+                      : t("sideCard.linePerHour", {
+                          amount: usd(guide.hourlyRate),
+                          hours: booking.hours,
+                        })}
                   </span>
                   <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
                     {usd(booking.subtotal)}
                   </span>
                 </div>
                 <div className="row between">
-                  <span className="t-body-sm body">Service fee</span>
+                  <span className="t-body-sm body">
+                    {t("sideCard.serviceFee")}
+                  </span>
                   <span className="t-body-sm ink">{usd(booking.fee)}</span>
                 </div>
               </div>
@@ -358,7 +390,9 @@ export default function PaymentScreen() {
                   borderTop: "1px solid var(--hairline-soft)",
                 }}
               >
-                <span className="t-title-md ink">Total (USD)</span>
+                <span className="t-title-md ink">
+                  {t("sideCard.totalUSD")}
+                </span>
                 <span className="t-display-sm ink">{usd(booking.total)}</span>
               </div>
             </div>

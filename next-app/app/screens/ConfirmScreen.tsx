@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useBooking } from "../components/booking/BookingProvider"
 import Avatar from "../components/ui/Avatar"
 import Icon from "../components/ui/Icon"
@@ -8,6 +9,7 @@ import { formatDate, usd } from "../lib/format"
 import { useAppNavigate } from "../lib/navigation"
 
 export default function ConfirmScreen() {
+  const t = useTranslations("confirm")
   const navigate = useAppNavigate()
   const { booking, hydrated } = useBooking()
 
@@ -19,12 +21,12 @@ export default function ConfirmScreen() {
     return (
       <main className="fade-in">
         <div className="container empty-state">
-          <p className="t-body-md muted">Booking not found.</p>
+          <p className="t-body-md muted">{t("empty.title")}</p>
           <button
             className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
           >
-            Home
+            {t("empty.cta")}
           </button>
         </div>
       </main>
@@ -41,9 +43,9 @@ export default function ConfirmScreen() {
             <Icon name="check" size={44} stroke="white" sw={3} />
           </div>
 
-          <h1 className="t-display-xl ink mb-md">Booking confirmed!</h1>
+          <h1 className="t-display-xl ink mb-md">{t("title")}</h1>
           <p className="t-body-md muted mb-xl confirm-subtitle">
-            {guide.name} will send a welcome message shortly.
+            {t("subtitle", { name: guide.name })}
           </p>
 
           <div className="confirm-summary-card">
@@ -55,7 +57,7 @@ export default function ConfirmScreen() {
                 size={56}
               />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="t-caption muted">Host</div>
+                <div className="t-caption muted">{t("host")}</div>
                 <div className="t-title-md ink">{guide.name}</div>
                 <div className="t-caption-sm muted">
                   {guide.district}, {guide.city}
@@ -65,7 +67,7 @@ export default function ConfirmScreen() {
                 className="badge-pill badge-pill--accent"
                 style={{ flexShrink: 0 }}
               >
-                {booking.experience ? "Experience" : "Custom tour"}
+                {booking.experience ? t("typeExperience") : t("typeCustom")}
               </span>
             </div>
 
@@ -75,49 +77,53 @@ export default function ConfirmScreen() {
               {booking.experience && (
                 <SummaryRow
                   icon="sparkles"
-                  label="Experience"
+                  label={t("experience")}
                   value={booking.experience.title}
                 />
               )}
               <SummaryRow
                 icon="calendar"
-                label="Date"
+                label={t("date")}
                 value={formatDate(booking.date)}
               />
               <SummaryRow
                 icon="clock"
-                label="Time"
-                value={`${booking.time} · ${booking.hours} hours`}
+                label={t("time")}
+                value={t("timeValue", {
+                  time: booking.time,
+                  hours: booking.hours,
+                })}
               />
               <SummaryRow
                 icon="users"
-                label="Guests"
-                value={`${booking.guests} ${booking.guests === 1 ? "guest" : "guests"}`}
+                label={t("guests")}
+                value={t("guestsValue", { count: booking.guests })}
               />
               {booking.interests && booking.interests.length > 0 && (
                 <SummaryRow
                   icon="award"
-                  label="Interests"
+                  label={t("interests")}
                   value={booking.interests.join(" · ")}
                 />
               )}
               {booking.requests && (
                 <SummaryRow
                   icon="message"
-                  label="Special requests"
+                  label={t("specialRequests")}
                   value={booking.requests}
                 />
               )}
               <SummaryRow
                 icon="lock"
-                label="Payment"
-                value={`${usd(booking.total)} · Card ending in ${
-                  booking.cardLast4 ?? "****"
-                }`}
+                label={t("payment")}
+                value={t("paymentValue", {
+                  amount: usd(booking.total),
+                  last4: booking.cardLast4 ?? "****",
+                })}
               />
               <SummaryRow
                 icon="shield"
-                label="Booking ID"
+                label={t("bookingId")}
                 value={booking.bookingId ?? "HD-XXXXXX"}
               />
             </div>
@@ -125,23 +131,21 @@ export default function ConfirmScreen() {
 
           <div className="row row-gap-sm confirm-receipt mb-xl">
             <Icon name="mail" size={18} stroke="var(--ink)" />
-            <span className="t-body-sm body">
-              We have emailed you a receipt.
-            </span>
+            <span className="t-body-sm body">{t("emailReceipt")}</span>
           </div>
 
           <button
             className="btn btn-primary confirm-cta"
             onClick={() => navigate("home")}
           >
-            Back to home
+            {t("backHome")}
           </button>
           <div className="mt-md">
             <button
               className="btn-tertiary t-body-sm link-inline"
               onClick={() => navigate("list")}
             >
-              Browse more guides
+              {t("browseMore")}
             </button>
           </div>
         </div>

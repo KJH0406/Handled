@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Avatar from "../components/ui/Avatar"
@@ -13,29 +14,23 @@ const QUICK_CITIES = ["Seoul", "Busan", "Jeju", "Incheon"] as const
 
 interface WhyFeature {
   icon: IconName
-  title: string
-  desc: string
+  titleKey: "curatedTitle" | "smallGroupTitle" | "multilingualTitle"
+  descKey: "curatedDesc" | "smallGroupDesc" | "multilingualDesc"
 }
 
 const WHY_FEATURES: WhyFeature[] = [
-  {
-    icon: "sparkles",
-    title: "Curated experiences",
-    desc: "Every package is designed and tested by a vetted local — no generic tour-bus stops.",
-  },
-  {
-    icon: "users",
-    title: "Small groups",
-    desc: "Up to 4–8 guests so you actually get to ask questions and stop where you want.",
-  },
+  { icon: "sparkles", titleKey: "curatedTitle", descKey: "curatedDesc" },
+  { icon: "users", titleKey: "smallGroupTitle", descKey: "smallGroupDesc" },
   {
     icon: "globe",
-    title: "Multilingual hosts",
-    desc: "English, Japanese, Mandarin, French. Book in the language you are most comfortable in.",
+    titleKey: "multilingualTitle",
+    descKey: "multilingualDesc",
   },
 ]
 
 export default function HomeScreen() {
+  const t = useTranslations("home")
+  const tNav = useTranslations("nav")
   const navigate = useAppNavigate()
   const [where, setWhere] = useState("")
   const featured = experiencesRepo.featured(3)
@@ -54,10 +49,10 @@ export default function HomeScreen() {
             }}
           >
             <h1 className="t-display-xl ink" style={{ marginBottom: 16 }}>
-              Korea, made local —
+              {t("hero.titleLine1")}
               <br />
               <span style={{ color: "var(--rausch)" }}>
-                experiences hosted by people you trust.
+                {t("hero.titleLine2")}
               </span>
             </h1>
             <p
@@ -68,15 +63,15 @@ export default function HomeScreen() {
                 fontSize: 17,
               }}
             >
-              Discover handpicked Korean experiences, hosted by vetted locals.
+              {t("hero.lede")}
             </p>
           </div>
 
           <div className="search-pill">
             <div className="search-segment">
-              <div className="seg-label">Where</div>
+              <div className="seg-label">{t("search.where")}</div>
               <input
-                placeholder="Anywhere in Korea?"
+                placeholder={t("search.wherePlaceholder")}
                 value={where}
                 onChange={(e) => setWhere(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSearch()}
@@ -91,17 +86,17 @@ export default function HomeScreen() {
               />
             </div>
             <div className="search-segment">
-              <div className="seg-label">When</div>
-              <div className="seg-value">Add dates</div>
+              <div className="seg-label">{t("search.when")}</div>
+              <div className="seg-value">{t("search.addDates")}</div>
             </div>
             <div className="search-segment">
-              <div className="seg-label">Who</div>
-              <div className="seg-value">Add guests</div>
+              <div className="seg-label">{t("search.who")}</div>
+              <div className="seg-value">{t("search.addGuests")}</div>
             </div>
             <button
               className="search-orb"
               onClick={onSearch}
-              aria-label="Search"
+              aria-label={tNav("searchAria")}
             >
               <Icon name="search" size={18} stroke="white" sw={2.5} />
             </button>
@@ -110,7 +105,7 @@ export default function HomeScreen() {
           <div className="search-pill-mobile">
             <Icon name="search" size={18} stroke="var(--muted)" />
             <input
-              placeholder="Where in Korea?"
+              placeholder={t("search.whereMobilePlaceholder")}
               value={where}
               onChange={(e) => setWhere(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && onSearch()}
@@ -118,7 +113,7 @@ export default function HomeScreen() {
             <button
               className="search-orb"
               onClick={onSearch}
-              aria-label="Search"
+              aria-label={tNav("searchAria")}
               style={{ width: 36, height: 36 }}
             >
               <Icon name="arrowRight" size={16} stroke="white" sw={2.5} />
@@ -148,15 +143,17 @@ export default function HomeScreen() {
           <div className="feature-grid">
             {WHY_FEATURES.map((f) => (
               <div
-                key={f.title}
+                key={f.titleKey}
                 className="card card-pad-lg"
                 style={{ border: "none" }}
               >
                 <div className="icon-circle icon-circle--lg mb-base">
                   <Icon name={f.icon} size={22} stroke="var(--rausch)" />
                 </div>
-                <div className="t-display-sm ink mb-sm">{f.title}</div>
-                <div className="t-body-sm muted">{f.desc}</div>
+                <div className="t-display-sm ink mb-sm">
+                  {t(`why.${f.titleKey}`)}
+                </div>
+                <div className="t-body-sm muted">{t(`why.${f.descKey}`)}</div>
               </div>
             ))}
           </div>
@@ -166,13 +163,13 @@ export default function HomeScreen() {
       <section style={{ padding: "32px 0" }}>
         <div className="container">
           <div className="section-header" style={{ marginBottom: 24 }}>
-            <h2 className="t-display-md ink">Top experiences this week</h2>
+            <h2 className="t-display-md ink">{t("featured.heading")}</h2>
             <button
               className="btn-tertiary t-body-sm"
               style={{ textDecoration: "underline" }}
               onClick={() => navigate("experiences")}
             >
-              View all experiences
+              {t("featured.viewAll")}
             </button>
           </div>
           <div className="exp-grid">
@@ -195,12 +192,10 @@ export default function HomeScreen() {
             className="row"
             style={{ gap: 16, marginBottom: 32, flexWrap: "wrap" }}
           >
-            <span className="t-rating ink">4.96</span>
+            <span className="t-rating ink">{t("loved.rating")}</span>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <div className="t-display-sm ink">Loved by travelers</div>
-              <div className="t-body-sm muted">
-                Rated by 500+ travelers who explored Korea with Handled
-              </div>
+              <div className="t-display-sm ink">{t("loved.heading")}</div>
+              <div className="t-body-sm muted">{t("loved.subtitle")}</div>
             </div>
           </div>
           <div className="review-grid">

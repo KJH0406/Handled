@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
@@ -14,6 +15,7 @@ export interface GuideCardProps {
 }
 
 export default function GuideCard({ guide }: GuideCardProps) {
+  const t = useTranslations("cards.guide")
   const [saved, setSaved] = useState(false)
   return (
     <article className="guide-card">
@@ -27,7 +29,7 @@ export default function GuideCard({ guide }: GuideCardProps) {
         />
         {guide.superhost && (
           <span className="superhost-badge badge-pill">
-            <Icon name="award" size={11} /> Superhost
+            <Icon name="award" size={11} /> {t("superhost")}
           </span>
         )}
         <Heart filled={saved} onClick={() => setSaved(!saved)} />
@@ -52,13 +54,13 @@ export default function GuideCard({ guide }: GuideCardProps) {
           <span className="t-body-sm ink" style={{ fontWeight: 600 }}>
             {usd(guide.hourlyRate)}
           </span>
-          <span className="t-body-sm muted">/ hour</span>
+          <span className="t-body-sm muted">{t("perHour")}</span>
         </div>
       </div>
       <Link
         href={`/guides/${guide.id}`}
         className="card-stretched-link"
-        aria-label={`${guide.name} — ${guide.city} guide`}
+        aria-label={t("aria", { name: guide.name, city: guide.city })}
       />
     </article>
   )

@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { usd } from "../../lib/format"
 import { guidesRepo } from "../../lib/repositories/guides"
@@ -17,6 +18,7 @@ export default function ExperienceCard({
   exp,
   showGuide = false,
 }: ExperienceCardProps) {
+  const t = useTranslations("cards.experience")
   const guide = showGuide ? guidesRepo.findById(exp.guideId) : null
   return (
     <Link href={`/experiences/${exp.id}`} className="exp-card">
@@ -30,10 +32,10 @@ export default function ExperienceCard({
         </div>
         <div className="exp-card-meta t-caption-sm">
           <Icon name="clock" size={13} stroke="var(--muted)" />
-          <span>{exp.duration} hours</span>
+          <span>{t("duration", { hours: exp.duration })}</span>
           <span>·</span>
           <Icon name="users" size={13} stroke="var(--muted)" />
-          <span>Up to {exp.maxGuests}</span>
+          <span>{t("upTo", { max: exp.maxGuests })}</span>
         </div>
         <p
           className="t-body-sm muted"
@@ -56,7 +58,7 @@ export default function ExperienceCard({
               size={20}
             />
             <span className="t-caption-sm muted">
-              {guide.city} · Hosted by {guide.name}
+              {t("hostedBy", { city: guide.city, name: guide.name })}
             </span>
           </div>
         )}
@@ -70,13 +72,13 @@ export default function ExperienceCard({
         >
           <div>
             <div className="t-title-md ink">{usd(exp.price)}</div>
-            <div className="t-caption-sm muted">Per person</div>
+            <div className="t-caption-sm muted">{t("perPerson")}</div>
           </div>
           <span
             className="t-caption"
             style={{ color: "var(--rausch)", fontWeight: 600 }}
           >
-            Learn more →
+            {t("learnMore")}
           </span>
         </div>
       </div>

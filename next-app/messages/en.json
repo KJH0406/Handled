@@ -1,0 +1,392 @@
+{
+  "common": {
+    "all": "All",
+    "guest": "guest",
+    "guests": "guests",
+    "review": "review",
+    "reviews": "reviews",
+    "hour": "hour",
+    "hours": "hours",
+    "perPerson": "Per person",
+    "perHour": "/ hour",
+    "perPersonShort": "/ person",
+    "package_one": "package",
+    "package_other": "packages",
+    "or": "or",
+    "noChargeUntilConfirm": "No charge until you confirm",
+    "back": "Back",
+    "language": "Language",
+    "currency": "USD"
+  },
+  "site": {
+    "name": "Handled",
+    "title": "Handled — Korean local experiences",
+    "description": "Discover authentic Korean local experiences hosted by people you trust."
+  },
+  "nav": {
+    "home": "Home",
+    "experiences": "Experiences",
+    "becomeHost": "Become a host",
+    "logoAria": "Handled — home",
+    "languageAria": "Language",
+    "searchAria": "Search"
+  },
+  "footer": {
+    "support": {
+      "heading": "Support",
+      "helpCenter": "Help center",
+      "cancellation": "Cancellation",
+      "safety": "Safety info",
+      "report": "Report"
+    },
+    "hosting": {
+      "heading": "Hosting",
+      "becomeHost": "Become a host",
+      "hostExperience": "Host an experience",
+      "community": "Community forum",
+      "responsible": "Responsible hosting"
+    },
+    "company": {
+      "heading": "Handled",
+      "about": "About",
+      "newsroom": "Newsroom",
+      "partners": "Partners",
+      "investors": "Investors"
+    },
+    "copyright": "© 2026 Handled, Inc. · Korean local experiences for international travelers"
+  },
+  "home": {
+    "hero": {
+      "titleLine1": "Korea, made local —",
+      "titleLine2": "experiences hosted by people you trust.",
+      "lede": "Discover handpicked Korean experiences, hosted by vetted locals."
+    },
+    "search": {
+      "where": "Where",
+      "when": "When",
+      "who": "Who",
+      "wherePlaceholder": "Anywhere in Korea?",
+      "whereMobilePlaceholder": "Where in Korea?",
+      "addDates": "Add dates",
+      "addGuests": "Add guests"
+    },
+    "why": {
+      "curatedTitle": "Curated experiences",
+      "curatedDesc": "Every package is designed and tested by a vetted local — no generic tour-bus stops.",
+      "smallGroupTitle": "Small groups",
+      "smallGroupDesc": "Up to 4–8 guests so you actually get to ask questions and stop where you want.",
+      "multilingualTitle": "Multilingual hosts",
+      "multilingualDesc": "English, Japanese, Mandarin, French. Book in the language you are most comfortable in."
+    },
+    "featured": {
+      "heading": "Top experiences this week",
+      "viewAll": "View all experiences"
+    },
+    "loved": {
+      "rating": "4.96",
+      "heading": "Loved by travelers",
+      "subtitle": "Rated by 500+ travelers who explored Korea with Handled"
+    }
+  },
+  "list": {
+    "title": "Find a local guide",
+    "lede": "Match with vetted local guides by the hour. From $40 / hour.",
+    "searchPlaceholder": "Search by name, city, or style",
+    "filters": {
+      "city": "City",
+      "style": "Style",
+      "languages": "Languages"
+    },
+    "results": "{count, plural, one {# guide} other {# guides}} match",
+    "resultsInCity": "{count, plural, one {# guide} other {# guides}} match · {city}",
+    "clearFilters": "Clear filters",
+    "empty": {
+      "title": "No guides match",
+      "subtitle": "Try fewer filters.",
+      "cta": "Clear filters"
+    },
+    "clearSearchAria": "Clear search"
+  },
+  "experiences": {
+    "title": "All Korean experiences",
+    "lede": "Pick from {count} experience packages hosted by local guides.",
+    "searchPlaceholder": "Search by experience, category, guide, or city",
+    "filters": {
+      "city": "City",
+      "category": "Category"
+    },
+    "results": "{count, plural, one {# experience} other {# experiences}} match",
+    "resultsInCity": "{count, plural, one {# experience} other {# experiences}} match · {city}",
+    "resultsInCategory": "{count, plural, one {# experience} other {# experiences}} match · {category}",
+    "resultsInCityAndCategory": "{count, plural, one {# experience} other {# experiences}} match · {city} · {category}",
+    "clearFilters": "Clear filters",
+    "empty": {
+      "title": "No experiences match",
+      "subtitle": "Try fewer filters.",
+      "cta": "Clear filters"
+    },
+    "clearSearchAria": "Clear search"
+  },
+  "experienceDetail": {
+    "backTo": "Back to {name}",
+    "packageHeader": "{duration}h package · Up to {maxGuests}",
+    "reviewCount": "· {count} reviews",
+    "hostedBy": "Hosted by {name}",
+    "whatYouWillDo": "What you will do",
+    "itinerary": "Itinerary",
+    "itineraryTotal": "Total {duration} hours",
+    "aboutHost": "About your host",
+    "superhost": "· Superhost",
+    "hostStats": "{years}y hosting · {reviews} reviews · ★{rating}",
+    "viewProfile": "View profile",
+    "meetingPlace": "Meeting place",
+    "goodToKnow": "Good to know",
+    "groupSize": "Group size",
+    "groupSizeValue": "Up to {max} (small group)",
+    "duration": "Duration",
+    "durationValue": "{hours} hours",
+    "language": "Language",
+    "cancellation": "Cancellation",
+    "cancellationValue": "Free cancellation up to 24h before",
+    "reviewsHeading": "{rating} · {count} reviews",
+    "reviewsSubtitle": "Reviews for all experiences hosted by {name}",
+    "empty": {
+      "title": "Experience not found.",
+      "cta": "Home"
+    }
+  },
+  "profile": {
+    "backToGuides": "Back to guides",
+    "superhost": "Superhost",
+    "stats": {
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "hosting": "Hosting",
+      "packages": "Packages"
+    },
+    "about": "About {name}",
+    "offers": "What {name} offers",
+    "goodToKnow": "Good to know",
+    "languages": "Languages",
+    "cities": "Cities",
+    "specialty": "Specialty",
+    "reviewsHeading": "{rating} · {count} reviews",
+    "seeAllReviews": "See all {count} reviews",
+    "experiencesByHeading": "Experiences hosted by {name}",
+    "experiencesByCount": "{count, plural, one {# package} other {# packages}}",
+    "experiencesByLede": "Click an experience card to see schedule and photos. Or build a custom plan in the side panel.",
+    "empty": {
+      "title": "Guide not found.",
+      "cta": "Back to list"
+    }
+  },
+  "payment": {
+    "backToExperience": "Back to experience",
+    "backToGuide": "Back to guide",
+    "heading": "Checkout",
+    "summary": {
+      "heading": "Booking summary",
+      "type": "Type",
+      "typeExperience": "Experience package",
+      "typeCustom": "Custom tour",
+      "experience": "Experience",
+      "date": "Date",
+      "time": "Time",
+      "timeValue": "{time} · {hours} hours",
+      "guests": "Guests",
+      "guestsValue": "{count, plural, one {# guest} other {# guests}}",
+      "interests": "Interests",
+      "specialRequests": "Special requests"
+    },
+    "method": {
+      "heading": "Payment method",
+      "cardholder": "Cardholder name",
+      "cardholderPlaceholder": "HONG GILDONG",
+      "cardNumber": "Card number",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "expiry": "Expiry",
+      "expiryPlaceholder": "MM/YY",
+      "cvc": "CVC",
+      "cvcPlaceholder": "123",
+      "zip": "ZIP code",
+      "zipPlaceholder": "10001"
+    },
+    "policy": {
+      "heading": "Cancellation policy",
+      "free24h": "Free cancellation up to 24h before — full refund.",
+      "within24h": "Cancellations within 24h get a 50% refund.",
+      "ssl": "All payments are SSL-encrypted and secure."
+    },
+    "terms": "By continuing, you agree to the Handled <terms>Terms</terms>, <privacy>Privacy Policy</privacy>, and cancellation policy.",
+    "cta": "Pay {amount}",
+    "ctaLoading": "Processing...",
+    "sideCard": {
+      "guidedBy": "{city} · Guided by {name}",
+      "customTourWith": "Custom tour with {name}",
+      "priceDetails": "Price details",
+      "linePerPerson": "{amount} × {count, plural, one {# guest} other {# guests}}",
+      "linePerHour": "{amount} × {hours}h",
+      "serviceFee": "Service fee",
+      "totalUSD": "Total (USD)"
+    },
+    "errors": {
+      "name": "Enter the cardholder name",
+      "card": "Enter a 16-digit card number",
+      "exp": "MM/YY format",
+      "cvc": "3-digit CVC",
+      "zip": "Enter ZIP code"
+    },
+    "empty": {
+      "title": "No booking information.",
+      "cta": "Home"
+    }
+  },
+  "confirm": {
+    "title": "Booking confirmed!",
+    "subtitle": "{name} will send a welcome message shortly.",
+    "host": "Host",
+    "typeExperience": "Experience",
+    "typeCustom": "Custom tour",
+    "experience": "Experience",
+    "date": "Date",
+    "time": "Time",
+    "timeValue": "{time} · {hours} hours",
+    "guests": "Guests",
+    "guestsValue": "{count, plural, one {# guest} other {# guests}}",
+    "interests": "Interests",
+    "specialRequests": "Special requests",
+    "payment": "Payment",
+    "paymentValue": "{amount} · Card ending in {last4}",
+    "bookingId": "Booking ID",
+    "emailReceipt": "We have emailed you a receipt.",
+    "backHome": "Back to home",
+    "browseMore": "Browse more guides",
+    "empty": {
+      "title": "Booking not found.",
+      "cta": "Home"
+    }
+  },
+  "booking": {
+    "custom": {
+      "label": "Custom tour quote",
+      "perHour": "/ hour",
+      "subtitle": "Build a tour with your preferred hours and interests",
+      "tourHours": "Tour hours",
+      "tourHoursValue": "{hours}h",
+      "tourHoursRange": "Min 1h · Max 8h",
+      "date": "Date",
+      "selectDate": "Select date",
+      "startTime": "Start time",
+      "guests": "Guests",
+      "interests": "Interests (multi-select)",
+      "specialRequests": "Special requests (optional)",
+      "requestsPlaceholder": "e.g. Vegetarian · with a 4-year-old · please take lots of photos",
+      "reserveCta": "Reserve custom tour",
+      "selectDateCta": "Select a date",
+      "lineHourly": "{rate} × {hours}h",
+      "serviceFee": "Service fee",
+      "total": "Total",
+      "noCharge": "No charge until you confirm",
+      "decHoursAria": "Decrease hours",
+      "incHoursAria": "Increase hours",
+      "decGuestsAria": "Decrease guests",
+      "incGuestsAria": "Increase guests"
+    },
+    "experience": {
+      "perPerson": "/ person",
+      "duration": "· {duration}h package",
+      "upTo": "Up to {max} guests · small group",
+      "date": "Date",
+      "selectDate": "Select date",
+      "startTime": "Start time",
+      "guestsUpTo": "Guests (up to {max})",
+      "specialRequests": "Special requests (optional)",
+      "requestsPlaceholder": "e.g. allergies, photo requests",
+      "reserveCta": "Reserve this experience",
+      "selectDateCta": "Select a date",
+      "linePerPerson": "{price} × {count, plural, one {# guest} other {# guests}}",
+      "serviceFee": "Service fee",
+      "total": "Total",
+      "noCharge": "No charge until you confirm",
+      "decGuestsAria": "Decrease guests",
+      "incGuestsAria": "Increase guests"
+    }
+  },
+  "calendar": {
+    "prevAria": "Previous month",
+    "nextAria": "Next month",
+    "months": {
+      "0": "January",
+      "1": "February",
+      "2": "March",
+      "3": "April",
+      "4": "May",
+      "5": "June",
+      "6": "July",
+      "7": "August",
+      "8": "September",
+      "9": "October",
+      "10": "November",
+      "11": "December"
+    },
+    "dows": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    }
+  },
+  "error": {
+    "title": "Something went wrong",
+    "subtitle": "We hit an unexpected error. Please try again.",
+    "tryAgain": "Try again",
+    "backHome": "Back to home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you are looking for does not exist or has moved.",
+    "backHome": "Back to home"
+  },
+  "cards": {
+    "experience": {
+      "duration": "{hours} hours",
+      "upTo": "Up to {max}",
+      "hostedBy": "{city} · Hosted by {name}",
+      "perPerson": "Per person",
+      "learnMore": "Learn more →"
+    },
+    "guide": {
+      "superhost": "Superhost",
+      "perHour": "/ hour",
+      "aria": "{name} — {city} guide"
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "Handled — Korean local experiences",
+      "description": "Discover authentic Korean local experiences hosted by people you trust."
+    },
+    "experiences": {
+      "title": "All Korean experiences",
+      "description": "Pick from curated experience packages hosted by local guides across Korea."
+    },
+    "guides": {
+      "title": "Find a local guide",
+      "description": "Match with vetted local guides across Korea by the hour. From $40 / hour."
+    },
+    "checkout": {
+      "title": "Checkout"
+    },
+    "notFound": {
+      "title": "Page not found"
+    },
+    "guideNotFound": "Guide not found",
+    "experienceNotFound": "Experience not found",
+    "guideTitle": "{name} · {city} guide",
+    "experienceTitle": "{title} — {host}",
+    "experienceTitleNoHost": "{title}"
+  }
+}

@@ -1,29 +1,26 @@
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const
+export const usd = (n: number, locale: string = "en-US"): string =>
+  "$" + new Intl.NumberFormat(locale).format(Math.round(n))
 
-const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const
-
-export const usd = (n: number): string =>
-  "$" + new Intl.NumberFormat("en-US").format(Math.round(n))
-
-export const formatDate = (d: Date | null | undefined): string => {
+export const formatDate = (
+  d: Date | null | undefined,
+  locale: string = "en-US",
+): string => {
   if (!d) return ""
-  return `${DOWS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(d)
 }
 
-export const shortDate = (d: Date | null | undefined): string => {
+export const shortDate = (
+  d: Date | null | undefined,
+  locale: string = "en-US",
+): string => {
   if (!d) return ""
-  return `${MONTHS[d.getMonth()]} ${d.getDate()}`
+  return new Intl.DateTimeFormat(locale, {
+    month: "short",
+    day: "numeric",
+  }).format(d)
 }

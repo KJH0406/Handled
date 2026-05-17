@@ -1,13 +1,17 @@
 import type { Metadata } from "next"
+import { hasLocale, NextIntlClientProvider } from "next-intl"
+import { setRequestLocale } from "next-intl/server"
 import localFont from "next/font/local"
+import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
-import { BookingProvider } from "./components/booking/BookingProvider"
-import FooterSlot from "./components/layout/FooterSlot"
-import TopNav from "./components/layout/TopNav"
-import "./globals.css"
+import { routing } from "../../i18n/routing"
+import { BookingProvider } from "../components/booking/BookingProvider"
+import FooterSlot from "../components/layout/FooterSlot"
+import TopNav from "../components/layout/TopNav"
+import "../globals.css"
 
 const pretendard = localFont({
-  src: "./fonts/PretendardVariable.woff2",
+  src: "../fonts/PretendardVariable.woff2",
   display: "swap",
   weight: "45 920",
   variable: "--font-pretendard",
@@ -41,16 +45,35 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+
+interface LocaleLayoutProps {
+  children: ReactNode
+  params: { locale: string }
+}
+
+export default function LocaleLayout({
+  children,
+  params: { locale },
+}: LocaleLayoutProps) {
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+  setRequestLocale(locale)
+
   return (
-    <html lang="en" className={pretendard.variable}>
+    <html lang={locale} className={pretendard.variable}>
       <body>
         <div id="root">
-          <BookingProvider>
-            <TopNav />
-            {children}
-            <FooterSlot />
-          </BookingProvider>
+          <NextIntlClientProvider>
+            <BookingProvider>
+              <TopNav />
+              {children}
+              <FooterSlot />
+            </BookingProvider>
+          </NextIntlClientProvider>
         </div>
       </body>
     </html>

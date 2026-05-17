@@ -1,24 +1,8 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import Icon from "../ui/Icon"
-
-const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-] as const
-
-const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const
 
 const isSame = (a: Date | null | undefined, b: Date | null | undefined) =>
   !!a &&
@@ -34,12 +18,13 @@ export interface CalendarProps {
 }
 
 export default function Calendar({ value, onChange, minDate }: CalendarProps) {
+  const t = useTranslations("calendar")
   const [view, setView] = useState<Date>(() => {
     const d = value ?? new Date()
     return new Date(d.getFullYear(), d.getMonth(), 1)
   })
 
-  const monthLabel = `${MONTH_NAMES[view.getMonth()]} ${view.getFullYear()}`
+  const monthLabel = `${t(`months.${view.getMonth()}`)} ${view.getFullYear()}`
   const startDow = view.getDay()
   const daysInMonth = new Date(
     view.getFullYear(),
@@ -66,7 +51,7 @@ export default function Calendar({ value, onChange, minDate }: CalendarProps) {
         <button
           onClick={goPrev}
           className="icon-btn"
-          aria-label="Previous month"
+          aria-label={t("prevAria")}
           style={{ background: "transparent" }}
         >
           <Icon name="chevronLeft" size={16} />
@@ -75,16 +60,16 @@ export default function Calendar({ value, onChange, minDate }: CalendarProps) {
         <button
           onClick={goNext}
           className="icon-btn"
-          aria-label="Next month"
+          aria-label={t("nextAria")}
           style={{ background: "transparent" }}
         >
           <Icon name="chevronRight" size={16} />
         </button>
       </div>
       <div className="cal-grid" style={{ marginBottom: 4 }}>
-        {DOWS.map((d, i) => (
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="cal-dow">
-            {d}
+            {t(`dows.${i}`)}
           </div>
         ))}
       </div>

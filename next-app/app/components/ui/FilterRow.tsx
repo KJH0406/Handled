@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 export interface FilterRowProps {
   label: string
   options: readonly string[]
@@ -13,6 +15,7 @@ export default function FilterRow({
   value,
   onChange,
 }: FilterRowProps) {
+  const tc = useTranslations("common")
   return (
     <div style={{ marginTop: 16 }}>
       <div
@@ -35,7 +38,7 @@ export default function FilterRow({
             className={`chip ${value === o ? "active" : ""}`}
             onClick={() => onChange(o)}
           >
-            {o}
+            {o === "All" ? tc("all") : o}
           </button>
         ))}
       </div>

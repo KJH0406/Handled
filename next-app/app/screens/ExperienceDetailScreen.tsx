@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
@@ -25,6 +26,7 @@ export interface ExperienceDetailScreenProps {
 export default function ExperienceDetailScreen({
   expId,
 }: ExperienceDetailScreenProps) {
+  const t = useTranslations("experienceDetail")
   const navigate = useAppNavigate()
   const { setBooking } = useBooking()
   const onReserve = (b: Booking) => {
@@ -42,12 +44,12 @@ export default function ExperienceDetailScreen({
     return (
       <main className="fade-in">
         <div className="container empty-state">
-          <p className="t-body-md muted">Experience not found.</p>
+          <p className="t-body-md muted">{t("empty.title")}</p>
           <button
             className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
           >
-            Home
+            {t("empty.cta")}
           </button>
         </div>
       </main>
@@ -62,7 +64,7 @@ export default function ExperienceDetailScreen({
     <main className="fade-in">
       <div className="container screen-pad">
         <Breadcrumb onBack={() => navigate("profile", { guideId: guide.id })}>
-          Back to {guide.name}
+          {t("backTo", { name: guide.name })}
         </Breadcrumb>
 
         <div style={{ marginBottom: 16 }}>
@@ -74,13 +76,18 @@ export default function ExperienceDetailScreen({
               {exp.category}
             </span>
             <span className="t-caption muted">
-              {exp.duration}h package · Up to {exp.maxGuests}
+              {t("packageHeader", {
+                duration: exp.duration,
+                maxGuests: exp.maxGuests,
+              })}
             </span>
           </div>
           <h1 className="t-display-lg ink mb-sm">{exp.title}</h1>
           <div className="row row-gap-sm" style={{ flexWrap: "wrap" }}>
             <Stars rating={guide.rating} />
-            <span className="t-body-sm body">· {guide.reviews} reviews</span>
+            <span className="t-body-sm body">
+              {t("reviewCount", { count: guide.reviews })}
+            </span>
             <span className="t-body-sm body">·</span>
             <Link
               href={`/guides/${guide.id}`}
@@ -92,7 +99,7 @@ export default function ExperienceDetailScreen({
                 name={guide.name}
                 size={20}
               />
-              <span>Hosted by {guide.name}</span>
+              <span>{t("hostedBy", { name: guide.name })}</span>
             </Link>
           </div>
         </div>
@@ -176,7 +183,7 @@ export default function ExperienceDetailScreen({
 
         <div className="profile-grid">
           <div>
-            <h2 className="t-display-sm ink mb-md">What you will do</h2>
+            <h2 className="t-display-sm ink mb-md">{t("whatYouWillDo")}</h2>
             <p className="t-body-md body mb-lg">{exp.summary}</p>
             <div className="stack-md mb-xl">
               {exp.includes.map((item, i) => (
@@ -194,9 +201,9 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink mb-base">Itinerary</h2>
+            <h2 className="t-display-sm ink mb-base">{t("itinerary")}</h2>
             <p className="t-body-sm muted mb-base">
-              Total {exp.duration} hours
+              {t("itineraryTotal", { duration: exp.duration })}
             </p>
             <div className="schedule-list mb-xl">
               {schedule.map((s, i) => (
@@ -223,7 +230,7 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink mb-base">About your host</h2>
+            <h2 className="t-display-sm ink mb-base">{t("aboutHost")}</h2>
             <div className="host-mini-card mb-base">
               <Avatar
                 src={guide.photo}
@@ -239,27 +246,30 @@ export default function ExperienceDetailScreen({
                       className="t-caption"
                       style={{ color: "var(--rausch)", fontWeight: 600 }}
                     >
-                      · Superhost
+                      {t("superhost")}
                     </span>
                   )}
                 </div>
                 <div className="t-caption-sm muted">
-                  {guide.yearsHosting}y hosting · {guide.reviews} reviews · ★
-                  {guide.rating.toFixed(2)}
+                  {t("hostStats", {
+                    years: guide.yearsHosting,
+                    reviews: guide.reviews,
+                    rating: guide.rating.toFixed(2),
+                  })}
                 </div>
               </div>
               <Link
                 href={`/guides/${guide.id}`}
                 className="host-mini-card-link hide-mobile"
               >
-                View profile
+                {t("viewProfile")}
               </Link>
             </div>
             <p className="t-body-sm body mb-xl">{guide.bio}</p>
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink mb-base">Meeting place</h2>
+            <h2 className="t-display-sm ink mb-base">{t("meetingPlace")}</h2>
             <div className="meet-map mb-md">
               <div className="meet-pin">
                 <Icon name="pin" size={16} stroke="var(--rausch)" />
@@ -272,7 +282,7 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink mb-base">Good to know</h2>
+            <h2 className="t-display-sm ink mb-base">{t("goodToKnow")}</h2>
             <div className="info-grid mb-xl">
               <div className="info-grid-item">
                 <div className="info-grid-item-icon">
@@ -280,10 +290,10 @@ export default function ExperienceDetailScreen({
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Group size
+                    {t("groupSize")}
                   </div>
                   <div className="t-body-sm muted">
-                    Up to {exp.maxGuests} (small group)
+                    {t("groupSizeValue", { max: exp.maxGuests })}
                   </div>
                 </div>
               </div>
@@ -293,9 +303,11 @@ export default function ExperienceDetailScreen({
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Duration
+                    {t("duration")}
                   </div>
-                  <div className="t-body-sm muted">{exp.duration} hours</div>
+                  <div className="t-body-sm muted">
+                    {t("durationValue", { hours: exp.duration })}
+                  </div>
                 </div>
               </div>
               <div className="info-grid-item">
@@ -304,7 +316,7 @@ export default function ExperienceDetailScreen({
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Language
+                    {t("language")}
                   </div>
                   <div className="t-body-sm muted">
                     {guide.languages.join(" · ")}
@@ -317,10 +329,10 @@ export default function ExperienceDetailScreen({
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Cancellation
+                    {t("cancellation")}
                   </div>
                   <div className="t-body-sm muted">
-                    Free cancellation up to 24h before
+                    {t("cancellationValue")}
                   </div>
                 </div>
               </div>
@@ -336,10 +348,13 @@ export default function ExperienceDetailScreen({
                 stroke="var(--ink)"
                 style={{ display: "inline-block", verticalAlign: "-3px" }}
               />{" "}
-              {guide.rating.toFixed(2)} · {guide.reviews} reviews
+              {t("reviewsHeading", {
+                rating: guide.rating.toFixed(2),
+                count: guide.reviews,
+              })}
             </h2>
             <p className="t-caption-sm muted mb-lg">
-              Reviews for all experiences hosted by {guide.name}
+              {t("reviewsSubtitle", { name: guide.name })}
             </p>
             <div className="review-grid">
               {reviews.slice(0, 4).map((r, i) => (

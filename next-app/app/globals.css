@@ -1553,6 +1553,36 @@ a {
   margin-top: 32px;
 }
 
+/* Locale switcher (TopNav) */
+.locale-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--canvas);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+}
+.locale-switcher:hover {
+  background: var(--surface-soft);
+}
+.locale-switcher__select {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0 4px 0 0;
+  font-family: inherit;
+}
+.locale-switcher__select:focus {
+  outline: none;
+}
+
 /* ─────────────────────────────────────────────
        Hero
        ───────────────────────────────────────────── */

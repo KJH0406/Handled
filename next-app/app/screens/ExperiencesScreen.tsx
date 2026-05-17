@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 import { useMemo, useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
@@ -11,6 +12,7 @@ import { useDebounce } from "../lib/hooks/useDebounce"
 import { experiencesRepo } from "../lib/repositories/experiences"
 
 export default function ExperiencesScreen() {
+  const t = useTranslations("experiences")
   const searchParams = useSearchParams()
   const initialCity = searchParams.get("city") ?? undefined
   const initialCategory = searchParams.get("category") ?? undefined
@@ -31,6 +33,25 @@ export default function ExperiencesScreen() {
     setQ("")
   }
 
+  const totalCount = experiencesRepo.list().length
+
+  const resultText = () => {
+    if (city !== "All" && category !== "All") {
+      return t("resultsInCityAndCategory", {
+        count: filtered.length,
+        city,
+        category,
+      })
+    }
+    if (city !== "All") {
+      return t("resultsInCity", { count: filtered.length, city })
+    }
+    if (category !== "All") {
+      return t("resultsInCategory", { count: filtered.length, category })
+    }
+    return t("results", { count: filtered.length })
+  }
+
   return (
     <main className="fade-in">
       <section
@@ -41,11 +62,10 @@ export default function ExperiencesScreen() {
       >
         <div className="container">
           <h1 className="t-display-md ink" style={{ marginBottom: 4 }}>
-            All Korean experiences
+            {t("title")}
           </h1>
           <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
-            Pick from {experiencesRepo.list().length} experience packages hosted
-            by local guides.
+            {t("lede", { count: totalCount })}
           </p>
 
           <div
@@ -62,7 +82,7 @@ export default function ExperiencesScreen() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search by experience, category, guide, or city"
+              placeholder={t("searchPlaceholder")}
               style={{
                 flex: 1,
                 border: "none",
@@ -74,7 +94,7 @@ export default function ExperiencesScreen() {
               <button
                 onClick={() => setQ("")}
                 className="icon-btn"
-                aria-label="Clear search"
+                aria-label={t("clearSearchAria")}
               >
                 <Icon name="x" size={14} />
               </button>
@@ -82,13 +102,13 @@ export default function ExperiencesScreen() {
           </div>
 
           <FilterRow
-            label="City"
+            label={t("filters.city")}
             options={CITIES}
             value={city}
             onChange={setCity}
           />
           <FilterRow
-            label="Category"
+            label={t("filters.category")}
             options={EXP_CATEGORIES}
             value={category}
             onChange={setCategory}
@@ -99,19 +119,14 @@ export default function ExperiencesScreen() {
       <section style={{ padding: "32px 0 64px" }}>
         <div className="container">
           <div className="section-header" style={{ marginBottom: 24 }}>
-            <span className="t-body-sm muted">
-              {filtered.length}{" "}
-              {filtered.length === 1 ? "experience" : "experiences"} match
-              {city !== "All" ? ` · ${city}` : ""}
-              {category !== "All" ? ` · ${category}` : ""}
-            </span>
+            <span className="t-body-sm muted">{resultText()}</span>
             {(city !== "All" || category !== "All" || q) && (
               <button
                 className="btn-tertiary t-body-sm"
                 onClick={reset}
                 style={{ textDecoration: "underline" }}
               >
-                Clear filters
+                {t("clearFilters")}
               </button>
             )}
           </div>
@@ -120,17 +135,17 @@ export default function ExperiencesScreen() {
             <div style={{ textAlign: "center", padding: "80px 24px" }}>
               <Icon name="search" size={40} stroke="var(--muted-soft)" />
               <div className="t-display-sm ink" style={{ marginTop: 16 }}>
-                No experiences match
+                {t("empty.title")}
               </div>
               <p className="t-body-sm muted" style={{ marginTop: 8 }}>
-                Try fewer filters.
+                {t("empty.subtitle")}
               </p>
               <button
                 className="btn btn-secondary"
                 style={{ marginTop: 24 }}
                 onClick={reset}
               >
-                <Icon name="refresh" size={16} /> Clear filters
+                <Icon name="refresh" size={16} /> {t("empty.cta")}
               </button>
             </div>
           ) : (

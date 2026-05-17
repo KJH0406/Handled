@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useMemo } from "react"
 import { useBooking } from "../components/booking/BookingProvider"
@@ -20,6 +21,7 @@ export interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ guideId }: ProfileScreenProps) {
+  const t = useTranslations("profile")
   const navigate = useAppNavigate()
   const { setBooking } = useBooking()
   const onReserve = (b: Booking) => {
@@ -36,12 +38,12 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
     return (
       <main className="fade-in">
         <div className="container empty-state">
-          <p className="t-body-md muted">Guide not found.</p>
+          <p className="t-body-md muted">{t("empty.title")}</p>
           <button
             className="btn btn-secondary mt-base"
             onClick={() => navigate("list")}
           >
-            Back to list
+            {t("empty.cta")}
           </button>
         </div>
       </main>
@@ -52,7 +54,9 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
   return (
     <main className="fade-in">
       <div className="container screen-pad">
-        <Breadcrumb onBack={() => navigate("list")}>Back to guides</Breadcrumb>
+        <Breadcrumb onBack={() => navigate("list")}>
+          {t("backToGuides")}
+        </Breadcrumb>
 
         <div className="profile-hero">
           <div className="profile-hero-avatar">
@@ -75,7 +79,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                   className="badge-pill"
                   style={{ background: "var(--canvas)" }}
                 >
-                  <Icon name="award" size={12} /> Superhost
+                  <Icon name="award" size={12} /> {t("superhost")}
                 </span>
               )}
               <span className="t-caption muted">
@@ -91,19 +95,19 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 <span className="t-display-sm ink">
                   {guide.rating.toFixed(2)}
                 </span>
-                <span className="t-caption muted">Rating</span>
+                <span className="t-caption muted">{t("stats.rating")}</span>
               </div>
               <div className="profile-hero-stat">
                 <span className="t-display-sm ink">{guide.reviews}</span>
-                <span className="t-caption muted">Reviews</span>
+                <span className="t-caption muted">{t("stats.reviews")}</span>
               </div>
               <div className="profile-hero-stat">
                 <span className="t-display-sm ink">{guide.yearsHosting}y</span>
-                <span className="t-caption muted">Hosting</span>
+                <span className="t-caption muted">{t("stats.hosting")}</span>
               </div>
               <div className="profile-hero-stat">
                 <span className="t-display-sm ink">{experiences.length}</span>
-                <span className="t-caption muted">Packages</span>
+                <span className="t-caption muted">{t("stats.packages")}</span>
               </div>
             </div>
           </div>
@@ -111,14 +115,16 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
 
         <div className="profile-grid">
           <div>
-            <h2 className="t-display-sm ink mb-md">About {guide.name}</h2>
+            <h2 className="t-display-sm ink mb-md">
+              {t("about", { name: guide.name })}
+            </h2>
             <p className="t-body-md body mb-base">{guide.bio}</p>
             <p className="t-body-md body mb-xl" style={{ fontStyle: "italic" }}>
               &quot;{guide.intro}&quot;
             </p>
 
             <h2 className="t-display-sm ink mb-base">
-              What {guide.name} offers
+              {t("offers", { name: guide.name })}
             </h2>
             <div className="stack-md mb-xl">
               {guide.highlights.map((h, i) => (
@@ -131,7 +137,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
               ))}
             </div>
 
-            <h2 className="t-display-sm ink mb-base">Good to know</h2>
+            <h2 className="t-display-sm ink mb-base">{t("goodToKnow")}</h2>
             <div className="info-grid mb-xl">
               <div className="info-grid-item">
                 <div className="info-grid-item-icon">
@@ -139,7 +145,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Languages
+                    {t("languages")}
                   </div>
                   <div className="t-body-sm muted">
                     {guide.languages.join(" · ")}
@@ -152,7 +158,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Cities
+                    {t("cities")}
                   </div>
                   <div className="t-body-sm muted">
                     {guide.cities.join(" · ")}
@@ -165,7 +171,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 </div>
                 <div>
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
-                    Specialty
+                    {t("specialty")}
                   </div>
                   <div className="t-body-sm muted">
                     {guide.styles.join(" · ")}
@@ -184,7 +190,10 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 stroke="var(--ink)"
                 style={{ display: "inline-block", verticalAlign: "-3px" }}
               />{" "}
-              {guide.rating.toFixed(2)} · {guide.reviews} reviews
+              {t("reviewsHeading", {
+                rating: guide.rating.toFixed(2),
+                count: guide.reviews,
+              })}
             </h2>
             <div className="review-grid mt-lg">
               {reviews.slice(0, 4).map((r, i) => (
@@ -208,7 +217,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
             </div>
             {reviews.length > 4 && (
               <button className="btn btn-secondary mt-lg">
-                See all {reviews.length} reviews
+                {t("seeAllReviews", { count: reviews.length })}
               </button>
             )}
           </div>
@@ -220,15 +229,14 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
           <section className="section-divided">
             <div className="section-header mb-sm">
               <h2 className="t-display-md ink">
-                Experiences hosted by {guide.name}
+                {t("experiencesByHeading", { name: guide.name })}
               </h2>
               <span className="t-body-sm muted">
-                {experiences.length} packages
+                {t("experiencesByCount", { count: experiences.length })}
               </span>
             </div>
             <p className="t-body-sm muted mb-lg" style={{ maxWidth: 640 }}>
-              Click an experience card to see schedule and photos. Or build a
-              custom plan in the side panel.
+              {t("experiencesByLede")}
             </p>
             <div className="exp-grid">
               {experiences.map((exp) => (

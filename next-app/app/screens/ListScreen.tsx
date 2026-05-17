@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 import { useMemo, useState } from "react"
 import GuideCard from "../components/cards/GuideCard"
@@ -10,6 +11,7 @@ import { useDebounce } from "../lib/hooks/useDebounce"
 import { guidesRepo } from "../lib/repositories/guides"
 
 export default function ListScreen() {
+  const t = useTranslations("list")
   const searchParams = useSearchParams()
   const initialCity = searchParams.get("city") ?? undefined
   const initialQuery = searchParams.get("q") ?? undefined
@@ -41,10 +43,10 @@ export default function ListScreen() {
       >
         <div className="container">
           <h1 className="t-display-md ink" style={{ marginBottom: 4 }}>
-            Find a local guide
+            {t("title")}
           </h1>
           <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
-            Match with vetted local guides by the hour. From $40 / hour.
+            {t("lede")}
           </p>
 
           <div
@@ -61,7 +63,7 @@ export default function ListScreen() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search by name, city, or style"
+              placeholder={t("searchPlaceholder")}
               style={{
                 flex: 1,
                 border: "none",
@@ -73,7 +75,7 @@ export default function ListScreen() {
               <button
                 onClick={() => setQ("")}
                 className="icon-btn"
-                aria-label="Clear search"
+                aria-label={t("clearSearchAria")}
               >
                 <Icon name="x" size={14} />
               </button>
@@ -81,19 +83,19 @@ export default function ListScreen() {
           </div>
 
           <FilterRow
-            label="City"
+            label={t("filters.city")}
             options={CITIES}
             value={city}
             onChange={setCity}
           />
           <FilterRow
-            label="Style"
+            label={t("filters.style")}
             options={STYLES}
             value={style}
             onChange={setStyle}
           />
           <FilterRow
-            label="Languages"
+            label={t("filters.languages")}
             options={LANGUAGES}
             value={lang}
             onChange={setLang}
@@ -105,9 +107,9 @@ export default function ListScreen() {
         <div className="container">
           <div className="section-header" style={{ marginBottom: 24 }}>
             <span className="t-body-sm muted">
-              {filtered.length} {filtered.length === 1 ? "guide" : "guides"}{" "}
-              match
-              {city !== "All" ? ` · ${city}` : ""}
+              {city !== "All"
+                ? t("resultsInCity", { count: filtered.length, city })
+                : t("results", { count: filtered.length })}
             </span>
             {(city !== "All" || style !== "All" || lang !== "All" || q) && (
               <button
@@ -115,7 +117,7 @@ export default function ListScreen() {
                 onClick={reset}
                 style={{ textDecoration: "underline" }}
               >
-                Clear filters
+                {t("clearFilters")}
               </button>
             )}
           </div>
@@ -124,17 +126,17 @@ export default function ListScreen() {
             <div style={{ textAlign: "center", padding: "80px 24px" }}>
               <Icon name="search" size={40} stroke="var(--muted-soft)" />
               <div className="t-display-sm ink" style={{ marginTop: 16 }}>
-                No guides match
+                {t("empty.title")}
               </div>
               <p className="t-body-sm muted" style={{ marginTop: 8 }}>
-                Try fewer filters.
+                {t("empty.subtitle")}
               </p>
               <button
                 className="btn btn-secondary"
                 style={{ marginTop: 24 }}
                 onClick={reset}
               >
-                <Icon name="refresh" size={16} /> Clear filters
+                <Icon name="refresh" size={16} /> {t("empty.cta")}
               </button>
             </div>
           ) : (
