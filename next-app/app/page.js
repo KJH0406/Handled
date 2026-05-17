@@ -1,5 +1,5 @@
-import HandledApp from "./HandledApp"
+import HomeScreen from "./screens/HomeScreen"
 
 export default function Page() {
-  return <HandledApp />
+  return <HomeScreen />
 }

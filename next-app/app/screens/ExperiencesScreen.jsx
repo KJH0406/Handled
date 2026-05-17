@@ -1,19 +1,21 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import Icon from "../components/ui/Icon"
 import FilterRow from "../components/ui/FilterRow"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import { EXP_CATEGORIES } from "../lib/data/experiences"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { CITIES } from "../lib/data/filters"
+import { useAppNavigate } from "../lib/navigation"
 
-export default function ExperiencesScreen({
-  navigate,
-  initialCity,
-  initialCategory,
-  initialQuery,
-}) {
+export default function ExperiencesScreen() {
+  const navigate = useAppNavigate()
+  const searchParams = useSearchParams()
+  const initialCity = searchParams.get("city") || undefined
+  const initialCategory = searchParams.get("category") || undefined
+  const initialQuery = searchParams.get("q") || undefined
   const [city, setCity] = useState(initialCity || "All")
   const [category, setCategory] = useState(initialCategory || "All")
   const [q, setQ] = useState(initialQuery || "")

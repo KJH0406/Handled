@@ -5,6 +5,8 @@ import Image from "next/image"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import { usd, formatDate } from "../lib/format"
+import { useAppNavigate } from "../lib/navigation"
+import { useBooking } from "../components/booking/BookingProvider"
 
 const fmtCard = (v) =>
   v
@@ -19,7 +21,13 @@ const fmtExp = (v) =>
     .replace(/^(.{2})(.+)/, "$1/$2")
     .slice(0, 5)
 
-export default function PaymentScreen({ booking, navigate, onConfirm }) {
+export default function PaymentScreen() {
+  const navigate = useAppNavigate()
+  const { booking, setBooking, hydrated } = useBooking()
+  const onConfirm = (b) => {
+    setBooking(b)
+    navigate("confirm")
+  }
   const [name, setName] = useState("")
   const [card, setCard] = useState("")
   const [exp, setExp] = useState("")
@@ -27,6 +35,11 @@ export default function PaymentScreen({ booking, navigate, onConfirm }) {
   const [zip, setZip] = useState("")
   const [errs, setErrs] = useState({})
   const [loading, setLoading] = useState(false)
+
+  if (!hydrated) {
+    // Avoid flashing the "No booking" screen during sessionStorage hydration.
+    return <main className="fade-in" />
+  }
 
   if (!booking) {
     return (

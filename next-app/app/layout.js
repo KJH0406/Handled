@@ -1,5 +1,8 @@
 import localFont from "next/font/local"
 import "./globals.css"
+import TopNav from "./components/layout/TopNav"
+import FooterSlot from "./components/layout/FooterSlot"
+import { BookingProvider } from "./components/booking/BookingProvider"
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -17,7 +20,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={pretendard.variable}>
       <body>
-        <div id="root">{children}</div>
+        <div id="root">
+          <BookingProvider>
+            <TopNav />
+            {children}
+            <FooterSlot />
+          </BookingProvider>
+        </div>
       </body>
     </html>
   )

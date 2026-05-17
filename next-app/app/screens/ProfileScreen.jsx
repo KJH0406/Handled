@@ -10,8 +10,16 @@ import CustomQuotePanel from "../components/booking/CustomQuotePanel"
 import { guidesRepo } from "../lib/repositories/guides"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { reviewsRepo } from "../lib/repositories/reviews"
+import { useAppNavigate } from "../lib/navigation"
+import { useBooking } from "../components/booking/BookingProvider"
 
-export default function ProfileScreen({ navigate, guideId, onReserve }) {
+export default function ProfileScreen({ guideId }) {
+  const navigate = useAppNavigate()
+  const { setBooking } = useBooking()
+  const onReserve = (b) => {
+    setBooking(b)
+    navigate("payment")
+  }
   const guide = useMemo(() => guidesRepo.findById(guideId), [guideId])
   const experiences = useMemo(
     () => experiencesRepo.listByGuideId(guideId),

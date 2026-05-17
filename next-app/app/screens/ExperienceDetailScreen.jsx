@@ -12,12 +12,16 @@ import { guidesRepo } from "../lib/repositories/guides"
 import { reviewsRepo } from "../lib/repositories/reviews"
 import { SCHEDULE_BY_CATEGORY } from "../lib/data/schedules"
 import { CAT_FALLBACK } from "../lib/data/categories"
+import { useAppNavigate } from "../lib/navigation"
+import { useBooking } from "../components/booking/BookingProvider"
 
-export default function ExperienceDetailScreen({
-  navigate,
-  expId,
-  onReserve,
-}) {
+export default function ExperienceDetailScreen({ expId }) {
+  const navigate = useAppNavigate()
+  const { setBooking } = useBooking()
+  const onReserve = (b) => {
+    setBooking(b)
+    navigate("payment")
+  }
   const exp = useMemo(() => experiencesRepo.findById(expId), [expId])
   const guide = useMemo(
     () => (exp ? guidesRepo.findById(exp.guideId) : null),

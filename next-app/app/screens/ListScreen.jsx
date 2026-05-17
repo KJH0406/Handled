@@ -1,13 +1,19 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import Icon from "../components/ui/Icon"
 import FilterRow from "../components/ui/FilterRow"
 import GuideCard from "../components/cards/GuideCard"
 import { guidesRepo } from "../lib/repositories/guides"
 import { CITIES, STYLES, LANGUAGES } from "../lib/data/filters"
+import { useAppNavigate } from "../lib/navigation"
 
-export default function ListScreen({ navigate, initialCity, initialQuery }) {
+export default function ListScreen() {
+  const navigate = useAppNavigate()
+  const searchParams = useSearchParams()
+  const initialCity = searchParams.get("city") || undefined
+  const initialQuery = searchParams.get("q") || undefined
   const [city, setCity] = useState(initialCity || "All")
   const [style, setStyle] = useState("All")
   const [lang, setLang] = useState("All")

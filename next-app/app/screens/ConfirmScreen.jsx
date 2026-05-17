@@ -5,14 +5,22 @@ import Icon from "../components/ui/Icon"
 import Avatar from "../components/ui/Avatar"
 import SummaryRow from "../components/ui/SummaryRow"
 import { usd, formatDate } from "../lib/format"
+import { useAppNavigate } from "../lib/navigation"
+import { useBooking } from "../components/booking/BookingProvider"
 
-export default function ConfirmScreen({ booking, navigate }) {
+export default function ConfirmScreen() {
+  const navigate = useAppNavigate()
+  const { booking, hydrated } = useBooking()
   useEffect(() => {
     const t = setTimeout(() => {
       // simple confetti-less celebration: noop
     }, 100)
     return () => clearTimeout(t)
   }, [])
+
+  if (!hydrated) {
+    return <main className="fade-in" />
+  }
 
   if (!booking) {
     return (

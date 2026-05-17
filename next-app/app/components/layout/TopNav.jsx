@@ -1,6 +1,8 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import Icon from "../ui/Icon"
+import { useAppNavigate } from "../../lib/navigation"
 
 const TABS = [
   { id: "home", label: "Home", icon: "home", target: "home" },
@@ -15,19 +17,19 @@ const TABS = [
 // Guide list / profile screens are still reachable (e.g. tapping a host
 // avatar from an experience), so we keep the Experiences tab highlighted
 // while the user is anywhere inside that exploration flow.
-const isActive = (tab, route) => {
-  if (tab.id === "home") return route.name === "home"
-  if (tab.id === "experiences")
+const isActive = (tabId, pathname) => {
+  if (tabId === "home") return pathname === "/"
+  if (tabId === "experiences") {
     return (
-      route.name === "experiences" ||
-      route.name === "experience" ||
-      route.name === "list" ||
-      route.name === "profile"
+      pathname.startsWith("/experiences") || pathname.startsWith("/guides")
     )
+  }
   return false
 }
 
-export default function TopNav({ navigate, route }) {
+export default function TopNav() {
+  const navigate = useAppNavigate()
+  const pathname = usePathname()
   return (
     <header className="nav">
       <div className="container nav-inner">
@@ -55,7 +57,7 @@ export default function TopNav({ navigate, route }) {
           {TABS.map((t) => (
             <div
               key={t.id}
-              className={`nav-tab ${isActive(t, route) ? "active" : ""}`}
+              className={`nav-tab ${isActive(t.id, pathname) ? "active" : ""}`}
               onClick={() => navigate(t.target)}
             >
               <Icon name={t.icon} size={20} sw={1.6} />

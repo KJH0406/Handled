@@ -7,6 +7,7 @@ import Avatar from "../components/ui/Avatar"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { reviewsRepo } from "../lib/repositories/reviews"
+import { useAppNavigate } from "../lib/navigation"
 
 const QUICK_CITIES = ["Seoul", "Busan", "Jeju", "Incheon"]
 
@@ -28,7 +29,8 @@ const WHY_FEATURES = [
   },
 ]
 
-export default function HomeScreen({ navigate }) {
+export default function HomeScreen() {
+  const navigate = useAppNavigate()
   const [where, setWhere] = useState("")
   const featured = experiencesRepo.featured(3)
 
