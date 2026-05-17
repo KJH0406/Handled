@@ -1,11 +1,11 @@
 ---
 id: ISSUE-XX
 title: <한 줄 제목>
-status: open          # open | in-progress | blocked | done | dropped
-priority: medium      # high | medium | low
-effort: M             # S | M | L
-depends_on: []        # ["ISSUE-01"]
-labels: []            # ["refactor", "perf", "a11y", "dx", "test", "infra"]
+status: open # open | in-progress | blocked | done | dropped
+priority: medium # high | medium | low
+effort: M # S | M | L
+depends_on: [] # ["ISSUE-01"]
+labels: [] # ["refactor", "perf", "a11y", "dx", "test", "infra"]
 created: 2026-05-17
 updated: 2026-05-17
 ---

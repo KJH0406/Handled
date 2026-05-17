@@ -84,8 +84,7 @@ export default function PaymentScreen() {
         ...booking,
         payerName: name,
         cardLast4: card.slice(-4),
-        bookingId:
-          "HD-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
+        bookingId: "HD-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
       })
       navigate("confirm")
     }, 1500)
@@ -117,9 +116,7 @@ export default function PaymentScreen() {
                     className="t-body-md value-strong"
                     style={{ color: "var(--rausch)" }}
                   >
-                    {booking.experience
-                      ? "Experience package"
-                      : "Custom tour"}
+                    {booking.experience ? "Experience package" : "Custom tour"}
                   </span>
                 </div>
                 {booking.experience && (
@@ -127,10 +124,7 @@ export default function PaymentScreen() {
                     className="row between"
                     style={{ alignItems: "flex-start", gap: 16 }}
                   >
-                    <span
-                      className="t-body-sm body"
-                      style={{ flexShrink: 0 }}
-                    >
+                    <span className="t-body-sm body" style={{ flexShrink: 0 }}>
                       Experience
                     </span>
                     <span
@@ -162,8 +156,7 @@ export default function PaymentScreen() {
                 <div className="row between">
                   <span className="t-body-sm body">Guests</span>
                   <span className="t-body-md ink value-strong">
-                    {booking.guests}{" "}
-                    {booking.guests === 1 ? "guest" : "guests"}
+                    {booking.guests} {booking.guests === 1 ? "guest" : "guests"}
                   </span>
                 </div>
                 {booking.interests && booking.interests.length > 0 && (
@@ -175,10 +168,7 @@ export default function PaymentScreen() {
                       flexWrap: "wrap",
                     }}
                   >
-                    <span
-                      className="t-body-sm body"
-                      style={{ flexShrink: 0 }}
-                    >
+                    <span className="t-body-sm body" style={{ flexShrink: 0 }}>
                       Interests
                     </span>
                     <div
@@ -206,12 +196,8 @@ export default function PaymentScreen() {
                       borderTop: "1px solid var(--hairline-soft)",
                     }}
                   >
-                    <span className="t-caption muted">
-                      Special requests
-                    </span>
-                    <span className="t-body-sm ink">
-                      {booking.requests}
-                    </span>
+                    <span className="t-caption muted">Special requests</span>
+                    <span className="t-body-sm ink">{booking.requests}</span>
                   </div>
                 )}
               </div>
@@ -227,9 +213,7 @@ export default function PaymentScreen() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-                {errs.name && (
-                  <span className="help-error">{errs.name}</span>
-                )}
+                {errs.name && <span className="help-error">{errs.name}</span>}
               </div>
               <div className="field">
                 <label>Card number</label>
@@ -240,9 +224,7 @@ export default function PaymentScreen() {
                   onChange={(e) => setCard(fmtCard(e.target.value))}
                   inputMode="numeric"
                 />
-                {errs.card && (
-                  <span className="help-error">{errs.card}</span>
-                )}
+                {errs.card && <span className="help-error">{errs.card}</span>}
               </div>
               <div className="pay-card-row">
                 <div className="field">
@@ -254,9 +236,7 @@ export default function PaymentScreen() {
                     onChange={(e) => setExp(fmtExp(e.target.value))}
                     inputMode="numeric"
                   />
-                  {errs.exp && (
-                    <span className="help-error">{errs.exp}</span>
-                  )}
+                  {errs.exp && <span className="help-error">{errs.exp}</span>}
                 </div>
                 <div className="field">
                   <label>CVC</label>
@@ -269,9 +249,7 @@ export default function PaymentScreen() {
                     }
                     inputMode="numeric"
                   />
-                  {errs.cvc && (
-                    <span className="help-error">{errs.cvc}</span>
-                  )}
+                  {errs.cvc && <span className="help-error">{errs.cvc}</span>}
                 </div>
                 <div className="field">
                   <label>ZIP code</label>
@@ -281,9 +259,7 @@ export default function PaymentScreen() {
                     value={zip}
                     onChange={(e) => setZip(e.target.value)}
                   />
-                  {errs.zip && (
-                    <span className="help-error">{errs.zip}</span>
-                  )}
+                  {errs.zip && <span className="help-error">{errs.zip}</span>}
                 </div>
               </div>
             </div>
@@ -346,9 +322,7 @@ export default function PaymentScreen() {
                         : guide.photo
                     }
                     alt={
-                      booking.experience
-                        ? booking.experience.title
-                        : guide.name
+                      booking.experience ? booking.experience.title : guide.name
                     }
                     fill
                     sizes="92px"
@@ -359,22 +333,14 @@ export default function PaymentScreen() {
                   <div className="t-caption muted">
                     {guide.city} · Guided by {guide.name}
                   </div>
-                  <div
-                    className="t-title-md ink"
-                    style={{ marginTop: 2 }}
-                  >
+                  <div className="t-title-md ink" style={{ marginTop: 2 }}>
                     {booking.experience
                       ? booking.experience.title
                       : `Custom tour with ${guide.name}`}
                   </div>
-                  <div
-                    className="row row-gap-xs"
-                    style={{ marginTop: 4 }}
-                  >
+                  <div className="row row-gap-xs" style={{ marginTop: 4 }}>
                     <Stars rating={guide.rating} />
-                    <span className="t-body-sm muted">
-                      ({guide.reviews})
-                    </span>
+                    <span className="t-body-sm muted">({guide.reviews})</span>
                   </div>
                 </div>
               </div>
@@ -398,18 +364,13 @@ export default function PaymentScreen() {
                         }`
                       : `${usd(guide.hourlyRate)} × ${booking.hours}h`}
                   </span>
-                  <span
-                    className="t-body-sm ink"
-                    style={{ flexShrink: 0 }}
-                  >
+                  <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
                     {usd(booking.subtotal)}
                   </span>
                 </div>
                 <div className="row between">
                   <span className="t-body-sm body">Service fee</span>
-                  <span className="t-body-sm ink">
-                    {usd(booking.fee)}
-                  </span>
+                  <span className="t-body-sm ink">{usd(booking.fee)}</span>
                 </div>
               </div>
               <div
@@ -420,9 +381,7 @@ export default function PaymentScreen() {
                 }}
               >
                 <span className="t-title-md ink">Total (USD)</span>
-                <span className="t-display-sm ink">
-                  {usd(booking.total)}
-                </span>
+                <span className="t-display-sm ink">{usd(booking.total)}</span>
               </div>
             </div>
           </aside>

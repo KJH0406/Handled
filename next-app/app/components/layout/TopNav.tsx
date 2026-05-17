@@ -24,9 +24,7 @@ const TABS: NavTab[] = [
 const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
   if (tabId === "home") return pathname === "/"
   if (tabId === "experiences") {
-    return (
-      pathname.startsWith("/experiences") || pathname.startsWith("/guides")
-    )
+    return pathname.startsWith("/experiences") || pathname.startsWith("/guides")
   }
   return false
 }

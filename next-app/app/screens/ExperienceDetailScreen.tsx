@@ -61,9 +61,7 @@ export default function ExperienceDetailScreen({
   return (
     <main className="fade-in">
       <div className="container screen-pad">
-        <Breadcrumb
-          onBack={() => navigate("profile", { guideId: guide.id })}
-        >
+        <Breadcrumb onBack={() => navigate("profile", { guideId: guide.id })}>
           Back to {guide.name}
         </Breadcrumb>
 
@@ -213,10 +211,7 @@ export default function ExperienceDetailScreen({
                     />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div
-                      className="row row-gap-sm"
-                      style={{ marginBottom: 4 }}
-                    >
+                    <div className="row row-gap-sm" style={{ marginBottom: 4 }}>
                       <span className="schedule-step-num">{i + 1}</span>
                       <span className="t-title-md ink">{s.title}</span>
                     </div>
@@ -237,10 +232,7 @@ export default function ExperienceDetailScreen({
                 size={56}
               />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  className="row row-gap-xs"
-                  style={{ marginBottom: 2 }}
-                >
+                <div className="row row-gap-xs" style={{ marginBottom: 2 }}>
                   <span className="t-title-md ink">{guide.name}</span>
                   {guide.superhost && (
                     <span
@@ -303,9 +295,7 @@ export default function ExperienceDetailScreen({
                   <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Duration
                   </div>
-                  <div className="t-body-sm muted">
-                    {exp.duration} hours
-                  </div>
+                  <div className="t-body-sm muted">{exp.duration} hours</div>
                 </div>
               </div>
               <div className="info-grid-item">

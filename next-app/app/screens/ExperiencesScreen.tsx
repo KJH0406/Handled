@@ -42,8 +42,8 @@ export default function ExperiencesScreen() {
             All Korean experiences
           </h1>
           <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
-            Pick from {experiencesRepo.list().length} experience packages
-            hosted by local guides.
+            Pick from {experiencesRepo.list().length} experience packages hosted
+            by local guides.
           </p>
 
           <div

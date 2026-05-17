@@ -23,6 +23,7 @@ updated: 2026-05-17
 - 결제 화면은 사용자의 ~5% 만 도달하는 화면
 
 빌드 출력 (현재):
+
 ```
 Route (app)                     Size     First Load JS
 ┌ ○ /                          20 kB    107 kB
@@ -47,7 +48,11 @@ PaymentScreen이 분리되면 `/` First Load JS 감소 예상.
 import dynamic from "next/dynamic"
 
 const PaymentScreen = dynamic(() => import("./screens/PaymentScreen"), {
-  loading: () => <div className="container" style={{padding: 64}}>Loading…</div>,
+  loading: () => (
+    <div className="container" style={{ padding: 64 }}>
+      Loading…
+    </div>
+  ),
   ssr: false,
 })
 const ConfirmScreen = dynamic(() => import("./screens/ConfirmScreen"), {

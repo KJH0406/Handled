@@ -55,13 +55,13 @@ export const guidesRepo = {
     return GUIDES.filter((g) => {
       if (city && city !== "All" && g.city !== city) return false
       if (style && style !== "All" && !g.styles.includes(style)) return false
-      if (language && language !== "All" && !g.languages.includes(language)) return false
+      if (language && language !== "All" && !g.languages.includes(language))
+        return false
       if (query) {
         const q = query.toLowerCase()
-        const haystack = [
-          g.name, g.city, g.district, g.oneLiner,
-          ...g.styles,
-        ].join(" ").toLowerCase()
+        const haystack = [g.name, g.city, g.district, g.oneLiner, ...g.styles]
+          .join(" ")
+          .toLowerCase()
         if (!haystack.includes(q)) return false
       }
       return true
@@ -78,8 +78,7 @@ import { guidesRepo } from "./guides"
 export const experiencesRepo = {
   findById: (id) => EXPERIENCES.find((e) => e.id === id) ?? null,
 
-  listByGuideId: (guideId) =>
-    EXPERIENCES.filter((e) => e.guideId === guideId),
+  listByGuideId: (guideId) => EXPERIENCES.filter((e) => e.guideId === guideId),
 
   list: (filters = {}) => {
     const { city, category, query } = filters
@@ -87,13 +86,19 @@ export const experiencesRepo = {
       const guide = guidesRepo.findById(e.guideId)
       if (!guide) return false
       if (city && city !== "All" && guide.city !== city) return false
-      if (category && category !== "All" && e.category !== category) return false
+      if (category && category !== "All" && e.category !== category)
+        return false
       if (query) {
         const q = query.toLowerCase()
         const haystack = [
-          e.title, e.summary, e.category,
-          guide.name, guide.city,
-        ].join(" ").toLowerCase()
+          e.title,
+          e.summary,
+          e.category,
+          guide.name,
+          guide.city,
+        ]
+          .join(" ")
+          .toLowerCase()
         if (!haystack.includes(q)) return false
       }
       return true
@@ -105,10 +110,14 @@ export const experiencesRepo = {
 ```
 
 **화면 변경 예시:**
+
 ```jsx
 // Before
 const filtered = useMemo(
-  () => GUIDES.filter((g) => { /* 인라인 필터 */ }),
+  () =>
+    GUIDES.filter((g) => {
+      /* 인라인 필터 */
+    }),
   [city, style, lang, q],
 )
 

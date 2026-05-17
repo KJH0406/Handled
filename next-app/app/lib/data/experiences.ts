@@ -57,7 +57,11 @@ export const EXPERIENCES: Experience[] = [
     category: "Architecture",
     summary:
       "From Zaha Hadid's DDP to 600-year-old hanok villages — a time-travel walk led by an architect.",
-    includes: ["DDP · Bukchon · Jongmyo", "Architecture handouts", "Coffee break"],
+    includes: [
+      "DDP · Bukchon · Jongmyo",
+      "Architecture handouts",
+      "Coffee break",
+    ],
   },
   {
     id: "exp-minjun-2",
@@ -192,11 +196,7 @@ export const EXPERIENCES: Experience[] = [
     category: "Culture",
     summary:
       "A traditional tea ceremony in a 600-year-old hanok plus a stroll through Bukchon's eight viewpoints.",
-    includes: [
-      "Traditional tea ceremony",
-      "Bukchon walk",
-      "Calligraphy class",
-    ],
+    includes: ["Traditional tea ceremony", "Bukchon walk", "Calligraphy class"],
   },
   {
     id: "exp-hyerim-3",

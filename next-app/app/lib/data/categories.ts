@@ -1,7 +1,4 @@
-import type {
-  CategoryFallback,
-  ExperienceCategory,
-} from "../types/domain"
+import type { CategoryFallback, ExperienceCategory } from "../types/domain"
 
 export const CAT_FALLBACK: Record<ExperienceCategory, CategoryFallback> = {
   Food: { emoji: "🍜", bg: "linear-gradient(135deg, #ff385c, #ffa07a)" },

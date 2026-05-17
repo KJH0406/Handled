@@ -59,11 +59,7 @@ export const GUIDES: Guide[] = [
     bio: "Architect by training, guide by passion. I show how Seoul transformed from a post-war city to a global metropolis through a designer's lens. Best for design lovers and photographers.",
     intro:
       "I love walking with the grain of a city. Discover the real Seoul in its alleys and between its buildings.",
-    highlights: [
-      "Architecture walks",
-      "Gallery circuit",
-      "Rooftop bar crawl",
-    ],
+    highlights: ["Architecture walks", "Gallery circuit", "Rooftop bar crawl"],
     cities: ["Seoul"],
   },
   {

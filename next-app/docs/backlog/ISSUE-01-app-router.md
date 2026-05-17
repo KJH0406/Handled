@@ -63,14 +63,17 @@ app/
 ```
 
 **라우팅 헬퍼 마이그레이션:**
+
 - 현재 `navigate("experience", { expId: ... })` 호출부를 `useRouter().push("/experiences/" + expId)`로 치환
 - 또는 wrapper hook: `useAppNavigate()` 안에서 매핑 보존
 
 **Cross-screen state:**
+
 - `BookingProvider`를 `app/checkout/layout.js`에 두고 sessionStorage 동기화
 - 또는 결제 시작 시 booking을 server action / API에 임시 저장하고 `/checkout?session=xxx`로 reference만 전달
 
 **Initial query 파라미터:**
+
 - `ListScreen`/`ExperiencesScreen`의 `initialCity`/`initialQuery`는 search params로
   - `/experiences?city=Seoul&q=food`
   - `useSearchParams()` 로 읽기

@@ -55,17 +55,28 @@ export default function GlobalError({ error, reset }) {
 
   return (
     <main className="fade-in">
-      <div className="container" style={{
-        paddingTop: 96, paddingBottom: 96,
-        textAlign: "center", maxWidth: 480,
-        margin: "0 auto",
-      }}>
-        <div style={{
-          width: 72, height: 72, borderRadius: "50%",
-          background: "#fff0f3", display: "inline-flex",
-          alignItems: "center", justifyContent: "center",
-          marginBottom: 24,
-        }}>
+      <div
+        className="container"
+        style={{
+          paddingTop: 96,
+          paddingBottom: 96,
+          textAlign: "center",
+          maxWidth: 480,
+          margin: "0 auto",
+        }}
+      >
+        <div
+          style={{
+            width: 72,
+            height: 72,
+            borderRadius: "50%",
+            background: "#fff0f3",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 24,
+          }}
+        >
           <Icon name="x" size={32} stroke="var(--rausch)" sw={2.5} />
         </div>
         <h1 className="t-display-md ink" style={{ marginBottom: 12 }}>
@@ -95,13 +106,22 @@ import Icon from "./components/ui/Icon"
 export default function NotFound() {
   return (
     <main className="fade-in">
-      <div className="container" style={{
-        paddingTop: 96, paddingBottom: 96,
-        textAlign: "center", maxWidth: 480,
-        margin: "0 auto",
-      }}>
-        <Icon name="search" size={48} stroke="var(--muted-soft)"
-              style={{ display: "inline-block", marginBottom: 24 }} />
+      <div
+        className="container"
+        style={{
+          paddingTop: 96,
+          paddingBottom: 96,
+          textAlign: "center",
+          maxWidth: 480,
+          margin: "0 auto",
+        }}
+      >
+        <Icon
+          name="search"
+          size={48}
+          stroke="var(--muted-soft)"
+          style={{ display: "inline-block", marginBottom: 24 }}
+        />
         <h1 className="t-display-md ink" style={{ marginBottom: 12 }}>
           Page not found
         </h1>

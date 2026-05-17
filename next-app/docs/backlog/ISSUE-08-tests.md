@@ -75,7 +75,10 @@ test("user can book an experience end-to-end", async ({ page }) => {
   await page.goto("/")
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
 
-  await page.getByRole("button", { name: /experiences/i }).first().click()
+  await page
+    .getByRole("button", { name: /experiences/i })
+    .first()
+    .click()
   await page.getByRole("button", { name: /Real Seoul Food Crawl/i }).click()
 
   // pick first available date
@@ -93,7 +96,9 @@ test("user can book an experience end-to-end", async ({ page }) => {
 
   await page.getByRole("button", { name: /^Pay /i }).click()
 
-  await expect(page.getByText(/Booking confirmed/i)).toBeVisible({ timeout: 5000 })
+  await expect(page.getByText(/Booking confirmed/i)).toBeVisible({
+    timeout: 5000,
+  })
 })
 ```
 

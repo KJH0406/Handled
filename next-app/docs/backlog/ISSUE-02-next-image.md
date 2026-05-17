@@ -24,6 +24,7 @@ updated: 2026-05-17
 - `lib/photo.js:3-4`에서 URL을 `?w=...&h=...&fit=crop` 쿼리로 직접 빌드 중
 
 **현재 `<img>` 사용처 (주요):**
+
 - `components/ui/Avatar.jsx:38-43` — 아바타
 - `components/cards/GuideCard.jsx:14` — 가이드 카드
 - `components/cards/ExpPhoto.jsx:30` — 체험 카드
@@ -50,9 +51,7 @@ updated: 2026-05-17
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-    ],
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
     formats: ["image/avif", "image/webp"],
   },
 }
@@ -62,11 +61,10 @@ module.exports = nextConfig
 ```jsx
 // 변환 예시 — ExpPhoto.jsx
 import Image from "next/image"
-
-<Image
+;<Image
   src={src}
   alt={alt}
-  fill                       // 부모가 position: relative
+  fill // 부모가 position: relative
   sizes="(max-width: 768px) 100vw, 33vw"
   style={{ objectFit: "cover" }}
   onError={() => setErr(true)}
@@ -74,11 +72,13 @@ import Image from "next/image"
 ```
 
 **중요 — `<img>` → `<Image>` 치환 시:**
+
 - `loading="lazy"` 제거 (기본값)
 - inline `style={{ width: '100%' }}` 같은 자동 sizing은 `fill` 또는 명시 width/height로 대체
 - onError fallback 패턴은 그대로 유지 (`Avatar`, `ExpPhoto`)
 
 **Avatar는 특수:**
+
 - src가 빈 문자열일 때 fallback 글자 표시. `Image`는 빈 src에서 throw하므로 conditional render 유지
 
 ## 위험

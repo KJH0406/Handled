@@ -63,15 +63,23 @@ export async function processPayment({ amount, card, name }) {
 ```js
 // lib/payments/format.js
 export const fmtCard = (v) =>
-  v.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim().slice(0, 19)
+  v
+    .replace(/\D/g, "")
+    .replace(/(.{4})/g, "$1 ")
+    .trim()
+    .slice(0, 19)
 
 export const fmtExp = (v) =>
-  v.replace(/\D/g, "").replace(/^(.{2})(.+)/, "$1/$2").slice(0, 5)
+  v
+    .replace(/\D/g, "")
+    .replace(/^(.{2})(.+)/, "$1/$2")
+    .slice(0, 5)
 
 export function validateCard({ name, card, exp, cvc, zip }) {
   const e = {}
   if (!name?.trim()) e.name = "Enter the cardholder name"
-  if ((card ?? "").replace(/\s/g, "").length < 16) e.card = "Enter a 16-digit card number"
+  if ((card ?? "").replace(/\s/g, "").length < 16)
+    e.card = "Enter a 16-digit card number"
   if (!/^\d{2}\/\d{2}$/.test(exp ?? "")) e.exp = "MM/YY format"
   if ((cvc ?? "").length < 3) e.cvc = "3-digit CVC"
   if (!zip?.trim()) e.zip = "Enter ZIP code"
@@ -86,7 +94,10 @@ import { fmtCard, fmtExp, validateCard } from "../lib/payments/format"
 
 const submit = async () => {
   const errors = validateCard({ name, card, exp, cvc, zip })
-  if (Object.keys(errors).length) { setErrs(errors); return }
+  if (Object.keys(errors).length) {
+    setErrs(errors)
+    return
+  }
   setLoading(true)
   try {
     const result = await processPayment({ amount: booking.total, card, name })

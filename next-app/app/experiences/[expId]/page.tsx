@@ -24,9 +24,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
       title: `${title} · Handled`,
       description: exp.summary,
       url,
-      images: [
-        { url: exp.photo, width: 1200, height: 750, alt: exp.title },
-      ],
+      images: [{ url: exp.photo, width: 1200, height: 750, alt: exp.title }],
       type: "article",
     },
     twitter: {

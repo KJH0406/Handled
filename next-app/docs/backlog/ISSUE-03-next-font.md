@@ -38,12 +38,14 @@ updated: 2026-05-17
 **옵션 A — `next/font/local` (권장, 폰트 파일 직접 보관):**
 
 1. Pretendard variable woff2 다운로드:
+
    ```bash
    curl -L -o next-app/app/fonts/PretendardVariable.woff2 \
      https://github.com/orioncactus/pretendard/raw/main/packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2
    ```
 
 2. `layout.js`:
+
    ```js
    import localFont from "next/font/local"
 
@@ -66,9 +68,11 @@ updated: 2026-05-17
 3. `globals.css`의 `--font` 정의를 `var(--font-pretendard)` 또는 그대로 두고 자연 폴백
 
 **옵션 B — `@fontsource/pretendard`:**
+
 ```bash
 npm install @fontsource-variable/pretendard
 ```
+
 ```js
 // layout.js
 import "@fontsource-variable/pretendard"

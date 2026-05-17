@@ -1,13 +1,14 @@
 ---
 id: ISSUE-10
 title: ESLint + Prettier 설정
-status: open
+status: done
 priority: low
 effort: S
 depends_on: []
 labels: ["dx", "infra"]
 created: 2026-05-17
 updated: 2026-05-17
+completed: 2026-05-17
 ---
 
 # ISSUE-10: ESLint + Prettier 설정
@@ -73,6 +74,7 @@ package-lock.json
 ```
 
 **현재 코드 스타일 분석:**
+
 - 따옴표: 대체로 double `"..."`
 - 세미콜론: 없음 (자동 삽입)
 - trailing comma: 일관됨
@@ -92,4 +94,19 @@ package-lock.json
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- **버전 트랩** — 처음 `npm install -D eslint eslint-config-next` 를 그대로 실행했더니 `eslint@9`, `eslint-config-next@16`이 설치되어 Next 14의 `next lint`가 "Unknown options: useEslintrc, extensions, ..." 로 실패. Next 14의 `next lint`는 ESLint 8 legacy 옵션을 사용 → `eslint@^8.57.1`, `eslint-config-next@14.2.35`로 다운그레이드.
+- **TypeScript 통합** — `eslint-config-next`가 내부적으로 `@typescript-eslint/parser`를 포함하므로 별도 설치 없이 `.ts/.tsx` 린트됨. (ISSUE-05 참조 메모의 `@typescript-eslint` 별도 설치는 불필요)
+- **설정 파일**
+  - `.eslintrc.json` — `next/core-web-vitals` + `prettier`(충돌 방지). `react/no-unescaped-entities` off (영문 따옴표 잔뜩 있음).
+  - `.prettierrc` — semi off, double quote (현재 코드 호환), trailingComma all, printWidth 80, tabWidth 2. 이슈 frontmatter의 "single quote"는 typo로 판단(구현 메모의 `singleQuote: false`와 코드 분석 결과 따름).
+  - `.prettierignore` — `.next/`, `node_modules/`, `public/`, `package-lock.json`, `next-env.d.ts`.
+- **scripts 추가** (`package.json`): `lint:fix`, `format`, `format:check`.
+- **format diff** — `npm run format` 첫 실행:
+  - `globals.css`: 전체 indent 정규화 (이전엔 wrapper로 6 space 들여썼는데 root 레벨로 평탄화) — 시각적 동일.
+  - `next.config.mjs`, `package.json`: 미세 변경.
+  - 일부 screen/components(`ExperienceDetailScreen`, `ExperiencesScreen`, `PaymentScreen`, `ProfileScreen`, `TopNav`, `ListScreen` 등): wrap/indent 미세 조정만.
+  - 모든 docs `.md` 파일: 테이블 정렬 + 코드블록 indent 정규화. **모든 backlog 이슈 파일이 reformat됨** (내용 동일).
+- **검증**
+  - ✅ `npm run lint` — 0 errors, 0 warnings.
+  - ✅ `npm run format:check` — All matched files use Prettier code style.
+  - ✅ `npm run build` — 11 routes 정상.

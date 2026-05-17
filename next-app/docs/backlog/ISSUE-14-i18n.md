@@ -45,7 +45,9 @@ npm install next-intl
 ```js
 // next.config.js
 const withNextIntl = require("next-intl/plugin")("./i18n.js")
-module.exports = withNextIntl({ /* ... */ })
+module.exports = withNextIntl({
+  /* ... */
+})
 ```
 
 ```js
@@ -82,6 +84,7 @@ export default getRequestConfig(async ({ locale }) => ({
 ```
 
 **디렉토리 구조 변경 (next-intl + App Router):**
+
 ```
 app/
 └── [locale]/

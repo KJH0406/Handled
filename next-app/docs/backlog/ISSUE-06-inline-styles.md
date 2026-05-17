@@ -21,6 +21,7 @@ updated: 2026-05-17
 큰 화면 파일에서 반복되는 인라인 스타일 패턴:
 
 - **Breadcrumb row** (ProfileScreen:48, ExperienceDetailScreen:55, PaymentScreen:87):
+
   ```jsx
   <div className="row row-gap-sm" style={{
     marginBottom: 16, color: "var(--muted)",
@@ -30,21 +31,26 @@ updated: 2026-05-17
     <span className="t-body-sm">{label}</span>
   </div>
   ```
+
   → `<Breadcrumb onBack={...}>{label}</Breadcrumb>` 컴포넌트로 추출 가능
 
 - **Container with vertical padding** 패턴:
+
   ```jsx
   <div className="container" style={{ paddingTop: 24, paddingBottom: 64 }}>
   ```
+
   → `.container-screen` 같은 CSS class
 
 - **info-grid-item-icon 안의 작은 원형 배경**:
+
   ```jsx
   <div style={{
     width: 28, height: 28, borderRadius: "50%",
     background: "#fff0f3", display: "inline-flex", ...
   }}>
   ```
+
   → `.icon-circle` CSS class (ProfileScreen:155-167, HomeScreen:155-166 등 반복)
 
 - **PaymentScreen** 안에 `style={{...}}` 50개+ — 가장 우선 정리 대상
@@ -91,14 +97,17 @@ export default function Breadcrumb({ onBack, children }) {
   padding: 0;
   cursor: pointer;
 }
-.breadcrumb:hover { color: var(--ink); }
+.breadcrumb:hover {
+  color: var(--ink);
+}
 ```
 
 **Phase 2 — 유틸 CSS class:**
 
 ```css
 .icon-circle {
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #fff0f3;
   display: inline-flex;
@@ -106,12 +115,20 @@ export default function Breadcrumb({ onBack, children }) {
   justify-content: center;
   flex-shrink: 0;
 }
-.icon-circle--lg { width: 48px; height: 48px; border-radius: 14px; }
+.icon-circle--lg {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
 
-.screen-pad { padding-top: var(--s-lg); padding-bottom: var(--s-section); }
+.screen-pad {
+  padding-top: var(--s-lg);
+  padding-bottom: var(--s-section);
+}
 ```
 
 **Phase 3 — 색상/스페이싱은 토큰화:**
+
 - 인라인 `marginBottom: 16` → CSS 토큰 `var(--s-base)` 활용
 - `background: "#fff0f3"` 같은 하드코딩 색상은 `--surface-accent-soft` 같은 새 토큰 검토
 
@@ -132,6 +149,7 @@ export default function Breadcrumb({ onBack, children }) {
 ## 작업 로그 / 발견 사항
 
 ### 2026-05-17 — 완료
+
 - **신규 컴포넌트**: `app/components/layout/Breadcrumb.tsx` (semantic `<button>` 기반)
 - **신규 CSS 클래스** (`app/globals.css`):
   - `.breadcrumb`, `.breadcrumb:hover`

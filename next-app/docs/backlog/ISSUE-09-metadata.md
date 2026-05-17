@@ -23,7 +23,8 @@ completed: 2026-05-17
   ```js
   export const metadata = {
     title: "Handled — Korean local experiences",
-    description: "Discover authentic Korean local experiences hosted by people you trust.",
+    description:
+      "Discover authentic Korean local experiences hosted by people you trust.",
   }
   ```
 - OG 이미지 없음

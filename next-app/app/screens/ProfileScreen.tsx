@@ -83,10 +83,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
               </span>
             </div>
             <h1 className="t-display-lg ink mb-sm">{guide.name}</h1>
-            <p
-              className="t-body-sm body mb-base"
-              style={{ maxWidth: 560 }}
-            >
+            <p className="t-body-sm body mb-base" style={{ maxWidth: 560 }}>
               {guide.oneLiner}
             </p>
             <div className="profile-stats">
@@ -101,9 +98,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 <span className="t-caption muted">Reviews</span>
               </div>
               <div className="profile-hero-stat">
-                <span className="t-display-sm ink">
-                  {guide.yearsHosting}y
-                </span>
+                <span className="t-display-sm ink">{guide.yearsHosting}y</span>
                 <span className="t-caption muted">Hosting</span>
               </div>
               <div className="profile-hero-stat">
@@ -118,10 +113,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
           <div>
             <h2 className="t-display-sm ink mb-md">About {guide.name}</h2>
             <p className="t-body-md body mb-base">{guide.bio}</p>
-            <p
-              className="t-body-md body mb-xl"
-              style={{ fontStyle: "italic" }}
-            >
+            <p className="t-body-md body mb-xl" style={{ fontStyle: "italic" }}>
               &quot;{guide.intro}&quot;
             </p>
 
@@ -132,11 +124,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
               {guide.highlights.map((h, i) => (
                 <div key={i} className="row row-gap-md">
                   <div className="icon-circle">
-                    <Icon
-                      name="sparkles"
-                      size={14}
-                      stroke="var(--rausch)"
-                    />
+                    <Icon name="sparkles" size={14} stroke="var(--rausch)" />
                   </div>
                   <span className="t-body-md ink">{h}</span>
                 </div>
@@ -150,10 +138,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                   <Icon name="globe" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Languages
                   </div>
                   <div className="t-body-sm muted">
@@ -166,10 +151,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                   <Icon name="pin" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Cities
                   </div>
                   <div className="t-body-sm muted">
@@ -182,10 +164,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                   <Icon name="building" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Specialty
                   </div>
                   <div className="t-body-sm muted">
@@ -247,10 +226,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                 {experiences.length} packages
               </span>
             </div>
-            <p
-              className="t-body-sm muted mb-lg"
-              style={{ maxWidth: 640 }}
-            >
+            <p className="t-body-sm muted mb-lg" style={{ maxWidth: 640 }}>
               Click an experience card to see schedule and photos. Or build a
               custom plan in the side panel.
             </p>

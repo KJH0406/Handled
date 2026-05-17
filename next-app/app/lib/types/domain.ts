@@ -1,11 +1,6 @@
 export type City = "Seoul" | "Busan" | "Jeju" | "Incheon"
 
-export type Language =
-  | "Korean"
-  | "English"
-  | "Japanese"
-  | "Mandarin"
-  | "French"
+export type Language = "Korean" | "English" | "Japanese" | "Mandarin" | "French"
 
 export interface Guide {
   id: string

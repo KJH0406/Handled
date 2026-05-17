@@ -87,6 +87,7 @@ const handleKey = (e) => {
 ```
 
 **Focus styles 점검:**
+
 - `globals.css`에 `:focus-visible` 정의 있는지 확인. 없다면 추가:
   ```css
   *:focus-visible {

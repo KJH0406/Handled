@@ -95,8 +95,17 @@ export interface Guide {
 }
 
 export type ExperienceCategory =
-  | "Food" | "Shopping" | "Culture" | "Architecture" | "Art"
-  | "Nightlife" | "Photo" | "Beach" | "Nature" | "Traditional" | "Urban"
+  | "Food"
+  | "Shopping"
+  | "Culture"
+  | "Architecture"
+  | "Art"
+  | "Nightlife"
+  | "Photo"
+  | "Beach"
+  | "Nature"
+  | "Traditional"
+  | "Urban"
 
 export interface Experience {
   id: string
