@@ -1,7 +1,7 @@
 ---
 id: ISSUE-12
 title: 검색 인풋 디바운싱 (useDebounce)
-status: open
+status: done
 priority: low
 effort: S
 depends_on: []
@@ -74,4 +74,7 @@ const filtered = useMemo(
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- 위치: 이슈 메모의 `hooks/useDebounce.js` 대신 `app/lib/hooks/useDebounce.ts`로 작성 (TS + 기존 `lib/` 구조 유지)
+- 제네릭 `<T>` 형태로 작성하여 string 외 값에도 재사용 가능
+- 적용: `ListScreen` (city/style/lang/q 중 q만 debounce), `ExperiencesScreen` (city/category/q 중 q만 debounce)
+- 인풋은 컨트롤드 유지(`q`) → 즉시 반영, `debouncedQ`만 useMemo dep로 사용해 필터링 트리거만 지연

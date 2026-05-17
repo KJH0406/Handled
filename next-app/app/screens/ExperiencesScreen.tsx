@@ -7,6 +7,7 @@ import FilterRow from "../components/ui/FilterRow"
 import Icon from "../components/ui/Icon"
 import { EXP_CATEGORIES } from "../lib/data/experiences"
 import { CITIES } from "../lib/data/filters"
+import { useDebounce } from "../lib/hooks/useDebounce"
 import { experiencesRepo } from "../lib/repositories/experiences"
 
 export default function ExperiencesScreen() {
@@ -17,10 +18,11 @@ export default function ExperiencesScreen() {
   const [city, setCity] = useState<string>(initialCity ?? "All")
   const [category, setCategory] = useState<string>(initialCategory ?? "All")
   const [q, setQ] = useState<string>(initialQuery ?? "")
+  const debouncedQ = useDebounce(q, 200)
 
   const filtered = useMemo(
-    () => experiencesRepo.list({ city, category, query: q }),
-    [city, category, q],
+    () => experiencesRepo.list({ city, category, query: debouncedQ }),
+    [city, category, debouncedQ],
   )
 
   const reset = () => {

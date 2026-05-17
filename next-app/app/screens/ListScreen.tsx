@@ -6,6 +6,7 @@ import GuideCard from "../components/cards/GuideCard"
 import FilterRow from "../components/ui/FilterRow"
 import Icon from "../components/ui/Icon"
 import { CITIES, LANGUAGES, STYLES } from "../lib/data/filters"
+import { useDebounce } from "../lib/hooks/useDebounce"
 import { guidesRepo } from "../lib/repositories/guides"
 
 export default function ListScreen() {
@@ -16,10 +17,11 @@ export default function ListScreen() {
   const [style, setStyle] = useState<string>("All")
   const [lang, setLang] = useState<string>("All")
   const [q, setQ] = useState<string>(initialQuery ?? "")
+  const debouncedQ = useDebounce(q, 200)
 
   const filtered = useMemo(
-    () => guidesRepo.list({ city, style, language: lang, query: q }),
-    [city, style, lang, q],
+    () => guidesRepo.list({ city, style, language: lang, query: debouncedQ }),
+    [city, style, lang, debouncedQ],
   )
 
   const reset = () => {
