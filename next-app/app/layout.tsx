@@ -13,10 +13,32 @@ const pretendard = localFont({
   variable: "--font-pretendard",
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+const SITE_NAME = "Handled"
+const SITE_DESCRIPTION =
+  "Discover authentic Korean local experiences hosted by people you trust."
+
 export const metadata: Metadata = {
-  title: "Handled — Korean local experiences",
-  description:
-    "Discover authentic Korean local experiences hosted by people you trust.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Korean local experiences`,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: "/",
+    title: `${SITE_NAME} — Korean local experiences`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — Korean local experiences`,
+    description: SITE_DESCRIPTION,
+  },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

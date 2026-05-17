@@ -1,13 +1,14 @@
 ---
 id: ISSUE-09
 title: 화면별 metadata 분리 (SEO/OG)
-status: open
+status: done
 priority: medium
 effort: S
 depends_on: ["ISSUE-01"]
 labels: ["seo"]
 created: 2026-05-17
 updated: 2026-05-17
+completed: 2026-05-17
 ---
 
 # ISSUE-09: 화면별 metadata 분리 (SEO/OG)
@@ -120,4 +121,22 @@ export default function sitemap() {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- **root layout** (`app/layout.tsx`): `metadataBase` (env `NEXT_PUBLIC_SITE_URL`, fallback `http://localhost:3000`), `title.template = "%s — Handled"`, 사이트 default OG/Twitter 추가.
+- **정적 페이지** — `/`, `/guides`, `/experiences` 각각 `export const metadata`. 홈은 `title.absolute`로 템플릿을 우회해 "Handled — Korean local experiences" 그대로 유지. 모든 페이지에 `alternates.canonical` 추가.
+- **동적 페이지** — `/guides/[guideId]`, `/experiences/[expId]` `generateMetadata` 추가:
+  - guide: `"{name} · {city} guide — Handled"`, OG type=profile, guide.photo 이미지.
+  - experience: `"{title} — {hostName} · Handled"`, OG type=article, exp.photo 이미지. guide 누락 시 host suffix 생략.
+  - 404 케이스(`!guide` / `!exp`)는 `title: "... not found"` 반환.
+- **checkout noindex** — `app/checkout/layout.tsx` 신규 생성. `metadata.robots = { index: false, follow: false }`로 `/checkout`과 `/checkout/confirmed` 모두 인덱싱 차단. layout body는 children pass-through.
+- **robots.ts** — `app/robots.ts` 신규. 모든 user-agent 허용 + `/checkout` 경로 disallow + sitemap.xml 링크.
+- **sitemap.ts** — `app/sitemap.ts` 신규. 정적 3개 + `guidesRepo.list()` + `experiencesRepo.list()`로 모든 동적 라우트 포함. priority: home 1.0 / 리스트 0.8 / 상세 0.6.
+- **env var** — `NEXT_PUBLIC_SITE_URL` 미설정 시 `http://localhost:3000` fallback (dev). 배포 도메인 확정 후 `.env.production` 또는 호스팅 환경변수로 설정 필요. 도메인 결정은 본 이슈 범위 밖.
+- **OG 이미지** — 별도 `opengraph-image.png` 정적 파일은 추가하지 않음 (디자인 에셋 없음). 동적 페이지는 guide/exp 사진을 OG 이미지로 사용. 정적 페이지(home/guides/experiences)는 사이트 default OG 텍스트만.
+- **수락 기준 충족**
+  - ✅ 모든 라우트에 metadata 분리됨.
+  - ✅ Twitter card 추가.
+  - ✅ `app/robots.ts`, `app/sitemap.ts` 생성.
+  - ✅ `npm run build` 통과 (11 routes, /robots.txt, /sitemap.xml 자동 생성).
+  - ⏭️ Lighthouse SEO 90+ 측정은 외부 도구. 코드 레벨 metadata 완비.
+  - ⏭️ `app/opengraph-image.png` 정적 파일은 디자인 에셋 부재로 제외 — 후속 이슈로 분리 가능.
+- **검증** — `npm run build` 통과, `/robots.txt`(0 B), `/sitemap.xml`(0 B, runtime 생성) 라우트 확인.
