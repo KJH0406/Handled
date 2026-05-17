@@ -1,7 +1,7 @@
 ---
 id: ISSUE-13
 title: 결제 mock 분리 → lib/payments/
-status: open
+status: done
 priority: low
 effort: S
 depends_on: []
@@ -123,4 +123,10 @@ const submit = async () => {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+- 구조: `lib/payments/{types,format,validate,mock}.ts` 로 분리
+- `PaymentProvider` 인터페이스 정의 + `mockProvider` 구현 + 편의 함수 `processPayment` 제공
+- 추후 토스/스트라이프 등 실제 PG는 동일 인터페이스로 구현체 교체 가능
+- `validateCard`는 `CardFormInput` 입력 → `CardFieldErrors` (Partial mapped type) 반환
+- PaymentScreen `submit` 은 async/await로 전환, validation 통과 시 setErrs({}) 로 초기화 추가
+- 검증 메시지 wording, fmtCard/fmtExp 동작 모두 기존과 동일하게 유지 (회귀 없음)
+- `/checkout` route own size 5.05 → 5.18 kB (모듈 분리로 미세 증가, 허용 범위)

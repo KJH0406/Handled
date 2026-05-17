@@ -8,27 +8,9 @@ import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import { formatDate, usd } from "../lib/format"
 import { useAppNavigate } from "../lib/navigation"
-
-const fmtCard = (v: string): string =>
-  v
-    .replace(/\D/g, "")
-    .replace(/(.{4})/g, "$1 ")
-    .trim()
-    .slice(0, 19)
-
-const fmtExp = (v: string): string =>
-  v
-    .replace(/\D/g, "")
-    .replace(/^(.{2})(.+)/, "$1/$2")
-    .slice(0, 5)
-
-interface FieldErrors {
-  name?: string
-  card?: string
-  exp?: string
-  cvc?: string
-  zip?: string
-}
+import { fmtCard, fmtExp } from "../lib/payments/format"
+import { processPayment } from "../lib/payments/mock"
+import { validateCard, type CardFieldErrors } from "../lib/payments/validate"
 
 export default function PaymentScreen() {
   const navigate = useAppNavigate()
@@ -38,7 +20,7 @@ export default function PaymentScreen() {
   const [exp, setExp] = useState("")
   const [cvc, setCvc] = useState("")
   const [zip, setZip] = useState("")
-  const [errs, setErrs] = useState<FieldErrors>({})
+  const [errs, setErrs] = useState<CardFieldErrors>({})
   const [loading, setLoading] = useState(false)
 
   if (!hydrated) {
@@ -63,31 +45,27 @@ export default function PaymentScreen() {
 
   const { guide } = booking
 
-  const validate = (): boolean => {
-    const e: FieldErrors = {}
-    if (!name.trim()) e.name = "Enter the cardholder name"
-    if (card.replace(/\s/g, "").length < 16)
-      e.card = "Enter a 16-digit card number"
-    if (!/^\d{2}\/\d{2}$/.test(exp)) e.exp = "MM/YY format"
-    if (cvc.length < 3) e.cvc = "3-digit CVC"
-    if (!zip.trim()) e.zip = "Enter ZIP code"
-    setErrs(e)
-    return Object.keys(e).length === 0
-  }
-
-  const submit = () => {
-    if (!validate()) return
+  const submit = async () => {
+    const errors = validateCard({ name, card, exp, cvc, zip })
+    if (Object.keys(errors).length > 0) {
+      setErrs(errors)
+      return
+    }
+    setErrs({})
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      setBooking({
-        ...booking,
-        payerName: name,
-        cardLast4: card.slice(-4),
-        bookingId: "HD-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
-      })
-      navigate("confirm")
-    }, 1500)
+    const result = await processPayment({
+      amount: booking.total,
+      card,
+      name,
+    })
+    setLoading(false)
+    setBooking({
+      ...booking,
+      payerName: result.payerName,
+      cardLast4: result.cardLast4,
+      bookingId: result.bookingId,
+    })
+    navigate("confirm")
   }
 
   return (
