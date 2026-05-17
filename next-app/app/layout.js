@@ -1,4 +1,12 @@
+import localFont from "next/font/local"
 import "./globals.css"
+
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+})
 
 export const metadata = {
   title: "Handled — Korean local experiences",
@@ -7,14 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-        />
-      </head>
+    <html lang="en" className={pretendard.variable}>
       <body>
         <div id="root">{children}</div>
       </body>

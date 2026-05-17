@@ -46,8 +46,9 @@
 
         /* typography */
         --font:
-          "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-          system-ui, Roboto, "Helvetica Neue", sans-serif;
+          var(--font-pretendard), "Pretendard Variable", Pretendard,
+          -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+          "Helvetica Neue", sans-serif;
       }
 
       /* ─────────────────────────────────────────────

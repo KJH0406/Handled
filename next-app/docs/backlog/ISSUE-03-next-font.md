@@ -1,7 +1,7 @@
 ---
 id: ISSUE-03
 title: Pretendard 셀프 호스팅 (next/font/local)
-status: open
+status: done
 priority: high
 effort: S
 depends_on: []
@@ -94,3 +94,10 @@ import "@fontsource-variable/pretendard"
 ## 작업 로그 / 발견 사항
 
 - 이미 `next-app/app/fonts/` 디렉토리가 존재함 (additional working directory에 포함됨) — 여기에 woff2를 두면 됨
+- **2026-05-17 완료** (옵션 A 채택):
+  - `next-app/app/fonts/PretendardVariable.woff2` 다운로드 (2.0 MB, GitHub orioncactus/pretendard v1.3.9 계열 main 브랜치)
+  - `layout.js`: `localFont({ src, display: "swap", weight: "45 920", variable: "--font-pretendard" })`, `<html className={pretendard.variable}>`. jsdelivr `<link>` 2개 제거.
+  - `globals.css`: `--font` 체인 맨 앞에 `var(--font-pretendard)` 추가, 기존 `"Pretendard Variable", Pretendard, ...` 폴백은 보존
+  - `npm run build` 통과. `.next/static/media/ff840cfebfb63b0c-s.p.woff2`로 번들됨 (`.p` suffix는 Next가 preload로 마킹했다는 뜻)
+  - 빌드 산출물에서 `cdn.jsdelivr` 잔존 참조 0건 확인
+- 회귀 리스크: 시각적 비교는 사용자 수동 확인 필요. 동일 variable font + 동일 weight range + `font-feature-settings: ss06/ss07/ss10`은 globals.css에 그대로 남아있어 자형 차이는 없을 것으로 예상.
