@@ -346,6 +346,98 @@
         background: var(--hairline);
       }
 
+      /* breadcrumb — back link row */
+      .breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-sm);
+        margin-bottom: var(--s-base);
+        color: var(--muted);
+        width: fit-content;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: color 0.15s;
+      }
+      .breadcrumb:hover {
+        color: var(--ink);
+      }
+
+      /* circular accent background for inline icons */
+      .icon-circle {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #fff0f3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .icon-circle--lg {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+      }
+      .icon-circle--xl {
+        width: 88px;
+        height: 88px;
+        background: var(--rausch);
+        box-shadow: 0 12px 32px rgba(255, 56, 92, 0.25);
+      }
+
+      /* screen-level vertical padding (used inside .container on detail pages) */
+      .screen-pad {
+        padding-top: var(--s-lg);
+        padding-bottom: var(--s-section);
+      }
+
+      /* outlined summary box (booking summary, etc.) */
+      .summary-box {
+        padding: 20px;
+        border: 1px solid var(--hairline);
+        border-radius: var(--r-md);
+      }
+      .summary-box--soft {
+        background: var(--surface-soft);
+        border: none;
+      }
+
+      /* margin-bottom spacing utilities (token-aligned) */
+      .mb-sm {
+        margin-bottom: var(--s-sm);
+      }
+      .mb-md {
+        margin-bottom: var(--s-md);
+      }
+      .mb-base {
+        margin-bottom: var(--s-base);
+      }
+      .mb-lg {
+        margin-bottom: var(--s-lg);
+      }
+      .mb-xl {
+        margin-bottom: var(--s-xl);
+      }
+      .mt-base {
+        margin-top: var(--s-base);
+      }
+      .mt-lg {
+        margin-top: var(--s-lg);
+      }
+
+      /* inline emphasized value inside a label/value row */
+      .value-strong {
+        font-weight: 500;
+      }
+
+      /* underlined inline link inside body copy */
+      .link-inline {
+        text-decoration: underline;
+        color: var(--ink);
+      }
+
       /* ─────────────────────────────────────────────
        Inputs
        ───────────────────────────────────────────── */
@@ -399,6 +491,11 @@
         font-size: 11px;
         font-weight: 600;
         color: var(--ink);
+      }
+      .badge-pill--accent {
+        background: #fff0f3;
+        color: var(--rausch);
+        box-shadow: none;
       }
       .tag {
         display: inline-flex;
@@ -1239,6 +1336,15 @@
           grid-template-columns: 1fr;
         }
       }
+      .review-cell-head {
+        margin-bottom: var(--s-sm);
+      }
+      .review-cell-text {
+        margin-top: var(--s-sm);
+      }
+      .review-cell-date {
+        margin-top: 6px;
+      }
 
       /* ─────────────────────────────────────────────
        Profile two-col
@@ -1307,6 +1413,18 @@
           grid-column: 1 / -1;
         }
       }
+      .pay-cta {
+        padding: 16px;
+        font-weight: 600;
+      }
+      .pay-summary-thumb {
+        position: relative;
+        width: 92px;
+        height: 92px;
+        border-radius: var(--r-md);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
       .pay-summary-card {
         border: 1px solid var(--hairline);
         border-radius: var(--r-md);
@@ -1333,6 +1451,49 @@
         .confirm-summary-card {
           padding: 20px;
         }
+      }
+      .confirm-container {
+        padding-top: var(--s-section);
+        padding-bottom: var(--s-section);
+        display: flex;
+        justify-content: center;
+      }
+      .confirm-stack {
+        max-width: 560px;
+        width: 100%;
+        text-align: center;
+      }
+      .confirm-check {
+        margin: 0 auto var(--s-lg);
+      }
+      .confirm-subtitle {
+        font-size: 17px;
+      }
+      .confirm-host-row {
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .confirm-divider {
+        margin: 0 0 20px;
+      }
+      .confirm-receipt {
+        background: var(--surface-soft);
+        border-radius: var(--r-sm);
+        padding: 16px 20px;
+        justify-content: center;
+      }
+      .confirm-cta {
+        min-width: 240px;
+        padding: 16px 32px;
+      }
+      .mt-md {
+        margin-top: var(--s-md);
+      }
+
+      /* "not found / no data" container — vertical breathing room */
+      .empty-state {
+        padding-top: var(--s-section);
+        padding-bottom: var(--s-section);
       }
 
       /* ─────────────────────────────────────────────
@@ -1449,6 +1610,12 @@
         background: var(--hairline-soft);
         margin: 32px 0;
       }
+      .divider--tight {
+        margin: 16px 0;
+      }
+      .divider--zero-top {
+        margin-top: 0;
+      }
 
       /* section header — h2 + action button row */
       .section-header {
@@ -1457,6 +1624,13 @@
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 12px;
+      }
+
+      /* section separated by a top border + breathing room */
+      .section-divided {
+        margin-top: var(--s-section);
+        padding-top: var(--s-xxl);
+        border-top: 1px solid var(--hairline-soft);
       }
 
       /* ─────────────────────────────────────────────

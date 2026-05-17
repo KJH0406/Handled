@@ -18,19 +18,11 @@ export default function ConfirmScreen() {
   if (!booking) {
     return (
       <main className="fade-in">
-        <div
-          className="container"
-          style={{
-            paddingTop: 64,
-            paddingBottom: 64,
-            textAlign: "center",
-          }}
-        >
+        <div className="container empty-state">
           <p className="t-body-md muted">Booking not found.</p>
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
-            style={{ marginTop: 16 }}
           >
             Home
           </button>
@@ -43,49 +35,19 @@ export default function ConfirmScreen() {
 
   return (
     <main className="fade-in">
-      <div
-        className="container"
-        style={{
-          paddingTop: 64,
-          paddingBottom: 64,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{ maxWidth: 560, width: "100%", textAlign: "center" }}
-        >
-          <div
-            style={{
-              width: 88,
-              height: 88,
-              borderRadius: "50%",
-              background: "var(--rausch)",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 24px",
-              boxShadow: "0 12px 32px rgba(255, 56, 92, 0.25)",
-            }}
-          >
+      <div className="container confirm-container">
+        <div className="confirm-stack">
+          <div className="icon-circle icon-circle--xl confirm-check">
             <Icon name="check" size={44} stroke="white" sw={3} />
           </div>
 
-          <h1 className="t-display-xl ink" style={{ marginBottom: 12 }}>
-            Booking confirmed!
-          </h1>
-          <p
-            className="t-body-md muted"
-            style={{ marginBottom: 32, fontSize: 17 }}
-          >
+          <h1 className="t-display-xl ink mb-md">Booking confirmed!</h1>
+          <p className="t-body-md muted mb-xl confirm-subtitle">
             {guide.name} will send a welcome message shortly.
           </p>
 
           <div className="confirm-summary-card">
-            <div
-              className="row row-gap-md"
-              style={{ marginBottom: 20, flexWrap: "wrap" }}
-            >
+            <div className="row row-gap-md confirm-host-row">
               <Avatar
                 src={guide.photo}
                 alt={guide.name}
@@ -100,18 +62,14 @@ export default function ConfirmScreen() {
                 </div>
               </div>
               <span
-                className="badge-pill"
-                style={{
-                  background: "#fff0f3",
-                  color: "var(--rausch)",
-                  flexShrink: 0,
-                }}
+                className="badge-pill badge-pill--accent"
+                style={{ flexShrink: 0 }}
               >
                 {booking.experience ? "Experience" : "Custom tour"}
               </span>
             </div>
 
-            <div className="divider" style={{ margin: "0 0 20px" }} />
+            <div className="divider confirm-divider" />
 
             <div className="stack-md">
               {booking.experience && (
@@ -165,16 +123,7 @@ export default function ConfirmScreen() {
             </div>
           </div>
 
-          <div
-            className="row row-gap-sm"
-            style={{
-              background: "var(--surface-soft)",
-              borderRadius: "var(--r-sm)",
-              padding: "16px 20px",
-              justifyContent: "center",
-              marginBottom: 32,
-            }}
-          >
+          <div className="row row-gap-sm confirm-receipt mb-xl">
             <Icon name="mail" size={18} stroke="var(--ink)" />
             <span className="t-body-sm body">
               We have emailed you a receipt.
@@ -182,16 +131,14 @@ export default function ConfirmScreen() {
           </div>
 
           <button
-            className="btn btn-primary"
-            style={{ minWidth: 240, padding: "16px 32px" }}
+            className="btn btn-primary confirm-cta"
             onClick={() => navigate("home")}
           >
             Back to home
           </button>
-          <div style={{ marginTop: 12 }}>
+          <div className="mt-md">
             <button
-              className="btn-tertiary t-body-sm"
-              style={{ textDecoration: "underline" }}
+              className="btn-tertiary t-body-sm link-inline"
               onClick={() => navigate("list")}
             >
               Browse more guides

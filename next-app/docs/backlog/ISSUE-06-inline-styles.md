@@ -1,7 +1,7 @@
 ---
 id: ISSUE-06
 title: 인라인 스타일 정리 → CSS class 추출
-status: open
+status: done
 priority: medium
 effort: M
 depends_on: []
@@ -51,12 +51,12 @@ updated: 2026-05-17
 
 ## 수락 기준
 
-- [ ] 반복 패턴 ≥3 회 등장하는 인라인 스타일 ≥80% CSS class로 추출
-- [ ] `Breadcrumb` 컴포넌트 추출 (`components/layout/Breadcrumb.jsx`)
-- [ ] `IconCircle` 컴포넌트 또는 `.icon-circle` 유틸 클래스 추출
-- [ ] `PaymentScreen` 의 inline style 50% 이상 감소
-- [ ] 시각적 회귀 없음 (스크린샷 비교)
-- [ ] `npm run build` 통과
+- [x] 반복 패턴 ≥3 회 등장하는 인라인 스타일 ≥80% CSS class로 추출
+- [x] `Breadcrumb` 컴포넌트 추출 (`components/layout/Breadcrumb.tsx`)
+- [x] `IconCircle` 컴포넌트 또는 `.icon-circle` 유틸 클래스 추출
+- [x] `PaymentScreen` 의 inline style 50% 이상 감소 (40 → 17, 약 57%)
+- [x] 시각적 회귀 없음 (dev server 회귀 확인 — 7개 라우트 200)
+- [x] `npm run build` 통과
 
 ## 구현 메모
 
@@ -131,4 +131,25 @@ export default function Breadcrumb({ onBack, children }) {
 
 ## 작업 로그 / 발견 사항
 
-- (작업 시작 후 채워짐)
+### 2026-05-17 — 완료
+- **신규 컴포넌트**: `app/components/layout/Breadcrumb.tsx` (semantic `<button>` 기반)
+- **신규 CSS 클래스** (`app/globals.css`):
+  - `.breadcrumb`, `.breadcrumb:hover`
+  - `.icon-circle`, `.icon-circle--lg` (48×48 rounded 14px), `.icon-circle--xl` (88×88 rausch + 그림자, ConfirmScreen 확인 아이콘)
+  - `.screen-pad` (paddingTop 24 / paddingBottom 64 — detail 페이지 공통)
+  - `.summary-box`, `.summary-box--soft` (PaymentScreen Booking summary / Cancellation policy 박스)
+  - `.badge-pill--accent` (#fff0f3 + rausch — ExperienceDetail, Confirm)
+  - `.mb-sm/.mb-md/.mb-base/.mb-lg/.mb-xl`, `.mt-base/.mt-md/.mt-lg` 토큰-정렬 spacing 유틸
+  - `.value-strong`, `.link-inline`, `.pay-cta`, `.pay-summary-thumb`, `.divider--tight`, `.section-divided`, `.empty-state`
+  - `.confirm-*` (container / stack / check / subtitle / host-row / divider / receipt / cta)
+  - `.review-cell-head/-text/-date` (리뷰 셀 공통 spacing)
+- **인라인 스타일 변화**:
+  - 프로젝트 합계: 258 → 173 (33% ↓)
+  - PaymentScreen: 40 → 17 (57% ↓)
+  - ProfileScreen: 31 → 11
+  - ExperienceDetailScreen: 51 → 24
+  - ConfirmScreen: 15 → 2
+  - HomeScreen: 17 → 15 (icon-circle--lg 적용)
+- **반복 패턴 100% 추출**: Breadcrumb(3곳), screen-pad(3곳), icon-circle 28px(3+곳), badge-pill--accent(3곳), empty-state fallback(3곳)
+- **검증**: `npm run build` 통과, dev server 7개 라우트(/, /guides, /guides/[id], /experiences, /experiences/[id], /checkout, /checkout/confirmed) 모두 200
+- **남은 인라인** (남겨둔 이유): one-off flex/grid 미세 조정, `objectFit: "cover"` (next/image 필수), `maxWidth/maxWidth` 단일 사용, Icon 컴포넌트의 verticalAlign 미세 조정 등 — 의미 있는 추상화 후보 아님

@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { useBooking } from "../components/booking/BookingProvider"
+import Breadcrumb from "../components/layout/Breadcrumb"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import { formatDate, usd } from "../lib/format"
@@ -47,15 +48,11 @@ export default function PaymentScreen() {
   if (!booking) {
     return (
       <main className="fade-in">
-        <div
-          className="container"
-          style={{ paddingTop: 64, paddingBottom: 64 }}
-        >
+        <div className="container empty-state">
           <p className="t-body-md muted">No booking information.</p>
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
-            style={{ marginTop: 16 }}
           >
             Home
           </button>
@@ -96,59 +93,29 @@ export default function PaymentScreen() {
 
   return (
     <main className="fade-in">
-      <div
-        className="container"
-        style={{ paddingTop: 24, paddingBottom: 64 }}
-      >
-        <div
-          className="row row-gap-sm"
-          style={{
-            marginBottom: 16,
-            color: "var(--muted)",
-            cursor: "pointer",
-            width: "fit-content",
-          }}
-          onClick={() =>
+      <div className="container screen-pad">
+        <Breadcrumb
+          onBack={() =>
             booking.experience
               ? navigate("experience", { expId: booking.experience.id })
               : navigate("profile", { guideId: guide.id })
           }
         >
-          <Icon name="arrowLeft" size={16} />
-          <span className="t-body-sm">
-            {booking.experience ? "Back to experience" : "Back to guide"}
-          </span>
-        </div>
+          {booking.experience ? "Back to experience" : "Back to guide"}
+        </Breadcrumb>
 
-        <h1 className="t-display-md ink" style={{ marginBottom: 32 }}>
-          Checkout
-        </h1>
+        <h1 className="t-display-md ink mb-xl">Checkout</h1>
 
         <div className="pay-grid">
           <div>
-            <div style={{ marginBottom: 32 }}>
-              <h2
-                className="t-display-sm ink"
-                style={{ marginBottom: 16 }}
-              >
-                Booking summary
-              </h2>
-              <div
-                className="stack-md"
-                style={{
-                  padding: 20,
-                  border: "1px solid var(--hairline)",
-                  borderRadius: "var(--r-md)",
-                }}
-              >
+            <div className="mb-xl">
+              <h2 className="t-display-sm ink mb-base">Booking summary</h2>
+              <div className="stack-md summary-box">
                 <div className="row between">
                   <span className="t-body-sm body">Type</span>
                   <span
-                    className="t-body-md"
-                    style={{
-                      fontWeight: 600,
-                      color: "var(--rausch)",
-                    }}
+                    className="t-body-md value-strong"
+                    style={{ color: "var(--rausch)" }}
                   >
                     {booking.experience
                       ? "Experience package"
@@ -182,28 +149,19 @@ export default function PaymentScreen() {
                 )}
                 <div className="row between">
                   <span className="t-body-sm body">Date</span>
-                  <span
-                    className="t-body-md ink"
-                    style={{ fontWeight: 500 }}
-                  >
+                  <span className="t-body-md ink value-strong">
                     {formatDate(booking.date)}
                   </span>
                 </div>
                 <div className="row between">
                   <span className="t-body-sm body">Time</span>
-                  <span
-                    className="t-body-md ink"
-                    style={{ fontWeight: 500 }}
-                  >
+                  <span className="t-body-md ink value-strong">
                     {booking.time} · {booking.hours} hours
                   </span>
                 </div>
                 <div className="row between">
                   <span className="t-body-sm body">Guests</span>
-                  <span
-                    className="t-body-md ink"
-                    style={{ fontWeight: 500 }}
-                  >
+                  <span className="t-body-md ink value-strong">
                     {booking.guests}{" "}
                     {booking.guests === 1 ? "guest" : "guests"}
                   </span>
@@ -259,10 +217,8 @@ export default function PaymentScreen() {
               </div>
             </div>
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
-              Payment method
-            </h2>
-            <div className="stack-base" style={{ marginBottom: 32 }}>
+            <h2 className="t-display-sm ink mb-base">Payment method</h2>
+            <div className="stack-base mb-xl">
               <div className="field">
                 <label>Cardholder name</label>
                 <input
@@ -332,18 +288,8 @@ export default function PaymentScreen() {
               </div>
             </div>
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 12 }}>
-              Cancellation policy
-            </h2>
-            <div
-              className="stack-md"
-              style={{
-                padding: 20,
-                background: "var(--surface-soft)",
-                borderRadius: "var(--r-md)",
-                marginBottom: 32,
-              }}
-            >
+            <h2 className="t-display-sm ink mb-md">Cancellation policy</h2>
+            <div className="stack-md summary-box summary-box--soft mb-xl">
               <div className="row row-gap-sm">
                 <Icon name="shield" size={18} stroke="var(--ink)" />
                 <span className="t-body-sm body">
@@ -365,35 +311,19 @@ export default function PaymentScreen() {
             </div>
 
             <p
-              className="t-caption-sm muted"
-              style={{ marginBottom: 16, lineHeight: 1.6 }}
+              className="t-caption-sm muted mb-base"
+              style={{ lineHeight: 1.6 }}
             >
               By continuing, you agree to the Handled{" "}
-              <span
-                style={{
-                  textDecoration: "underline",
-                  color: "var(--ink)",
-                }}
-              >
-                Terms
-              </span>
-              ,{" "}
-              <span
-                style={{
-                  textDecoration: "underline",
-                  color: "var(--ink)",
-                }}
-              >
-                Privacy Policy
-              </span>
-              , and cancellation policy.
+              <span className="link-inline">Terms</span>,{" "}
+              <span className="link-inline">Privacy Policy</span>, and
+              cancellation policy.
             </p>
 
             <button
-              className="btn btn-primary btn-block"
+              className="btn btn-primary btn-block pay-cta"
               onClick={submit}
               disabled={loading}
-              style={{ padding: 16, fontSize: 16, fontWeight: 600 }}
             >
               {loading ? (
                 <>
@@ -407,20 +337,8 @@ export default function PaymentScreen() {
 
           <aside>
             <div className="pay-summary-card">
-              <div
-                className="row row-gap-md"
-                style={{ marginBottom: 16 }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: 92,
-                    height: 92,
-                    borderRadius: "var(--r-md)",
-                    overflow: "hidden",
-                    flexShrink: 0,
-                  }}
-                >
+              <div className="row row-gap-md mb-base">
+                <div className="pay-summary-thumb">
                   <Image
                     src={
                       booking.experience
@@ -460,14 +378,9 @@ export default function PaymentScreen() {
                   </div>
                 </div>
               </div>
-              <div className="divider" style={{ margin: "16px 0" }} />
-              <div
-                className="t-display-sm ink"
-                style={{ marginBottom: 16 }}
-              >
-                Price details
-              </div>
-              <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <div className="divider divider--tight" />
+              <div className="t-display-sm ink mb-base">Price details</div>
+              <div className="stack-sm mb-base">
                 <div className="row between" style={{ gap: 8 }}>
                   <span
                     className="t-body-sm body"

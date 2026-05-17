@@ -152,26 +152,10 @@ export default function HomeScreen() {
                 className="card card-pad-lg"
                 style={{ border: "none" }}
               >
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 14,
-                    background: "#fff0f3",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 16,
-                  }}
-                >
+                <div className="icon-circle icon-circle--lg mb-base">
                   <Icon name={f.icon} size={22} stroke="var(--rausch)" />
                 </div>
-                <div
-                  className="t-display-sm ink"
-                  style={{ marginBottom: 8 }}
-                >
-                  {f.title}
-                </div>
+                <div className="t-display-sm ink mb-sm">{f.title}</div>
                 <div className="t-body-sm muted">{f.desc}</div>
               </div>
             ))}

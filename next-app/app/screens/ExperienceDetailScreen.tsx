@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useMemo, useState } from "react"
 import { useBooking } from "../components/booking/BookingProvider"
 import ExpBookingPanel from "../components/booking/ExpBookingPanel"
+import Breadcrumb from "../components/layout/Breadcrumb"
 import Avatar from "../components/ui/Avatar"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
@@ -39,14 +40,10 @@ export default function ExperienceDetailScreen({
   if (!exp || !guide) {
     return (
       <main className="fade-in">
-        <div
-          className="container"
-          style={{ paddingTop: 64, paddingBottom: 64 }}
-        >
+        <div className="container empty-state">
           <p className="t-body-md muted">Experience not found.</p>
           <button
-            className="btn btn-secondary"
-            style={{ marginTop: 16 }}
+            className="btn btn-secondary mt-base"
             onClick={() => navigate("home")}
           >
             Home
@@ -62,46 +59,26 @@ export default function ExperienceDetailScreen({
 
   return (
     <main className="fade-in">
-      <div
-        className="container"
-        style={{ paddingTop: 24, paddingBottom: 64 }}
-      >
-        <div
-          className="row row-gap-sm"
-          style={{
-            marginBottom: 16,
-            color: "var(--muted)",
-            cursor: "pointer",
-            width: "fit-content",
-          }}
-          onClick={() => navigate("profile", { guideId: guide.id })}
+      <div className="container screen-pad">
+        <Breadcrumb
+          onBack={() => navigate("profile", { guideId: guide.id })}
         >
-          <Icon name="arrowLeft" size={16} />
-          <span className="t-body-sm">Back to {guide.name}</span>
-        </div>
+          Back to {guide.name}
+        </Breadcrumb>
 
         <div style={{ marginBottom: 16 }}>
           <div
             className="row row-gap-sm"
             style={{ marginBottom: 8, flexWrap: "wrap" }}
           >
-            <span
-              className="badge-pill"
-              style={{
-                background: "#fff0f3",
-                color: "var(--rausch)",
-                boxShadow: "none",
-              }}
-            >
+            <span className="badge-pill badge-pill--accent">
               {exp.category}
             </span>
             <span className="t-caption muted">
               {exp.duration}h package · Up to {exp.maxGuests}
             </span>
           </div>
-          <h1 className="t-display-lg ink" style={{ marginBottom: 8 }}>
-            {exp.title}
-          </h1>
+          <h1 className="t-display-lg ink mb-sm">{exp.title}</h1>
           <div className="row row-gap-sm" style={{ flexWrap: "wrap" }}>
             <Stars rating={guide.rating} />
             <span className="t-body-sm body">· {guide.reviews} reviews</span>
@@ -122,7 +99,7 @@ export default function ExperienceDetailScreen({
           </div>
         </div>
 
-        <div className="gallery" style={{ marginBottom: 32 }}>
+        <div className="gallery mb-xl">
           <div
             className="gallery-cell gallery-main"
             style={{ borderRadius: "14px 0 0 14px" }}
@@ -201,13 +178,9 @@ export default function ExperienceDetailScreen({
 
         <div className="profile-grid">
           <div>
-            <h2 className="t-display-sm ink" style={{ marginBottom: 12 }}>
-              What you will do
-            </h2>
-            <p className="t-body-md body" style={{ marginBottom: 20 }}>
-              {exp.summary}
-            </p>
-            <div className="stack-md" style={{ marginBottom: 32 }}>
+            <h2 className="t-display-sm ink mb-md">What you will do</h2>
+            <p className="t-body-md body mb-lg">{exp.summary}</p>
+            <div className="stack-md mb-xl">
               {exp.includes.map((item, i) => (
                 <div key={i} className="row row-gap-md">
                   <Icon
@@ -223,13 +196,11 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
-              Itinerary
-            </h2>
-            <p className="t-body-sm muted" style={{ marginBottom: 16 }}>
+            <h2 className="t-display-sm ink mb-base">Itinerary</h2>
+            <p className="t-body-sm muted mb-base">
               Total {exp.duration} hours
             </p>
-            <div className="schedule-list" style={{ marginBottom: 32 }}>
+            <div className="schedule-list mb-xl">
               {schedule.map((s, i) => (
                 <div key={i} className="schedule-item">
                   <div className="schedule-item-photo">
@@ -257,10 +228,8 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
-              About your host
-            </h2>
-            <div className="host-mini-card" style={{ marginBottom: 16 }}>
+            <h2 className="t-display-sm ink mb-base">About your host</h2>
+            <div className="host-mini-card mb-base">
               <Avatar
                 src={guide.photo}
                 alt={guide.name}
@@ -294,45 +263,31 @@ export default function ExperienceDetailScreen({
                 View profile
               </button>
             </div>
-            <p className="t-body-sm body" style={{ marginBottom: 32 }}>
-              {guide.bio}
-            </p>
+            <p className="t-body-sm body mb-xl">{guide.bio}</p>
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
-              Meeting place
-            </h2>
-            <div className="meet-map" style={{ marginBottom: 12 }}>
+            <h2 className="t-display-sm ink mb-base">Meeting place</h2>
+            <div className="meet-map mb-md">
               <div className="meet-pin">
                 <Icon name="pin" size={16} stroke="var(--rausch)" />
-                <span
-                  className="t-body-sm ink"
-                  style={{ fontWeight: 500 }}
-                >
+                <span className="t-body-sm ink value-strong">
                   {guide.district}
                 </span>
               </div>
             </div>
-            <p className="t-body-sm muted" style={{ marginBottom: 32 }}>
-              {meetingPlace(exp, guide)}
-            </p>
+            <p className="t-body-sm muted mb-xl">{meetingPlace(exp, guide)}</p>
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
-              Good to know
-            </h2>
-            <div className="info-grid" style={{ marginBottom: 32 }}>
+            <h2 className="t-display-sm ink mb-base">Good to know</h2>
+            <div className="info-grid mb-xl">
               <div className="info-grid-item">
                 <div className="info-grid-item-icon">
                   <Icon name="users" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Group size
                   </div>
                   <div className="t-body-sm muted">
@@ -345,10 +300,7 @@ export default function ExperienceDetailScreen({
                   <Icon name="clock" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Duration
                   </div>
                   <div className="t-body-sm muted">
@@ -361,10 +313,7 @@ export default function ExperienceDetailScreen({
                   <Icon name="globe" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Language
                   </div>
                   <div className="t-body-sm muted">
@@ -377,10 +326,7 @@ export default function ExperienceDetailScreen({
                   <Icon name="shield" size={18} />
                 </div>
                 <div>
-                  <div
-                    className="t-title-sm ink"
-                    style={{ marginBottom: 4 }}
-                  >
+                  <div className="t-title-sm ink" style={{ marginBottom: 4 }}>
                     Cancellation
                   </div>
                   <div className="t-body-sm muted">
@@ -392,7 +338,7 @@ export default function ExperienceDetailScreen({
 
             <div className="divider" />
 
-            <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+            <h2 className="t-display-sm ink mb-sm">
               <Icon
                 name="star"
                 size={18}
@@ -402,19 +348,13 @@ export default function ExperienceDetailScreen({
               />{" "}
               {guide.rating.toFixed(2)} · {guide.reviews} reviews
             </h2>
-            <p
-              className="t-caption-sm muted"
-              style={{ marginBottom: 24 }}
-            >
+            <p className="t-caption-sm muted mb-lg">
               Reviews for all experiences hosted by {guide.name}
             </p>
             <div className="review-grid">
               {reviews.slice(0, 4).map((r, i) => (
-                <div key={i}>
-                  <div
-                    className="row row-gap-sm"
-                    style={{ marginBottom: 8 }}
-                  >
+                <div key={i} className="review-cell">
+                  <div className="row row-gap-sm review-cell-head">
                     <Avatar size={36} name={r.name} src="" />
                     <div>
                       <div className="t-title-sm ink">{r.name}</div>
@@ -422,13 +362,10 @@ export default function ExperienceDetailScreen({
                     </div>
                   </div>
                   <Stars rating={r.rating} />
-                  <p className="t-body-sm body" style={{ marginTop: 8 }}>
+                  <p className="t-body-sm body review-cell-text">
                     &quot;{r.text}&quot;
                   </p>
-                  <div
-                    className="t-caption-sm muted-soft"
-                    style={{ marginTop: 6 }}
-                  >
+                  <div className="t-caption-sm muted-soft review-cell-date">
                     {r.date}
                   </div>
                 </div>
