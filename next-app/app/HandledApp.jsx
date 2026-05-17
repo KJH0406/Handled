@@ -1,0 +1,4667 @@
+"use client"
+
+import React, { useState, useEffect, useMemo, useRef } from "react"
+
+
+      /* ═══════════════════════════════════════════════
+       ICON COMPONENT
+       ═══════════════════════════════════════════════ */
+      const Icon = ({
+        name,
+        size = 20,
+        fill = "none",
+        stroke = "currentColor",
+        sw = 2,
+        style,
+      }) => {
+        const paths = {
+          search: (
+            <>
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </>
+          ),
+          star: (
+            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+          ),
+          heart: (
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          ),
+          check: <polyline points="20,6 9,17 4,12" />,
+          x: (
+            <>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </>
+          ),
+          chevronLeft: <polyline points="15,18 9,12 15,6" />,
+          chevronRight: <polyline points="9,18 15,12 9,6" />,
+          chevronDown: <polyline points="6,9 12,15 18,9" />,
+          plus: (
+            <>
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </>
+          ),
+          minus: <line x1="5" y1="12" x2="19" y2="12" />,
+          map: (
+            <>
+              <polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2 1,6" />
+              <line x1="8" y1="2" x2="8" y2="18" />
+              <line x1="16" y1="6" x2="16" y2="22" />
+            </>
+          ),
+          pin: (
+            <>
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </>
+          ),
+          calendar: (
+            <>
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </>
+          ),
+          clock: (
+            <>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12,6 12,12 16,14" />
+            </>
+          ),
+          user: (
+            <>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </>
+          ),
+          users: (
+            <>
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </>
+          ),
+          globe: (
+            <>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </>
+          ),
+          menu: (
+            <>
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </>
+          ),
+          award: (
+            <>
+              <circle cx="12" cy="8" r="7" />
+              <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88" />
+            </>
+          ),
+          shield: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
+          lock: (
+            <>
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </>
+          ),
+          mail: (
+            <>
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </>
+          ),
+          message: (
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          ),
+          camera: (
+            <>
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </>
+          ),
+          sparkles: (
+            <path d="M12 3l1.7 5.5L19 10l-5.3 1.5L12 17l-1.7-5.5L5 10l5.3-1.5z" />
+          ),
+          arrowRight: (
+            <>
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12,5 19,12 12,19" />
+            </>
+          ),
+          arrowLeft: (
+            <>
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12,19 5,12 12,5" />
+            </>
+          ),
+          building: (
+            <>
+              <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+              <line x1="9" y1="22" x2="9" y2="18" />
+              <line x1="15" y1="22" x2="15" y2="18" />
+              <line x1="8" y1="6" x2="10" y2="6" />
+              <line x1="14" y1="6" x2="16" y2="6" />
+              <line x1="8" y1="10" x2="10" y2="10" />
+              <line x1="14" y1="10" x2="16" y2="10" />
+              <line x1="8" y1="14" x2="10" y2="14" />
+              <line x1="14" y1="14" x2="16" y2="14" />
+            </>
+          ),
+          refresh: (
+            <>
+              <polyline points="23,4 23,10 17,10" />
+              <path d="M20.49 15A9 9 0 1 1 5.64 5.64L1 10" />
+            </>
+          ),
+          home: (
+            <>
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9,22 9,12 15,12 15,22" />
+            </>
+          ),
+        }
+        return (
+          <svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill={fill}
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ display: "block", flexShrink: 0, ...(style || {}) }}
+          >
+            {paths[name]}
+          </svg>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       FORMAT HELPERS
+       ═══════════════════════════════════════════════ */
+      const usd = (n) =>
+        "$" + new Intl.NumberFormat("en-US").format(Math.round(n))
+
+      const formatDate = (d) => {
+        if (!d) return ""
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ]
+        const dows = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        return `${dows[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+      }
+
+      const shortDate = (d) => {
+        if (!d) return ""
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ]
+        return `${months[d.getMonth()]} ${d.getDate()}`
+      }
+
+      /* ═══════════════════════════════════════════════
+       MOCK DATA
+       ═══════════════════════════════════════════════ */
+      const PHOTO_BASE = "https://images.unsplash.com/"
+      const photo = (id, w = 800) =>
+        `${PHOTO_BASE}${id}?w=${w}&h=${w}&fit=crop&auto=format&q=80`
+
+      const GUIDES = [
+        {
+          id: "soyeon",
+          name: "Soyeon",
+          photo: photo("photo-1576091160550-2173dba999ef"),
+          gallery: [
+            photo("photo-1624176193860-dd7866e5a8aa", 1200),
+            photo("photo-1517231925375-bf2cb42917a5"),
+            photo("photo-1546874177-9e664107314e"),
+            photo("photo-1517256064527-09c73fc73e38"),
+            photo("photo-1741896136113-c33a4fded0b5"),
+          ],
+          city: "Seoul",
+          district: "Hongdae · Insadong",
+          rating: 4.97,
+          reviews: 124,
+          hourlyRate: 50,
+          yearsHosting: 4,
+          superhost: true,
+          languages: ["Korean", "English", "Japanese"],
+          styles: ["Food", "Culture", "Shopping"],
+          oneLiner:
+            "See Seoul through a local's palate — palaces, alley eats, hidden cafés.",
+          bio: "Seoul native, 5+ years guiding. From traditional palaces to hidden alley eats, I show you the Seoul locals actually live in. Best for travelers who love food tours, K-culture, and off-the-beaten-path discoveries.",
+          intro:
+            "Hi, I'm Soyeon. I love Korean food, K-pop, fashion — both trends and tradition. I'll make your first Korea trip unforgettable.",
+          highlights: [
+            "Custom food crawls",
+            "K-beauty consulting",
+            "Café-hopping circuit",
+          ],
+          cities: ["Seoul", "Incheon"],
+        },
+        {
+          id: "minjun",
+          name: "Minjun",
+          photo: photo("photo-1542909168-82c3e7fdca5c"),
+          gallery: [
+            photo("photo-1597259309583-aaa2584e2085", 1200),
+            photo("photo-1493246318656-5bfd4cfb29b8"),
+            photo("photo-1545987796-200677ee1011"),
+            photo("photo-1546874177-9e664107314e"),
+            photo("photo-1625849328373-996bd407b702"),
+          ],
+          city: "Seoul",
+          district: "Gangnam · Itaewon",
+          rating: 4.93,
+          reviews: 89,
+          hourlyRate: 55,
+          yearsHosting: 3,
+          superhost: true,
+          languages: ["Korean", "English", "French"],
+          styles: ["Architecture", "Art", "Nightlife"],
+          oneLiner:
+            "Seoul through an architect's eye — galleries, rooftops, urban walks.",
+          bio: "Architect by training, guide by passion. I show how Seoul transformed from a post-war city to a global metropolis through a designer's lens. Best for design lovers and photographers.",
+          intro:
+            "I love walking with the grain of a city. Discover the real Seoul in its alleys and between its buildings.",
+          highlights: [
+            "Architecture walks",
+            "Gallery circuit",
+            "Rooftop bar crawl",
+          ],
+          cities: ["Seoul"],
+        },
+        {
+          id: "soojin",
+          name: "Soojin",
+          photo: photo("photo-1502823403499-6ccfcf4fb453"),
+          gallery: [
+            photo("photo-1672671187899-a10f547341f1", 1200),
+            photo("photo-1558160074-4d7d8bdf4256"),
+            photo("photo-1622219969983-45589eae5637"),
+            photo("photo-1685875207365-2466c524a56b"),
+            photo("photo-1626803774007-f92c2c32cbe7"),
+          ],
+          city: "Busan",
+          district: "Haeundae · Gamcheon",
+          rating: 4.99,
+          reviews: 67,
+          hourlyRate: 45,
+          yearsHosting: 5,
+          superhost: true,
+          languages: ["Korean", "English"],
+          styles: ["Beach", "History", "Photo"],
+          oneLiner: "Real Busan — dawn fish market to golden-hour Gamcheon.",
+          bio: "Busan-born and raised. Pre-dawn fish markets at Jagalchi, the golden glow of Gamcheon Village, and beachside bars at night — courses only locals know.",
+          intro:
+            "I grew up by the sea and love every fold of Busan. Let's discover the real Busan together.",
+          highlights: [
+            "Jagalchi dawn market tour",
+            "Gamcheon photo walk",
+            "Sunset sailing",
+          ],
+          cities: ["Busan"],
+        },
+        {
+          id: "dohyun",
+          name: "Dohyun",
+          photo: photo("photo-1583394293214-28ded15ee548"),
+          gallery: [
+            photo("photo-1558883493-8b86ff880fec", 1200),
+            photo("photo-1584345110951-7c0e3ca09b82"),
+            photo("photo-1672671247929-e35a095fbab7"),
+            photo("photo-1542224566-6e85f2e6772f"),
+            photo("photo-1680002530174-c44c38fee9e7"),
+          ],
+          city: "Jeju",
+          district: "Jeju City · Mt. Hallasan",
+          rating: 4.95,
+          reviews: 41,
+          hourlyRate: 55,
+          yearsHosting: 2,
+          superhost: false,
+          languages: ["Korean", "English"],
+          styles: ["Nature", "Culture", "Food"],
+          oneLiner:
+            "Volcanic trails, haenyeo culture, and black-pork BBQ — the real Jeju.",
+          bio: "Jeju is paradise — volcanic craters, pristine beaches, and the unique haenyeo culture. I've walked every trail and hidden cove.",
+          intro:
+            "I love Jeju's unhurried tempo. Let's experience this island slowly and deeply.",
+          highlights: [
+            "Mt. Hallasan sunrise hike",
+            "Haenyeo village visit",
+            "Black-pork BBQ night",
+          ],
+          cities: ["Jeju"],
+        },
+        {
+          id: "hyerim",
+          name: "Hyerim",
+          photo: photo("photo-1532170579297-281918c8ae72"),
+          gallery: [
+            photo("photo-1539920225512-31f8905dc582", 1200),
+            photo("photo-1711887540798-9d7d720e5319"),
+            photo("photo-1531969179221-3946e6b5a5e7"),
+            photo("photo-1666670750287-176e3218ce12"),
+            photo("photo-1564890369478-c89ca6d9cde9"),
+          ],
+          city: "Seoul",
+          district: "Bukchon · Gyeongbokgung",
+          rating: 4.91,
+          reviews: 156,
+          hourlyRate: 50,
+          yearsHosting: 6,
+          superhost: true,
+          languages: ["Korean", "English", "Mandarin"],
+          styles: ["History", "Traditional", "Hanbok"],
+          oneLiner: "Joseon-era Seoul — palaces, hanok villages, and hanbok.",
+          bio: "Former history teacher. I bring Joseon-dynasty Seoul to life through palaces, hanok villages, and traditional crafts.",
+          intro:
+            "I love walking with Korea's history. Wear a hanbok and feel like royalty for a day.",
+          highlights: [
+            "Royal Guard changing ceremony",
+            "Hanbok photo tour",
+            "Traditional tea ceremony",
+          ],
+          cities: ["Seoul"],
+        },
+        {
+          id: "sungwoo",
+          name: "Sungwoo",
+          photo: photo("photo-1582719188393-bb71ca45dbb9"),
+          gallery: [
+            photo("photo-1626803774007-f92c2c32cbe7", 1200),
+            photo("photo-1638198800371-32341c84beba"),
+            photo("photo-1671959670540-d56f2849a375"),
+            photo("photo-1665474099695-59f01d63bee1"),
+            photo("photo-1709433420601-6e473136571b"),
+          ],
+          city: "Incheon",
+          district: "Chinatown · Songdo",
+          rating: 4.88,
+          reviews: 52,
+          hourlyRate: 40,
+          yearsHosting: 2,
+          superhost: false,
+          languages: ["Korean", "English"],
+          styles: ["Food", "Urban"],
+          oneLiner: "Incheon is more than the airport — Chinatown to Songdo.",
+          bio: "Incheon is more than just the airport. Hidden Chinatown, the modern Songdo district, and life-changing jajangmyeon. Perfect day trip from Seoul.",
+          intro:
+            "A satellite city of Seoul with a vibe of its own. Discover a different Korea, just nearby.",
+          highlights: [
+            "Chinatown food walk",
+            "Songdo Central Park",
+            "Incheon Bridge views",
+          ],
+          cities: ["Incheon"],
+        },
+      ]
+
+      const REVIEWS_BY_GUIDE = {
+        soyeon: [
+          {
+            name: "Sarah M.",
+            country: "USA",
+            date: "April 2026",
+            rating: 5,
+            text: "Soyeon made our first Korea trip perfect. She showed us alley eats no guidebook would. Already planning to book her again!",
+          },
+          {
+            name: "Thomas K.",
+            country: "Germany",
+            date: "March 2026",
+            rating: 5,
+            text: "Six hours flew by. Professional, fun, and warm. The K-beauty recommendations were spot on.",
+          },
+          {
+            name: "Yuki T.",
+            country: "Japan",
+            date: "March 2026",
+            rating: 5,
+            text: "She translated to Japanese which made everything so easy. Truly felt like a local for a day!",
+          },
+          {
+            name: "Marie L.",
+            country: "France",
+            date: "February 2026",
+            rating: 5,
+            text: "Soyeon is genuinely warm. The tteokbokki spot she recommended — I'll never forget it.",
+          },
+        ],
+        minjun: [
+          {
+            name: "Anders H.",
+            country: "Sweden",
+            date: "April 2026",
+            rating: 5,
+            text: "Seeing Seoul through an architect's lens was unbelievably rich. The gallery circuit stood out.",
+          },
+          {
+            name: "Camille R.",
+            country: "France",
+            date: "March 2026",
+            rating: 5,
+            text: "Touring in French was so comfortable. Highly recommend for design lovers!",
+          },
+          {
+            name: "David P.",
+            country: "UK",
+            date: "February 2026",
+            rating: 4,
+            text: "The rooftop bar circuit was great, and he knows all the best night-photo spots.",
+          },
+        ],
+        soojin: [
+          {
+            name: "Emily R.",
+            country: "USA",
+            date: "April 2026",
+            rating: 5,
+            text: "The dawn Jagalchi market tour was the experience of a lifetime. She also took amazing photos!",
+          },
+          {
+            name: "Liu W.",
+            country: "China",
+            date: "March 2026",
+            rating: 5,
+            text: "Gamcheon Village looked like a movie. Thanks for recommending the golden hour timing.",
+          },
+        ],
+        dohyun: [
+          {
+            name: "Mateo F.",
+            country: "Spain",
+            date: "April 2026",
+            rating: 5,
+            text: "The Hallasan sunrise will stay with me forever. The black-pork BBQ was the best, too!",
+          },
+          {
+            name: "Hannah M.",
+            country: "Australia",
+            date: "March 2026",
+            rating: 5,
+            text: "Meeting the haenyeo women was deeply special. Dohyun gave us a real understanding of Jeju.",
+          },
+        ],
+        hyerim: [
+          {
+            name: "Olivia S.",
+            country: "Canada",
+            date: "April 2026",
+            rating: 5,
+            text: "Hanbok stroll through Gyeongbokgung — felt like a movie. She takes incredible photos!",
+          },
+          {
+            name: "Wei C.",
+            country: "Taiwan",
+            date: "March 2026",
+            rating: 5,
+            text: "Mandarin meant we got deeper history. The tea ceremony was unforgettable.",
+          },
+          {
+            name: "James B.",
+            country: "USA",
+            date: "February 2026",
+            rating: 5,
+            text: "Her teaching background shows — explanations are rich and engaging. Best for family trips!",
+          },
+        ],
+        sungwoo: [
+          {
+            name: "Greta P.",
+            country: "Germany",
+            date: "April 2026",
+            rating: 5,
+            text: "Incheon Chinatown jajangmyeon was the best of my life. Songdo was a surprise too.",
+          },
+          {
+            name: "Akira S.",
+            country: "Japan",
+            date: "March 2026",
+            rating: 4,
+            text: "Perfect day trip from Seoul. The Incheon Bridge night view is a must!",
+          },
+        ],
+      }
+
+      /* Experiences offered by each guide — like a freelancer's "menu" */
+      const EXPERIENCES = [
+        // Soyeon (Seoul · Food, Culture, Shopping)
+        {
+          id: "exp-soyeon-1",
+          guideId: "soyeon",
+          title: "Real Seoul Food Crawl",
+          photo: photo("photo-1624176193860-dd7866e5a8aa"),
+          duration: 4,
+          price: 65,
+          maxGuests: 6,
+          category: "Food",
+          summary:
+            "Skip the tourist spots — visit only places locals queue for. A 4-hour crawl across 4–5 hidden eateries.",
+          includes: [
+            "4–5 curated stops",
+            "Local-only menu picks",
+            "Food photos",
+            "1 drink included",
+          ],
+        },
+        {
+          id: "exp-soyeon-2",
+          guideId: "soyeon",
+          title: "K-Beauty Shopping & Makeover",
+          photo: photo("photo-1741896136113-c33a4fded0b5"),
+          duration: 4,
+          price: 75,
+          maxGuests: 4,
+          category: "Shopping",
+          summary:
+            "A curated tour of K-beauty shops in Myeongdong and Hongdae — paired with a free makeover for your skin tone.",
+          includes: [
+            "8–10 curated stores",
+            "Skin analysis",
+            "Makeover session",
+          ],
+        },
+        {
+          id: "exp-soyeon-3",
+          guideId: "soyeon",
+          title: "Hongdae Hanbok & Café Hopping",
+          photo: photo("photo-1517256064527-09c73fc73e38"),
+          duration: 5,
+          price: 85,
+          maxGuests: 6,
+          category: "Culture",
+          summary:
+            "Hanbok rental + 5 Insta-worthy cafés — a guaranteed-photogenic day with 100+ shots.",
+          includes: [
+            "4-hour hanbok rental",
+            "5 café visits",
+            "Pro-style photos",
+          ],
+        },
+        // Minjun (Seoul · Architecture, Art, Nightlife)
+        {
+          id: "exp-minjun-1",
+          guideId: "minjun",
+          title: "Seoul Architecture Walk — DDP to Hanok",
+          photo: photo("photo-1597259309583-aaa2584e2085"),
+          duration: 5,
+          price: 95,
+          maxGuests: 6,
+          category: "Architecture",
+          summary:
+            "From Zaha Hadid's DDP to 600-year-old hanok villages — a time-travel walk led by an architect.",
+          includes: [
+            "DDP · Bukchon · Jongmyo",
+            "Architecture handouts",
+            "Coffee break",
+          ],
+        },
+        {
+          id: "exp-minjun-2",
+          guideId: "minjun",
+          title: "Gallery Tour & Contemporary Art",
+          photo: photo("photo-1545987796-200677ee1011"),
+          duration: 4,
+          price: 85,
+          maxGuests: 4,
+          category: "Art",
+          summary:
+            "Curated tour of major galleries (Arario, Kukje, Leeum). A must for design lovers.",
+          includes: [
+            "4 galleries",
+            "Curator chat",
+            "Leeum Museum priority pass",
+          ],
+        },
+        {
+          id: "exp-minjun-3",
+          guideId: "minjun",
+          title: "Hannam · Itaewon Rooftop Bar Crawl",
+          photo: photo("photo-1493246318656-5bfd4cfb29b8"),
+          duration: 4,
+          price: 115,
+          maxGuests: 4,
+          category: "Nightlife",
+          summary:
+            "Top-3 Seoul rooftops + 1 hidden whisky bar. Includes one signature cocktail at each.",
+          includes: ["4 bars", "4 signature cocktails", "Skyline photo spots"],
+        },
+        // Soojin (Busan · Beach, History, Photo)
+        {
+          id: "exp-soojin-1",
+          guideId: "soojin",
+          title: "Jagalchi Dawn Market Tour",
+          photo: photo("photo-1558160074-4d7d8bdf4256"),
+          duration: 3,
+          price: 55,
+          maxGuests: 5,
+          category: "Food",
+          summary:
+            "5 a.m. at Jagalchi — live auctions and fresh seafood, straight off the boat.",
+          includes: [
+            "Live fish auction",
+            "Fresh seafood buy",
+            "Seaside breakfast",
+          ],
+        },
+        {
+          id: "exp-soojin-2",
+          guideId: "soojin",
+          title: "Gamcheon Village Photo Walk",
+          photo: photo("photo-1672671187899-a10f547341f1"),
+          duration: 4,
+          price: 69,
+          maxGuests: 6,
+          category: "Photo",
+          summary:
+            "Golden-hour walk through Gamcheon's alleys plus 7 signature Busan photo spots.",
+          includes: [
+            "7 photo spots",
+            "Edit-tone guide",
+            "40+ retouched photos",
+          ],
+        },
+        {
+          id: "exp-soojin-3",
+          guideId: "soojin",
+          title: "Gwangalli Sunset Sailing",
+          photo: photo("photo-1622219969983-45589eae5637"),
+          duration: 3,
+          price: 145,
+          maxGuests: 4,
+          category: "Beach",
+          summary:
+            "Sunset sail under Gwangan Bridge with onboard wine and finger food. Drone photos included.",
+          includes: ["3-hour yacht", "Wine & finger food", "Drone shots"],
+        },
+        // Dohyun (Jeju · Nature, Culture, Food)
+        {
+          id: "exp-dohyun-1",
+          guideId: "dohyun",
+          title: "Mt. Hallasan Sunrise Hike",
+          photo: photo("photo-1558883493-8b86ff880fec"),
+          duration: 8,
+          price: 185,
+          maxGuests: 4,
+          category: "Nature",
+          summary:
+            "Depart at 4 a.m. → summit at sunrise → Baengnokdam crater. The most unforgettable 8 hours in Jeju.",
+          includes: [
+            "Pickup & drop-off",
+            "Hiking gear",
+            "Breakfast box",
+            "Photos",
+          ],
+        },
+        {
+          id: "exp-dohyun-2",
+          guideId: "dohyun",
+          title: "Haenyeo Village & Sea Experience",
+          photo: photo("photo-1584345110951-7c0e3ca09b82"),
+          duration: 4,
+          price: 95,
+          maxGuests: 6,
+          category: "Culture",
+          summary:
+            "Meet real haenyeo (women divers), try harvesting seaweed, and sample fresh abalone sashimi.",
+          includes: [
+            "Haenyeo meeting",
+            "Sea harvest experience",
+            "Abalone tasting",
+          ],
+        },
+        {
+          id: "exp-dohyun-3",
+          guideId: "dohyun",
+          title: "Jeju Black-Pork BBQ Night",
+          photo: photo("photo-1672671247929-e35a095fbab7"),
+          duration: 3,
+          price: 69,
+          maxGuests: 8,
+          category: "Food",
+          summary:
+            "Direct from a Jeju butcher → BBQ at sunset. Unlimited makgeolli (Jeju rice wine).",
+          includes: ["Unlimited black pork", "Jeju makgeolli", "BBQ setup"],
+        },
+        // Hyerim (Seoul · History, Traditional, Hanbok)
+        {
+          id: "exp-hyerim-1",
+          guideId: "hyerim",
+          title: "Hanbok Stroll at Gyeongbokgung",
+          photo: photo("photo-1711887540798-9d7d720e5319"),
+          duration: 4,
+          price: 79,
+          maxGuests: 6,
+          category: "Traditional",
+          summary:
+            "Hanbok rental + Gyeongbokgung guided tour. Watch the Royal Guard ceremony and capture lifetime photos.",
+          includes: [
+            "Hanbok rental",
+            "Free entry",
+            "Guard ceremony",
+            "Photo session",
+          ],
+        },
+        {
+          id: "exp-hyerim-2",
+          guideId: "hyerim",
+          title: "Bukchon · Insadong Tea Ceremony",
+          photo: photo("photo-1531969179221-3946e6b5a5e7"),
+          duration: 4,
+          price: 79,
+          maxGuests: 6,
+          category: "Culture",
+          summary:
+            "A traditional tea ceremony in a 600-year-old hanok plus a stroll through Bukchon's eight viewpoints.",
+          includes: [
+            "Traditional tea ceremony",
+            "Bukchon walk",
+            "Calligraphy class",
+          ],
+        },
+        {
+          id: "exp-hyerim-3",
+          guideId: "hyerim",
+          title: "Gwangjang Market & Rice Cake Class",
+          photo: photo("photo-1744870132190-5c02d3f8d9f9"),
+          duration: 4,
+          price: 65,
+          maxGuests: 5,
+          category: "Food",
+          summary:
+            "A 120-year-old market food tour plus a hands-on injeolmi rice-cake making class.",
+          includes: ["Market tour", "5 tastings", "Rice-cake kit"],
+        },
+        // Sungwoo (Incheon · Food, Urban)
+        {
+          id: "exp-sungwoo-1",
+          guideId: "sungwoo",
+          title: "Incheon Chinatown Food Walk",
+          photo: photo("photo-1626803774007-f92c2c32cbe7"),
+          duration: 4,
+          price: 55,
+          maxGuests: 8,
+          category: "Food",
+          summary:
+            "Life-changing jajangmyeon to wood-fired dumplings — 30+ year-old institutions only.",
+          includes: [
+            "5 institutions",
+            "Signature jajangmyeon",
+            "1 dessert stop",
+          ],
+        },
+        {
+          id: "exp-sungwoo-2",
+          guideId: "sungwoo",
+          title: "Songdo Central Park & Incheon Bridge",
+          photo: photo("photo-1671959670540-d56f2849a375"),
+          duration: 4,
+          price: 55,
+          maxGuests: 6,
+          category: "Urban",
+          summary:
+            "A perfect day trip from Seoul — Songdo canal water-taxi ride plus the Incheon Bridge night view.",
+          includes: ["Water taxi", "Bridge viewpoint", "1 Songdo café"],
+        },
+      ]
+
+      /* ─────────────────────────────────────────────
+       Experience schedule templates by category
+       ───────────────────────────────────────────── */
+      const SCHEDULE_BY_CATEGORY = {
+        Food: [
+          {
+            title: "Meet & briefing",
+            desc: "Meet at the agreed spot — your guide walks you through the food course and signature dishes.",
+          },
+          {
+            title: "First local stop",
+            desc: "A spot locals queue up for. Your guide recommends what to order.",
+          },
+          {
+            title: "Hidden alleys",
+            desc: "Move to local restaurants and markets that tourists never find. Sample a variety of flavors.",
+          },
+          {
+            title: "Dessert & wrap-up",
+            desc: "Wrap with Korean desserts and drinks. Take photos to remember the day.",
+          },
+        ],
+        Shopping: [
+          {
+            title: "Concept meeting",
+            desc: "Quick check on your shopping vibe, budget, and sizes.",
+          },
+          {
+            title: "Key stores curated",
+            desc: "A curated tour of K-beauty and fashion stores tailored to you.",
+          },
+          {
+            title: "Makeover / styling",
+            desc: "Get an on-the-spot makeover or styling using your new finds.",
+          },
+          {
+            title: "Café wind-down",
+            desc: "Wind down with photos at a trendy café.",
+          },
+        ],
+        Culture: [
+          {
+            title: "Orientation",
+            desc: "Quick history and meaning of the places you'll see today.",
+          },
+          {
+            title: "Main activity",
+            desc: "Hands-on — feel the depth of Korean culture firsthand.",
+          },
+          {
+            title: "Deeper dive",
+            desc: "A second activity that goes deeper into the craft.",
+          },
+          {
+            title: "Reflection",
+            desc: "End with tea and shared reflections on the day.",
+          },
+        ],
+        Architecture: [
+          {
+            title: "First landmark",
+            desc: "Start with the design intent and history behind the building.",
+          },
+          {
+            title: "Detail study",
+            desc: "Read the building like an architect — lines, materials, light.",
+          },
+          {
+            title: "Contrast space",
+            desc: "Move to where tradition meets modernity. Compare and contrast.",
+          },
+          {
+            title: "Vantage point",
+            desc: "Wrap from a viewpoint that frames the whole city.",
+          },
+        ],
+        Art: [
+          {
+            title: "Gallery entry",
+            desc: "First exhibition — context on the artist and the works.",
+          },
+          {
+            title: "Curator chat",
+            desc: "A short conversation with the gallery curator for deeper insight.",
+          },
+          {
+            title: "Second gallery",
+            desc: "Compare with another contemporary collection.",
+          },
+          {
+            title: "Art café close",
+            desc: "Reflect at the gallery's café over coffee.",
+          },
+        ],
+        Nightlife: [
+          {
+            title: "First rooftop bar",
+            desc: "Start with a signature cocktail at one of Seoul's top rooftop bars.",
+          },
+          {
+            title: "Hidden whisky bar",
+            desc: "Move to a small whisky bar known only to insiders.",
+          },
+          {
+            title: "Local pub crawl",
+            desc: "Walk the lively streets of Hannam or Itaewon — pubs locals frequent.",
+          },
+          {
+            title: "Skyline photos",
+            desc: "Wrap with photos at the best night-skyline spot.",
+          },
+        ],
+        Photo: [
+          {
+            title: "Set the mood",
+            desc: "Decide on outfit, mood, and concept for today's shoot.",
+          },
+          {
+            title: "Signature spot",
+            desc: "First shoot at a signature photo spot.",
+          },
+          {
+            title: "Hidden alleys",
+            desc: "Mood shots in alleys only locals know.",
+          },
+          {
+            title: "Edit guide",
+            desc: "Get an edit-tone guide and 50+ delivered shots.",
+          },
+        ],
+        Beach: [
+          {
+            title: "Beach arrival",
+            desc: "Safety briefing and overview of the day's flow.",
+          },
+          {
+            title: "Main activity",
+            desc: "Sailing, paddleboarding, or photography — the day's highlight.",
+          },
+          {
+            title: "Seaside break",
+            desc: "Drinks and finger food while the ocean rolls in.",
+          },
+          {
+            title: "Sunset wrap",
+            desc: "Wrap from the best sunset viewpoint.",
+          },
+        ],
+        Nature: [
+          {
+            title: "Trailhead briefing",
+            desc: "Walk through the day's route and safety briefing.",
+          },
+          {
+            title: "Highlight point",
+            desc: "Reach the top scenic point of the trail.",
+          },
+          {
+            title: "Hidden trail",
+            desc: "A lesser-known path your guide knows by heart.",
+          },
+          {
+            title: "Local eats wrap",
+            desc: "Wrap with regional cuisine at a neighborhood spot.",
+          },
+        ],
+        Traditional: [
+          {
+            title: "Dress in hanbok",
+            desc: "Get fitted in hanbok and styled for photos.",
+          },
+          {
+            title: "Landmark walk",
+            desc: "Stroll through Gyeongbokgung or Bukchon Hanok Village with photos.",
+          },
+          {
+            title: "Traditional rite",
+            desc: "Tea ceremony, calligraphy, or another classic experience.",
+          },
+          {
+            title: "Photo wrap",
+            desc: "Compile your photos and return the hanbok.",
+          },
+        ],
+        Urban: [
+          {
+            title: "Start meeting",
+            desc: "Kick off with the day's route and a story about the city.",
+          },
+          {
+            title: "Key landmarks",
+            desc: "See the city's signature spots together.",
+          },
+          {
+            title: "Hidden gems",
+            desc: "Move to local hangouts most tourists miss.",
+          },
+          {
+            title: "Café wind-down",
+            desc: "Rest at a nearby café and wrap up.",
+          },
+        ],
+      }
+
+      // helper: gallery for an experience = primary photo + guide gallery photos
+      const expGallery = (exp, guide) => {
+        const photos = [exp.photo, ...(guide?.gallery || [])]
+        return [...new Set(photos)].slice(0, 5)
+      }
+
+      const meetingPlace = (exp, guide) =>
+        `${guide.district} area · The exact meeting point is shared after booking.`
+
+      const HOME_REVIEWS = [
+        {
+          name: "Sarah M.",
+          country: "USA",
+          date: "April 2026",
+          rating: 5,
+          text: "I met the real Korea, not the guidebook one. The guide I matched with on Handled made this trip unforgettable.",
+          guide: "Soyeon, Seoul",
+        },
+        {
+          name: "Thomas K.",
+          country: "Germany",
+          date: "March 2026",
+          rating: 5,
+          text: "Hourly billing meant I started with one tour and stayed for six. The matching is impressively accurate.",
+          guide: "Minjun, Seoul",
+        },
+        {
+          name: "Mateo F.",
+          country: "Spain",
+          date: "April 2026",
+          rating: 5,
+          text: "Hallasan sunrise, black-pork BBQ — Dohyun gave us the real Jeju.",
+          guide: "Dohyun, Jeju",
+        },
+      ]
+
+      const CITIES = ["All", "Seoul", "Busan", "Jeju", "Incheon"]
+      const STYLES = [
+        "All",
+        "Food",
+        "Culture",
+        "Nature",
+        "Shopping",
+        "History",
+        "Art",
+        "Photo",
+        "Nightlife",
+      ]
+      const LANGUAGES = ["All", "English", "Japanese", "Mandarin", "French"]
+
+      /* ═══════════════════════════════════════════════
+       SHARED COMPONENTS
+       ═══════════════════════════════════════════════ */
+
+      const Stars = ({ rating, size = 12 }) => (
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 2 }}>
+          <Icon
+            name="star"
+            size={size}
+            fill="var(--ink)"
+            stroke="var(--ink)"
+            sw={1}
+          />
+          <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>
+            {rating.toFixed(2)}
+          </span>
+        </span>
+      )
+
+      const Avatar = ({ src, alt, size = 48, name = "?" }) => {
+        const [err, setErr] = useState(false)
+        const initial = (name || "?").slice(0, 1).toUpperCase()
+        // hash name → stable color
+        const colors = [
+          "#ff385c",
+          "#0891B2",
+          "#7C3AED",
+          "#10B981",
+          "#F59E0B",
+          "#EC4899",
+        ]
+        const colorIdx =
+          (name || "").split("").reduce((a, c) => a + c.charCodeAt(0), 0) %
+          colors.length
+        const showFallback = err || !src
+        return (
+          <div
+            style={{
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              overflow: "hidden",
+              background: "var(--surface-strong)",
+              flexShrink: 0,
+            }}
+          >
+            {showFallback ? (
+              <div
+                className="avatar-fallback"
+                style={{ background: colors[colorIdx], fontSize: size * 0.42 }}
+              >
+                {initial}
+              </div>
+            ) : (
+              <img
+                src={src}
+                alt={alt}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                onError={() => setErr(true)}
+              />
+            )}
+          </div>
+        )
+      }
+
+      const Heart = ({ filled, onClick }) => (
+        <button
+          className="heart-btn"
+          onClick={(e) => {
+            e.stopPropagation()
+            onClick && onClick()
+          }}
+          aria-label={filled ? "Unsave" : "Save"}
+        >
+          <Icon
+            name="heart"
+            size={22}
+            fill={filled ? "var(--rausch)" : "rgba(0,0,0,0.5)"}
+            stroke={filled ? "var(--rausch)" : "white"}
+            sw={2}
+          />
+        </button>
+      )
+
+      /* ═══════════════════════════════════════════════
+       NAV
+       ═══════════════════════════════════════════════ */
+      const TopNav = ({ navigate, route }) => {
+        const tabs = [
+          { id: "home", label: "Home", icon: "home", target: "home" },
+          {
+            id: "experiences",
+            label: "Experiences",
+            icon: "sparkles",
+            target: "experiences",
+          },
+        ]
+        // Guide list / profile screens are still reachable (e.g. tapping a host
+        // avatar from an experience), so we keep the Experiences tab highlighted
+        // while the user is anywhere inside that exploration flow.
+        const isActive = (tab) => {
+          if (tab.id === "home") return route.name === "home"
+          if (tab.id === "experiences")
+            return (
+              route.name === "experiences" ||
+              route.name === "experience" ||
+              route.name === "list" ||
+              route.name === "profile"
+            )
+          return false
+        }
+        return (
+          <header className="nav">
+            <div className="container nav-inner">
+              <div className="nav-logo" onClick={() => navigate("home")}>
+                <Icon
+                  name="pin"
+                  size={28}
+                  fill="var(--rausch)"
+                  stroke="var(--rausch)"
+                  sw={0}
+                />
+                <span
+                  style={{
+                    fontWeight: 800,
+                    fontSize: 22,
+                    letterSpacing: -0.5,
+                    color: "var(--rausch)",
+                  }}
+                >
+                  handled
+                </span>
+              </div>
+
+              <nav className="nav-tabs hide-mobile">
+                {tabs.map((t) => (
+                  <div
+                    key={t.id}
+                    className={`nav-tab ${isActive(t) ? "active" : ""}`}
+                    onClick={() => navigate(t.target)}
+                  >
+                    <Icon name={t.icon} size={20} sw={1.6} />
+                    <span>{t.label}</span>
+                  </div>
+                ))}
+              </nav>
+
+              <div className="nav-actions">
+                <a className="nav-host-link hide-mobile" href="#">
+                  Become a host
+                </a>
+                <button className="icon-btn hide-mobile" aria-label="Language">
+                  <Icon name="globe" size={16} />
+                </button>
+                <button className="nav-account">
+                  <Icon name="menu" size={14} />
+                  <div className="nav-avatar">
+                    <Icon name="user" size={16} stroke="white" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </header>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════ */
+      const Footer = () => (
+        <footer className="footer">
+          <div className="container">
+            <div className="footer-cols">
+              <div className="stack-md">
+                <div className="t-title-md ink">Support</div>
+                <a className="t-body-sm body" href="#">
+                  Help center
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Cancellation
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Safety info
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Report
+                </a>
+              </div>
+              <div className="stack-md">
+                <div className="t-title-md ink">Hosting</div>
+                <a className="t-body-sm body" href="#">
+                  Become a host
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Host an experience
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Community forum
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Responsible hosting
+                </a>
+              </div>
+              <div className="stack-md">
+                <div className="t-title-md ink">Handled</div>
+                <a className="t-body-sm body" href="#">
+                  About
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Newsroom
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Partners
+                </a>
+                <a className="t-body-sm body" href="#">
+                  Investors
+                </a>
+              </div>
+            </div>
+            <div
+              className="row between"
+              style={{ paddingTop: 24, flexWrap: "wrap", gap: 16 }}
+            >
+              <span className="t-caption-sm muted">
+                © 2026 Handled, Inc. · Korean local experiences for
+                international travelers
+              </span>
+              <div className="row row-gap-base">
+                <span className="row row-gap-xs t-caption-sm ink">
+                  <Icon name="globe" size={14} /> English
+                </span>
+                <span className="t-caption-sm ink">$ USD</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      )
+
+      /* ═══════════════════════════════════════════════
+       GUIDE CARD
+       ═══════════════════════════════════════════════ */
+      const GuideCard = ({ guide, onClick }) => {
+        const [saved, setSaved] = useState(false)
+        return (
+          <div className="guide-card" onClick={onClick}>
+            <div className="guide-card-photo">
+              <img src={guide.photo} alt={guide.name} loading="lazy" />
+              {guide.superhost && (
+                <span className="superhost-badge badge-pill">
+                  <Icon name="award" size={11} /> Superhost
+                </span>
+              )}
+              <Heart filled={saved} onClick={() => setSaved(!saved)} />
+            </div>
+            <div className="guide-card-meta">
+              <div className="row between" style={{ marginBottom: 4 }}>
+                <span className="t-title-md ink">
+                  {guide.city} · {guide.name}
+                </span>
+                <Stars rating={guide.rating} />
+              </div>
+              <div className="t-body-sm muted" style={{ marginBottom: 4 }}>
+                {guide.district}
+              </div>
+              <div
+                className="t-body-sm muted"
+                style={{ marginBottom: 8, height: 40, overflow: "hidden" }}
+              >
+                {guide.oneLiner}
+              </div>
+              <div className="row" style={{ gap: 4 }}>
+                <span className="t-body-sm ink" style={{ fontWeight: 600 }}>
+                  {usd(guide.hourlyRate)}
+                </span>
+                <span className="t-body-sm muted">/ hour</span>
+              </div>
+            </div>
+          </div>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       EXPERIENCE CARD (profile page)
+       ═══════════════════════════════════════════════ */
+      // category → emoji + gradient for image-load fallback
+      const CAT_FALLBACK = {
+        Food: { emoji: "🍜", bg: "linear-gradient(135deg, #ff385c, #ffa07a)" },
+        Shopping: {
+          emoji: "🛍️",
+          bg: "linear-gradient(135deg, #92174d, #ec4899)",
+        },
+        Culture: {
+          emoji: "🎎",
+          bg: "linear-gradient(135deg, #460479, #7c3aed)",
+        },
+        Architecture: {
+          emoji: "🏛",
+          bg: "linear-gradient(135deg, #0a0e27, #4a5568)",
+        },
+        Art: { emoji: "🎨", bg: "linear-gradient(135deg, #d97706, #f59e0b)" },
+        Nightlife: {
+          emoji: "🍸",
+          bg: "linear-gradient(135deg, #1e293b, #6366f1)",
+        },
+        Photo: { emoji: "📸", bg: "linear-gradient(135deg, #475569, #94a3b8)" },
+        Beach: { emoji: "🏖", bg: "linear-gradient(135deg, #0891b2, #38bdf8)" },
+        Nature: {
+          emoji: "🌋",
+          bg: "linear-gradient(135deg, #166534, #22c55e)",
+        },
+        Traditional: {
+          emoji: "👘",
+          bg: "linear-gradient(135deg, #b91c1c, #f87171)",
+        },
+        Urban: { emoji: "🌆", bg: "linear-gradient(135deg, #1e40af, #38bdf8)" },
+      }
+
+      const ExpPhoto = ({ src, alt, category }) => {
+        const [err, setErr] = useState(false)
+        const fb = CAT_FALLBACK[category] || {
+          emoji: "✨",
+          bg: "linear-gradient(135deg, #ff385c, #ffa07a)",
+        }
+        return err ? (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              background: fb.bg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 48,
+            }}
+            aria-label={alt}
+          >
+            {fb.emoji}
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            onError={() => setErr(true)}
+          />
+        )
+      }
+
+      const ExperienceCard = ({ exp, onPick, showGuide = false }) => {
+        const guide = showGuide
+          ? GUIDES.find((g) => g.id === exp.guideId)
+          : null
+        return (
+          <div className="exp-card" onClick={onPick} role="button" tabIndex={0}>
+            <div className="exp-card-photo">
+              <ExpPhoto
+                src={exp.photo}
+                alt={exp.title}
+                category={exp.category}
+              />
+              <span className="exp-card-cat badge-pill">{exp.category}</span>
+            </div>
+            <div className="exp-card-body">
+              <div className="t-title-md ink" style={{ minHeight: 40 }}>
+                {exp.title}
+              </div>
+              <div className="exp-card-meta t-caption-sm">
+                <Icon name="clock" size={13} stroke="var(--muted)" />
+                <span>{exp.duration} hours</span>
+                <span>·</span>
+                <Icon name="users" size={13} stroke="var(--muted)" />
+                <span>Up to {exp.maxGuests}</span>
+              </div>
+              <p
+                className="t-body-sm muted"
+                style={{
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  minHeight: 40,
+                }}
+              >
+                {exp.summary}
+              </p>
+              {guide && (
+                <div className="row row-gap-xs" style={{ marginTop: 4 }}>
+                  <Avatar
+                    src={guide.photo}
+                    alt={guide.name}
+                    name={guide.name}
+                    size={20}
+                  />
+                  <span className="t-caption-sm muted">
+                    {guide.city} · Hosted by {guide.name}
+                  </span>
+                </div>
+              )}
+              <div
+                className="row between"
+                style={{
+                  marginTop: 8,
+                  paddingTop: 12,
+                  borderTop: "1px solid var(--hairline-soft)",
+                }}
+              >
+                <div>
+                  <div className="t-title-md ink">{usd(exp.price)}</div>
+                  <div className="t-caption-sm muted">Per person</div>
+                </div>
+                <span
+                  className="t-caption"
+                  style={{ color: "var(--rausch)", fontWeight: 600 }}
+                >
+                  Learn more →
+                </span>
+              </div>
+            </div>
+          </div>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       HOME SCREEN
+       ═══════════════════════════════════════════════ */
+      const HomeScreen = ({ navigate }) => {
+        const [where, setWhere] = useState("")
+        const featured = EXPERIENCES.slice(0, 3)
+
+        const onSearch = () => navigate("experiences", { initialQuery: where })
+
+        return (
+          <main className="fade-in">
+            {/* Hero */}
+            <section className="hero">
+              <div className="container">
+                <div
+                  style={{
+                    maxWidth: 720,
+                    margin: "0 auto",
+                    textAlign: "center",
+                  }}
+                >
+                  <h1 className="t-display-xl ink" style={{ marginBottom: 16 }}>
+                    Korea, made local —
+                    <br />
+                    <span style={{ color: "var(--rausch)" }}>
+                      experiences hosted by people you trust.
+                    </span>
+                  </h1>
+                  <p
+                    className="t-body-md muted"
+                    style={{
+                      maxWidth: 540,
+                      margin: "0 auto 36px",
+                      fontSize: 17,
+                    }}
+                  >
+                    Discover handpicked Korean experiences, hosted by vetted
+                    locals.
+                  </p>
+                </div>
+
+                {/* Search pill — desktop */}
+                <div className="search-pill">
+                  <div className="search-segment">
+                    <div className="seg-label">Where</div>
+                    <input
+                      placeholder="Anywhere in Korea?"
+                      value={where}
+                      onChange={(e) => setWhere(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && onSearch()}
+                      style={{
+                        border: "none",
+                        outline: "none",
+                        background: "transparent",
+                        fontSize: 14,
+                        color: "var(--ink)",
+                        padding: 0,
+                      }}
+                    />
+                  </div>
+                  <div className="search-segment">
+                    <div className="seg-label">When</div>
+                    <div className="seg-value">Add dates</div>
+                  </div>
+                  <div className="search-segment">
+                    <div className="seg-label">Who</div>
+                    <div className="seg-value">Add guests</div>
+                  </div>
+                  <button
+                    className="search-orb"
+                    onClick={onSearch}
+                    aria-label="Search"
+                  >
+                    <Icon name="search" size={18} stroke="white" sw={2.5} />
+                  </button>
+                </div>
+
+                {/* Search pill — mobile */}
+                <div className="search-pill-mobile">
+                  <Icon name="search" size={18} stroke="var(--muted)" />
+                  <input
+                    placeholder="Where in Korea?"
+                    value={where}
+                    onChange={(e) => setWhere(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && onSearch()}
+                  />
+                  <button
+                    className="search-orb"
+                    onClick={onSearch}
+                    aria-label="Search"
+                    style={{ width: 36, height: 36 }}
+                  >
+                    <Icon name="arrowRight" size={16} stroke="white" sw={2.5} />
+                  </button>
+                </div>
+
+                {/* Quick city chips */}
+                <div
+                  className="row center"
+                  style={{ gap: 8, flexWrap: "wrap", marginTop: 24 }}
+                >
+                  {["Seoul", "Busan", "Jeju", "Incheon"].map((c) => (
+                    <button
+                      key={c}
+                      className="chip"
+                      onClick={() =>
+                        navigate("experiences", { initialCity: c })
+                      }
+                    >
+                      <Icon name="pin" size={14} />
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Why Handled */}
+            <section style={{ padding: "32px 0" }}>
+              <div className="container">
+                <div className="feature-grid">
+                  {[
+                    {
+                      icon: "sparkles",
+                      title: "Curated experiences",
+                      desc: "Every package is designed and tested by a vetted local — no generic tour-bus stops.",
+                    },
+                    {
+                      icon: "users",
+                      title: "Small groups",
+                      desc: "Up to 4–8 guests so you actually get to ask questions and stop where you want.",
+                    },
+                    {
+                      icon: "globe",
+                      title: "Multilingual hosts",
+                      desc: "English, Japanese, Mandarin, French. Book in the language you are most comfortable in.",
+                    },
+                  ].map((f) => (
+                    <div
+                      key={f.title}
+                      className="card card-pad-lg"
+                      style={{ border: "none" }}
+                    >
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: 14,
+                          background: "#fff0f3",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 16,
+                        }}
+                      >
+                        <Icon name={f.icon} size={22} stroke="var(--rausch)" />
+                      </div>
+                      <div
+                        className="t-display-sm ink"
+                        style={{ marginBottom: 8 }}
+                      >
+                        {f.title}
+                      </div>
+                      <div className="t-body-sm muted">{f.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Featured experiences */}
+            <section style={{ padding: "32px 0" }}>
+              <div className="container">
+                <div className="section-header" style={{ marginBottom: 24 }}>
+                  <h2 className="t-display-md ink">
+                    Top experiences this week
+                  </h2>
+                  <button
+                    className="btn-tertiary t-body-sm"
+                    style={{ textDecoration: "underline" }}
+                    onClick={() => navigate("experiences")}
+                  >
+                    View all experiences
+                  </button>
+                </div>
+                <div className="exp-grid">
+                  {featured.map((exp) => (
+                    <ExperienceCard
+                      key={exp.id}
+                      exp={exp}
+                      showGuide
+                      onPick={() => navigate("experience", { expId: exp.id })}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Reviews */}
+            <section
+              style={{
+                padding: "64px 0",
+                background: "var(--surface-soft)",
+                marginTop: 32,
+              }}
+            >
+              <div className="container">
+                <div
+                  className="row"
+                  style={{ gap: 16, marginBottom: 32, flexWrap: "wrap" }}
+                >
+                  <span className="t-rating ink">4.96</span>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div className="t-display-sm ink">Loved by travelers</div>
+                    <div className="t-body-sm muted">
+                      Rated by 500+ travelers who explored Korea with Handled
+                    </div>
+                  </div>
+                </div>
+                <div className="review-grid">
+                  {HOME_REVIEWS.map((r, i) => (
+                    <div key={i} className="stack-sm">
+                      <div className="row row-gap-sm">
+                        <Avatar size={36} name={r.name} src="" />
+                        <div>
+                          <div className="t-title-sm ink">{r.name}</div>
+                          <div className="t-caption-sm muted">{r.country}</div>
+                        </div>
+                      </div>
+                      <Stars rating={r.rating} />
+                      <div className="t-body-sm body">"{r.text}"</div>
+                      <div className="t-caption-sm muted-soft">
+                        {r.date} · {r.guide}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </main>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       LIST SCREEN
+       ═══════════════════════════════════════════════ */
+      const ListScreen = ({ navigate, initialCity, initialQuery }) => {
+        const [city, setCity] = useState(initialCity || "All")
+        const [style, setStyle] = useState("All")
+        const [lang, setLang] = useState("All")
+        const [q, setQ] = useState(initialQuery || "")
+
+        const filtered = useMemo(
+          () =>
+            GUIDES.filter((g) => {
+              const cityMatch = city === "All" || g.city === city
+              const styleMatch = style === "All" || g.styles.includes(style)
+              const langMatch = lang === "All" || g.languages.includes(lang)
+              const qMatch =
+                !q ||
+                g.name.includes(q) ||
+                g.city.includes(q) ||
+                g.district.includes(q) ||
+                g.styles.some((s) => s.includes(q)) ||
+                g.oneLiner.includes(q)
+              return cityMatch && styleMatch && langMatch && qMatch
+            }),
+          [city, style, lang, q],
+        )
+
+        const reset = () => {
+          setCity("All")
+          setStyle("All")
+          setLang("All")
+          setQ("")
+        }
+
+        return (
+          <main className="fade-in">
+            <section
+              style={{
+                padding: "32px 0 24px",
+                borderBottom: "1px solid var(--hairline-soft)",
+              }}
+            >
+              <div className="container">
+                <h1 className="t-display-md ink" style={{ marginBottom: 4 }}>
+                  Find a local guide
+                </h1>
+                <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
+                  Match with vetted local guides by the hour. From $40 / hour.
+                </p>
+
+                {/* Search */}
+                <div
+                  className="row row-gap-sm"
+                  style={{
+                    background: "var(--canvas)",
+                    border: "1px solid var(--hairline)",
+                    borderRadius: 999,
+                    padding: "8px 8px 8px 20px",
+                    maxWidth: 560,
+                  }}
+                >
+                  <Icon name="search" size={16} stroke="var(--muted)" />
+                  <input
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    placeholder="Search by name, city, or style"
+                    style={{
+                      flex: 1,
+                      border: "none",
+                      background: "transparent",
+                      fontSize: 14,
+                    }}
+                  />
+                  {q && (
+                    <button
+                      onClick={() => setQ("")}
+                      className="icon-btn"
+                      aria-label="Clear search"
+                    >
+                      <Icon name="x" size={14} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Filter rows */}
+                <FilterRow
+                  label="City"
+                  options={CITIES}
+                  value={city}
+                  onChange={setCity}
+                />
+                <FilterRow
+                  label="Style"
+                  options={STYLES}
+                  value={style}
+                  onChange={setStyle}
+                />
+                <FilterRow
+                  label="Languages"
+                  options={LANGUAGES}
+                  value={lang}
+                  onChange={setLang}
+                />
+              </div>
+            </section>
+
+            {/* Results */}
+            <section style={{ padding: "32px 0 64px" }}>
+              <div className="container">
+                <div className="section-header" style={{ marginBottom: 24 }}>
+                  <span className="t-body-sm muted">
+                    {filtered.length}{" "}
+                    {filtered.length === 1 ? "guide" : "guides"} match
+                    {city !== "All" ? ` · ${city}` : ""}
+                  </span>
+                  {(city !== "All" ||
+                    style !== "All" ||
+                    lang !== "All" ||
+                    q) && (
+                    <button
+                      className="btn-tertiary t-body-sm"
+                      onClick={reset}
+                      style={{ textDecoration: "underline" }}
+                    >
+                      Clear filters
+                    </button>
+                  )}
+                </div>
+
+                {filtered.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "80px 24px" }}>
+                    <Icon name="search" size={40} stroke="var(--muted-soft)" />
+                    <div className="t-display-sm ink" style={{ marginTop: 16 }}>
+                      No guides match
+                    </div>
+                    <p className="t-body-sm muted" style={{ marginTop: 8 }}>
+                      Try fewer filters.
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      style={{ marginTop: 24 }}
+                      onClick={reset}
+                    >
+                      <Icon name="refresh" size={16} /> Clear filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="guide-grid">
+                    {filtered.map((g) => (
+                      <GuideCard
+                        key={g.id}
+                        guide={g}
+                        onClick={() => navigate("profile", { guideId: g.id })}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          </main>
+        )
+      }
+
+      const FilterRow = ({ label, options, value, onChange }) => (
+        <div style={{ marginTop: 16 }}>
+          <div
+            className="t-caption-sm muted"
+            style={{ marginBottom: 8, fontWeight: 500 }}
+          >
+            {label}
+          </div>
+          <div
+            className="row"
+            style={{
+              gap: 8,
+              flexWrap: "wrap",
+              overflowX: "auto",
+            }}
+          >
+            {options.map((o) => (
+              <button
+                key={o}
+                className={`chip ${value === o ? "active" : ""}`}
+                onClick={() => onChange(o)}
+              >
+                {o}
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+
+      /* ═══════════════════════════════════════════════
+       EXPERIENCES SCREEN — list of all experience packages
+       ═══════════════════════════════════════════════ */
+      const EXP_CATEGORIES = [
+        "All",
+        ...Array.from(new Set(EXPERIENCES.map((e) => e.category))),
+      ]
+
+      const ExperiencesScreen = ({
+        navigate,
+        initialCity,
+        initialCategory,
+        initialQuery,
+      }) => {
+        const [city, setCity] = useState(initialCity || "All")
+        const [category, setCategory] = useState(initialCategory || "All")
+        const [q, setQ] = useState(initialQuery || "")
+
+        const filtered = useMemo(
+          () =>
+            EXPERIENCES.filter((e) => {
+              const guide = GUIDES.find((g) => g.id === e.guideId)
+              if (!guide) return false
+              const cityMatch = city === "All" || guide.city === city
+              const catMatch = category === "All" || e.category === category
+              const qMatch =
+                !q ||
+                e.title.includes(q) ||
+                e.summary.includes(q) ||
+                e.category.includes(q) ||
+                guide.name.includes(q) ||
+                guide.city.includes(q)
+              return cityMatch && catMatch && qMatch
+            }),
+          [city, category, q],
+        )
+
+        const reset = () => {
+          setCity("All")
+          setCategory("All")
+          setQ("")
+        }
+
+        return (
+          <main className="fade-in">
+            {/* header */}
+            <section
+              style={{
+                padding: "32px 0 24px",
+                borderBottom: "1px solid var(--hairline-soft)",
+              }}
+            >
+              <div className="container">
+                <h1 className="t-display-md ink" style={{ marginBottom: 4 }}>
+                  All Korean experiences
+                </h1>
+                <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
+                  Pick from {EXPERIENCES.length} experience packages hosted by
+                  local guides.
+                </p>
+
+                {/* search */}
+                <div
+                  className="row row-gap-sm"
+                  style={{
+                    background: "var(--canvas)",
+                    border: "1px solid var(--hairline)",
+                    borderRadius: 999,
+                    padding: "8px 8px 8px 20px",
+                    maxWidth: 560,
+                  }}
+                >
+                  <Icon name="search" size={16} stroke="var(--muted)" />
+                  <input
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    placeholder="Search by experience, category, guide, or city"
+                    style={{
+                      flex: 1,
+                      border: "none",
+                      background: "transparent",
+                      fontSize: 14,
+                    }}
+                  />
+                  {q && (
+                    <button
+                      onClick={() => setQ("")}
+                      className="icon-btn"
+                      aria-label="Clear search"
+                    >
+                      <Icon name="x" size={14} />
+                    </button>
+                  )}
+                </div>
+
+                {/* filters */}
+                <FilterRow
+                  label="City"
+                  options={CITIES}
+                  value={city}
+                  onChange={setCity}
+                />
+                <FilterRow
+                  label="Category"
+                  options={EXP_CATEGORIES}
+                  value={category}
+                  onChange={setCategory}
+                />
+              </div>
+            </section>
+
+            {/* results */}
+            <section style={{ padding: "32px 0 64px" }}>
+              <div className="container">
+                <div className="section-header" style={{ marginBottom: 24 }}>
+                  <span className="t-body-sm muted">
+                    {filtered.length}{" "}
+                    {filtered.length === 1 ? "experience" : "experiences"} match
+                    {city !== "All" ? ` · ${city}` : ""}
+                    {category !== "All" ? ` · ${category}` : ""}
+                  </span>
+                  {(city !== "All" || category !== "All" || q) && (
+                    <button
+                      className="btn-tertiary t-body-sm"
+                      onClick={reset}
+                      style={{ textDecoration: "underline" }}
+                    >
+                      Clear filters
+                    </button>
+                  )}
+                </div>
+
+                {filtered.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "80px 24px" }}>
+                    <Icon name="search" size={40} stroke="var(--muted-soft)" />
+                    <div className="t-display-sm ink" style={{ marginTop: 16 }}>
+                      No experiences match
+                    </div>
+                    <p className="t-body-sm muted" style={{ marginTop: 8 }}>
+                      Try fewer filters.
+                    </p>
+                    <button
+                      className="btn btn-secondary"
+                      style={{ marginTop: 24 }}
+                      onClick={reset}
+                    >
+                      <Icon name="refresh" size={16} /> Clear filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="exp-grid">
+                    {filtered.map((exp) => (
+                      <ExperienceCard
+                        key={exp.id}
+                        exp={exp}
+                        showGuide
+                        onPick={() => navigate("experience", { expId: exp.id })}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          </main>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       CALENDAR (used inside Reservation panel)
+       ═══════════════════════════════════════════════ */
+      const Calendar = ({ value, onChange, minDate }) => {
+        const [view, setView] = useState(() => {
+          const d = value || new Date()
+          return new Date(d.getFullYear(), d.getMonth(), 1)
+        })
+
+        const monthLabel = `${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][view.getMonth()]} ${view.getFullYear()}`
+        const startDow = view.getDay()
+        const daysInMonth = new Date(
+          view.getFullYear(),
+          view.getMonth() + 1,
+          0,
+        ).getDate()
+
+        const cells = []
+        for (let i = 0; i < startDow; i++) cells.push(null)
+        for (let d = 1; d <= daysInMonth; d++)
+          cells.push(new Date(view.getFullYear(), view.getMonth(), d))
+
+        const isSame = (a, b) =>
+          a &&
+          b &&
+          a.getFullYear() === b.getFullYear() &&
+          a.getMonth() === b.getMonth() &&
+          a.getDate() === b.getDate()
+
+        const today = minDate || new Date()
+        today.setHours(0, 0, 0, 0)
+
+        const goPrev = () =>
+          setView(new Date(view.getFullYear(), view.getMonth() - 1, 1))
+        const goNext = () =>
+          setView(new Date(view.getFullYear(), view.getMonth() + 1, 1))
+
+        const dows = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+        return (
+          <div className="cal">
+            <div className="cal-head">
+              <button
+                onClick={goPrev}
+                className="icon-btn"
+                aria-label="Previous month"
+                style={{ background: "transparent" }}
+              >
+                <Icon name="chevronLeft" size={16} />
+              </button>
+              <div className="t-title-sm ink">{monthLabel}</div>
+              <button
+                onClick={goNext}
+                className="icon-btn"
+                aria-label="Next month"
+                style={{ background: "transparent" }}
+              >
+                <Icon name="chevronRight" size={16} />
+              </button>
+            </div>
+            <div className="cal-grid" style={{ marginBottom: 4 }}>
+              {dows.map((d, i) => (
+                <div key={i} className="cal-dow">
+                  {d}
+                </div>
+              ))}
+            </div>
+            <div className="cal-grid">
+              {cells.map((c, i) =>
+                c === null ? (
+                  <span key={i} />
+                ) : (
+                  <button
+                    key={i}
+                    className={`cal-day ${isSame(c, value) ? "selected" : ""}`}
+                    disabled={c < today}
+                    onClick={() => onChange(c)}
+                  >
+                    {c.getDate()}
+                  </button>
+                ),
+              )}
+            </div>
+          </div>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       RESERVATION PANEL
+       ═══════════════════════════════════════════════ */
+      const TIMES = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00",
+      ]
+
+      const INTEREST_TAGS = [
+        "Food",
+        "Culture",
+        "Nature",
+        "Shopping",
+        "History",
+        "Photo",
+        "Nightlife",
+        "Hanbok",
+        "Architecture",
+      ]
+
+      /* ═══════════════════════════════════════════════
+       CUSTOM QUOTE PANEL — used on guide profile
+       ═══════════════════════════════════════════════ */
+      const CustomQuotePanel = ({ guide, onReserve }) => {
+        const [hours, setHours] = useState(3)
+        const [date, setDate] = useState(null)
+        const [time, setTime] = useState("10:00")
+        const [guests, setGuests] = useState(2)
+        const [showCal, setShowCal] = useState(false)
+        const [interests, setInterests] = useState([])
+        const [requests, setRequests] = useState("")
+
+        const subtotal = guide.hourlyRate * hours
+        const fee = Math.round(subtotal * 0.1)
+        const total = subtotal + fee
+
+        const toggleInterest = (i) =>
+          setInterests((prev) =>
+            prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i],
+          )
+
+        const onClickReserve = () => {
+          if (!date) {
+            setShowCal(true)
+            return
+          }
+          onReserve({
+            mode: "custom",
+            experience: null,
+            guide,
+            hours,
+            date,
+            time,
+            guests,
+            interests,
+            requests,
+            subtotal,
+            fee,
+            total,
+          })
+        }
+
+        return (
+          <aside className="reservation" id="reservation-panel">
+            <div
+              className="t-caption muted"
+              style={{ fontWeight: 600, marginBottom: 4 }}
+            >
+              Custom tour quote
+            </div>
+            <div
+              className="row"
+              style={{ alignItems: "baseline", marginBottom: 4, gap: 4 }}
+            >
+              <span className="t-display-md ink">{usd(guide.hourlyRate)}</span>
+              <span className="t-body-md muted">/ hour</span>
+            </div>
+            <p className="t-caption-sm muted" style={{ marginBottom: 20 }}>
+              Build a tour with your preferred hours and interests
+            </p>
+
+            {/* hours */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Tour hours
+              </label>
+              <div className="stepper-bar">
+                <div>
+                  <div className="t-body-md ink" style={{ fontWeight: 600 }}>
+                    {hours}h
+                  </div>
+                  <div className="t-caption-sm muted">Min 1h · Max 8h</div>
+                </div>
+                <div className="stepper">
+                  <button
+                    disabled={hours <= 1}
+                    onClick={() => setHours(Math.max(1, hours - 1))}
+                    aria-label="Decrease hours"
+                  >
+                    <Icon name="minus" size={14} />
+                  </button>
+                  <span
+                    className="t-body-md ink"
+                    style={{ minWidth: 16, textAlign: "center" }}
+                  >
+                    {hours}
+                  </span>
+                  <button
+                    disabled={hours >= 8}
+                    onClick={() => setHours(Math.min(8, hours + 1))}
+                    aria-label="Increase hours"
+                  >
+                    <Icon name="plus" size={14} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* date */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Date
+              </label>
+              <button
+                onClick={() => setShowCal(!showCal)}
+                style={{
+                  border: "1px solid var(--hairline)",
+                  borderRadius: "var(--r-sm)",
+                  padding: "14px 16px",
+                  textAlign: "left",
+                  background: "var(--canvas)",
+                  width: "100%",
+                }}
+              >
+                <div className="row between">
+                  <span
+                    className="t-body-md"
+                    style={{
+                      color: date ? "var(--ink)" : "var(--muted-soft)",
+                      fontWeight: date ? 600 : 400,
+                    }}
+                  >
+                    {date ? formatDate(date) : "Select date"}
+                  </span>
+                  <Icon
+                    name={showCal ? "chevronDown" : "calendar"}
+                    size={16}
+                    stroke="var(--muted)"
+                  />
+                </div>
+              </button>
+              {showCal && (
+                <div
+                  style={{
+                    border: "1px solid var(--hairline)",
+                    borderRadius: "var(--r-sm)",
+                    padding: 16,
+                    marginTop: 4,
+                  }}
+                >
+                  <Calendar
+                    value={date}
+                    onChange={(d) => {
+                      setDate(d)
+                      setShowCal(false)
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* time */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Start time
+              </label>
+              <div className="time-grid">
+                {TIMES.map((t) => (
+                  <button
+                    key={t}
+                    className={`time-cell ${t === time ? "active" : ""}`}
+                    onClick={() => setTime(t)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* guests */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Guests
+              </label>
+              <div className="stepper-bar">
+                <span className="t-body-md ink" style={{ fontWeight: 600 }}>
+                  {guests}
+                </span>
+                <div className="stepper">
+                  <button
+                    disabled={guests <= 1}
+                    onClick={() => setGuests(Math.max(1, guests - 1))}
+                    aria-label="Decrease guests"
+                  >
+                    <Icon name="minus" size={14} />
+                  </button>
+                  <span
+                    className="t-body-md ink"
+                    style={{ minWidth: 16, textAlign: "center" }}
+                  >
+                    {guests}
+                  </span>
+                  <button
+                    disabled={guests >= 8}
+                    onClick={() => setGuests(Math.min(8, guests + 1))}
+                    aria-label="Increase guests"
+                  >
+                    <Icon name="plus" size={14} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* interests */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Interests (multi-select)
+              </label>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {INTEREST_TAGS.map((i) => (
+                  <button
+                    key={i}
+                    className={`chip ${interests.includes(i) ? "active" : ""}`}
+                    style={{ padding: "6px 12px", fontSize: 12 }}
+                    onClick={() => toggleInterest(i)}
+                  >
+                    {i}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* requests */}
+            <div className="stack-sm" style={{ marginBottom: 24 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Special requests (optional)
+              </label>
+              <textarea
+                className="input"
+                style={{ resize: "vertical", minHeight: 72, fontSize: 14 }}
+                placeholder="e.g. Vegetarian · with a 4-year-old · please take lots of photos"
+                value={requests}
+                onChange={(e) => setRequests(e.target.value)}
+              />
+            </div>
+
+            {/* CTA */}
+            <button
+              className="btn btn-primary btn-block"
+              onClick={onClickReserve}
+              style={{ padding: "16px", fontSize: 16, fontWeight: 600 }}
+            >
+              {date ? "Reserve custom tour" : "Select a date"}
+            </button>
+            <p
+              className="t-caption-sm muted"
+              style={{ textAlign: "center", marginTop: 12 }}
+            >
+              No charge until you confirm
+            </p>
+
+            {/* breakdown */}
+            <div className="divider" />
+            <div className="stack-sm">
+              <div className="row between">
+                <span className="t-body-sm body">
+                  {usd(guide.hourlyRate)} × {hours}h
+                </span>
+                <span className="t-body-sm ink">{usd(subtotal)}</span>
+              </div>
+              <div className="row between">
+                <span className="t-body-sm body">Service fee</span>
+                <span className="t-body-sm ink">{usd(fee)}</span>
+              </div>
+              <div
+                className="row between"
+                style={{
+                  paddingTop: 12,
+                  borderTop: "1px solid var(--hairline-soft)",
+                }}
+              >
+                <span className="t-title-md ink">Total</span>
+                <span className="t-title-md ink">{usd(total)}</span>
+              </div>
+            </div>
+          </aside>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       EXPERIENCE BOOKING PANEL — used on experience detail
+       ═══════════════════════════════════════════════ */
+      const ExpBookingPanel = ({ exp, guide, onReserve }) => {
+        const [date, setDate] = useState(null)
+        const [time, setTime] = useState("10:00")
+        const [guests, setGuests] = useState(2)
+        const [showCal, setShowCal] = useState(false)
+        const [requests, setRequests] = useState("")
+
+        const effectiveGuests = Math.min(guests, exp.maxGuests)
+        const subtotal = exp.price * effectiveGuests
+        const fee = Math.round(subtotal * 0.1)
+        const total = subtotal + fee
+
+        const onClickReserve = () => {
+          if (!date) {
+            setShowCal(true)
+            return
+          }
+          onReserve({
+            mode: "experience",
+            experience: exp,
+            guide,
+            hours: exp.duration,
+            date,
+            time,
+            guests: Math.min(guests, exp.maxGuests),
+            interests: [],
+            requests,
+            subtotal,
+            fee,
+            total,
+          })
+        }
+
+        return (
+          <aside className="reservation" id="reservation-panel">
+            <div
+              className="row"
+              style={{
+                alignItems: "baseline",
+                marginBottom: 4,
+                gap: 4,
+                flexWrap: "wrap",
+              }}
+            >
+              <span className="t-display-md ink">{usd(exp.price)}</span>
+              <span className="t-body-md muted">/ person</span>
+              <span className="t-body-md muted">· {exp.duration}h package</span>
+            </div>
+            <p className="t-caption-sm muted" style={{ marginBottom: 20 }}>
+              Up to {exp.maxGuests} guests · small group
+            </p>
+
+            {/* date */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Date
+              </label>
+              <button
+                onClick={() => setShowCal(!showCal)}
+                style={{
+                  border: "1px solid var(--hairline)",
+                  borderRadius: "var(--r-sm)",
+                  padding: "14px 16px",
+                  textAlign: "left",
+                  background: "var(--canvas)",
+                  width: "100%",
+                }}
+              >
+                <div className="row between">
+                  <span
+                    className="t-body-md"
+                    style={{
+                      color: date ? "var(--ink)" : "var(--muted-soft)",
+                      fontWeight: date ? 600 : 400,
+                    }}
+                  >
+                    {date ? formatDate(date) : "Select date"}
+                  </span>
+                  <Icon
+                    name={showCal ? "chevronDown" : "calendar"}
+                    size={16}
+                    stroke="var(--muted)"
+                  />
+                </div>
+              </button>
+              {showCal && (
+                <div
+                  style={{
+                    border: "1px solid var(--hairline)",
+                    borderRadius: "var(--r-sm)",
+                    padding: 16,
+                    marginTop: 4,
+                  }}
+                >
+                  <Calendar
+                    value={date}
+                    onChange={(d) => {
+                      setDate(d)
+                      setShowCal(false)
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* time */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Start time
+              </label>
+              <div className="time-grid">
+                {TIMES.map((t) => (
+                  <button
+                    key={t}
+                    className={`time-cell ${t === time ? "active" : ""}`}
+                    onClick={() => setTime(t)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* guests */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Guests (up to {exp.maxGuests})
+              </label>
+              <div className="stepper-bar">
+                <span className="t-body-md ink" style={{ fontWeight: 600 }}>
+                  {Math.min(guests, exp.maxGuests)}
+                </span>
+                <div className="stepper">
+                  <button
+                    disabled={guests <= 1}
+                    onClick={() => setGuests(Math.max(1, guests - 1))}
+                    aria-label="Decrease guests"
+                  >
+                    <Icon name="minus" size={14} />
+                  </button>
+                  <span
+                    className="t-body-md ink"
+                    style={{ minWidth: 16, textAlign: "center" }}
+                  >
+                    {Math.min(guests, exp.maxGuests)}
+                  </span>
+                  <button
+                    disabled={guests >= exp.maxGuests}
+                    onClick={() =>
+                      setGuests(Math.min(exp.maxGuests, guests + 1))
+                    }
+                    aria-label="Increase guests"
+                  >
+                    <Icon name="plus" size={14} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* requests */}
+            <div className="stack-sm" style={{ marginBottom: 24 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Special requests (optional)
+              </label>
+              <textarea
+                className="input"
+                style={{ resize: "vertical", minHeight: 64, fontSize: 14 }}
+                placeholder="e.g. allergies, photo requests"
+                value={requests}
+                onChange={(e) => setRequests(e.target.value)}
+              />
+            </div>
+
+            {/* CTA */}
+            <button
+              className="btn btn-primary btn-block"
+              onClick={onClickReserve}
+              style={{ padding: "16px", fontSize: 16, fontWeight: 600 }}
+            >
+              {date ? "Reserve this experience" : "Select a date"}
+            </button>
+            <p
+              className="t-caption-sm muted"
+              style={{ textAlign: "center", marginTop: 12 }}
+            >
+              No charge until you confirm
+            </p>
+
+            {/* breakdown */}
+            <div className="divider" />
+            <div className="stack-sm">
+              <div className="row between" style={{ gap: 8 }}>
+                <span className="t-body-sm body">
+                  {usd(exp.price)} × {effectiveGuests}{" "}
+                  {effectiveGuests === 1 ? "guest" : "guests"}
+                </span>
+                <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
+                  {usd(subtotal)}
+                </span>
+              </div>
+              <div className="row between">
+                <span className="t-body-sm body">Service fee</span>
+                <span className="t-body-sm ink">{usd(fee)}</span>
+              </div>
+              <div
+                className="row between"
+                style={{
+                  paddingTop: 12,
+                  borderTop: "1px solid var(--hairline-soft)",
+                }}
+              >
+                <span className="t-title-md ink">Total</span>
+                <span className="t-title-md ink">{usd(total)}</span>
+              </div>
+            </div>
+          </aside>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       OLD ReservationPanel — kept for backward reference, no longer used
+       ═══════════════════════════════════════════════ */
+      const ReservationPanel = ({
+        guide,
+        experiences,
+        mode,
+        setMode,
+        selectedExp,
+        setSelectedExp,
+        onReserve,
+      }) => {
+        const [hours, setHours] = useState(3)
+        const [date, setDate] = useState(null)
+        const [time, setTime] = useState("10:00")
+        const [guests, setGuests] = useState(2)
+        const [showCal, setShowCal] = useState(false)
+        const [interests, setInterests] = useState([])
+        const [requests, setRequests] = useState("")
+
+        const isExp = mode === "experience" && selectedExp
+        const expDuration = selectedExp?.duration || 0
+        const customSubtotal = guide.hourlyRate * hours
+        const expSubtotal = selectedExp?.price || 0
+        const subtotal = isExp ? expSubtotal : customSubtotal
+        const fee = Math.round(subtotal * 0.1)
+        const total = subtotal + fee
+        const maxGuests = isExp ? selectedExp.maxGuests : 8
+
+        const toggleInterest = (i) =>
+          setInterests((prev) =>
+            prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i],
+          )
+
+        const reserveLabel = !date
+          ? "Select a date"
+          : mode === "experience" && !selectedExp
+            ? "Pick an experience"
+            : mode === "experience"
+              ? "Reserve this experience"
+              : "Reserve custom tour"
+
+        const canReserve = date != null && (mode === "custom" || selectedExp)
+
+        const onClickReserve = () => {
+          if (!date) {
+            setShowCal(true)
+            return
+          }
+          if (!canReserve) return
+          // Clamp guests if switched to experience with smaller cap
+          const finalGuests = Math.min(guests, maxGuests)
+
+          onReserve({
+            mode,
+            experience: isExp ? selectedExp : null,
+            guide,
+            hours: isExp ? expDuration : hours,
+            date,
+            time,
+            guests: finalGuests,
+            interests: mode === "custom" ? interests : [],
+            requests: mode === "custom" ? requests : "",
+            subtotal,
+            fee,
+            total,
+          })
+        }
+
+        return (
+          <aside className="reservation" id="reservation-panel">
+            {/* Tabs */}
+            <div className="res-tabs" style={{ marginBottom: 20 }}>
+              <button
+                className={`res-tab ${mode === "custom" ? "active" : ""}`}
+                onClick={() => {
+                  setMode("custom")
+                  setSelectedExp(null)
+                }}
+              >
+                Custom tour
+              </button>
+              <button
+                className={`res-tab ${mode === "experience" ? "active" : ""}`}
+                onClick={() => setMode("experience")}
+              >
+                Book experience
+              </button>
+            </div>
+
+            {/* Price head */}
+            <div
+              className="row"
+              style={{
+                alignItems: "baseline",
+                marginBottom: 20,
+                flexWrap: "wrap",
+                gap: 4,
+              }}
+            >
+              {isExp ? (
+                <>
+                  <span className="t-display-md ink">
+                    {usd(selectedExp.price)}
+                  </span>
+                  <span className="t-body-md muted">
+                    · {selectedExp.duration}h package
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="t-display-md ink">
+                    {usd(guide.hourlyRate)}
+                  </span>
+                  <span className="t-body-md muted">/ hour</span>
+                </>
+              )}
+            </div>
+
+            {/* CUSTOM MODE: hours stepper */}
+            {mode === "custom" && (
+              <div className="stack-sm" style={{ marginBottom: 16 }}>
+                <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                  Tour hours
+                </label>
+                <div className="stepper-bar">
+                  <div>
+                    <div className="t-body-md ink" style={{ fontWeight: 600 }}>
+                      {hours}h
+                    </div>
+                    <div className="t-caption-sm muted">Min 1h · Max 8h</div>
+                  </div>
+                  <div className="stepper">
+                    <button
+                      disabled={hours <= 1}
+                      onClick={() => setHours(Math.max(1, hours - 1))}
+                      aria-label="Decrease hours"
+                    >
+                      <Icon name="minus" size={14} />
+                    </button>
+                    <span
+                      className="t-body-md ink"
+                      style={{ minWidth: 16, textAlign: "center" }}
+                    >
+                      {hours}
+                    </span>
+                    <button
+                      disabled={hours >= 8}
+                      onClick={() => setHours(Math.min(8, hours + 1))}
+                      aria-label="Increase hours"
+                    >
+                      <Icon name="plus" size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* EXPERIENCE MODE: experience picker */}
+            {mode === "experience" && (
+              <div className="stack-sm" style={{ marginBottom: 16 }}>
+                <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                  Select experience
+                </label>
+                {experiences.length === 0 ? (
+                  <div
+                    className="t-body-sm muted"
+                    style={{
+                      padding: 14,
+                      background: "var(--surface-soft)",
+                      borderRadius: 8,
+                    }}
+                  >
+                    This guide does not have packages yet. Try a custom tour
+                    quote.
+                  </div>
+                ) : (
+                  <div className="stack-sm">
+                    {experiences.map((exp) => (
+                      <button
+                        key={exp.id}
+                        className={`exp-pill ${
+                          selectedExp?.id === exp.id ? "active" : ""
+                        }`}
+                        onClick={() => setSelectedExp(exp)}
+                      >
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
+                            className="t-body-sm ink"
+                            style={{
+                              fontWeight: 600,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {exp.title}
+                          </div>
+                          <div className="t-caption-sm muted">
+                            {exp.duration}h · Up to {exp.maxGuests}
+                          </div>
+                        </div>
+                        <div
+                          className="t-body-sm ink"
+                          style={{ fontWeight: 700, flexShrink: 0 }}
+                        >
+                          {usd(exp.price)}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* date */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Date
+              </label>
+              <button
+                onClick={() => setShowCal(!showCal)}
+                style={{
+                  border: "1px solid var(--hairline)",
+                  borderRadius: "var(--r-sm)",
+                  padding: "14px 16px",
+                  textAlign: "left",
+                  background: "var(--canvas)",
+                  width: "100%",
+                }}
+              >
+                <div className="row between">
+                  <span
+                    className="t-body-md"
+                    style={{
+                      color: date ? "var(--ink)" : "var(--muted-soft)",
+                      fontWeight: date ? 600 : 400,
+                    }}
+                  >
+                    {date ? formatDate(date) : "Select date"}
+                  </span>
+                  <Icon
+                    name={showCal ? "chevronDown" : "calendar"}
+                    size={16}
+                    stroke="var(--muted)"
+                  />
+                </div>
+              </button>
+              {showCal && (
+                <div
+                  style={{
+                    border: "1px solid var(--hairline)",
+                    borderRadius: "var(--r-sm)",
+                    padding: 16,
+                    marginTop: 4,
+                  }}
+                >
+                  <Calendar
+                    value={date}
+                    onChange={(d) => {
+                      setDate(d)
+                      setShowCal(false)
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* start time */}
+            <div className="stack-sm" style={{ marginBottom: 16 }}>
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Start time
+              </label>
+              <div className="time-grid">
+                {TIMES.map((t) => (
+                  <button
+                    key={t}
+                    className={`time-cell ${t === time ? "active" : ""}`}
+                    onClick={() => setTime(t)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* guests */}
+            <div
+              className="stack-sm"
+              style={{ marginBottom: mode === "custom" ? 16 : 24 }}
+            >
+              <label className="t-caption muted" style={{ fontWeight: 500 }}>
+                Guests {isExp && `(up to ${maxGuests})`}
+              </label>
+              <div className="stepper-bar">
+                <span className="t-body-md ink" style={{ fontWeight: 600 }}>
+                  {Math.min(guests, maxGuests)}
+                </span>
+                <div className="stepper">
+                  <button
+                    disabled={guests <= 1}
+                    onClick={() => setGuests(Math.max(1, guests - 1))}
+                    aria-label="Decrease guests"
+                  >
+                    <Icon name="minus" size={14} />
+                  </button>
+                  <span
+                    className="t-body-md ink"
+                    style={{ minWidth: 16, textAlign: "center" }}
+                  >
+                    {Math.min(guests, maxGuests)}
+                  </span>
+                  <button
+                    disabled={guests >= maxGuests}
+                    onClick={() => setGuests(Math.min(maxGuests, guests + 1))}
+                    aria-label="Increase guests"
+                  >
+                    <Icon name="plus" size={14} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* CUSTOM MODE: interests + requests */}
+            {mode === "custom" && (
+              <>
+                <div className="stack-sm" style={{ marginBottom: 16 }}>
+                  <label
+                    className="t-caption muted"
+                    style={{ fontWeight: 500 }}
+                  >
+                    Interests (multi-select)
+                  </label>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {INTEREST_TAGS.map((i) => (
+                      <button
+                        key={i}
+                        className={`chip ${interests.includes(i) ? "active" : ""}`}
+                        style={{ padding: "6px 12px", fontSize: 12 }}
+                        onClick={() => toggleInterest(i)}
+                      >
+                        {i}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="stack-sm" style={{ marginBottom: 24 }}>
+                  <label
+                    className="t-caption muted"
+                    style={{ fontWeight: 500 }}
+                  >
+                    Special requests (optional)
+                  </label>
+                  <textarea
+                    className="input"
+                    style={{ resize: "vertical", minHeight: 72, fontSize: 14 }}
+                    placeholder="e.g. Vegetarian · with a 4-year-old · please take lots of photos"
+                    value={requests}
+                    onChange={(e) => setRequests(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* CTA */}
+            <button
+              className="btn btn-primary btn-block"
+              onClick={onClickReserve}
+              style={{ padding: "16px", fontSize: 16, fontWeight: 600 }}
+              disabled={
+                mode === "experience" && !selectedExp && experiences.length > 0
+              }
+            >
+              {reserveLabel}
+            </button>
+            <p
+              className="t-caption-sm muted"
+              style={{ textAlign: "center", marginTop: 12 }}
+            >
+              No charge until you confirm
+            </p>
+
+            {/* breakdown */}
+            <div className="divider" />
+            <div className="stack-sm">
+              <div className="row between" style={{ gap: 8 }}>
+                <span
+                  className="t-body-sm body"
+                  style={{
+                    flex: 1,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {isExp
+                    ? selectedExp.title
+                    : `${usd(guide.hourlyRate)} × ${hours}h`}
+                </span>
+                <span className="t-body-sm ink" style={{ flexShrink: 0 }}>
+                  {usd(subtotal)}
+                </span>
+              </div>
+              <div className="row between">
+                <span className="t-body-sm body">Service fee</span>
+                <span className="t-body-sm ink">{usd(fee)}</span>
+              </div>
+              <div
+                className="row between"
+                style={{
+                  paddingTop: 12,
+                  borderTop: "1px solid var(--hairline-soft)",
+                }}
+              >
+                <span className="t-title-md ink">Total</span>
+                <span className="t-title-md ink">{usd(total)}</span>
+              </div>
+            </div>
+          </aside>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       PROFILE SCREEN
+       ═══════════════════════════════════════════════ */
+      const ProfileScreen = ({ navigate, guideId, onReserve }) => {
+        const guide = useMemo(
+          () => GUIDES.find((g) => g.id === guideId),
+          [guideId],
+        )
+        const experiences = useMemo(
+          () => EXPERIENCES.filter((e) => e.guideId === guideId),
+          [guideId],
+        )
+
+        if (!guide) {
+          return (
+            <main className="fade-in">
+              <div
+                className="container"
+                style={{ paddingTop: 64, paddingBottom: 64 }}
+              >
+                <p className="t-body-md muted">Guide not found.</p>
+                <button
+                  className="btn btn-secondary"
+                  style={{ marginTop: 16 }}
+                  onClick={() => navigate("list")}
+                >
+                  Back to list
+                </button>
+              </div>
+            </main>
+          )
+        }
+        const reviews = REVIEWS_BY_GUIDE[guide.id] || []
+
+        return (
+          <main className="fade-in">
+            <div
+              className="container"
+              style={{ paddingTop: 24, paddingBottom: 64 }}
+            >
+              {/* breadcrumb */}
+              <div
+                className="row row-gap-sm"
+                style={{
+                  marginBottom: 16,
+                  color: "var(--muted)",
+                  cursor: "pointer",
+                  width: "fit-content",
+                }}
+                onClick={() => navigate("list")}
+              >
+                <Icon name="arrowLeft" size={16} />
+                <span className="t-body-sm">Back to guides</span>
+              </div>
+
+              {/* Profile hero — guide-centric (large avatar + name) */}
+              <div className="profile-hero">
+                <div className="profile-hero-avatar">
+                  <img src={guide.photo} alt={guide.name} />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    className="row row-gap-sm"
+                    style={{ marginBottom: 6, flexWrap: "wrap" }}
+                  >
+                    {guide.superhost && (
+                      <span
+                        className="badge-pill"
+                        style={{ background: "var(--canvas)" }}
+                      >
+                        <Icon name="award" size={12} /> Superhost
+                      </span>
+                    )}
+                    <span className="t-caption muted">
+                      {guide.district}, {guide.city}
+                    </span>
+                  </div>
+                  <h1 className="t-display-lg ink" style={{ marginBottom: 8 }}>
+                    {guide.name}
+                  </h1>
+                  <p
+                    className="t-body-sm body"
+                    style={{ marginBottom: 16, maxWidth: 560 }}
+                  >
+                    {guide.oneLiner}
+                  </p>
+                  <div className="profile-stats">
+                    <div className="profile-hero-stat">
+                      <span className="t-display-sm ink">
+                        {guide.rating.toFixed(2)}
+                      </span>
+                      <span className="t-caption muted">Rating</span>
+                    </div>
+                    <div className="profile-hero-stat">
+                      <span className="t-display-sm ink">{guide.reviews}</span>
+                      <span className="t-caption muted">Reviews</span>
+                    </div>
+                    <div className="profile-hero-stat">
+                      <span className="t-display-sm ink">
+                        {guide.yearsHosting}y
+                      </span>
+                      <span className="t-caption muted">Hosting</span>
+                    </div>
+                    <div className="profile-hero-stat">
+                      <span className="t-display-sm ink">
+                        {experiences.length}
+                      </span>
+                      <span className="t-caption muted">Packages</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="profile-grid">
+                {/* LEFT — guide info */}
+                <div>
+                  {/* Bio */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 12 }}>
+                    About {guide.name}
+                  </h2>
+                  <p className="t-body-md body" style={{ marginBottom: 16 }}>
+                    {guide.bio}
+                  </p>
+                  <p
+                    className="t-body-md body"
+                    style={{ marginBottom: 32, fontStyle: "italic" }}
+                  >
+                    "{guide.intro}"
+                  </p>
+
+                  {/* highlights */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    What {guide.name} offers
+                  </h2>
+                  <div className="stack-md" style={{ marginBottom: 32 }}>
+                    {guide.highlights.map((h, i) => (
+                      <div key={i} className="row row-gap-md">
+                        <div
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: "50%",
+                            background: "#fff0f3",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Icon
+                            name="sparkles"
+                            size={14}
+                            stroke="var(--rausch)"
+                          />
+                        </div>
+                        <span className="t-body-md ink">{h}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* meta grid */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    Good to know
+                  </h2>
+                  <div className="info-grid" style={{ marginBottom: 32 }}>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="globe" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Languages
+                        </div>
+                        <div className="t-body-sm muted">
+                          {guide.languages.join(" · ")}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="pin" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Cities
+                        </div>
+                        <div className="t-body-sm muted">
+                          {guide.cities.join(" · ")}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="building" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Specialty
+                        </div>
+                        <div className="t-body-sm muted">
+                          {guide.styles.join(" · ")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="divider" />
+
+                  {/* reviews */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+                    <Icon
+                      name="star"
+                      size={18}
+                      fill="var(--ink)"
+                      stroke="var(--ink)"
+                      style={{ display: "inline-block", verticalAlign: "-3px" }}
+                    />{" "}
+                    {guide.rating.toFixed(2)} · {guide.reviews} reviews
+                  </h2>
+                  <div className="review-grid" style={{ marginTop: 24 }}>
+                    {reviews.slice(0, 4).map((r, i) => (
+                      <div key={i}>
+                        <div
+                          className="row row-gap-sm"
+                          style={{ marginBottom: 8 }}
+                        >
+                          <Avatar size={36} name={r.name} src="" />
+                          <div>
+                            <div className="t-title-sm ink">{r.name}</div>
+                            <div className="t-caption-sm muted">
+                              {r.country}
+                            </div>
+                          </div>
+                        </div>
+                        <Stars rating={r.rating} />
+                        <p className="t-body-sm body" style={{ marginTop: 8 }}>
+                          "{r.text}"
+                        </p>
+                        <div
+                          className="t-caption-sm muted-soft"
+                          style={{ marginTop: 6 }}
+                        >
+                          {r.date}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {reviews.length > 4 && (
+                    <button
+                      className="btn btn-secondary"
+                      style={{ marginTop: 24 }}
+                    >
+                      See all {reviews.length} reviews
+                    </button>
+                  )}
+                </div>
+
+                {/* RIGHT — Custom Quote panel only */}
+                <CustomQuotePanel guide={guide} onReserve={onReserve} />
+              </div>
+
+              {/* Full-width below: Experiences offered by this guide */}
+              {experiences.length > 0 && (
+                <section
+                  style={{
+                    marginTop: 64,
+                    paddingTop: 48,
+                    borderTop: "1px solid var(--hairline-soft)",
+                  }}
+                >
+                  <div
+                    className="row between"
+                    style={{ marginBottom: 8, flexWrap: "wrap", gap: 8 }}
+                  >
+                    <h2 className="t-display-md ink">
+                      Experiences hosted by {guide.name}
+                    </h2>
+                    <span className="t-body-sm muted">
+                      {experiences.length} packages
+                    </span>
+                  </div>
+                  <p
+                    className="t-body-sm muted"
+                    style={{ marginBottom: 24, maxWidth: 640 }}
+                  >
+                    Click an experience card to see schedule and photos. Or
+                    build a custom plan in the side panel.
+                  </p>
+                  <div className="exp-grid">
+                    {experiences.map((exp) => (
+                      <ExperienceCard
+                        key={exp.id}
+                        exp={exp}
+                        onPick={() => navigate("experience", { expId: exp.id })}
+                      />
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+          </main>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       EXPERIENCE DETAIL SCREEN
+       ═══════════════════════════════════════════════ */
+      const ExperienceDetailScreen = ({ navigate, expId, onReserve }) => {
+        const exp = useMemo(
+          () => EXPERIENCES.find((e) => e.id === expId),
+          [expId],
+        )
+        const guide = useMemo(
+          () => (exp ? GUIDES.find((g) => g.id === exp.guideId) : null),
+          [exp],
+        )
+
+        if (!exp || !guide) {
+          return (
+            <main className="fade-in">
+              <div
+                className="container"
+                style={{ paddingTop: 64, paddingBottom: 64 }}
+              >
+                <p className="t-body-md muted">Experience not found.</p>
+                <button
+                  className="btn btn-secondary"
+                  style={{ marginTop: 16 }}
+                  onClick={() => navigate("home")}
+                >
+                  Home
+                </button>
+              </div>
+            </main>
+          )
+        }
+
+        const gallery = expGallery(exp, guide)
+        const schedule = SCHEDULE_BY_CATEGORY[exp.category] || []
+        const reviews = REVIEWS_BY_GUIDE[guide.id] || []
+
+        return (
+          <main className="fade-in">
+            <div
+              className="container"
+              style={{ paddingTop: 24, paddingBottom: 64 }}
+            >
+              {/* breadcrumb */}
+              <div
+                className="row row-gap-sm"
+                style={{
+                  marginBottom: 16,
+                  color: "var(--muted)",
+                  cursor: "pointer",
+                  width: "fit-content",
+                }}
+                onClick={() => navigate("profile", { guideId: guide.id })}
+              >
+                <Icon name="arrowLeft" size={16} />
+                <span className="t-body-sm">Back to {guide.name}</span>
+              </div>
+
+              {/* hero title */}
+              <div style={{ marginBottom: 16 }}>
+                <div
+                  className="row row-gap-sm"
+                  style={{ marginBottom: 8, flexWrap: "wrap" }}
+                >
+                  <span
+                    className="badge-pill"
+                    style={{
+                      background: "#fff0f3",
+                      color: "var(--rausch)",
+                      boxShadow: "none",
+                    }}
+                  >
+                    {exp.category}
+                  </span>
+                  <span className="t-caption muted">
+                    {exp.duration}h package · Up to {exp.maxGuests}
+                  </span>
+                </div>
+                <h1 className="t-display-lg ink" style={{ marginBottom: 8 }}>
+                  {exp.title}
+                </h1>
+                <div className="row row-gap-sm" style={{ flexWrap: "wrap" }}>
+                  <Stars rating={guide.rating} />
+                  <span className="t-body-sm body">
+                    · {guide.reviews} reviews
+                  </span>
+                  <span className="t-body-sm body">·</span>
+                  <span
+                    className="row row-gap-xs t-body-sm body"
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => navigate("profile", { guideId: guide.id })}
+                  >
+                    <Avatar
+                      src={guide.photo}
+                      alt={guide.name}
+                      name={guide.name}
+                      size={20}
+                    />
+                    <span>Hosted by {guide.name}</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* gallery */}
+              <div className="gallery" style={{ marginBottom: 32 }}>
+                <img
+                  className="gallery-main"
+                  src={gallery[0]}
+                  alt={exp.title}
+                  style={{ borderRadius: "14px 0 0 14px" }}
+                  onError={(e) => {
+                    e.currentTarget.style.background =
+                      CAT_FALLBACK[exp.category]?.bg ||
+                      "linear-gradient(135deg, #ff385c, #ffa07a)"
+                    e.currentTarget.style.objectFit = "none"
+                    e.currentTarget.removeAttribute("src")
+                  }}
+                />
+                <div className="gallery-side">
+                  <img src={gallery[1] || gallery[0]} alt="" />
+                  <img src={gallery[3] || gallery[0]} alt="" />
+                </div>
+                <div className="gallery-side">
+                  <img
+                    src={gallery[2] || gallery[0]}
+                    alt=""
+                    style={{ borderRadius: "0 14px 0 0" }}
+                  />
+                  <img
+                    src={gallery[4] || gallery[0]}
+                    alt=""
+                    style={{ borderRadius: "0 0 14px 0" }}
+                  />
+                </div>
+              </div>
+
+              <div className="profile-grid">
+                {/* LEFT */}
+                <div>
+                  {/* summary */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 12 }}>
+                    What you will do
+                  </h2>
+                  <p className="t-body-md body" style={{ marginBottom: 20 }}>
+                    {exp.summary}
+                  </p>
+                  <div className="stack-md" style={{ marginBottom: 32 }}>
+                    {exp.includes.map((item, i) => (
+                      <div key={i} className="row row-gap-md">
+                        <Icon
+                          name="check"
+                          size={18}
+                          stroke="var(--rausch)"
+                          sw={2.5}
+                        />
+                        <span className="t-body-md ink">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="divider" />
+
+                  {/* schedule */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    Itinerary
+                  </h2>
+                  <p className="t-body-sm muted" style={{ marginBottom: 16 }}>
+                    Total {exp.duration} hours
+                  </p>
+                  <div className="schedule-list" style={{ marginBottom: 32 }}>
+                    {schedule.map((s, i) => (
+                      <div key={i} className="schedule-item">
+                        <div className="schedule-item-photo">
+                          <img
+                            src={gallery[(i + 1) % gallery.length]}
+                            alt=""
+                            onError={(e) =>
+                              (e.currentTarget.style.display = "none")
+                            }
+                          />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div
+                            className="row row-gap-sm"
+                            style={{ marginBottom: 4 }}
+                          >
+                            <span className="schedule-step-num">{i + 1}</span>
+                            <span className="t-title-md ink">{s.title}</span>
+                          </div>
+                          <p className="t-body-sm body">{s.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="divider" />
+
+                  {/* host mini-card */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    About your host
+                  </h2>
+                  <div className="host-mini-card" style={{ marginBottom: 16 }}>
+                    <Avatar
+                      src={guide.photo}
+                      alt={guide.name}
+                      name={guide.name}
+                      size={56}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div
+                        className="row row-gap-xs"
+                        style={{ marginBottom: 2 }}
+                      >
+                        <span className="t-title-md ink">{guide.name}</span>
+                        {guide.superhost && (
+                          <span
+                            className="t-caption"
+                            style={{ color: "var(--rausch)", fontWeight: 600 }}
+                          >
+                            · Superhost
+                          </span>
+                        )}
+                      </div>
+                      <div className="t-caption-sm muted">
+                        {guide.yearsHosting}y hosting · {guide.reviews} reviews
+                        · ★{guide.rating.toFixed(2)}
+                      </div>
+                    </div>
+                    <button
+                      className="host-mini-card-link hide-mobile"
+                      onClick={() => navigate("profile", { guideId: guide.id })}
+                    >
+                      View profile
+                    </button>
+                  </div>
+                  <p className="t-body-sm body" style={{ marginBottom: 32 }}>
+                    {guide.bio}
+                  </p>
+
+                  <div className="divider" />
+
+                  {/* meeting place */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    Meeting place
+                  </h2>
+                  <div className="meet-map" style={{ marginBottom: 12 }}>
+                    <div className="meet-pin">
+                      <Icon name="pin" size={16} stroke="var(--rausch)" />
+                      <span
+                        className="t-body-sm ink"
+                        style={{ fontWeight: 500 }}
+                      >
+                        {guide.district}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="t-body-sm muted" style={{ marginBottom: 32 }}>
+                    {meetingPlace(exp, guide)}
+                  </p>
+
+                  <div className="divider" />
+
+                  {/* know before you go */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    Good to know
+                  </h2>
+                  <div className="info-grid" style={{ marginBottom: 32 }}>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="users" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Group size
+                        </div>
+                        <div className="t-body-sm muted">
+                          Up to {exp.maxGuests} (small group)
+                        </div>
+                      </div>
+                    </div>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="clock" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Duration
+                        </div>
+                        <div className="t-body-sm muted">
+                          {exp.duration} hours
+                        </div>
+                      </div>
+                    </div>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="globe" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Language
+                        </div>
+                        <div className="t-body-sm muted">
+                          {guide.languages.join(" · ")}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="info-grid-item">
+                      <div className="info-grid-item-icon">
+                        <Icon name="shield" size={18} />
+                      </div>
+                      <div>
+                        <div
+                          className="t-title-sm ink"
+                          style={{ marginBottom: 4 }}
+                        >
+                          Cancellation
+                        </div>
+                        <div className="t-body-sm muted">
+                          Free cancellation up to 24h before
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="divider" />
+
+                  {/* reviews */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+                    <Icon
+                      name="star"
+                      size={18}
+                      fill="var(--ink)"
+                      stroke="var(--ink)"
+                      style={{ display: "inline-block", verticalAlign: "-3px" }}
+                    />{" "}
+                    {guide.rating.toFixed(2)} · {guide.reviews} reviews
+                  </h2>
+                  <p
+                    className="t-caption-sm muted"
+                    style={{ marginBottom: 24 }}
+                  >
+                    Reviews for all experiences hosted by {guide.name}
+                  </p>
+                  <div className="review-grid">
+                    {reviews.slice(0, 4).map((r, i) => (
+                      <div key={i}>
+                        <div
+                          className="row row-gap-sm"
+                          style={{ marginBottom: 8 }}
+                        >
+                          <Avatar size={36} name={r.name} src="" />
+                          <div>
+                            <div className="t-title-sm ink">{r.name}</div>
+                            <div className="t-caption-sm muted">
+                              {r.country}
+                            </div>
+                          </div>
+                        </div>
+                        <Stars rating={r.rating} />
+                        <p className="t-body-sm body" style={{ marginTop: 8 }}>
+                          "{r.text}"
+                        </p>
+                        <div
+                          className="t-caption-sm muted-soft"
+                          style={{ marginTop: 6 }}
+                        >
+                          {r.date}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* RIGHT — Experience booking panel */}
+                <ExpBookingPanel
+                  exp={exp}
+                  guide={guide}
+                  onReserve={onReserve}
+                />
+              </div>
+            </div>
+          </main>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       PAYMENT SCREEN
+       ═══════════════════════════════════════════════ */
+      const PaymentScreen = ({ booking, navigate, onConfirm }) => {
+        const [name, setName] = useState("")
+        const [card, setCard] = useState("")
+        const [exp, setExp] = useState("")
+        const [cvc, setCvc] = useState("")
+        const [zip, setZip] = useState("")
+        const [errs, setErrs] = useState({})
+        const [loading, setLoading] = useState(false)
+
+        if (!booking) {
+          return (
+            <main className="fade-in">
+              <div
+                className="container"
+                style={{ paddingTop: 64, paddingBottom: 64 }}
+              >
+                <p className="t-body-md muted">No booking information.</p>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => navigate("home")}
+                  style={{ marginTop: 16 }}
+                >
+                  Home
+                </button>
+              </div>
+            </main>
+          )
+        }
+
+        const { guide } = booking
+
+        const fmtCard = (v) =>
+          v
+            .replace(/\D/g, "")
+            .replace(/(.{4})/g, "$1 ")
+            .trim()
+            .slice(0, 19)
+        const fmtExp = (v) =>
+          v
+            .replace(/\D/g, "")
+            .replace(/^(.{2})(.+)/, "$1/$2")
+            .slice(0, 5)
+
+        const validate = () => {
+          const e = {}
+          if (!name.trim()) e.name = "Enter the cardholder name"
+          if (card.replace(/\s/g, "").length < 16)
+            e.card = "Enter a 16-digit card number"
+          if (!/^\d{2}\/\d{2}$/.test(exp)) e.exp = "MM/YY format"
+          if (cvc.length < 3) e.cvc = "3-digit CVC"
+          if (!zip.trim()) e.zip = "Enter ZIP code"
+          setErrs(e)
+          return Object.keys(e).length === 0
+        }
+
+        const submit = () => {
+          if (!validate()) return
+          setLoading(true)
+          setTimeout(() => {
+            setLoading(false)
+            onConfirm({
+              ...booking,
+              payerName: name,
+              cardLast4: card.slice(-4),
+              bookingId:
+                "HD-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
+            })
+          }, 1500)
+        }
+
+        return (
+          <main className="fade-in">
+            <div
+              className="container"
+              style={{ paddingTop: 24, paddingBottom: 64 }}
+            >
+              <div
+                className="row row-gap-sm"
+                style={{
+                  marginBottom: 16,
+                  color: "var(--muted)",
+                  cursor: "pointer",
+                  width: "fit-content",
+                }}
+                onClick={() =>
+                  booking.experience
+                    ? navigate("experience", { expId: booking.experience.id })
+                    : navigate("profile", { guideId: guide.id })
+                }
+              >
+                <Icon name="arrowLeft" size={16} />
+                <span className="t-body-sm">
+                  {booking.experience ? "Back to experience" : "Back to guide"}
+                </span>
+              </div>
+
+              <h1 className="t-display-md ink" style={{ marginBottom: 32 }}>
+                Checkout
+              </h1>
+
+              <div className="pay-grid">
+                {/* Form */}
+                <div>
+                  {/* trip details */}
+                  <div style={{ marginBottom: 32 }}>
+                    <h2
+                      className="t-display-sm ink"
+                      style={{ marginBottom: 16 }}
+                    >
+                      Booking summary
+                    </h2>
+                    <div
+                      className="stack-md"
+                      style={{
+                        padding: 20,
+                        border: "1px solid var(--hairline)",
+                        borderRadius: "var(--r-md)",
+                      }}
+                    >
+                      <div className="row between">
+                        <span className="t-body-sm body">Type</span>
+                        <span
+                          className="t-body-md"
+                          style={{
+                            fontWeight: 600,
+                            color: "var(--rausch)",
+                          }}
+                        >
+                          {booking.experience
+                            ? "Experience package"
+                            : "Custom tour"}
+                        </span>
+                      </div>
+                      {booking.experience && (
+                        <div
+                          className="row between"
+                          style={{ alignItems: "flex-start", gap: 16 }}
+                        >
+                          <span
+                            className="t-body-sm body"
+                            style={{ flexShrink: 0 }}
+                          >
+                            Experience
+                          </span>
+                          <span
+                            className="t-body-md ink"
+                            style={{
+                              fontWeight: 500,
+                              textAlign: "right",
+                              flex: 1,
+                              minWidth: 0,
+                              overflowWrap: "anywhere",
+                            }}
+                          >
+                            {booking.experience.title}
+                          </span>
+                        </div>
+                      )}
+                      <div className="row between">
+                        <span className="t-body-sm body">Date</span>
+                        <span
+                          className="t-body-md ink"
+                          style={{ fontWeight: 500 }}
+                        >
+                          {formatDate(booking.date)}
+                        </span>
+                      </div>
+                      <div className="row between">
+                        <span className="t-body-sm body">Time</span>
+                        <span
+                          className="t-body-md ink"
+                          style={{ fontWeight: 500 }}
+                        >
+                          {booking.time} · {booking.hours} hours
+                        </span>
+                      </div>
+                      <div className="row between">
+                        <span className="t-body-sm body">Guests</span>
+                        <span
+                          className="t-body-md ink"
+                          style={{ fontWeight: 500 }}
+                        >
+                          {booking.guests}{" "}
+                          {booking.guests === 1 ? "guest" : "guests"}
+                        </span>
+                      </div>
+                      {booking.interests && booking.interests.length > 0 && (
+                        <div
+                          className="row between"
+                          style={{
+                            alignItems: "flex-start",
+                            gap: 16,
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <span
+                            className="t-body-sm body"
+                            style={{ flexShrink: 0 }}
+                          >
+                            Interests
+                          </span>
+                          <div
+                            className="row"
+                            style={{
+                              gap: 4,
+                              flexWrap: "wrap",
+                              justifyContent: "flex-end",
+                              flex: 1,
+                            }}
+                          >
+                            {booking.interests.map((i) => (
+                              <span key={i} className="tag">
+                                {i}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {booking.requests && (
+                        <div
+                          className="stack-xs"
+                          style={{
+                            paddingTop: 8,
+                            borderTop: "1px solid var(--hairline-soft)",
+                          }}
+                        >
+                          <span className="t-caption muted">
+                            Special requests
+                          </span>
+                          <span className="t-body-sm ink">
+                            {booking.requests}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* card form */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 16 }}>
+                    Payment method
+                  </h2>
+                  <div className="stack-base" style={{ marginBottom: 32 }}>
+                    <div className="field">
+                      <label>Cardholder name</label>
+                      <input
+                        className={`input ${errs.name ? "error" : ""}`}
+                        placeholder="HONG GILDONG"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      {errs.name && (
+                        <span className="help-error">{errs.name}</span>
+                      )}
+                    </div>
+                    <div className="field">
+                      <label>Card number</label>
+                      <input
+                        className={`input ${errs.card ? "error" : ""}`}
+                        placeholder="1234 5678 9012 3456"
+                        value={card}
+                        onChange={(e) => setCard(fmtCard(e.target.value))}
+                        inputMode="numeric"
+                      />
+                      {errs.card && (
+                        <span className="help-error">{errs.card}</span>
+                      )}
+                    </div>
+                    <div className="pay-card-row">
+                      <div className="field">
+                        <label>Expiry</label>
+                        <input
+                          className={`input ${errs.exp ? "error" : ""}`}
+                          placeholder="MM/YY"
+                          value={exp}
+                          onChange={(e) => setExp(fmtExp(e.target.value))}
+                          inputMode="numeric"
+                        />
+                        {errs.exp && (
+                          <span className="help-error">{errs.exp}</span>
+                        )}
+                      </div>
+                      <div className="field">
+                        <label>CVC</label>
+                        <input
+                          className={`input ${errs.cvc ? "error" : ""}`}
+                          placeholder="123"
+                          value={cvc}
+                          onChange={(e) =>
+                            setCvc(
+                              e.target.value.replace(/\D/g, "").slice(0, 4),
+                            )
+                          }
+                          inputMode="numeric"
+                        />
+                        {errs.cvc && (
+                          <span className="help-error">{errs.cvc}</span>
+                        )}
+                      </div>
+                      <div className="field">
+                        <label>ZIP code</label>
+                        <input
+                          className={`input ${errs.zip ? "error" : ""}`}
+                          placeholder="10001"
+                          value={zip}
+                          onChange={(e) => setZip(e.target.value)}
+                        />
+                        {errs.zip && (
+                          <span className="help-error">{errs.zip}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* refund policy */}
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 12 }}>
+                    Cancellation policy
+                  </h2>
+                  <div
+                    className="stack-md"
+                    style={{
+                      padding: 20,
+                      background: "var(--surface-soft)",
+                      borderRadius: "var(--r-md)",
+                      marginBottom: 32,
+                    }}
+                  >
+                    <div className="row row-gap-sm">
+                      <Icon name="shield" size={18} stroke="var(--ink)" />
+                      <span className="t-body-sm body">
+                        Free cancellation up to 24h before — full refund.
+                      </span>
+                    </div>
+                    <div className="row row-gap-sm">
+                      <Icon name="clock" size={18} stroke="var(--ink)" />
+                      <span className="t-body-sm body">
+                        Cancellations within 24h get a 50% refund.
+                      </span>
+                    </div>
+                    <div className="row row-gap-sm">
+                      <Icon name="lock" size={18} stroke="var(--ink)" />
+                      <span className="t-body-sm body">
+                        All payments are SSL-encrypted and secure.
+                      </span>
+                    </div>
+                  </div>
+
+                  <p
+                    className="t-caption-sm muted"
+                    style={{ marginBottom: 16, lineHeight: 1.6 }}
+                  >
+                    By continuing, you agree to the Handled{" "}
+                    <span
+                      style={{
+                        textDecoration: "underline",
+                        color: "var(--ink)",
+                      }}
+                    >
+                      Terms
+                    </span>
+                    ,{" "}
+                    <span
+                      style={{
+                        textDecoration: "underline",
+                        color: "var(--ink)",
+                      }}
+                    >
+                      Privacy Policy
+                    </span>
+                    , and cancellation policy.
+                  </p>
+
+                  <button
+                    className="btn btn-primary btn-block"
+                    onClick={submit}
+                    disabled={loading}
+                    style={{ padding: 16, fontSize: 16, fontWeight: 600 }}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="spinner" /> Processing...
+                      </>
+                    ) : (
+                      `Pay ${usd(booking.total)}`
+                    )}
+                  </button>
+                </div>
+
+                {/* Summary */}
+                <aside>
+                  <div className="pay-summary-card">
+                    <div
+                      className="row row-gap-md"
+                      style={{ marginBottom: 16 }}
+                    >
+                      <div
+                        style={{
+                          width: 92,
+                          height: 92,
+                          borderRadius: "var(--r-md)",
+                          overflow: "hidden",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <img
+                          src={
+                            booking.experience
+                              ? booking.experience.photo
+                              : guide.photo
+                          }
+                          alt={
+                            booking.experience
+                              ? booking.experience.title
+                              : guide.name
+                          }
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div className="t-caption muted">
+                          {guide.city} · Guided by {guide.name}
+                        </div>
+                        <div
+                          className="t-title-md ink"
+                          style={{ marginTop: 2 }}
+                        >
+                          {booking.experience
+                            ? booking.experience.title
+                            : `Custom tour with ${guide.name}`}
+                        </div>
+                        <div
+                          className="row row-gap-xs"
+                          style={{ marginTop: 4 }}
+                        >
+                          <Stars rating={guide.rating} />
+                          <span className="t-body-sm muted">
+                            ({guide.reviews})
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="divider" style={{ margin: "16px 0" }} />
+                    <div
+                      className="t-display-sm ink"
+                      style={{ marginBottom: 16 }}
+                    >
+                      Price details
+                    </div>
+                    <div className="stack-sm" style={{ marginBottom: 16 }}>
+                      <div className="row between" style={{ gap: 8 }}>
+                        <span
+                          className="t-body-sm body"
+                          style={{
+                            flex: 1,
+                            minWidth: 0,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {booking.experience
+                            ? `${usd(booking.experience.price)} × ${booking.guests} ${booking.guests === 1 ? "guest" : "guests"}`
+                            : `${usd(guide.hourlyRate)} × ${booking.hours}h`}
+                        </span>
+                        <span
+                          className="t-body-sm ink"
+                          style={{ flexShrink: 0 }}
+                        >
+                          {usd(booking.subtotal)}
+                        </span>
+                      </div>
+                      <div className="row between">
+                        <span className="t-body-sm body">Service fee</span>
+                        <span className="t-body-sm ink">
+                          {usd(booking.fee)}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="row between"
+                      style={{
+                        paddingTop: 16,
+                        borderTop: "1px solid var(--hairline-soft)",
+                      }}
+                    >
+                      <span className="t-title-md ink">Total (USD)</span>
+                      <span className="t-display-sm ink">
+                        {usd(booking.total)}
+                      </span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </main>
+        )
+      }
+
+      /* ═══════════════════════════════════════════════
+       CONFIRMATION SCREEN
+       ═══════════════════════════════════════════════ */
+      const ConfirmScreen = ({ booking, navigate }) => {
+        useEffect(() => {
+          const t = setTimeout(() => {
+            // simple confetti-less celebration: noop
+          }, 100)
+          return () => clearTimeout(t)
+        }, [])
+
+        if (!booking) {
+          return (
+            <main className="fade-in">
+              <div
+                className="container"
+                style={{
+                  paddingTop: 64,
+                  paddingBottom: 64,
+                  textAlign: "center",
+                }}
+              >
+                <p className="t-body-md muted">Booking not found.</p>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => navigate("home")}
+                  style={{ marginTop: 16 }}
+                >
+                  Home
+                </button>
+              </div>
+            </main>
+          )
+        }
+
+        const { guide } = booking
+
+        return (
+          <main className="fade-in">
+            <div
+              className="container"
+              style={{
+                paddingTop: 64,
+                paddingBottom: 64,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{ maxWidth: 560, width: "100%", textAlign: "center" }}
+              >
+                {/* check icon */}
+                <div
+                  style={{
+                    width: 88,
+                    height: 88,
+                    borderRadius: "50%",
+                    background: "var(--rausch)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 24px",
+                    boxShadow: "0 12px 32px rgba(255, 56, 92, 0.25)",
+                  }}
+                >
+                  <Icon name="check" size={44} stroke="white" sw={3} />
+                </div>
+
+                <h1 className="t-display-xl ink" style={{ marginBottom: 12 }}>
+                  Booking confirmed!
+                </h1>
+                <p
+                  className="t-body-md muted"
+                  style={{ marginBottom: 32, fontSize: 17 }}
+                >
+                  {guide.name} will send a welcome message shortly.
+                </p>
+
+                {/* Booking summary card */}
+                <div className="confirm-summary-card">
+                  <div
+                    className="row row-gap-md"
+                    style={{ marginBottom: 20, flexWrap: "wrap" }}
+                  >
+                    <Avatar
+                      src={guide.photo}
+                      alt={guide.name}
+                      name={guide.name}
+                      size={56}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="t-caption muted">Host</div>
+                      <div className="t-title-md ink">{guide.name}</div>
+                      <div className="t-caption-sm muted">
+                        {guide.district}, {guide.city}
+                      </div>
+                    </div>
+                    <span
+                      className="badge-pill"
+                      style={{
+                        background: "#fff0f3",
+                        color: "var(--rausch)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {booking.experience ? "Experience" : "Custom tour"}
+                    </span>
+                  </div>
+
+                  <div className="divider" style={{ margin: "0 0 20px" }} />
+
+                  <div className="stack-md">
+                    {booking.experience && (
+                      <SummaryRow
+                        icon="sparkles"
+                        label="Experience"
+                        value={booking.experience.title}
+                      />
+                    )}
+                    <SummaryRow
+                      icon="calendar"
+                      label="Date"
+                      value={formatDate(booking.date)}
+                    />
+                    <SummaryRow
+                      icon="clock"
+                      label="Time"
+                      value={`${booking.time} · ${booking.hours} hours`}
+                    />
+                    <SummaryRow
+                      icon="users"
+                      label="Guests"
+                      value={`${booking.guests} ${booking.guests === 1 ? "guest" : "guests"}`}
+                    />
+                    {booking.interests && booking.interests.length > 0 && (
+                      <SummaryRow
+                        icon="award"
+                        label="Interests"
+                        value={booking.interests.join(" · ")}
+                      />
+                    )}
+                    {booking.requests && (
+                      <SummaryRow
+                        icon="message"
+                        label="Special requests"
+                        value={booking.requests}
+                      />
+                    )}
+                    <SummaryRow
+                      icon="lock"
+                      label="Payment"
+                      value={`${usd(booking.total)} · Card ending in ${
+                        booking.cardLast4 || "****"
+                      }`}
+                    />
+                    <SummaryRow
+                      icon="shield"
+                      label="Booking ID"
+                      value={booking.bookingId || "HD-XXXXXX"}
+                    />
+                  </div>
+                </div>
+
+                {/* email message */}
+                <div
+                  className="row row-gap-sm"
+                  style={{
+                    background: "var(--surface-soft)",
+                    borderRadius: "var(--r-sm)",
+                    padding: "16px 20px",
+                    justifyContent: "center",
+                    marginBottom: 32,
+                  }}
+                >
+                  <Icon name="mail" size={18} stroke="var(--ink)" />
+                  <span className="t-body-sm body">
+                    We have emailed you a receipt.
+                  </span>
+                </div>
+
+                {/* CTA */}
+                <button
+                  className="btn btn-primary"
+                  style={{ minWidth: 240, padding: "16px 32px" }}
+                  onClick={() => navigate("home")}
+                >
+                  Back to home
+                </button>
+                <div style={{ marginTop: 12 }}>
+                  <button
+                    className="btn-tertiary t-body-sm"
+                    style={{ textDecoration: "underline" }}
+                    onClick={() => navigate("list")}
+                  >
+                    Browse more guides
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        )
+      }
+
+      const SummaryRow = ({ icon, label, value }) => (
+        <div className="row row-gap-md" style={{ alignItems: "flex-start" }}>
+          <Icon
+            name={icon}
+            size={18}
+            stroke="var(--muted)"
+            style={{ flexShrink: 0, marginTop: 2 }}
+          />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="t-caption muted">{label}</div>
+            <div
+              className="t-body-md ink"
+              style={{ fontWeight: 500, overflowWrap: "anywhere" }}
+            >
+              {value}
+            </div>
+          </div>
+        </div>
+      )
+
+      /* ═══════════════════════════════════════════════
+       APP — simple route state
+       ═══════════════════════════════════════════════ */
+      const App = () => {
+        const [route, setRoute] = useState({ name: "home" })
+        const [booking, setBooking] = useState(null)
+
+        const navigate = (name, params = {}) => {
+          setRoute({ name, ...params })
+          window.scrollTo({ top: 0, behavior: "instant" })
+        }
+
+        const onReserve = (b) => {
+          setBooking({ ...b })
+          navigate("payment")
+        }
+        const onConfirm = (b) => {
+          setBooking({ ...b })
+          navigate("confirm")
+        }
+
+        let screen = null
+        if (route.name === "home") screen = <HomeScreen navigate={navigate} />
+        else if (route.name === "list")
+          screen = (
+            <ListScreen
+              navigate={navigate}
+              initialCity={route.initialCity}
+              initialQuery={route.initialQuery}
+            />
+          )
+        else if (route.name === "experiences")
+          screen = (
+            <ExperiencesScreen
+              navigate={navigate}
+              initialCity={route.initialCity}
+              initialCategory={route.initialCategory}
+              initialQuery={route.initialQuery}
+            />
+          )
+        else if (route.name === "profile")
+          screen = (
+            <ProfileScreen
+              navigate={navigate}
+              guideId={route.guideId}
+              onReserve={onReserve}
+            />
+          )
+        else if (route.name === "experience")
+          screen = (
+            <ExperienceDetailScreen
+              navigate={navigate}
+              expId={route.expId}
+              onReserve={onReserve}
+            />
+          )
+        else if (route.name === "payment")
+          screen = (
+            <PaymentScreen
+              navigate={navigate}
+              booking={booking}
+              onConfirm={onConfirm}
+            />
+          )
+        else if (route.name === "confirm")
+          screen = <ConfirmScreen navigate={navigate} booking={booking} />
+
+        return (
+          <>
+            <TopNav navigate={navigate} route={route} />
+            {screen}
+            {route.name !== "confirm" && <Footer />}
+          </>
+        )
+      }
+
+export default App
