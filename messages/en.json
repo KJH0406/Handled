@@ -152,6 +152,18 @@
       "edit": "Edit",
       "submit": "✨ Build my plan",
       "generating": "Drafting your plan…"
+    },
+    "canvas": {
+      "backToWizard": "Start a new plan",
+      "loading": "Loading your plan…",
+      "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
+      "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
+      "slotCount": "{count, plural, one {# stop} other {# stops}}",
+      "empty": {
+        "title": "Plan not found",
+        "subtitle": "We couldn't find that plan. It may have been removed, or the link is from a different browser.",
+        "cta": "Start a new plan"
+      }
     }
   },
   "experiences": {

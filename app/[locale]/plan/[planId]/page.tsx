@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
+import PlanCanvasScreen from "../../../screens/PlanCanvasScreen"
 
 interface PageProps {
   params: { locale: string; planId: string }
@@ -14,16 +15,6 @@ export async function generateMetadata({
   }
 }
 
-export default function Page() {
-  return (
-    <main className="fade-in">
-      <section style={{ padding: "64px 0" }}>
-        <div className="container">
-          <p className="t-body-sm muted">
-            Plan canvas — coming up in ISSUE-18.
-          </p>
-        </div>
-      </section>
-    </main>
-  )
+export default function Page({ params }: PageProps) {
+  return <PlanCanvasScreen planId={params.planId} />
 }
