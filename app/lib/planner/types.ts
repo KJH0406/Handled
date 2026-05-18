@@ -1,16 +1,15 @@
 import type { City, ExperienceCategory } from "../types/domain"
 
-export type PartyType = "solo" | "couple" | "friends" | "family" | "parents"
-
 export type SlotTimeOfDay = "morning" | "lunch" | "afternoon" | "evening"
 
 export interface PlanInput {
   city: City
-  days: number
-  party: PartyType
-  partySize: number
+  startDate: string
+  endDate: string
+  adults: number
+  teens: number
+  kids: number
   interests: ExperienceCategory[]
-  freeNote?: string
 }
 
 export interface PlanSlot {
@@ -38,3 +37,16 @@ export interface Plan {
   createdAt: number
   updatedAt: number
 }
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000
+
+export const planDayCount = (input: PlanInput): number => {
+  const start = Date.parse(input.startDate)
+  const end = Date.parse(input.endDate)
+  if (Number.isNaN(start) || Number.isNaN(end)) return 1
+  const diff = Math.round((end - start) / MS_PER_DAY) + 1
+  return Math.max(1, diff)
+}
+
+export const planTotalTravelers = (input: PlanInput): number =>
+  input.adults + input.teens + input.kids

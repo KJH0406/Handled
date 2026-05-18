@@ -1,26 +1,16 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Icon from "../components/ui/Icon"
 import { CITIES } from "../lib/data/filters"
 import { useAppNavigate } from "../lib/navigation"
 import { generatePlan } from "../lib/planner/generate"
 import { savePlan } from "../lib/planner/storage"
-import type { PartyType } from "../lib/planner/types"
+import { planDayCount } from "../lib/planner/types"
 import type { City, ExperienceCategory } from "../lib/types/domain"
 
 const DESTINATIONS = CITIES.filter((c) => c !== "All") as readonly City[]
-
-const DAY_OPTIONS = [1, 2, 3, 4, 5, 6, 7] as const
-
-const PARTIES: readonly PartyType[] = [
-  "solo",
-  "couple",
-  "friends",
-  "family",
-  "parents",
-] as const
 
 const INTERESTS: readonly ExperienceCategory[] = [
   "Food",
@@ -37,22 +27,168 @@ const INTERESTS: readonly ExperienceCategory[] = [
 ] as const
 
 const TOTAL_STEPS = 3
+type Step = 1 | 2 | 3
 
 const clamp = (n: number, lo: number, hi: number): number =>
   Math.min(hi, Math.max(lo, n))
+
+const toISO = (d: Date): string => {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
+
+const todayISO = (): string => toISO(new Date())
+
+const addDaysISO = (iso: string, n: number): string => {
+  const d = new Date(`${iso}T00:00:00`)
+  d.setDate(d.getDate() + n)
+  return toISO(d)
+}
+
+interface StepperProps {
+  value: number
+  onChange: (next: number) => void
+  min?: number
+  max?: number
+  label: string
+  hint?: string
+}
+
+function Stepper({ value, onChange, min = 0, max = 12, label, hint }: StepperProps) {
+  return (
+    <div
+      className="row"
+      style={{
+        gap: 12,
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingBlock: 12,
+      }}
+    >
+      <div>
+        <div className="t-body-md ink">{label}</div>
+        {hint && <div className="t-caption-sm muted">{hint}</div>}
+      </div>
+      <div className="row" style={{ gap: 12, alignItems: "center" }}>
+        <button
+          className="icon-btn"
+          onClick={() => onChange(clamp(value - 1, min, max))}
+          aria-label={`decrease ${label}`}
+          disabled={value <= min}
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 999,
+            border: "1px solid var(--hairline)",
+            opacity: value <= min ? 0.4 : 1,
+          }}
+        >
+          <Icon name="minus" size={14} />
+        </button>
+        <div
+          className="t-body-md ink"
+          style={{ minWidth: 24, textAlign: "center" }}
+        >
+          {value}
+        </div>
+        <button
+          className="icon-btn"
+          onClick={() => onChange(clamp(value + 1, min, max))}
+          aria-label={`increase ${label}`}
+          disabled={value >= max}
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 999,
+            border: "1px solid var(--hairline)",
+            opacity: value >= max ? 0.4 : 1,
+          }}
+        >
+          <Icon name="plus" size={14} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+interface ReviewRowProps {
+  label: string
+  value: React.ReactNode
+  editLabel: string
+  onEdit: () => void
+}
+
+function ReviewRow({ label, value, editLabel, onEdit }: ReviewRowProps) {
+  return (
+    <div
+      className="row"
+      style={{
+        gap: 16,
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        padding: "16px 0",
+        borderBottom: "1px solid var(--hairline-soft)",
+      }}
+    >
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div className="t-caption-sm muted" style={{ marginBottom: 4 }}>
+          {label}
+        </div>
+        <div className="t-body-md ink">{value}</div>
+      </div>
+      <button
+        className="btn-tertiary t-body-sm"
+        style={{ textDecoration: "underline", flexShrink: 0 }}
+        onClick={onEdit}
+      >
+        {editLabel}
+      </button>
+    </div>
+  )
+}
 
 export default function PlanNewScreen() {
   const t = useTranslations("planner.wizard")
   const navigate = useAppNavigate()
 
-  const [step, setStep] = useState<1 | 2 | 3>(1)
+  const [step, setStep] = useState<Step>(1)
   const [city, setCity] = useState<City>("Seoul")
-  const [days, setDays] = useState<number>(2)
-  const [party, setParty] = useState<PartyType>("solo")
-  const [partySize, setPartySize] = useState<number>(2)
+  const [startDate, setStartDate] = useState<string>(todayISO())
+  const [endDate, setEndDate] = useState<string>(addDaysISO(todayISO(), 1))
+  const [adults, setAdults] = useState<number>(1)
+  const [teens, setTeens] = useState<number>(0)
+  const [kids, setKids] = useState<number>(0)
   const [interests, setInterests] = useState<ExperienceCategory[]>([])
-  const [note, setNote] = useState<string>("")
   const [generating, setGenerating] = useState<boolean>(false)
+
+  const dateRangeValid = useMemo(
+    () => Date.parse(endDate) >= Date.parse(startDate),
+    [startDate, endDate],
+  )
+  const dayCount = useMemo(
+    () =>
+      dateRangeValid
+        ? planDayCount({
+            city,
+            startDate,
+            endDate,
+            adults,
+            teens,
+            kids,
+            interests: [],
+          })
+        : 0,
+    [city, startDate, endDate, adults, teens, kids, dateRangeValid],
+  )
+
+  const handleStartChange = (next: string) => {
+    setStartDate(next)
+    if (Date.parse(endDate) < Date.parse(next)) {
+      setEndDate(next)
+    }
+  }
 
   const toggleInterest = (c: ExperienceCategory) => {
     setInterests((prev) =>
@@ -60,24 +196,40 @@ export default function PlanNewScreen() {
     )
   }
 
-  const canNext = step === 1 || step === 2 || interests.length > 0
+  const step1Valid = Boolean(city) && dateRangeValid && adults >= 1
+  const step2Valid = interests.length > 0
+  const canNext =
+    (step === 1 && step1Valid) ||
+    (step === 2 && step2Valid) ||
+    step === 3
+  const canSubmit = step1Valid && step2Valid
 
   const onSubmit = () => {
-    if (interests.length === 0 || generating) return
+    if (!canSubmit || generating) return
     setGenerating(true)
     setTimeout(() => {
       const plan = generatePlan({
         city,
-        days,
-        party,
-        partySize,
+        startDate,
+        endDate,
+        adults,
+        teens,
+        kids,
         interests,
-        freeNote: note || undefined,
       })
       savePlan(plan)
       navigate("plan", { planId: plan.id })
     }, 900)
   }
+
+  const travelerSummary = (): string =>
+    [
+      t("step3.adultsSummary", { count: adults }),
+      teens > 0 ? t("step3.teensSummary", { count: teens }) : null,
+      kids > 0 ? t("step3.kidsSummary", { count: kids }) : null,
+    ]
+      .filter(Boolean)
+      .join(" · ")
 
   return (
     <main className="fade-in">
@@ -91,11 +243,7 @@ export default function PlanNewScreen() {
           </div>
           <div
             aria-hidden="true"
-            style={{
-              display: "flex",
-              gap: 6,
-              marginBottom: 32,
-            }}
+            style={{ display: "flex", gap: 6, marginBottom: 32 }}
           >
             {[1, 2, 3].map((n) => (
               <div
@@ -147,21 +295,127 @@ export default function PlanNewScreen() {
                 className="t-caption-sm muted"
                 style={{ marginBottom: 8, fontWeight: 500 }}
               >
-                {t("step1.daysLabel")}
+                {t("step1.datesLabel")}
               </div>
               <div
                 className="row"
-                style={{ gap: 8, flexWrap: "wrap" }}
+                style={{ gap: 12, flexWrap: "wrap", marginBottom: 8 }}
               >
-                {DAY_OPTIONS.map((n) => (
-                  <button
-                    key={n}
-                    className={`chip ${days === n ? "active" : ""}`}
-                    onClick={() => setDays(n)}
-                  >
-                    {t("step1.dayUnit", { count: n })}
-                  </button>
-                ))}
+                <label
+                  style={{
+                    flex: 1,
+                    minWidth: 180,
+                    border: "1px solid var(--hairline)",
+                    borderRadius: 8,
+                    padding: "10px 12px",
+                  }}
+                >
+                  <div className="t-caption-sm muted">
+                    {t("step1.startLabel")}
+                  </div>
+                  <input
+                    type="date"
+                    value={startDate}
+                    min={todayISO()}
+                    onChange={(e) => handleStartChange(e.target.value)}
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      fontSize: 14,
+                      width: "100%",
+                      background: "transparent",
+                      color: "var(--ink)",
+                      marginTop: 2,
+                    }}
+                  />
+                </label>
+                <label
+                  style={{
+                    flex: 1,
+                    minWidth: 180,
+                    border: `1px solid ${dateRangeValid ? "var(--hairline)" : "var(--primary-error-text, #c13515)"}`,
+                    borderRadius: 8,
+                    padding: "10px 12px",
+                  }}
+                >
+                  <div className="t-caption-sm muted">
+                    {t("step1.endLabel")}
+                  </div>
+                  <input
+                    type="date"
+                    value={endDate}
+                    min={startDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      fontSize: 14,
+                      width: "100%",
+                      background: "transparent",
+                      color: "var(--ink)",
+                      marginTop: 2,
+                    }}
+                  />
+                </label>
+              </div>
+              {dateRangeValid ? (
+                <div
+                  className="t-caption-sm muted"
+                  style={{ marginBottom: 32 }}
+                >
+                  {t("step1.dayUnit", { count: dayCount })}
+                </div>
+              ) : (
+                <div
+                  className="t-caption-sm"
+                  style={{
+                    color: "var(--primary-error-text, #c13515)",
+                    marginBottom: 32,
+                  }}
+                >
+                  {t("step1.datesError")}
+                </div>
+              )}
+
+              <div
+                className="t-caption-sm muted"
+                style={{ marginBottom: 4, fontWeight: 500 }}
+              >
+                {t("step1.travelersLabel")}
+              </div>
+              <div
+                style={{
+                  border: "1px solid var(--hairline)",
+                  borderRadius: 12,
+                  paddingInline: 16,
+                }}
+              >
+                <Stepper
+                  label={t("step1.adults")}
+                  hint={t("step1.adultsHint")}
+                  value={adults}
+                  onChange={setAdults}
+                  min={1}
+                  max={12}
+                />
+                <div style={{ height: 1, background: "var(--hairline-soft)" }} />
+                <Stepper
+                  label={t("step1.teens")}
+                  hint={t("step1.teensHint")}
+                  value={teens}
+                  onChange={setTeens}
+                  min={0}
+                  max={12}
+                />
+                <div style={{ height: 1, background: "var(--hairline-soft)" }} />
+                <Stepper
+                  label={t("step1.kids")}
+                  hint={t("step1.kidsHint")}
+                  value={kids}
+                  onChange={setKids}
+                  min={0}
+                  max={12}
+                />
               </div>
             </div>
           )}
@@ -179,80 +433,7 @@ export default function PlanNewScreen() {
                 className="t-caption-sm muted"
                 style={{ marginBottom: 8, fontWeight: 500 }}
               >
-                {t("step2.partyLabel")}
-              </div>
-              <div
-                className="row"
-                style={{ gap: 8, flexWrap: "wrap", marginBottom: 32 }}
-              >
-                {PARTIES.map((p) => (
-                  <button
-                    key={p}
-                    className={`chip ${party === p ? "active" : ""}`}
-                    onClick={() => setParty(p)}
-                  >
-                    {t(`step2.party.${p}`)}
-                  </button>
-                ))}
-              </div>
-
-              <div
-                className="t-caption-sm muted"
-                style={{ marginBottom: 8, fontWeight: 500 }}
-              >
-                {t("step2.sizeLabel")}
-              </div>
-              <div className="row" style={{ gap: 12, alignItems: "center" }}>
-                <button
-                  className="icon-btn"
-                  onClick={() => setPartySize((n) => clamp(n - 1, 1, 12))}
-                  aria-label="decrease"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 999,
-                    border: "1px solid var(--hairline)",
-                  }}
-                >
-                  <Icon name="minus" size={16} />
-                </button>
-                <div
-                  className="t-display-sm ink"
-                  style={{ minWidth: 32, textAlign: "center" }}
-                >
-                  {partySize}
-                </div>
-                <button
-                  className="icon-btn"
-                  onClick={() => setPartySize((n) => clamp(n + 1, 1, 12))}
-                  aria-label="increase"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 999,
-                    border: "1px solid var(--hairline)",
-                  }}
-                >
-                  <Icon name="plus" size={16} />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="fade-in">
-              <h1 className="t-display-md ink" style={{ marginBottom: 8 }}>
-                {t("step3.heading")}
-              </h1>
-              <p className="t-body-sm muted" style={{ marginBottom: 32 }}>
-                {t("step3.subheading")}
-              </p>
-
-              <div
-                className="t-caption-sm muted"
-                style={{ marginBottom: 8, fontWeight: 500 }}
-              >
-                {t("step3.interestsLabel")}
+                {t("step2.interestsLabel")}
               </div>
               <div
                 className="row"
@@ -273,36 +454,94 @@ export default function PlanNewScreen() {
                 })}
               </div>
               {interests.length === 0 && (
-                <div
-                  className="t-caption-sm muted"
-                  style={{ marginBottom: 32 }}
-                >
-                  {t("step3.interestsHint")}
+                <div className="t-caption-sm muted">
+                  {t("step2.interestsHint")}
                 </div>
               )}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="fade-in">
+              <h1 className="t-display-md ink" style={{ marginBottom: 8 }}>
+                {t("step3.heading")}
+              </h1>
+              <p className="t-body-sm muted" style={{ marginBottom: 32 }}>
+                {t("step3.subheading")}
+              </p>
 
               <div
-                className="t-caption-sm muted"
-                style={{ marginTop: 32, marginBottom: 8, fontWeight: 500 }}
-              >
-                {t("step3.noteLabel")}
-              </div>
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder={t("step3.notePlaceholder")}
-                rows={3}
                 style={{
-                  width: "100%",
-                  padding: 12,
-                  borderRadius: 8,
                   border: "1px solid var(--hairline)",
-                  fontSize: 14,
-                  fontFamily: "inherit",
-                  resize: "vertical",
-                  outline: "none",
+                  borderRadius: 12,
+                  paddingInline: 20,
                 }}
-              />
+              >
+                <ReviewRow
+                  label={t("step3.destinationLabel")}
+                  value={city}
+                  editLabel={t("edit")}
+                  onEdit={() => setStep(1)}
+                />
+                <ReviewRow
+                  label={t("step3.datesLabel")}
+                  value={t("step3.datesSummary", {
+                    start: startDate,
+                    end: endDate,
+                    count: dayCount,
+                  })}
+                  editLabel={t("edit")}
+                  onEdit={() => setStep(1)}
+                />
+                <ReviewRow
+                  label={t("step3.travelersLabel")}
+                  value={travelerSummary()}
+                  editLabel={t("edit")}
+                  onEdit={() => setStep(1)}
+                />
+                <div
+                  className="row"
+                  style={{
+                    gap: 16,
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    padding: "16px 0",
+                  }}
+                >
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div
+                      className="t-caption-sm muted"
+                      style={{ marginBottom: 6 }}
+                    >
+                      {t("step3.interestsLabel")}
+                    </div>
+                    <div
+                      className="row"
+                      style={{ gap: 6, flexWrap: "wrap" }}
+                    >
+                      {interests.map((c) => (
+                        <span
+                          key={c}
+                          className="chip active"
+                          style={{ pointerEvents: "none" }}
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    className="btn-tertiary t-body-sm"
+                    style={{
+                      textDecoration: "underline",
+                      flexShrink: 0,
+                    }}
+                    onClick={() => setStep(2)}
+                  >
+                    {t("edit")}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -316,7 +555,9 @@ export default function PlanNewScreen() {
           >
             <button
               className="btn btn-secondary"
-              onClick={() => setStep((s) => (s > 1 ? ((s - 1) as 1 | 2) : s))}
+              onClick={() =>
+                setStep((s) => (s > 1 ? ((s - 1) as Step) : s))
+              }
               disabled={step === 1}
               style={{ visibility: step === 1 ? "hidden" : "visible" }}
             >
@@ -326,7 +567,7 @@ export default function PlanNewScreen() {
             {step < TOTAL_STEPS ? (
               <button
                 className="btn btn-primary"
-                onClick={() => setStep((s) => (s + 1) as 2 | 3)}
+                onClick={() => setStep((s) => (s + 1) as Step)}
                 disabled={!canNext}
               >
                 {t("next")} <Icon name="chevronRight" size={14} stroke="white" />
@@ -335,7 +576,7 @@ export default function PlanNewScreen() {
               <button
                 className="btn btn-primary"
                 onClick={onSubmit}
-                disabled={interests.length === 0 || generating}
+                disabled={!canSubmit || generating}
               >
                 {generating ? t("generating") : t("submit")}
               </button>

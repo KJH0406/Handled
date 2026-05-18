@@ -1,12 +1,12 @@
 import { SCHEDULE_BY_CATEGORY } from "../data/schedules"
 import type { ExperienceCategory } from "../types/domain"
-import type {
-  PartyType,
-  Plan,
-  PlanDay,
-  PlanInput,
-  PlanSlot,
-  SlotTimeOfDay,
+import {
+  planDayCount,
+  type Plan,
+  type PlanDay,
+  type PlanInput,
+  type PlanSlot,
+  type SlotTimeOfDay,
 } from "./types"
 
 interface TimeAnchor {
@@ -43,27 +43,22 @@ const DAY_TEMPLATE: TimeAnchor[] = [
   },
 ]
 
-const PARTY_EXCLUDES: Record<PartyType, ExperienceCategory[]> = {
-  solo: [],
-  couple: [],
-  friends: [],
-  family: ["Nightlife"],
-  parents: ["Nightlife", "Beach"],
+const excludedCategories = (input: PlanInput): ExperienceCategory[] => {
+  const excludes: ExperienceCategory[] = []
+  if (input.teens > 0 || input.kids > 0) excludes.push("Nightlife")
+  return excludes
 }
-
-const partyAllows = (
-  cat: ExperienceCategory,
-  party: PartyType,
-): boolean => !PARTY_EXCLUDES[party].includes(cat)
 
 const pickCategory = (
   bucket: ExperienceCategory[],
-  interests: ExperienceCategory[],
-  party: PartyType,
+  input: PlanInput,
   used: Set<ExperienceCategory>,
   offset: number,
 ): ExperienceCategory => {
-  const allowed = bucket.filter((c) => partyAllows(c, party))
+  const excludes = excludedCategories(input)
+  const allowed = bucket.filter((c) => !excludes.includes(c))
+  const interests = input.interests
+
   const preferred = allowed.filter(
     (c) => interests.includes(c) && !used.has(c),
   )
@@ -76,7 +71,7 @@ const pickCategory = (
   const fallback = allowed.filter((c) => !used.has(c))
   if (fallback.length > 0) return fallback[offset % fallback.length]
 
-  return allowed[offset % allowed.length]
+  return allowed[offset % allowed.length] ?? bucket[offset % bucket.length]
 }
 
 const buildSlot = (
@@ -111,8 +106,7 @@ const buildDay = (
   DAY_TEMPLATE.forEach((anchor, slotIdx) => {
     const category = pickCategory(
       anchor.bucket,
-      input.interests,
-      input.party,
+      input,
       used,
       rotationOffset + slotIdx,
     )
@@ -131,11 +125,12 @@ const createPlanId = (): string =>
   `plan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
 
 const defaultName = (input: PlanInput): string =>
-  `${input.city} ${input.days}-day plan`
+  `${input.city} ${planDayCount(input)}-day plan`
 
 export const generatePlan = (input: PlanInput): Plan => {
+  const dayCount = planDayCount(input)
   const days: PlanDay[] = []
-  for (let i = 0; i < input.days; i++) {
+  for (let i = 0; i < dayCount; i++) {
     days.push(buildDay(i, input, i))
   }
 
@@ -196,8 +191,7 @@ export const regenerateSlot = (
       )
       const next = pickCategory(
         anchor.bucket,
-        plan.input.interests,
-        plan.input.party,
+        plan.input,
         used,
         dayIdx + slotIdx + Date.now(),
       )
