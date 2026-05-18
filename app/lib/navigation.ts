@@ -34,6 +34,10 @@ export interface ExperienceRouteParams {
   expId: string
 }
 
+export interface PlanRouteParams {
+  planId: string
+}
+
 export type RouteParamsByName = {
   home: void
   list: ListRouteParams | void
@@ -42,6 +46,8 @@ export type RouteParamsByName = {
   experience: ExperienceRouteParams
   payment: void
   confirm: void
+  planNew: void
+  plan: PlanRouteParams
 }
 
 export type RouteName = keyof RouteParamsByName
@@ -68,6 +74,8 @@ const ROUTE_BUILDERS: { [K in RouteName]: RouteBuilder<RouteParamsByName[K]> } =
     experience: ({ expId }) => `/experiences/${expId}`,
     payment: () => "/checkout",
     confirm: () => "/checkout/confirmed",
+    planNew: () => "/plan/new",
+    plan: ({ planId }) => `/plan/${planId}`,
   }
 
 export type AppNavigate = <K extends RouteName>(

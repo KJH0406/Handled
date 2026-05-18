@@ -26,6 +26,8 @@
   "nav": {
     "home": "Home",
     "experiences": "Experiences",
+    "planner": "AI Planner",
+    "myPlans": "My Plans",
     "becomeHost": "Become a host",
     "logoAria": "Handled — home",
     "languageAria": "Language",
@@ -106,6 +108,43 @@
       "cta": "Clear filters"
     },
     "clearSearchAria": "Clear search"
+  },
+  "planner": {
+    "wizard": {
+      "stepLabel": "Step {current} of {total}",
+      "step1": {
+        "heading": "Where are you headed?",
+        "subheading": "Pick a city and how many days you'll be there.",
+        "cityLabel": "Destination",
+        "daysLabel": "How many days?",
+        "dayUnit": "{count, plural, one {# day} other {# days}}"
+      },
+      "step2": {
+        "heading": "Who's with you?",
+        "subheading": "We'll tune the plan to fit your group.",
+        "partyLabel": "Traveling with",
+        "sizeLabel": "Group size",
+        "party": {
+          "solo": "Solo",
+          "couple": "Couple",
+          "friends": "Friends",
+          "family": "Family",
+          "parents": "Parents"
+        }
+      },
+      "step3": {
+        "heading": "What are you into?",
+        "subheading": "Pick a few interests — we'll prioritize them across the days.",
+        "interestsLabel": "Interests",
+        "interestsHint": "Pick at least one to continue.",
+        "noteLabel": "Anything else? (optional)",
+        "notePlaceholder": "e.g. My parents have knee issues — keep walking light."
+      },
+      "back": "Back",
+      "next": "Next",
+      "submit": "✨ Build my plan",
+      "generating": "Drafting your plan…"
+    }
   },
   "experiences": {
     "title": "All Korean experiences",
@@ -379,6 +418,13 @@
     },
     "checkout": {
       "title": "Checkout"
+    },
+    "planNew": {
+      "title": "Plan your trip with AI",
+      "description": "Tell us a few things about your trip — we'll draft a day-by-day plan you can edit."
+    },
+    "plan": {
+      "title": "Your trip plan"
     },
     "notFound": {
       "title": "Page not found"
