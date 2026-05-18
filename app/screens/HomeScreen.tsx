@@ -162,6 +162,69 @@ export default function HomeScreen() {
 
       <section style={{ padding: "32px 0" }}>
         <div className="container">
+          <button
+            onClick={() => navigate("planNew")}
+            className="plan-cta-banner"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "64px 1fr auto",
+              gap: 20,
+              alignItems: "center",
+              width: "100%",
+              padding: "24px 28px",
+              borderRadius: 16,
+              border: "1px solid var(--hairline)",
+              background:
+                "linear-gradient(135deg, #ffffff 0%, #fff5f7 100%)",
+              cursor: "pointer",
+              textAlign: "left",
+              transition: "box-shadow 200ms",
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 999,
+                background: "rgba(255, 56, 92, 0.12)",
+                color: "var(--rausch)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <Icon
+                name="sparkles"
+                size={28}
+                fill="currentColor"
+                stroke="currentColor"
+                sw={1.5}
+              />
+            </span>
+            <span style={{ minWidth: 0 }}>
+              <span
+                className="t-display-sm ink"
+                style={{ display: "block", marginBottom: 4 }}
+              >
+                {t("planCta.title")}
+              </span>
+              <span className="t-body-md muted">{t("planCta.subtitle")}</span>
+            </span>
+            <span
+              className="btn btn-primary hide-mobile"
+              style={{ flexShrink: 0, pointerEvents: "none" }}
+            >
+              {t("planCta.cta")}
+              <Icon name="arrowRight" size={14} stroke="white" />
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section style={{ padding: "32px 0" }}>
+        <div className="container">
           <div className="section-header" style={{ marginBottom: 24 }}>
             <h2 className="t-display-md ink">{t("featured.heading")}</h2>
             <button

@@ -82,6 +82,11 @@
       "multilingualTitle": "Multilingual hosts",
       "multilingualDesc": "English, Japanese, Mandarin, French. Book in the language you are most comfortable in."
     },
+    "planCta": {
+      "title": "Plan a multi-day trip with AI",
+      "subtitle": "Tell us where, when, and what you're into — we'll draft a day-by-day itinerary you can edit.",
+      "cta": "Plan with AI"
+    },
     "featured": {
       "heading": "Top experiences this week",
       "viewAll": "View all experiences"
