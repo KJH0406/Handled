@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useSearchParams } from "next/navigation"
 import { useMemo, useState } from "react"
 import Icon from "../components/ui/Icon"
 import PlanGeneratingSplash from "../components/ui/PlanGeneratingSplash"
@@ -153,15 +154,40 @@ function ReviewRow({ label, value, editLabel, onEdit }: ReviewRowProps) {
 export default function PlanNewScreen() {
   const t = useTranslations("planner.wizard")
   const navigate = useAppNavigate()
+  const searchParams = useSearchParams()
+
+  const prefillCity = useMemo<City>(() => {
+    const c = searchParams.get("city")
+    return c && DESTINATIONS.includes(c as City) ? (c as City) : "Seoul"
+  }, [searchParams])
+
+  const prefillDays = useMemo<number>(() => {
+    const d = parseInt(searchParams.get("days") ?? "", 10)
+    return Number.isFinite(d) && d >= 1 && d <= 21 ? d : 2
+  }, [searchParams])
+
+  const prefillInterests = useMemo<ExperienceCategory[]>(() => {
+    const raw = searchParams.get("interests")
+    if (!raw) return []
+    return raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s): s is ExperienceCategory =>
+        (INTERESTS as readonly string[]).includes(s),
+      )
+  }, [searchParams])
 
   const [step, setStep] = useState<Step>(1)
-  const [city, setCity] = useState<City>("Seoul")
+  const [city, setCity] = useState<City>(prefillCity)
   const [startDate, setStartDate] = useState<string>(todayISO())
-  const [endDate, setEndDate] = useState<string>(addDaysISO(todayISO(), 1))
+  const [endDate, setEndDate] = useState<string>(
+    addDaysISO(todayISO(), Math.max(1, prefillDays - 1)),
+  )
   const [adults, setAdults] = useState<number>(1)
   const [teens, setTeens] = useState<number>(0)
   const [kids, setKids] = useState<number>(0)
-  const [interests, setInterests] = useState<ExperienceCategory[]>([])
+  const [interests, setInterests] =
+    useState<ExperienceCategory[]>(prefillInterests)
   const [generating, setGenerating] = useState<boolean>(false)
 
   const dateRangeValid = useMemo(

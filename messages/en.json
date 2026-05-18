@@ -63,8 +63,11 @@
       "kicker": "AI trip planner",
       "titleLine1": "Plan your Korea trip",
       "titleLine2": "in seconds, not weekends.",
-      "lede": "Tell us where, when, and what you're into — AI drafts a day-by-day itinerary you can edit, save, and share.",
-      "planCta": "Plan with AI",
+      "lede": "Describe your trip in one line — AI drafts a day-by-day itinerary you can edit, save, and share.",
+      "promptPlaceholder": "e.g. 5 days in Seoul for foodies and photo spots",
+      "promptAria": "Describe your trip",
+      "promptSubmit": "Plan with AI",
+      "promptHint": "We'll pre-fill the planner from your description. You can tweak anything before generating.",
       "browseLink": "Or browse local experiences"
     },
     "why": {

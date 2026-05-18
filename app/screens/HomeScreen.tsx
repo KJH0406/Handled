@@ -1,11 +1,13 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Avatar from "../components/ui/Avatar"
 import Icon, { type IconName } from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
 import { useAppNavigate } from "../lib/navigation"
+import { parsePrompt } from "../lib/planner/parsePrompt"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { reviewsRepo } from "../lib/repositories/reviews"
 
@@ -31,6 +33,19 @@ export default function HomeScreen() {
   const t = useTranslations("home")
   const navigate = useAppNavigate()
   const featured = experiencesRepo.featured(3)
+  const [prompt, setPrompt] = useState("")
+
+  const onSubmitPrompt = () => {
+    const parsed = parsePrompt(prompt)
+    const interestsParam =
+      parsed.interests.length > 0 ? parsed.interests.join(",") : undefined
+    navigate("planNew", {
+      initialCity: parsed.city,
+      initialDays: parsed.days,
+      initialInterests: interestsParam,
+      initialPrompt: prompt.trim() || undefined,
+    })
+  }
 
   return (
     <main className="fade-in">
@@ -83,42 +98,85 @@ export default function HomeScreen() {
             >
               {t("hero.lede")}
             </p>
-            <div
-              className="row"
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                onSubmitPrompt()
+              }}
               style={{
-                gap: 12,
-                justifyContent: "center",
-                flexWrap: "wrap",
-                marginBottom: 16,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "#fff",
+                border: "1px solid var(--hairline)",
+                borderRadius: 16,
+                padding: 8,
+                maxWidth: 640,
+                margin: "0 auto",
+                boxShadow:
+                  "rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.06) 0 4px 12px",
               }}
             >
+              <input
+                type="text"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder={t("hero.promptPlaceholder")}
+                aria-label={t("hero.promptAria")}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  padding: "12px 14px",
+                  fontSize: 16,
+                  color: "var(--ink)",
+                }}
+              />
               <button
+                type="submit"
                 className="btn btn-primary"
-                onClick={() => navigate("planNew")}
-                style={{ height: 52, padding: "0 24px", fontSize: 16 }}
+                style={{
+                  height: 44,
+                  padding: "0 18px",
+                  borderRadius: 12,
+                  flexShrink: 0,
+                }}
               >
                 <Icon
                   name="sparkles"
-                  size={16}
+                  size={14}
                   stroke="white"
                   fill="white"
                   sw={1.5}
                 />
-                {t("hero.planCta")}
+                {t("hero.promptSubmit")}
+              </button>
+            </form>
+
+            <div
+              className="t-caption-sm muted"
+              style={{ marginTop: 14, textAlign: "center" }}
+            >
+              {t("hero.promptHint")}
+            </div>
+
+            <div style={{ marginTop: 24 }}>
+              <button
+                className="btn-tertiary t-body-sm muted"
+                onClick={() => navigate("experiences")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  textDecoration: "underline",
+                }}
+              >
+                {t("hero.browseLink")} <Icon name="arrowRight" size={12} />
               </button>
             </div>
-            <button
-              className="btn-tertiary t-body-sm muted"
-              onClick={() => navigate("experiences")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 4,
-                textDecoration: "underline",
-              }}
-            >
-              {t("hero.browseLink")} <Icon name="arrowRight" size={12} />
-            </button>
           </div>
 
           <div

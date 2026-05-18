@@ -38,6 +38,13 @@ export interface PlanRouteParams {
   planId: string
 }
 
+export interface PlanNewRouteParams {
+  initialCity?: string
+  initialDays?: number
+  initialInterests?: string
+  initialPrompt?: string
+}
+
 export type RouteParamsByName = {
   home: void
   list: ListRouteParams | void
@@ -46,7 +53,7 @@ export type RouteParamsByName = {
   experience: ExperienceRouteParams
   payment: void
   confirm: void
-  planNew: void
+  planNew: PlanNewRouteParams | void
   plan: PlanRouteParams
   myPlans: void
 }
@@ -75,7 +82,16 @@ const ROUTE_BUILDERS: { [K in RouteName]: RouteBuilder<RouteParamsByName[K]> } =
     experience: ({ expId }) => `/experiences/${expId}`,
     payment: () => "/checkout",
     confirm: () => "/checkout/confirmed",
-    planNew: () => "/plan/new",
+    planNew: (params) => {
+      const { initialCity, initialDays, initialInterests, initialPrompt } =
+        (params ?? {}) as PlanNewRouteParams
+      return `/plan/new${buildSearch({
+        city: initialCity,
+        days: initialDays,
+        interests: initialInterests,
+        q: initialPrompt,
+      })}`
+    },
     plan: ({ planId }) => `/plan/${planId}`,
     myPlans: () => "/my-plans",
   }
