@@ -1,7 +1,6 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Avatar from "../components/ui/Avatar"
 import Icon, { type IconName } from "../components/ui/Icon"
@@ -30,12 +29,8 @@ const WHY_FEATURES: WhyFeature[] = [
 
 export default function HomeScreen() {
   const t = useTranslations("home")
-  const tNav = useTranslations("nav")
   const navigate = useAppNavigate()
-  const [where, setWhere] = useState("")
   const featured = experiencesRepo.featured(3)
-
-  const onSearch = () => navigate("experiences", { initialQuery: where })
 
   return (
     <main className="fade-in">
@@ -43,11 +38,34 @@ export default function HomeScreen() {
         <div className="container">
           <div
             style={{
-              maxWidth: 720,
+              maxWidth: 760,
               margin: "0 auto",
               textAlign: "center",
             }}
           >
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 14px",
+                borderRadius: 999,
+                background: "rgba(255, 56, 92, 0.1)",
+                color: "var(--rausch)",
+                fontSize: 13,
+                fontWeight: 600,
+                marginBottom: 20,
+              }}
+            >
+              <Icon
+                name="sparkles"
+                size={14}
+                fill="currentColor"
+                stroke="currentColor"
+                sw={1.5}
+              />
+              {t("hero.kicker")}
+            </div>
             <h1 className="t-display-xl ink" style={{ marginBottom: 16 }}>
               {t("hero.titleLine1")}
               <br />
@@ -58,71 +76,54 @@ export default function HomeScreen() {
             <p
               className="t-body-md muted"
               style={{
-                maxWidth: 540,
-                margin: "0 auto 36px",
+                maxWidth: 560,
+                margin: "0 auto 32px",
                 fontSize: 17,
               }}
             >
               {t("hero.lede")}
             </p>
-          </div>
-
-          <div className="search-pill">
-            <div className="search-segment">
-              <div className="seg-label">{t("search.where")}</div>
-              <input
-                placeholder={t("search.wherePlaceholder")}
-                value={where}
-                onChange={(e) => setWhere(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && onSearch()}
-                style={{
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: 14,
-                  color: "var(--ink)",
-                  padding: 0,
-                }}
-              />
-            </div>
-            <div className="search-segment">
-              <div className="seg-label">{t("search.when")}</div>
-              <div className="seg-value">{t("search.addDates")}</div>
-            </div>
-            <div className="search-segment">
-              <div className="seg-label">{t("search.who")}</div>
-              <div className="seg-value">{t("search.addGuests")}</div>
+            <div
+              className="row"
+              style={{
+                gap: 12,
+                justifyContent: "center",
+                flexWrap: "wrap",
+                marginBottom: 16,
+              }}
+            >
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate("planNew")}
+                style={{ height: 52, padding: "0 24px", fontSize: 16 }}
+              >
+                <Icon
+                  name="sparkles"
+                  size={16}
+                  stroke="white"
+                  fill="white"
+                  sw={1.5}
+                />
+                {t("hero.planCta")}
+              </button>
             </div>
             <button
-              className="search-orb"
-              onClick={onSearch}
-              aria-label={tNav("searchAria")}
+              className="btn-tertiary t-body-sm muted"
+              onClick={() => navigate("experiences")}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+                textDecoration: "underline",
+              }}
             >
-              <Icon name="search" size={18} stroke="white" sw={2.5} />
-            </button>
-          </div>
-
-          <div className="search-pill-mobile">
-            <Icon name="search" size={18} stroke="var(--muted)" />
-            <input
-              placeholder={t("search.whereMobilePlaceholder")}
-              value={where}
-              onChange={(e) => setWhere(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && onSearch()}
-            />
-            <button
-              className="search-orb"
-              onClick={onSearch}
-              aria-label={tNav("searchAria")}
-              style={{ width: 36, height: 36 }}
-            >
-              <Icon name="arrowRight" size={16} stroke="white" sw={2.5} />
+              {t("hero.browseLink")} <Icon name="arrowRight" size={12} />
             </button>
           </div>
 
           <div
             className="row center"
-            style={{ gap: 8, flexWrap: "wrap", marginTop: 24 }}
+            style={{ gap: 8, flexWrap: "wrap", marginTop: 40 }}
           >
             {QUICK_CITIES.map((c) => (
               <button
@@ -157,69 +158,6 @@ export default function HomeScreen() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section style={{ padding: "32px 0" }}>
-        <div className="container">
-          <button
-            onClick={() => navigate("planNew")}
-            className="plan-cta-banner"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "64px 1fr auto",
-              gap: 20,
-              alignItems: "center",
-              width: "100%",
-              padding: "24px 28px",
-              borderRadius: 16,
-              border: "1px solid var(--hairline)",
-              background:
-                "linear-gradient(135deg, #ffffff 0%, #fff5f7 100%)",
-              cursor: "pointer",
-              textAlign: "left",
-              transition: "box-shadow 200ms",
-            }}
-          >
-            <span
-              aria-hidden="true"
-              style={{
-                width: 64,
-                height: 64,
-                borderRadius: 999,
-                background: "rgba(255, 56, 92, 0.12)",
-                color: "var(--rausch)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <Icon
-                name="sparkles"
-                size={28}
-                fill="currentColor"
-                stroke="currentColor"
-                sw={1.5}
-              />
-            </span>
-            <span style={{ minWidth: 0 }}>
-              <span
-                className="t-display-sm ink"
-                style={{ display: "block", marginBottom: 4 }}
-              >
-                {t("planCta.title")}
-              </span>
-              <span className="t-body-md muted">{t("planCta.subtitle")}</span>
-            </span>
-            <span
-              className="btn btn-primary hide-mobile"
-              style={{ flexShrink: 0, pointerEvents: "none" }}
-            >
-              {t("planCta.cta")}
-              <Icon name="arrowRight" size={14} stroke="white" />
-            </span>
-          </button>
         </div>
       </section>
 

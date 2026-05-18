@@ -32,7 +32,6 @@
     "help": "Help center",
     "logoAria": "Handled — home",
     "languageAria": "Language",
-    "searchAria": "Search",
     "accountMenuAria": "Account menu"
   },
   "footer": {
@@ -61,18 +60,12 @@
   },
   "home": {
     "hero": {
-      "titleLine1": "Korea, made local —",
-      "titleLine2": "experiences hosted by people you trust.",
-      "lede": "Discover handpicked Korean experiences, hosted by vetted locals."
-    },
-    "search": {
-      "where": "Where",
-      "when": "When",
-      "who": "Who",
-      "wherePlaceholder": "Anywhere in Korea?",
-      "whereMobilePlaceholder": "Where in Korea?",
-      "addDates": "Add dates",
-      "addGuests": "Add guests"
+      "kicker": "AI trip planner",
+      "titleLine1": "Plan your Korea trip",
+      "titleLine2": "in seconds, not weekends.",
+      "lede": "Tell us where, when, and what you're into — AI drafts a day-by-day itinerary you can edit, save, and share.",
+      "planCta": "Plan with AI",
+      "browseLink": "Or browse local experiences"
     },
     "why": {
       "curatedTitle": "Curated experiences",
@@ -81,11 +74,6 @@
       "smallGroupDesc": "Up to 4–8 guests so you actually get to ask questions and stop where you want.",
       "multilingualTitle": "Multilingual hosts",
       "multilingualDesc": "English, Japanese, Mandarin, French. Book in the language you are most comfortable in."
-    },
-    "planCta": {
-      "title": "Plan a multi-day trip with AI",
-      "subtitle": "Tell us where, when, and what you're into — we'll draft a day-by-day itinerary you can edit.",
-      "cta": "Plan with AI"
     },
     "featured": {
       "heading": "Top experiences this week",

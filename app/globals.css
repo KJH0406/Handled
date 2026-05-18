@@ -1880,14 +1880,3 @@ a {
   animation: modalIn 0.18s ease;
 }
 
-/* ─────────────────────────────────────────────
-       Plan-with-AI CTA banner
-       ───────────────────────────────────────────── */
-.plan-cta-banner {
-  background: linear-gradient(135deg, #ffffff 0%, #fff5f7 100%);
-}
-.plan-cta-banner:hover {
-  box-shadow:
-    rgba(0, 0, 0, 0.04) 0 2px 6px 0,
-    rgba(0, 0, 0, 0.1) 0 4px 12px 0;
-}
