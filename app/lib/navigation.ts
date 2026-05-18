@@ -48,6 +48,7 @@ export type RouteParamsByName = {
   confirm: void
   planNew: void
   plan: PlanRouteParams
+  myPlans: void
 }
 
 export type RouteName = keyof RouteParamsByName
@@ -76,6 +77,7 @@ const ROUTE_BUILDERS: { [K in RouteName]: RouteBuilder<RouteParamsByName[K]> } =
     confirm: () => "/checkout/confirmed",
     planNew: () => "/plan/new",
     plan: ({ planId }) => `/plan/${planId}`,
+    myPlans: () => "/my-plans",
   }
 
 export type AppNavigate = <K extends RouteName>(

@@ -4,8 +4,10 @@ import Link from "next/link"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import Icon from "../components/ui/Icon"
+import PlanGeneratingSplash from "../components/ui/PlanGeneratingSplash"
 import { useAppNavigate } from "../lib/navigation"
-import { getPlan } from "../lib/planner/storage"
+import { categoryBg } from "../lib/planner/categoryBg"
+import { getPlan, markPlanSaved } from "../lib/planner/storage"
 import {
   planDayCount,
   planTotalTravelers,
@@ -50,7 +52,7 @@ function SlotCard({ slot }: { slot: PlanSlot }) {
             display: "inline-block",
             padding: "3px 8px",
             borderRadius: 999,
-            background: "var(--surface-soft, #f7f7f7)",
+            background: categoryBg(slot.category),
             color: "var(--ink)",
             letterSpacing: "0.32px",
             marginBottom: 8,
@@ -71,20 +73,53 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const t = useTranslations("planner.canvas")
   const navigate = useAppNavigate()
   const [state, setState] = useState<LoadState>({ kind: "loading" })
+  const [toast, setToast] = useState<string | null>(null)
+  const [savedModalOpen, setSavedModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const plan = getPlan(planId)
     setState(plan ? { kind: "ready", plan } : { kind: "missing" })
   }, [planId])
 
+  useEffect(() => {
+    if (!toast) return
+    const id = window.setTimeout(() => setToast(null), 2200)
+    return () => window.clearTimeout(id)
+  }, [toast])
+
+  const onShare = async (planName: string) => {
+    const url = typeof window !== "undefined" ? window.location.href : ""
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: planName, url })
+        return
+      } catch {
+        // user cancelled or share failed — fall through to clipboard
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      setToast(t("shareToast"))
+    } catch {
+      setToast(t("shareError"))
+    }
+  }
+
+  const onToggleSave = (plan: Plan) => {
+    const next = markPlanSaved(plan.id)
+    if (!next) return
+    setState({ kind: "ready", plan: next })
+    setSavedModalOpen(true)
+  }
+
   if (state.kind === "loading") {
     return (
       <main className="fade-in">
-        <section style={{ padding: "48px 0" }}>
-          <div className="container" style={{ maxWidth: 880 }}>
-            <div className="t-body-sm muted">{t("loading")}</div>
-          </div>
-        </section>
+        <PlanGeneratingSplash
+          title={t("loading")}
+          steps={[t("loadingHint")]}
+          fullscreen={false}
+        />
       </main>
     )
   }
@@ -137,9 +172,40 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             {t("backToWizard")}
           </Link>
 
-          <h1 className="t-display-lg ink" style={{ marginBottom: 12 }}>
-            {plan.name}
-          </h1>
+          <div
+            style={{
+              display: "flex",
+              gap: 16,
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              marginBottom: 12,
+            }}
+          >
+            <h1 className="t-display-lg ink" style={{ margin: 0, minWidth: 0 }}>
+              {plan.name}
+            </h1>
+            <div className="row" style={{ gap: 8, flexShrink: 0 }}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => onShare(plan.name)}
+                style={{ height: 40, padding: "0 14px" }}
+              >
+                <Icon name="share" size={14} />
+                {t("share")}
+              </button>
+              {!plan.savedAt && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => onToggleSave(plan)}
+                  style={{ height: 40, padding: "0 14px" }}
+                >
+                  <Icon name="bookmark" size={14} />
+                  {t("save")}
+                </button>
+              )}
+            </div>
+          </div>
 
           <div
             className="row"
@@ -190,6 +256,83 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                   {c}
                 </span>
               ))}
+            </div>
+          )}
+
+          {toast && (
+            <div className="toast" role="status" aria-live="polite">
+              <Icon name="check" size={14} stroke="#fff" />
+              {toast}
+            </div>
+          )}
+
+          {savedModalOpen && (
+            <div
+              className="modal-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="saved-modal-title"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setSavedModalOpen(false)
+              }}
+            >
+              <div className="modal-card">
+                <div
+                  aria-hidden="true"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    margin: "0 auto 16px",
+                    borderRadius: 999,
+                    background: "rgba(255, 56, 92, 0.1)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon
+                    name="bookmark"
+                    size={24}
+                    fill="var(--rausch)"
+                    stroke="var(--rausch)"
+                  />
+                </div>
+                <h2
+                  id="saved-modal-title"
+                  className="t-display-sm ink"
+                  style={{ marginBottom: 8 }}
+                >
+                  {t("savedModal.title")}
+                </h2>
+                <p
+                  className="t-body-md muted"
+                  style={{ marginBottom: 24 }}
+                >
+                  {t("savedModal.body")}
+                </p>
+                <div
+                  className="row"
+                  style={{ gap: 8, justifyContent: "stretch" }}
+                >
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => setSavedModalOpen(false)}
+                    style={{ flex: 1 }}
+                  >
+                    {t("savedModal.close")}
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setSavedModalOpen(false)
+                      navigate("myPlans")
+                    }}
+                    style={{ flex: 1 }}
+                  >
+                    {t("savedModal.viewMyPlans")}
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useEffect, useRef, useState } from "react"
 import { Link, usePathname } from "../../../i18n/navigation"
 import Icon, { type IconName } from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
@@ -33,6 +34,34 @@ const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
 export default function TopNav() {
   const t = useTranslations("nav")
   const pathname = usePathname()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node)
+      ) {
+        setMenuOpen(false)
+      }
+    }
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false)
+    }
+    window.addEventListener("mousedown", onClick)
+    window.addEventListener("keydown", onEsc)
+    return () => {
+      window.removeEventListener("mousedown", onClick)
+      window.removeEventListener("keydown", onEsc)
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
   return (
     <header className="nav">
       <div className="container nav-inner">
@@ -80,12 +109,49 @@ export default function TopNav() {
           <div className="hide-mobile">
             <LocaleSwitcher />
           </div>
-          <button className="nav-account">
-            <Icon name="menu" size={14} />
-            <div className="nav-avatar">
-              <Icon name="user" size={16} stroke="white" />
-            </div>
-          </button>
+          <div ref={menuRef} style={{ position: "relative" }}>
+            <button
+              className="nav-account"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-label={t("accountMenuAria")}
+            >
+              <Icon name="menu" size={14} />
+              <div className="nav-avatar">
+                <Icon name="user" size={16} stroke="white" />
+              </div>
+            </button>
+            {menuOpen && (
+              <div className="account-dropdown" role="menu">
+                <Link
+                  href="/my-plans"
+                  className="account-dropdown-item"
+                  role="menuitem"
+                >
+                  <Icon name="bookmark" size={16} />
+                  {t("myPlans")}
+                </Link>
+                <div className="account-dropdown-divider" />
+                <a
+                  href="#"
+                  className="account-dropdown-item muted"
+                  role="menuitem"
+                >
+                  <Icon name="award" size={16} />
+                  {t("becomeHost")}
+                </a>
+                <a
+                  href="#"
+                  className="account-dropdown-item muted"
+                  role="menuitem"
+                >
+                  <Icon name="message" size={16} />
+                  {t("help")}
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

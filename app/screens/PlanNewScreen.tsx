@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
 import Icon from "../components/ui/Icon"
+import PlanGeneratingSplash from "../components/ui/PlanGeneratingSplash"
 import { CITIES } from "../lib/data/filters"
 import { useAppNavigate } from "../lib/navigation"
 import { generatePlan } from "../lib/planner/generate"
@@ -219,8 +220,15 @@ export default function PlanNewScreen() {
       })
       savePlan(plan)
       navigate("plan", { planId: plan.id })
-    }, 900)
+    }, 4500)
   }
+
+  const splashSteps = [
+    t("splash.step1", { city }),
+    t("splash.step2"),
+    t("splash.step3"),
+    t("splash.step4"),
+  ]
 
   const travelerSummary = (): string =>
     [
@@ -230,6 +238,23 @@ export default function PlanNewScreen() {
     ]
       .filter(Boolean)
       .join(" · ")
+
+  if (generating) {
+    return (
+      <main className="fade-in">
+        <section style={{ padding: "48px 0 80px" }}>
+          <div className="container" style={{ maxWidth: 720 }}>
+            <PlanGeneratingSplash
+              title={t("splash.title")}
+              steps={splashSteps}
+              stepIntervalMs={1000}
+              fullscreen={false}
+            />
+          </div>
+        </section>
+      </main>
+    )
+  }
 
   return (
     <main className="fade-in">

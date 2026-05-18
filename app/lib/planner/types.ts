@@ -36,6 +36,7 @@ export interface Plan {
   days: PlanDay[]
   createdAt: number
   updatedAt: number
+  savedAt?: number
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000

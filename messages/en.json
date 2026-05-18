@@ -29,9 +29,11 @@
     "planner": "AI Planner",
     "myPlans": "My Plans",
     "becomeHost": "Become a host",
+    "help": "Help center",
     "logoAria": "Handled — home",
     "languageAria": "Language",
-    "searchAria": "Search"
+    "searchAria": "Search",
+    "accountMenuAria": "Account menu"
   },
   "footer": {
     "support": {
@@ -151,14 +153,32 @@
       "next": "Next",
       "edit": "Edit",
       "submit": "✨ Build my plan",
-      "generating": "Drafting your plan…"
+      "generating": "Drafting your plan…",
+      "splash": {
+        "title": "Drafting your plan…",
+        "step1": "Mapping your interests to {city}",
+        "step2": "Sorting stops by time of day",
+        "step3": "Pacing the days so you don't burn out",
+        "step4": "Polishing your day-by-day itinerary"
+      }
     },
     "canvas": {
       "backToWizard": "Start a new plan",
       "loading": "Loading your plan…",
+      "loadingHint": "Pulling it back together",
       "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
       "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
       "slotCount": "{count, plural, one {# stop} other {# stops}}",
+      "share": "Share",
+      "save": "Save",
+      "shareToast": "Link copied to clipboard",
+      "shareError": "Couldn't copy link — try again",
+      "savedModal": {
+        "title": "Saved to My Plans",
+        "body": "You can find this trip anytime under My Plans in the account menu.",
+        "viewMyPlans": "View My Plans",
+        "close": "Close"
+      },
       "empty": {
         "title": "Plan not found",
         "subtitle": "We couldn't find that plan. It may have been removed, or the link is from a different browser.",
@@ -398,6 +418,39 @@
       "6": "Sat"
     }
   },
+  "myPlans": {
+    "heading": "My Plans",
+    "subheading": "Trips you've saved. Open one to review the day-by-day plan.",
+    "loading": "Loading your saved plans…",
+    "tabs": {
+      "trips": "My trips {count}",
+      "reviews": "Reviews",
+      "journal": "Journal"
+    },
+    "createCard": {
+      "title": "Plan a new trip",
+      "subtitle": "Tell us where and when — we'll draft the days."
+    },
+    "sections": {
+      "upcoming": "Upcoming trips",
+      "past": "Past trips"
+    },
+    "rowMenu": {
+      "aria": "More actions",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "deleteModal": {
+      "title": "Delete this plan?",
+      "body": "“{name}” will be permanently removed from My Plans. This can't be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "empty": {
+      "title": "No saved plans yet",
+      "subtitle": "Build a trip plan and tap Save to keep it here."
+    }
+  },
   "error": {
     "title": "Something went wrong",
     "subtitle": "We hit an unexpected error. Please try again.",
@@ -445,6 +498,9 @@
     },
     "plan": {
       "title": "Your trip plan"
+    },
+    "myPlans": {
+      "title": "My Plans"
     },
     "notFound": {
       "title": "Page not found"
