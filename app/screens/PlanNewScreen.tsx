@@ -13,6 +13,12 @@ import type { City, ExperienceCategory } from "../lib/types/domain"
 
 const DESTINATIONS = CITIES.filter((c) => c !== "All") as readonly City[]
 
+const isCity = (v: string | undefined): v is City =>
+  v !== undefined && (DESTINATIONS as readonly string[]).includes(v)
+
+const isISODate = (v: string | undefined): v is string =>
+  typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v))
+
 const INTERESTS: readonly ExperienceCategory[] = [
   "Food",
   "Culture",
@@ -150,14 +156,30 @@ function ReviewRow({ label, value, editLabel, onEdit }: ReviewRowProps) {
   )
 }
 
-export default function PlanNewScreen() {
+export interface PlanNewScreenProps {
+  initialCity?: string
+  initialStartDate?: string
+  initialEndDate?: string
+}
+
+export default function PlanNewScreen({
+  initialCity,
+  initialStartDate,
+  initialEndDate,
+}: PlanNewScreenProps = {}) {
   const t = useTranslations("planner.wizard")
   const navigate = useAppNavigate()
 
+  const initialStart = isISODate(initialStartDate) ? initialStartDate : todayISO()
+  const initialEnd =
+    isISODate(initialEndDate) && Date.parse(initialEndDate) >= Date.parse(initialStart)
+      ? initialEndDate
+      : addDaysISO(initialStart, 1)
+
   const [step, setStep] = useState<Step>(1)
-  const [city, setCity] = useState<City>("Seoul")
-  const [startDate, setStartDate] = useState<string>(todayISO())
-  const [endDate, setEndDate] = useState<string>(addDaysISO(todayISO(), 1))
+  const [city, setCity] = useState<City>(isCity(initialCity) ? initialCity : "Seoul")
+  const [startDate, setStartDate] = useState<string>(initialStart)
+  const [endDate, setEndDate] = useState<string>(initialEnd)
   const [adults, setAdults] = useState<number>(1)
   const [teens, setTeens] = useState<number>(0)
   const [kids, setKids] = useState<number>(0)

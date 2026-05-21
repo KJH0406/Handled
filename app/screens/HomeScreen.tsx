@@ -1,15 +1,19 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { useMemo, useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Avatar from "../components/ui/Avatar"
 import Icon, { type IconName } from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
+import { CITIES } from "../lib/data/filters"
 import { useAppNavigate } from "../lib/navigation"
+import { planDayCount } from "../lib/planner/types"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { reviewsRepo } from "../lib/repositories/reviews"
+import type { City } from "../lib/types/domain"
 
-const QUICK_CITIES = ["Seoul", "Busan", "Jeju", "Incheon"] as const
+const DESTINATIONS = CITIES.filter((c) => c !== "All") as readonly City[]
 
 interface WhyFeature {
   icon: IconName
@@ -27,10 +31,66 @@ const WHY_FEATURES: WhyFeature[] = [
   },
 ]
 
+const toISO = (d: Date): string => {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
+
+const todayISO = (): string => toISO(new Date())
+
+const addDaysISO = (iso: string, n: number): string => {
+  const d = new Date(`${iso}T00:00:00`)
+  d.setDate(d.getDate() + n)
+  return toISO(d)
+}
+
 export default function HomeScreen() {
   const t = useTranslations("home")
   const navigate = useAppNavigate()
   const featured = experiencesRepo.featured(3)
+
+  const [city, setCity] = useState<City>("Seoul")
+  const [startDate, setStartDate] = useState<string>(todayISO())
+  const [endDate, setEndDate] = useState<string>(addDaysISO(todayISO(), 1))
+
+  const dateRangeValid = useMemo(
+    () => Date.parse(endDate) >= Date.parse(startDate),
+    [startDate, endDate],
+  )
+
+  const dayCount = useMemo(
+    () =>
+      dateRangeValid
+        ? planDayCount({
+            city,
+            startDate,
+            endDate,
+            adults: 1,
+            teens: 0,
+            kids: 0,
+            interests: [],
+          })
+        : 0,
+    [city, startDate, endDate, dateRangeValid],
+  )
+
+  const handleStartChange = (next: string) => {
+    setStartDate(next)
+    if (Date.parse(endDate) < Date.parse(next)) {
+      setEndDate(next)
+    }
+  }
+
+  const onPlan = () => {
+    if (!dateRangeValid) return
+    navigate("planNew", {
+      initialCity: city,
+      initialStart: startDate,
+      initialEnd: endDate,
+    })
+  }
 
   return (
     <main className="fade-in">
@@ -83,58 +143,140 @@ export default function HomeScreen() {
             >
               {t("hero.lede")}
             </p>
-            <div
-              className="row"
-              style={{
-                gap: 12,
-                justifyContent: "center",
-                flexWrap: "wrap",
-                marginBottom: 16,
-              }}
-            >
-              <button
-                className="btn btn-primary"
-                onClick={() => navigate("planNew")}
-                style={{ height: 52, padding: "0 24px", fontSize: 16 }}
-              >
-                <Icon
-                  name="sparkles"
-                  size={16}
-                  stroke="white"
-                  fill="white"
-                  sw={1.5}
-                />
-                {t("hero.planCta")}
-              </button>
-            </div>
-            <button
-              className="btn-tertiary t-body-sm muted"
-              onClick={() => navigate("experiences")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 4,
-                textDecoration: "underline",
-              }}
-            >
-              {t("hero.browseLink")} <Icon name="arrowRight" size={12} />
-            </button>
           </div>
 
           <div
-            className="row center"
-            style={{ gap: 8, flexWrap: "wrap", marginTop: 40 }}
+            style={{
+              maxWidth: 640,
+              margin: "0 auto",
+              background: "var(--surface)",
+              border: "1px solid var(--hairline)",
+              borderRadius: 16,
+              padding: 20,
+              boxShadow: "0 10px 32px rgba(0,0,0,0.06)",
+              textAlign: "left",
+            }}
           >
-            {QUICK_CITIES.map((c) => (
-              <button
-                key={c}
-                className="chip"
-                onClick={() => navigate("experiences", { initialCity: c })}
+            <div
+              className="t-caption-sm muted"
+              style={{ marginBottom: 8, fontWeight: 500 }}
+            >
+              {t("hero.destinationLabel")}
+            </div>
+            <div
+              className="row"
+              style={{ gap: 8, flexWrap: "wrap", marginBottom: 20 }}
+            >
+              {DESTINATIONS.map((c) => (
+                <button
+                  key={c}
+                  className={`chip ${city === c ? "active" : ""}`}
+                  onClick={() => setCity(c)}
+                >
+                  <Icon name="pin" size={14} />
+                  {c}
+                </button>
+              ))}
+            </div>
+
+            <div
+              className="row"
+              style={{ gap: 12, flexWrap: "wrap", marginBottom: 8 }}
+            >
+              <label
+                style={{
+                  flex: 1,
+                  minWidth: 180,
+                  border: "1px solid var(--hairline)",
+                  borderRadius: 8,
+                  padding: "10px 12px",
+                }}
               >
-                <Icon name="pin" size={14} />
-                {c}
-              </button>
-            ))}
+                <div className="t-caption-sm muted">
+                  {t("hero.startLabel")}
+                </div>
+                <input
+                  type="date"
+                  value={startDate}
+                  min={todayISO()}
+                  onChange={(e) => handleStartChange(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 14,
+                    width: "100%",
+                    background: "transparent",
+                    color: "var(--ink)",
+                    marginTop: 2,
+                  }}
+                />
+              </label>
+              <label
+                style={{
+                  flex: 1,
+                  minWidth: 180,
+                  border: `1px solid ${dateRangeValid ? "var(--hairline)" : "var(--primary-error-text, #c13515)"}`,
+                  borderRadius: 8,
+                  padding: "10px 12px",
+                }}
+              >
+                <div className="t-caption-sm muted">{t("hero.endLabel")}</div>
+                <input
+                  type="date"
+                  value={endDate}
+                  min={startDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    fontSize: 14,
+                    width: "100%",
+                    background: "transparent",
+                    color: "var(--ink)",
+                    marginTop: 2,
+                  }}
+                />
+              </label>
+            </div>
+            {dateRangeValid ? (
+              <div
+                className="t-caption-sm muted"
+                style={{ marginBottom: 20 }}
+              >
+                {t("hero.dayUnit", { count: dayCount })}
+              </div>
+            ) : (
+              <div
+                className="t-caption-sm"
+                style={{
+                  color: "var(--primary-error-text, #c13515)",
+                  marginBottom: 20,
+                }}
+              >
+                {t("hero.datesError")}
+              </div>
+            )}
+
+            <button
+              className="btn btn-primary"
+              onClick={onPlan}
+              disabled={!dateRangeValid}
+              style={{
+                height: 52,
+                padding: "0 24px",
+                fontSize: 16,
+                width: "100%",
+              }}
+            >
+              <Icon
+                name="sparkles"
+                size={16}
+                stroke="white"
+                fill="white"
+                sw={1.5}
+              />
+              {t("hero.planCta")}
+            </button>
           </div>
         </div>
       </section>

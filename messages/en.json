@@ -64,8 +64,12 @@
       "titleLine1": "Plan your Korea trip",
       "titleLine2": "in seconds, not weekends.",
       "lede": "Tell us where, when, and what you're into — AI drafts a day-by-day itinerary you can edit, save, and share.",
-      "planCta": "Plan with AI",
-      "browseLink": "Or browse local experiences"
+      "destinationLabel": "Destination",
+      "startLabel": "Departure",
+      "endLabel": "Arrival",
+      "datesError": "Arrival must be on or after departure.",
+      "dayUnit": "{count, plural, one {# day} other {# days}}",
+      "planCta": "Plan with AI"
     },
     "why": {
       "curatedTitle": "Curated experiences",

@@ -4,6 +4,7 @@ import PlanNewScreen from "../../../screens/PlanNewScreen"
 
 interface PageProps {
   params: { locale: string }
+  searchParams: { city?: string; start?: string; end?: string }
 }
 
 export async function generateMetadata({
@@ -17,6 +18,12 @@ export async function generateMetadata({
   }
 }
 
-export default function Page() {
-  return <PlanNewScreen />
+export default function Page({ searchParams }: PageProps) {
+  return (
+    <PlanNewScreen
+      initialCity={searchParams.city}
+      initialStartDate={searchParams.start}
+      initialEndDate={searchParams.end}
+    />
+  )
 }
