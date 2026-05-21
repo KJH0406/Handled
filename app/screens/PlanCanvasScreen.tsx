@@ -2,11 +2,15 @@
 
 import Link from "next/link"
 import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon from "../components/ui/Icon"
 import PlanGeneratingSplash from "../components/ui/PlanGeneratingSplash"
+import PlanMap from "../components/ui/PlanMap"
 import { useAppNavigate } from "../lib/navigation"
+import { formatDate } from "../lib/format"
 import { categoryBg } from "../lib/planner/categoryBg"
+import { recommendExperiences } from "../lib/planner/recommend"
 import { getPlan, markPlanSaved } from "../lib/planner/storage"
 import {
   planDayCount,
@@ -75,6 +79,9 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const [state, setState] = useState<LoadState>({ kind: "loading" })
   const [toast, setToast] = useState<string | null>(null)
   const [savedModalOpen, setSavedModalOpen] = useState<boolean>(false)
+  const [recsVisible, setRecsVisible] = useState<boolean>(false)
+  const [activeDayIdx, setActiveDayIdx] = useState<number>(0)
+  const recsRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const plan = getPlan(planId)
@@ -86,6 +93,24 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
     const id = window.setTimeout(() => setToast(null), 2200)
     return () => window.clearTimeout(id)
   }, [toast])
+
+  const recommendations = useMemo(
+    () =>
+      state.kind === "ready" ? recommendExperiences(state.plan.input, 6) : [],
+    [state],
+  )
+
+  useEffect(() => {
+    if (state.kind !== "ready") return
+    const node = recsRef.current
+    if (!node || typeof IntersectionObserver === "undefined") return
+    const observer = new IntersectionObserver(
+      ([entry]) => setRecsVisible(entry.isIntersecting),
+      { rootMargin: "-80px 0px 0px 0px", threshold: 0 },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [state.kind])
 
   const onShare = async (planName: string) => {
     const url = typeof window !== "undefined" ? window.location.href : ""
@@ -153,10 +178,18 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const { plan } = state
   const dayCount = planDayCount(plan.input)
   const travelers = planTotalTravelers(plan.input)
+  const activeDay = plan.days[activeDayIdx] ?? plan.days[0]
+  const mapSlots = activeDay?.slots ?? []
+  const hasTabs = plan.days.length > 1
+  const activeDayDate = (() => {
+    const base = Date.parse(`${plan.input.startDate}T00:00:00`)
+    if (Number.isNaN(base)) return null
+    return new Date(base + activeDayIdx * 24 * 60 * 60 * 1000)
+  })()
 
   return (
     <main className="fade-in">
-      <section style={{ padding: "32px 0 80px" }}>
+      <section style={{ padding: "32px 0 48px" }}>
         <div className="container" style={{ maxWidth: 880 }}>
           <Link
             href="/plan/new"
@@ -185,7 +218,31 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             <h1 className="t-display-lg ink" style={{ margin: 0, minWidth: 0 }}>
               {plan.name}
             </h1>
-            <div className="row" style={{ gap: 8, flexShrink: 0 }}>
+            <div
+              className="row"
+              style={{ gap: 8, flexShrink: 0, alignItems: "center" }}
+            >
+              {plan.savedAt && (
+                <button
+                  className="row t-body-sm"
+                  onClick={() => navigate("myPlans")}
+                  style={{
+                    gap: 6,
+                    alignItems: "center",
+                    padding: "6px 12px",
+                    borderRadius: 999,
+                    background: "rgba(255, 56, 92, 0.1)",
+                    color: "var(--rausch)",
+                    fontWeight: 600,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  aria-label={t("savedBadge.aria")}
+                >
+                  <Icon name="check" size={12} stroke="var(--rausch)" />
+                  {t("savedBadge.label")}
+                </button>
+              )}
               <button
                 className="btn btn-secondary"
                 onClick={() => onShare(plan.name)}
@@ -194,16 +251,6 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                 <Icon name="share" size={14} />
                 {t("share")}
               </button>
-              {!plan.savedAt && (
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => onToggleSave(plan)}
-                  style={{ height: 40, padding: "0 14px" }}
-                >
-                  <Icon name="bookmark" size={14} />
-                  {t("save")}
-                </button>
-              )}
             </div>
           </div>
 
@@ -245,7 +292,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
           {plan.input.interests.length > 0 && (
             <div
               className="row"
-              style={{ gap: 6, flexWrap: "wrap", marginBottom: 40 }}
+              style={{ gap: 6, flexWrap: "wrap", marginBottom: 24 }}
             >
               {plan.input.interests.map((c) => (
                 <span
@@ -256,6 +303,63 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                   {c}
                 </span>
               ))}
+            </div>
+          )}
+
+          {mapSlots.length > 0 && (
+            <div style={{ marginBottom: 12 }}>
+              <PlanMap
+                slots={mapSlots}
+                dayLabel={activeDay?.label}
+                ariaLabel={t("map.ariaLabel", {
+                  city: plan.input.city,
+                  count: mapSlots.length,
+                })}
+              />
+              <div
+                className="t-caption-sm muted"
+                style={{ marginTop: 8, textAlign: "center" }}
+              >
+                {t("map.demoNotice")}
+              </div>
+            </div>
+          )}
+
+          {hasTabs && (
+            <div
+              role="tablist"
+              aria-label={t("dayTabs.ariaLabel")}
+              className="day-tabs"
+              style={{
+                display: "flex",
+                gap: 8,
+                overflowX: "auto",
+                marginTop: 24,
+                marginBottom: 24,
+                paddingBottom: 4,
+              }}
+            >
+              {plan.days.map((day, idx) => {
+                const active = idx === activeDayIdx
+                return (
+                  <button
+                    key={day.id}
+                    role="tab"
+                    aria-selected={active}
+                    aria-controls={`day-panel-${day.id}`}
+                    id={`day-tab-${day.id}`}
+                    onClick={() => setActiveDayIdx(idx)}
+                    className={`chip${active ? " active" : ""}`}
+                    style={{
+                      flexShrink: 0,
+                      minWidth: 88,
+                      justifyContent: "center",
+                    }}
+                  >
+                    {t("dayTabs.label", { n: idx + 1 })}
+                  </button>
+                )
+              })}
             </div>
           )}
 
@@ -336,29 +440,209 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             </div>
           )}
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
-            {plan.days.map((day) => (
-              <section key={day.id}>
-                <h2 className="t-display-sm ink" style={{ marginBottom: 4 }}>
-                  {day.label}
-                </h2>
-                <div className="t-caption-sm muted" style={{ marginBottom: 8 }}>
-                  {t("slotCount", { count: day.slots.length })}
-                </div>
-                <div
-                  style={{
-                    borderBottom: "1px solid var(--hairline-soft)",
-                  }}
-                >
-                  {day.slots.map((slot) => (
-                    <SlotCard key={slot.id} slot={slot} />
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
+          {activeDay && (
+            <section
+              key={activeDay.id}
+              id={`day-panel-${activeDay.id}`}
+              role="tabpanel"
+              aria-labelledby={
+                hasTabs ? `day-tab-${activeDay.id}` : undefined
+              }
+              style={{ marginTop: hasTabs ? 0 : 24 }}
+            >
+              <h2 className="t-display-sm ink" style={{ marginBottom: 4 }}>
+                {hasTabs && activeDayDate
+                  ? formatDate(activeDayDate)
+                  : activeDay.label}
+              </h2>
+              <div className="t-caption-sm muted" style={{ marginBottom: 8 }}>
+                {t("slotCount", { count: activeDay.slots.length })}
+              </div>
+              <div
+                style={{ borderBottom: "1px solid var(--hairline-soft)" }}
+              >
+                {activeDay.slots.map((slot) => (
+                  <SlotCard key={slot.id} slot={slot} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {!plan.savedAt && (
+            <div
+              className="plan-save-callout"
+              style={{
+                marginTop: 48,
+                padding: "32px 24px",
+                borderRadius: 16,
+                border: "1px solid var(--hairline-soft)",
+                background: "var(--surface-soft)",
+                textAlign: "center",
+              }}
+            >
+              <div
+                aria-hidden="true"
+                style={{
+                  width: 48,
+                  height: 48,
+                  margin: "0 auto 12px",
+                  borderRadius: 999,
+                  background: "rgba(255, 56, 92, 0.1)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Icon
+                  name="bookmark"
+                  size={20}
+                  fill="var(--rausch)"
+                  stroke="var(--rausch)"
+                />
+              </div>
+              <h2 className="t-display-sm ink" style={{ marginBottom: 6 }}>
+                {t("saveCallout.title")}
+              </h2>
+              <p
+                className="t-body-md muted"
+                style={{
+                  marginBottom: 20,
+                  maxWidth: 460,
+                  margin: "0 auto 20px",
+                }}
+              >
+                {t("saveCallout.body")}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() => onToggleSave(plan)}
+                style={{ minWidth: 220 }}
+              >
+                <Icon name="bookmark" size={14} stroke="#fff" />
+                {t("saveBar.cta")}
+              </button>
+            </div>
+          )}
+
         </div>
       </section>
+
+      <section
+        ref={recsRef}
+        aria-labelledby="plan-recs-heading"
+        style={{
+          paddingTop: 64,
+          paddingBottom: 120,
+          borderTop: "1px solid var(--hairline)",
+          background: "var(--surface-soft)",
+        }}
+      >
+        <div className="container" style={{ maxWidth: 880 }}>
+          <div
+            className="t-uppercase-tag"
+            style={{
+              display: "inline-block",
+              color: "var(--rausch)",
+              letterSpacing: "0.4px",
+              marginBottom: 8,
+              fontWeight: 700,
+            }}
+          >
+            {t("recommendations.eyebrow")}
+          </div>
+          <div
+            className="section-header"
+            style={{ marginBottom: 24, alignItems: "flex-end" }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <h2
+                id="plan-recs-heading"
+                className="t-display-sm ink"
+                style={{ marginBottom: 6 }}
+              >
+                {t("recommendations.heading", { city: plan.input.city })}
+              </h2>
+              <p className="t-body-sm muted" style={{ margin: 0 }}>
+                {t("recommendations.subheading")}
+              </p>
+            </div>
+            <Link
+              href={`/experiences?city=${encodeURIComponent(plan.input.city)}`}
+              className="t-body-sm"
+              style={{
+                color: "var(--rausch)",
+                fontWeight: 600,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+                flexShrink: 0,
+              }}
+            >
+              {t("recommendations.viewAll")}
+              <Icon name="chevronRight" size={12} stroke="var(--rausch)" />
+            </Link>
+          </div>
+
+          {recommendations.length === 0 ? (
+            <p className="t-body-sm muted">
+              {t("recommendations.empty", { city: plan.input.city })}
+            </p>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns:
+                  "repeat(auto-fill, minmax(260px, 1fr))",
+                gap: 20,
+              }}
+            >
+              {recommendations.map((exp) => (
+                <ExperienceCard key={exp.id} exp={exp} showGuide />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <div
+        className={`plan-save-bar${
+          recsVisible || plan.savedAt ? " hidden" : ""
+        }`}
+        role="region"
+        aria-label={t("saveBar.cta")}
+        aria-hidden={recsVisible || Boolean(plan.savedAt)}
+      >
+        <div
+          className="container"
+          style={{
+            maxWidth: 880,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <div className="t-title-md ink" style={{ lineHeight: 1.2 }}>
+              {plan.name}
+            </div>
+            <div className="t-caption-sm muted" style={{ marginTop: 2 }}>
+              {t("saveBar.summary", {
+                city: plan.input.city,
+                count: dayCount,
+              })}
+            </div>
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={() => onToggleSave(plan)}
+            style={{ minWidth: 200 }}
+          >
+            <Icon name="bookmark" size={14} stroke="#fff" />
+            {t("saveBar.cta")}
+          </button>
+        </div>
+      </div>
     </main>
   )
 }

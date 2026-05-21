@@ -1678,6 +1678,47 @@ a {
   }
 }
 
+/* plan map pin — animate position when active day changes */
+.plan-map-pin {
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-map-pin {
+    transition: none;
+  }
+}
+
+/* sticky bottom bar — plan canvas save CTA */
+.plan-save-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--hairline);
+  padding: 14px 0;
+  z-index: 40;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 240ms ease, opacity 200ms ease;
+}
+.plan-save-bar.hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .plan-save-bar .container > div:first-child {
+    display: none;
+  }
+  .plan-save-bar .btn {
+    width: 100%;
+  }
+}
+
 /* skeleton avatar fallback */
 .avatar-fallback {
   width: 100%;

@@ -162,6 +162,10 @@
       "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
       "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
       "slotCount": "{count, plural, one {# stop} other {# stops}}",
+      "dayTabs": {
+        "ariaLabel": "Switch day",
+        "label": "Day {n}"
+      },
       "share": "Share",
       "save": "Save",
       "shareToast": "Link copied to clipboard",
@@ -176,6 +180,31 @@
         "title": "Plan not found",
         "subtitle": "We couldn't find that plan. It may have been removed, or the link is from a different browser.",
         "cta": "Start a new plan"
+      },
+      "map": {
+        "ariaLabel": "Map preview of {city} itinerary with {count, plural, one {# stop} other {# stops}}",
+        "demoNotice": "Map preview · demo locations"
+      },
+      "saveCallout": {
+        "title": "Love this plan?",
+        "body": "Save it to your plans — you can revisit and edit it anytime."
+      },
+      "savedBadge": {
+        "label": "Saved",
+        "aria": "Saved — view my plans"
+      },
+      "recommendations": {
+        "eyebrow": "More to explore",
+        "heading": "Hand-picked experiences in {city}",
+        "subheading": "Beyond your plan — extra ideas curated by local guides.",
+        "viewAll": "View all experiences",
+        "empty": "We're lining up more experiences for {city} — check back soon."
+      },
+      "saveBar": {
+        "summary": "{city} · {count, plural, one {# day} other {# days}}",
+        "cta": "Save to my plans",
+        "saved": "Saved",
+        "viewMyPlans": "View my plans"
       }
     }
   },
