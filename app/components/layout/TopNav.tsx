@@ -103,9 +103,6 @@ export default function TopNav() {
         </nav>
 
         <div className="nav-actions">
-          <a className="nav-host-link hide-mobile" href="#">
-            {t("becomeHost")}
-          </a>
           <div className="hide-mobile">
             <LocaleSwitcher />
           </div>
@@ -133,14 +130,6 @@ export default function TopNav() {
                   {t("myPlans")}
                 </Link>
                 <div className="account-dropdown-divider" />
-                <a
-                  href="#"
-                  className="account-dropdown-item muted"
-                  role="menuitem"
-                >
-                  <Icon name="award" size={16} />
-                  {t("becomeHost")}
-                </a>
                 <a
                   href="#"
                   className="account-dropdown-item muted"

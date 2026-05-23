@@ -28,7 +28,6 @@
     "experiences": "Experiences",
     "planner": "AI Planner",
     "myPlans": "My Plans",
-    "becomeHost": "Become a host",
     "help": "Help center",
     "logoAria": "Handled — home",
     "languageAria": "Language",
@@ -41,13 +40,6 @@
       "cancellation": "Cancellation",
       "safety": "Safety info",
       "report": "Report"
-    },
-    "hosting": {
-      "heading": "Hosting",
-      "becomeHost": "Become a host",
-      "hostExperience": "Host an experience",
-      "community": "Community forum",
-      "responsible": "Responsible hosting"
     },
     "company": {
       "heading": "Handled",

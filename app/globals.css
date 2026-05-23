@@ -657,16 +657,6 @@ a {
   gap: 8px;
   justify-content: flex-end;
 }
-.nav-host-link {
-  padding: 12px 16px;
-  border-radius: var(--r-full);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-}
-.nav-host-link:hover {
-  background: var(--surface-soft);
-}
 .nav-account {
   display: inline-flex;
   align-items: center;
