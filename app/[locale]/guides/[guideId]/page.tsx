@@ -23,7 +23,7 @@ export async function generateMetadata({
     description: guide.oneLiner,
     alternates: { canonical: url },
     openGraph: {
-      title: `${title} — ${tSite("name")}`,
+      title: `${title} - ${tSite("name")}`,
       description: guide.oneLiner,
       url,
       images: [{ url: guide.photo, width: 800, height: 800, alt: guide.name }],
@@ -31,7 +31,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} — ${tSite("name")}`,
+      title: `${title} - ${tSite("name")}`,
       description: guide.oneLiner,
       images: [guide.photo],
     },

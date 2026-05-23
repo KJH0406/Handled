@@ -19,7 +19,7 @@ export async function generateMetadata({
     description,
     alternates: { canonical: "/guides" },
     openGraph: {
-      title: `${title} — ${tSite("name")}`,
+      title: `${title} - ${tSite("name")}`,
       description,
       url: "/guides",
     },

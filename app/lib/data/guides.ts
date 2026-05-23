@@ -23,10 +23,10 @@ export const GUIDES: Guide[] = [
     languages: ["Korean", "English", "Japanese"],
     styles: ["Food", "Culture", "Shopping"],
     oneLiner:
-      "See Seoul through a local's palate — palaces, alley eats, hidden cafés.",
+      "See Seoul through a local's palate - palaces, alley eats, hidden cafés.",
     bio: "Seoul native, 5+ years guiding. From traditional palaces to hidden alley eats, I show you the Seoul locals actually live in. Best for travelers who love food tours, K-culture, and off-the-beaten-path discoveries.",
     intro:
-      "Hi, I'm Soyeon. I love Korean food, K-pop, fashion — both trends and tradition. I'll make your first Korea trip unforgettable.",
+      "Hi, I'm Soyeon. I love Korean food, K-pop, fashion - both trends and tradition. I'll make your first Korea trip unforgettable.",
     highlights: [
       "Custom food crawls",
       "K-beauty consulting",
@@ -55,7 +55,7 @@ export const GUIDES: Guide[] = [
     languages: ["Korean", "English", "French"],
     styles: ["Architecture", "Art", "Nightlife"],
     oneLiner:
-      "Seoul through an architect's eye — galleries, rooftops, urban walks.",
+      "Seoul through an architect's eye - galleries, rooftops, urban walks.",
     bio: "Architect by training, guide by passion. I show how Seoul transformed from a post-war city to a global metropolis through a designer's lens. Best for design lovers and photographers.",
     intro:
       "I love walking with the grain of a city. Discover the real Seoul in its alleys and between its buildings.",
@@ -82,8 +82,8 @@ export const GUIDES: Guide[] = [
     superhost: true,
     languages: ["Korean", "English"],
     styles: ["Beach", "History", "Photo"],
-    oneLiner: "Real Busan — dawn fish market to golden-hour Gamcheon.",
-    bio: "Busan-born and raised. Pre-dawn fish markets at Jagalchi, the golden glow of Gamcheon Village, and beachside bars at night — courses only locals know.",
+    oneLiner: "Real Busan - dawn fish market to golden-hour Gamcheon.",
+    bio: "Busan-born and raised. Pre-dawn fish markets at Jagalchi, the golden glow of Gamcheon Village, and beachside bars at night - courses only locals know.",
     intro:
       "I grew up by the sea and love every fold of Busan. Let's discover the real Busan together.",
     highlights: [
@@ -114,8 +114,8 @@ export const GUIDES: Guide[] = [
     languages: ["Korean", "English"],
     styles: ["Nature", "Culture", "Food"],
     oneLiner:
-      "Volcanic trails, haenyeo culture, and black-pork BBQ — the real Jeju.",
-    bio: "Jeju is paradise — volcanic craters, pristine beaches, and the unique haenyeo culture. I've walked every trail and hidden cove.",
+      "Volcanic trails, haenyeo culture, and black-pork BBQ - the real Jeju.",
+    bio: "Jeju is paradise - volcanic craters, pristine beaches, and the unique haenyeo culture. I've walked every trail and hidden cove.",
     intro:
       "I love Jeju's unhurried tempo. Let's experience this island slowly and deeply.",
     highlights: [
@@ -145,7 +145,7 @@ export const GUIDES: Guide[] = [
     superhost: true,
     languages: ["Korean", "English", "Mandarin"],
     styles: ["History", "Traditional", "Hanbok"],
-    oneLiner: "Joseon-era Seoul — palaces, hanok villages, and hanbok.",
+    oneLiner: "Joseon-era Seoul - palaces, hanok villages, and hanbok.",
     bio: "Former history teacher. I bring Joseon-dynasty Seoul to life through palaces, hanok villages, and traditional crafts.",
     intro:
       "I love walking with Korea's history. Wear a hanbok and feel like royalty for a day.",
@@ -176,7 +176,7 @@ export const GUIDES: Guide[] = [
     superhost: false,
     languages: ["Korean", "English"],
     styles: ["Food", "Urban"],
-    oneLiner: "Incheon is more than the airport — Chinatown to Songdo.",
+    oneLiner: "Incheon is more than the airport - Chinatown to Songdo.",
     bio: "Incheon is more than just the airport. Hidden Chinatown, the modern Songdo district, and life-changing jajangmyeon. Perfect day trip from Seoul.",
     intro:
       "A satellite city of Seoul with a vibe of its own. Discover a different Korea, just nearby.",

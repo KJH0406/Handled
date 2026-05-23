@@ -41,7 +41,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
       const raw = sessionStorage.getItem(STORAGE_KEY)
       if (raw) setBookingState(reviveBooking(JSON.parse(raw)))
     } catch {
-      // sessionStorage blocked or JSON parse failed — start with null
+      // sessionStorage blocked or JSON parse failed - start with null
     }
     setHydrated(true)
   }, [])
@@ -55,7 +55,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         sessionStorage.removeItem(STORAGE_KEY)
       }
     } catch {
-      // ignore storage failures — in-memory state still works
+      // ignore storage failures - in-memory state still works
     }
   }
 

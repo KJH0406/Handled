@@ -118,7 +118,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
         await navigator.share({ title: planName, url })
         return
       } catch {
-        // user cancelled or share failed — fall through to clipboard
+        // user cancelled or share failed - fall through to clipboard
       }
     }
     try {
@@ -408,10 +408,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                 >
                   {t("savedModal.title")}
                 </h2>
-                <p
-                  className="t-body-md muted"
-                  style={{ marginBottom: 24 }}
-                >
+                <p className="t-body-md muted" style={{ marginBottom: 24 }}>
                   {t("savedModal.body")}
                 </p>
                 <div
@@ -445,9 +442,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               key={activeDay.id}
               id={`day-panel-${activeDay.id}`}
               role="tabpanel"
-              aria-labelledby={
-                hasTabs ? `day-tab-${activeDay.id}` : undefined
-              }
+              aria-labelledby={hasTabs ? `day-tab-${activeDay.id}` : undefined}
               style={{ marginTop: hasTabs ? 0 : 24 }}
             >
               <h2 className="t-display-sm ink" style={{ marginBottom: 4 }}>
@@ -458,9 +453,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               <div className="t-caption-sm muted" style={{ marginBottom: 8 }}>
                 {t("slotCount", { count: activeDay.slots.length })}
               </div>
-              <div
-                style={{ borderBottom: "1px solid var(--hairline-soft)" }}
-              >
+              <div style={{ borderBottom: "1px solid var(--hairline-soft)" }}>
                 {activeDay.slots.map((slot) => (
                   <SlotCard key={slot.id} slot={slot} />
                 ))}
@@ -523,7 +516,6 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               </button>
             </div>
           )}
-
         </div>
       </section>
 
@@ -591,8 +583,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fill, minmax(260px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
                 gap: 20,
               }}
             >

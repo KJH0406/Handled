@@ -21,7 +21,7 @@ const writeAll = (plans: Plan[]): void => {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(plans))
   } catch {
-    // quota exceeded or serialization failure — silently drop in prototype
+    // quota exceeded or serialization failure - silently drop in prototype
   }
 }
 
@@ -30,7 +30,9 @@ export const listPlans = (): Plan[] =>
 
 export const listSavedPlans = (): Plan[] =>
   readAll()
-    .filter((p): p is Plan & { savedAt: number } => typeof p.savedAt === "number")
+    .filter(
+      (p): p is Plan & { savedAt: number } => typeof p.savedAt === "number",
+    )
     .sort((a, b) => b.savedAt - a.savedAt)
 
 export const getPlan = (id: string): Plan | undefined =>

@@ -5,7 +5,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
     Food: [
       {
         title: "Meet & briefing",
-        desc: "Meet at the agreed spot — your guide walks you through the food course and signature dishes.",
+        desc: "Meet at the agreed spot - your guide walks you through the food course and signature dishes.",
       },
       {
         title: "First local stop",
@@ -45,7 +45,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
       },
       {
         title: "Main activity",
-        desc: "Hands-on — feel the depth of Korean culture firsthand.",
+        desc: "Hands-on - feel the depth of Korean culture firsthand.",
       },
       {
         title: "Deeper dive",
@@ -63,7 +63,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
       },
       {
         title: "Detail study",
-        desc: "Read the building like an architect — lines, materials, light.",
+        desc: "Read the building like an architect - lines, materials, light.",
       },
       {
         title: "Contrast space",
@@ -77,7 +77,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
     Art: [
       {
         title: "Gallery entry",
-        desc: "First exhibition — context on the artist and the works.",
+        desc: "First exhibition - context on the artist and the works.",
       },
       {
         title: "Curator chat",
@@ -103,7 +103,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
       },
       {
         title: "Local pub crawl",
-        desc: "Walk the lively streets of Hannam or Itaewon — pubs locals frequent.",
+        desc: "Walk the lively streets of Hannam or Itaewon - pubs locals frequent.",
       },
       {
         title: "Skyline photos",
@@ -135,7 +135,7 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
       },
       {
         title: "Main activity",
-        desc: "Sailing, paddleboarding, or photography — the day's highlight.",
+        desc: "Sailing, paddleboarding, or photography - the day's highlight.",
       },
       {
         title: "Seaside break",

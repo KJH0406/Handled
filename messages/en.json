@@ -20,7 +20,7 @@
   },
   "site": {
     "name": "Handled",
-    "title": "Handled — Korean local experiences",
+    "title": "Handled - Korean local experiences",
     "description": "Discover authentic Korean local experiences hosted by people you trust."
   },
   "nav": {
@@ -30,7 +30,7 @@
     "stories": "Stories",
     "myPlans": "My Plans",
     "help": "Help center",
-    "logoAria": "Handled — home",
+    "logoAria": "Handled - home",
     "languageAria": "Language",
     "accountMenuAria": "Account menu"
   },
@@ -70,7 +70,7 @@
       "planCta": "Create a New Trip",
       "mock": {
         "interestsTitle": "What's your travel style?",
-        "interestsHint": "Pick a few — multi-select",
+        "interestsHint": "Pick a few - multi-select",
         "planTitlePrefix": "Seoul 4-day ",
         "planTitleHighlight": "itinerary",
         "planTitleSuffix": "",
@@ -106,8 +106,8 @@
       "eyebrow": "AI PLANNER",
       "titleLine1": "Your Perfect Itinerary,",
       "titleLine2": "Ready in Minutes",
-      "lede": "Tell us where you're going, how long you're staying, and what you love — our AI builds the perfect day-by-day plan. Three free plans with sign-up.",
-      "cta": "Start Planning — It's Free →",
+      "lede": "Tell us where you're going, how long you're staying, and what you love - our AI builds the perfect day-by-day plan. Three free plans with sign-up.",
+      "cta": "Start Planning - It's Free →",
       "steps": {
         "one": {
           "n": "01",
@@ -117,7 +117,7 @@
         "two": {
           "n": "02",
           "title": "Choose Your Travel Style",
-          "desc": "History, food, adventure — pick what excites you"
+          "desc": "History, food, adventure - pick what excites you"
         },
         "three": {
           "n": "03",
@@ -132,15 +132,15 @@
       "items": {
         "licensed": {
           "title": "Government-Licensed Guides Only",
-          "desc": "Every guide holds an official tourism certification — not just anyone with a blog. Your safety and experience come first, always."
+          "desc": "Every guide holds an official tourism certification - not just anyone with a blog. Your safety and experience come first, always."
         },
         "themed": {
           "title": "Themed Journeys, Not Generic Tours",
-          "desc": "Each experience is personally designed by your guide — from Seoul's trendiest streets to midnight food crawls you can't book anywhere else."
+          "desc": "Each experience is personally designed by your guide - from Seoul's trendiest streets to midnight food crawls you can't book anywhere else."
         },
         "stories": {
           "title": "Stories You Won't Read Anywhere Else",
-          "desc": "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours — they're memories waiting to happen."
+          "desc": "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours - they're memories waiting to happen."
         }
       }
     }
@@ -228,7 +228,7 @@
       "generating": "Building your perfect itinerary…",
       "splash": {
         "title": "Building your perfect itinerary…",
-        "hint": "Hang tight — this only takes a moment"
+        "hint": "Hang tight - this only takes a moment"
       }
     },
     "canvas": {
@@ -244,7 +244,7 @@
       "share": "Share",
       "save": "Save",
       "shareToast": "Link copied to clipboard",
-      "shareError": "Couldn't copy link — try again",
+      "shareError": "Couldn't copy link - try again",
       "savedModal": {
         "title": "Saved to My Plans",
         "body": "You can find this trip anytime under My Plans in the account menu.",
@@ -262,18 +262,18 @@
       },
       "saveCallout": {
         "title": "Love this plan?",
-        "body": "Save it to your plans — you can revisit and edit it anytime."
+        "body": "Save it to your plans - you can revisit and edit it anytime."
       },
       "savedBadge": {
         "label": "Saved",
-        "aria": "Saved — view my plans"
+        "aria": "Saved - view my plans"
       },
       "recommendations": {
         "eyebrow": "More to explore",
         "heading": "Hand-picked experiences in {city}",
-        "subheading": "Beyond your plan — extra ideas curated by local guides.",
+        "subheading": "Beyond your plan - extra ideas curated by local guides.",
         "viewAll": "View all experiences",
-        "empty": "We're lining up more experiences for {city} — check back soon."
+        "empty": "We're lining up more experiences for {city} - check back soon."
       },
       "saveBar": {
         "summary": "{city} · {count, plural, one {# day} other {# days}}",
@@ -389,7 +389,7 @@
     },
     "policy": {
       "heading": "Cancellation policy",
-      "free24h": "Free cancellation up to 24h before — full refund.",
+      "free24h": "Free cancellation up to 24h before - full refund.",
       "within24h": "Cancellations within 24h get a 50% refund.",
       "ssl": "All payments are SSL-encrypted and secure."
     },
@@ -526,7 +526,7 @@
     },
     "createCard": {
       "title": "Plan a new trip",
-      "subtitle": "Tell us where and when — we'll draft the days."
+      "subtitle": "Tell us where and when - we'll draft the days."
     },
     "sections": {
       "upcoming": "Upcoming trips",
@@ -570,12 +570,12 @@
     "guide": {
       "superhost": "Superhost",
       "perHour": "/ hour",
-      "aria": "{name} — {city} guide"
+      "aria": "{name} - {city} guide"
     }
   },
   "metadata": {
     "home": {
-      "title": "Handled — Korean local experiences",
+      "title": "Handled - Korean local experiences",
       "description": "Discover authentic Korean local experiences hosted by people you trust."
     },
     "experiences": {
@@ -591,7 +591,7 @@
     },
     "planNew": {
       "title": "Plan your trip with AI",
-      "description": "Tell us a few things about your trip — we'll draft a day-by-day plan you can edit."
+      "description": "Tell us a few things about your trip - we'll draft a day-by-day plan you can edit."
     },
     "plan": {
       "title": "Your trip plan"
@@ -605,7 +605,7 @@
     "guideNotFound": "Guide not found",
     "experienceNotFound": "Experience not found",
     "guideTitle": "{name} · {city} guide",
-    "experienceTitle": "{title} — {host}",
+    "experienceTitle": "{title} - {host}",
     "experienceTitleNoHost": "{title}"
   }
 }

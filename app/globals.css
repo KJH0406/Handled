@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────
-       Tokens (per DESIGN.md — Airbnb-derived)
+       Tokens (per DESIGN.md - Airbnb-derived)
        ───────────────────────────────────────────── */
 :root {
   /* color */
@@ -28,7 +28,7 @@
   --r-lg: 32px;
   --r-full: 9999px;
 
-  /* shadow — single tier */
+  /* shadow - single tier */
   --shadow-card:
     rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0,
     rgba(0, 0, 0, 0.1) 0 4px 8px 0;
@@ -99,7 +99,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
-/* keyboard focus — visible only for keyboard users */
+/* keyboard focus - visible only for keyboard users */
 :focus-visible {
   outline: 2px solid var(--rausch);
   outline-offset: 2px;
@@ -117,7 +117,7 @@ a {
   white-space: nowrap;
   border: 0;
 }
-/* stretched link — covers parent for full-area clickability */
+/* stretched link - covers parent for full-area clickability */
 .card-stretched-link {
   position: absolute;
   inset: 0;
@@ -375,7 +375,7 @@ a {
   background: var(--hairline);
 }
 
-/* breadcrumb — back link row */
+/* breadcrumb - back link row */
 .breadcrumb {
   display: inline-flex;
   align-items: center;
@@ -988,7 +988,7 @@ a {
   color: var(--muted);
 }
 /* ─────────────────────────────────────────────
-       Experience detail — schedule + meeting place
+       Experience detail - schedule + meeting place
        ───────────────────────────────────────────── */
 .schedule-list {
   display: flex;
@@ -1525,13 +1525,13 @@ a {
   margin-top: var(--s-md);
 }
 
-/* "not found / no data" container — vertical breathing room */
+/* "not found / no data" container - vertical breathing room */
 .empty-state {
   padding-top: var(--s-section);
   padding-bottom: var(--s-section);
 }
 
-/* Status pages — full-page fallbacks (error / not-found) */
+/* Status pages - full-page fallbacks (error / not-found) */
 .status-page {
   max-width: 480px;
   margin: 0 auto;
@@ -1556,7 +1556,7 @@ a {
   margin-top: 32px;
 }
 
-/* Locale switcher (TopNav) — minimal: globe | LANG */
+/* Locale switcher (TopNav) - minimal: globe | LANG */
 .locale-switcher {
   position: relative;
   display: inline-flex;
@@ -1856,7 +1856,7 @@ a {
 
 /* ─────────────────────────────────────────────
        Responsive helpers
-       — only HIDE inside media queries; keep natural display otherwise
+       - only HIDE inside media queries; keep natural display otherwise
        ───────────────────────────────────────────── */
 .show-mobile {
   display: none;
@@ -1896,7 +1896,7 @@ a {
   }
 }
 
-/* plan map pin — animate position when active day changes */
+/* plan map pin - animate position when active day changes */
 .plan-map-pin {
   transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -1906,7 +1906,7 @@ a {
   }
 }
 
-/* sticky bottom bar — plan canvas save CTA */
+/* sticky bottom bar - plan canvas save CTA */
 .plan-save-bar {
   position: fixed;
   left: 0;
@@ -1965,7 +1965,7 @@ a {
   margin-top: 0;
 }
 
-/* section header — h2 + action button row */
+/* section header - h2 + action button row */
 .section-header {
   display: flex;
   align-items: center;
@@ -2110,7 +2110,7 @@ a {
 }
 
 /* ─────────────────────────────────────────────
-       Home — Stats strip
+       Home - Stats strip
        ───────────────────────────────────────────── */
 .home-stats {
   background: var(--surface-soft);
@@ -2140,7 +2140,7 @@ a {
 }
 
 /* ─────────────────────────────────────────────
-       Home — Popular Experiences section header extras
+       Home - Popular Experiences section header extras
        ───────────────────────────────────────────── */
 .section-header-actions {
   display: flex;
@@ -2184,7 +2184,7 @@ a {
 }
 
 /* ─────────────────────────────────────────────
-       Home — AI Planner CTA
+       Home - AI Planner CTA
        ───────────────────────────────────────────── */
 .planner-cta {
   background: var(--surface-soft);
@@ -2270,7 +2270,7 @@ a {
 }
 
 /* ─────────────────────────────────────────────
-       Home — Value Props "The Real Korea"
+       Home - Value Props "The Real Korea"
        ───────────────────────────────────────────── */
 .real-korea {
   padding: 68px 0;

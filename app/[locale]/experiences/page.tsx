@@ -22,7 +22,7 @@ export async function generateMetadata({
     description,
     alternates: { canonical: "/experiences" },
     openGraph: {
-      title: `${title} — ${tSite("name")}`,
+      title: `${title} - ${tSite("name")}`,
       description,
       url: "/experiences",
     },

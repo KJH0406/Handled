@@ -12,7 +12,7 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 6,
     category: "Food",
     summary:
-      "Skip the tourist spots — visit only places locals queue for. A 4-hour crawl across 4–5 hidden eateries.",
+      "Skip the tourist spots - visit only places locals queue for. A 4-hour crawl across 4–5 hidden eateries.",
     includes: [
       "4–5 curated stops",
       "Local-only menu picks",
@@ -30,7 +30,7 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 4,
     category: "Shopping",
     summary:
-      "A curated tour of K-beauty shops in Myeongdong and Hongdae — paired with a free makeover for your skin tone.",
+      "A curated tour of K-beauty shops in Myeongdong and Hongdae - paired with a free makeover for your skin tone.",
     includes: ["8–10 curated stores", "Skin analysis", "Makeover session"],
   },
   {
@@ -43,20 +43,20 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 6,
     category: "Culture",
     summary:
-      "Hanbok rental + 5 Insta-worthy cafés — a guaranteed-photogenic day with 100+ shots.",
+      "Hanbok rental + 5 Insta-worthy cafés - a guaranteed-photogenic day with 100+ shots.",
     includes: ["4-hour hanbok rental", "5 café visits", "Pro-style photos"],
   },
   {
     id: "exp-minjun-1",
     guideId: "minjun",
-    title: "Seoul Architecture Walk — DDP to Hanok",
+    title: "Seoul Architecture Walk - DDP to Hanok",
     photo: photo("photo-1597259309583-aaa2584e2085"),
     duration: 5,
     price: 95,
     maxGuests: 6,
     category: "Architecture",
     summary:
-      "From Zaha Hadid's DDP to 600-year-old hanok villages — a time-travel walk led by an architect.",
+      "From Zaha Hadid's DDP to 600-year-old hanok villages - a time-travel walk led by an architect.",
     includes: [
       "DDP · Bukchon · Jongmyo",
       "Architecture handouts",
@@ -99,7 +99,7 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 5,
     category: "Food",
     summary:
-      "5 a.m. at Jagalchi — live auctions and fresh seafood, straight off the boat.",
+      "5 a.m. at Jagalchi - live auctions and fresh seafood, straight off the boat.",
     includes: ["Live fish auction", "Fresh seafood buy", "Seaside breakfast"],
   },
   {
@@ -221,7 +221,7 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 8,
     category: "Food",
     summary:
-      "Life-changing jajangmyeon to wood-fired dumplings — 30+ year-old institutions only.",
+      "Life-changing jajangmyeon to wood-fired dumplings - 30+ year-old institutions only.",
     includes: ["5 institutions", "Signature jajangmyeon", "1 dessert stop"],
   },
   {
@@ -234,7 +234,7 @@ export const EXPERIENCES: Experience[] = [
     maxGuests: 6,
     category: "Urban",
     summary:
-      "A perfect day trip from Seoul — Songdo canal water-taxi ride plus the Incheon Bridge night view.",
+      "A perfect day trip from Seoul - Songdo canal water-taxi ride plus the Incheon Bridge night view.",
     includes: ["Water taxi", "Bridge viewpoint", "1 Songdo café"],
   },
 ]

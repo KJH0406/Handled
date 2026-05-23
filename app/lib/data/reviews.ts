@@ -28,7 +28,7 @@ export const REVIEWS_BY_GUIDE: Record<string, Review[]> = {
       country: "France",
       date: "February 2026",
       rating: 5,
-      text: "Soyeon is genuinely warm. The tteokbokki spot she recommended — I'll never forget it.",
+      text: "Soyeon is genuinely warm. The tteokbokki spot she recommended - I'll never forget it.",
     },
   ],
   minjun: [
@@ -92,7 +92,7 @@ export const REVIEWS_BY_GUIDE: Record<string, Review[]> = {
       country: "Canada",
       date: "April 2026",
       rating: 5,
-      text: "Hanbok stroll through Gyeongbokgung — felt like a movie. She takes incredible photos!",
+      text: "Hanbok stroll through Gyeongbokgung - felt like a movie. She takes incredible photos!",
     },
     {
       name: "Wei C.",
@@ -106,7 +106,7 @@ export const REVIEWS_BY_GUIDE: Record<string, Review[]> = {
       country: "USA",
       date: "February 2026",
       rating: 5,
-      text: "Her teaching background shows — explanations are rich and engaging. Best for family trips!",
+      text: "Her teaching background shows - explanations are rich and engaging. Best for family trips!",
     },
   ],
   sungwoo: [
@@ -149,7 +149,7 @@ export const HOME_REVIEWS: HomeReview[] = [
     country: "Spain",
     date: "April 2026",
     rating: 5,
-    text: "Hallasan sunrise, black-pork BBQ — Dohyun gave us the real Jeju.",
+    text: "Hallasan sunrise, black-pork BBQ - Dohyun gave us the real Jeju.",
     guide: "Dohyun, Jeju",
   },
 ]
