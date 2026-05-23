@@ -26,7 +26,8 @@
   "nav": {
     "home": "홈",
     "experiences": "체험",
-    "planner": "AI 플래너",
+    "planner": "AI 일정 생성",
+    "stories": "스토리",
     "myPlans": "내 여행 계획",
     "help": "고객센터",
     "logoAria": "Handled — 홈",

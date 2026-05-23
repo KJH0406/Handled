@@ -7,22 +7,40 @@ import Icon from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
 
 interface NavTab {
-  id: "experiences"
-  labelKey: "experiences"
+  id: "planner" | "experiences" | "stories"
+  labelKey: "planner" | "experiences" | "stories"
   href: string
+  icon?: "sparkles"
 }
 
 const TABS: NavTab[] = [
+  {
+    id: "planner",
+    labelKey: "planner",
+    href: "/plan/new",
+    icon: "sparkles",
+  },
   {
     id: "experiences",
     labelKey: "experiences",
     href: "/experiences",
   },
+  {
+    id: "stories",
+    labelKey: "stories",
+    href: "/stories",
+  },
 ]
 
 const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
+  if (tabId === "planner") {
+    return pathname.startsWith("/plan")
+  }
   if (tabId === "experiences") {
     return pathname.startsWith("/experiences") || pathname.startsWith("/guides")
+  }
+  if (tabId === "stories") {
+    return pathname.startsWith("/stories")
   }
   return false
 }
@@ -62,13 +80,6 @@ export default function TopNav() {
     <header className="nav">
       <div className="container nav-inner">
         <Link href="/" className="nav-logo" aria-label={t("logoAria")}>
-          <Icon
-            name="pin"
-            size={28}
-            fill="var(--rausch)"
-            stroke="var(--rausch)"
-            sw={0}
-          />
           <span
             style={{
               fontWeight: 800,
@@ -92,6 +103,17 @@ export default function TopNav() {
                   className={`nav-tab ${active ? "active" : ""}`}
                   aria-current={active ? "page" : undefined}
                 >
+                  {tab.icon === "sparkles" && (
+                    <span className="nav-tab-icon" aria-hidden>
+                      <Icon
+                        name="sparkles"
+                        size={16}
+                        stroke="var(--rausch)"
+                        fill="var(--rausch)"
+                        sw={1.5}
+                      />
+                    </span>
+                  )}
                   <span>{t(tab.labelKey)}</span>
                 </Link>
               )

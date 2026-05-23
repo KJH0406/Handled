@@ -93,7 +93,13 @@ export default function HomeScreen() {
           <div className="hero-mock" aria-hidden="true">
             <div className="hero-mock-card hero-mock-card--interests">
               <div className="hero-mock-icon">
-                <Icon name="sparkles" size={22} stroke="var(--rausch)" />
+                <Icon
+                  name="heart"
+                  size={22}
+                  stroke="var(--rausch)"
+                  fill="var(--rausch)"
+                  sw={1.5}
+                />
               </div>
               <div className="t-display-sm ink hero-mock-title">
                 {t("hero.mock.interestsTitle")}

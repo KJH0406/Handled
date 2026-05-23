@@ -24,11 +24,14 @@ export default function LocaleSwitcher() {
 
   return (
     <label className="locale-switcher" aria-label={t("languageAria")}>
-      <Icon name="globe" size={16} />
+      <Icon name="globe" size={18} />
+      <span className="locale-switcher__divider" aria-hidden />
+      <span className="locale-switcher__code">{locale.toUpperCase()}</span>
       <select
         value={locale}
         onChange={onChange}
         className="locale-switcher__select"
+        aria-label={t("languageAria")}
       >
         {routing.locales.map((l) => (
           <option key={l} value={l}>

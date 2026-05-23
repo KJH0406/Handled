@@ -620,27 +620,46 @@ a {
 .nav-tabs {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 .nav-tab {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 10px 14px;
   border-radius: var(--r-full);
-  color: var(--muted);
-  font-size: 14px;
+  color: var(--ink);
+  font-size: 15px;
   font-weight: 600;
   position: relative;
   cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 .nav-tab:hover {
-  background: var(--hairline-soft);
-  color: var(--ink);
+  background: var(--surface-soft);
 }
 .nav-tab.active {
   color: var(--ink);
+}
+.nav-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ink);
+}
+.nav-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rausch);
+  flex-shrink: 0;
 }
 .host-inline-link {
   text-decoration: underline;
@@ -1537,34 +1556,50 @@ a {
   margin-top: 32px;
 }
 
-/* Locale switcher (TopNav) */
+/* Locale switcher (TopNav) — minimal: globe | LANG */
 .locale-switcher {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: var(--canvas);
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--r-full);
+  background: transparent;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--ink);
+  transition: background 0.15s;
 }
 .locale-switcher:hover {
   background: var(--surface-soft);
 }
+.locale-switcher__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--hairline);
+}
+.locale-switcher__code {
+  letter-spacing: 0.4px;
+}
 .locale-switcher__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
   appearance: none;
   border: none;
   background: transparent;
-  font-size: 13px;
-  color: var(--ink);
   cursor: pointer;
-  padding: 0 4px 0 0;
   font-family: inherit;
 }
 .locale-switcher__select:focus {
   outline: none;
+}
+.locale-switcher:has(.locale-switcher__select:focus-visible) {
+  outline: 2px solid var(--rausch);
+  outline-offset: 2px;
 }
 
 /* ─────────────────────────────────────────────
