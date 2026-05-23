@@ -2,6 +2,14 @@ import type { City, ExperienceCategory } from "../types/domain"
 
 export type SlotTimeOfDay = "morning" | "lunch" | "afternoon" | "evening"
 
+export type TourClass = "first" | "business" | "economy"
+
+export const BUDGET_MIN = 1000
+export const BUDGET_MAX = 30000
+export const BUDGET_STEP = 500
+export const BUDGET_DEFAULT = 5000
+export const SPECIAL_REQUESTS_MAX = 150
+
 export interface PlanInput {
   city: City
   startDate: string
@@ -10,6 +18,9 @@ export interface PlanInput {
   teens: number
   kids: number
   interests: ExperienceCategory[]
+  tourClass?: TourClass
+  budget?: number
+  specialRequests?: string
 }
 
 export interface PlanSlot {

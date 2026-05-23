@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon from "../components/ui/Icon"
-import PlanGeneratingSplash from "../components/ui/PlanGeneratingSplash"
 import PlanMap from "../components/ui/PlanMap"
 import { useAppNavigate } from "../lib/navigation"
 import { formatDate } from "../lib/format"
@@ -139,12 +138,13 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
 
   if (state.kind === "loading") {
     return (
-      <main className="fade-in">
-        <PlanGeneratingSplash
-          title={t("loading")}
-          steps={[t("loadingHint")]}
-          fullscreen={false}
-        />
+      <main
+        className="fade-in"
+        aria-busy="true"
+        aria-live="polite"
+        style={{ minHeight: "60vh" }}
+      >
+        <span className="sr-only">{t("loading")}</span>
       </main>
     )
   }
