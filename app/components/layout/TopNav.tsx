@@ -3,28 +3,24 @@
 import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import { Link, usePathname } from "../../../i18n/navigation"
-import Icon, { type IconName } from "../ui/Icon"
+import Icon from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
 
 interface NavTab {
-  id: "home" | "experiences"
-  labelKey: "home" | "experiences"
-  icon: IconName
+  id: "experiences"
+  labelKey: "experiences"
   href: string
 }
 
 const TABS: NavTab[] = [
-  { id: "home", labelKey: "home", icon: "home", href: "/" },
   {
     id: "experiences",
     labelKey: "experiences",
-    icon: "sparkles",
     href: "/experiences",
   },
 ]
 
 const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
-  if (tabId === "home") return pathname === "/"
   if (tabId === "experiences") {
     return pathname.startsWith("/experiences") || pathname.startsWith("/guides")
   }
@@ -85,24 +81,22 @@ export default function TopNav() {
           </span>
         </Link>
 
-        <nav className="nav-tabs hide-mobile">
-          {TABS.map((tab) => {
-            const active = isActive(tab.id, pathname)
-            return (
-              <Link
-                key={tab.id}
-                href={tab.href}
-                className={`nav-tab ${active ? "active" : ""}`}
-                aria-current={active ? "page" : undefined}
-              >
-                <Icon name={tab.icon} size={20} sw={1.6} />
-                <span>{t(tab.labelKey)}</span>
-              </Link>
-            )
-          })}
-        </nav>
-
         <div className="nav-actions">
+          <nav className="nav-tabs hide-mobile">
+            {TABS.map((tab) => {
+              const active = isActive(tab.id, pathname)
+              return (
+                <Link
+                  key={tab.id}
+                  href={tab.href}
+                  className={`nav-tab ${active ? "active" : ""}`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <span>{t(tab.labelKey)}</span>
+                </Link>
+              )
+            })}
+          </nav>
           <div className="hide-mobile">
             <LocaleSwitcher />
           </div>
