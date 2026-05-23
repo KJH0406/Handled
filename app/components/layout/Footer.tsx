@@ -1,55 +1,72 @@
 import { useTranslations } from "next-intl"
-import Icon from "../ui/Icon"
+
+interface FooterColumn {
+  heading: "product.heading" | "company.heading" | "support.heading"
+  links: ReadonlyArray<
+    | "product.aiPlanner"
+    | "product.experience"
+    | "product.koreaStory"
+    | "company.about"
+    | "company.blog"
+    | "company.press"
+    | "company.careers"
+    | "support.helpCenter"
+    | "support.contact"
+    | "support.privacy"
+    | "support.terms"
+  >
+}
+
+const FOOTER_COLUMNS: ReadonlyArray<FooterColumn> = [
+  {
+    heading: "product.heading",
+    links: ["product.aiPlanner", "product.experience", "product.koreaStory"],
+  },
+  {
+    heading: "company.heading",
+    links: [
+      "company.about",
+      "company.blog",
+      "company.press",
+      "company.careers",
+    ],
+  },
+  {
+    heading: "support.heading",
+    links: [
+      "support.helpCenter",
+      "support.contact",
+      "support.privacy",
+      "support.terms",
+    ],
+  },
+]
 
 export default function Footer() {
   const t = useTranslations("footer")
-  const tc = useTranslations("common")
+  const tSite = useTranslations("site")
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-cols">
-          <div className="stack-md">
-            <div className="t-title-md ink">{t("support.heading")}</div>
-            <a className="t-body-sm body" href="#">
-              {t("support.helpCenter")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("support.cancellation")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("support.safety")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("support.report")}
-            </a>
+        <div className="footer-top">
+          <div className="footer-brand">
+            <div className="footer-brand-name">{tSite("name")}</div>
+            <p className="footer-brand-tagline">{t("brand.tagline")}</p>
           </div>
-          <div className="stack-md">
-            <div className="t-title-md ink">{t("company.heading")}</div>
-            <a className="t-body-sm body" href="#">
-              {t("company.about")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("company.newsroom")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("company.partners")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("company.investors")}
-            </a>
-          </div>
+          {FOOTER_COLUMNS.map((col) => (
+            <div key={col.heading} className="footer-col">
+              <div className="footer-col-heading">{t(col.heading)}</div>
+              {col.links.map((link) => (
+                <a key={link} className="footer-link" href="#">
+                  {t(link)}
+                </a>
+              ))}
+            </div>
+          ))}
         </div>
-        <div
-          className="row between"
-          style={{ paddingTop: 24, flexWrap: "wrap", gap: 16 }}
-        >
-          <span className="t-caption-sm muted">{t("copyright")}</span>
-          <div className="row row-gap-base">
-            <span className="row row-gap-xs t-caption-sm ink">
-              <Icon name="globe" size={14} /> English
-            </span>
-            <span className="t-caption-sm ink">$ {tc("currency")}</span>
-          </div>
+        <div className="footer-bottom">
+          <span>{t("copyright")}</span>
+          <span>{t("bottomTagline")}</span>
         </div>
       </div>
     </footer>

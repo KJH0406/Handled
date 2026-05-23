@@ -35,21 +35,31 @@
     "accountMenuAria": "Account menu"
   },
   "footer": {
-    "support": {
-      "heading": "Support",
-      "helpCenter": "Help center",
-      "cancellation": "Cancellation",
-      "safety": "Safety info",
-      "report": "Report"
+    "brand": {
+      "tagline": "AI-crafted itineraries and handpicked local experiences for the modern Korea traveler."
+    },
+    "product": {
+      "heading": "Product",
+      "aiPlanner": "AI Planner",
+      "experience": "Experience",
+      "koreaStory": "Korea Story"
     },
     "company": {
-      "heading": "Handled",
-      "about": "About",
-      "newsroom": "Newsroom",
-      "partners": "Partners",
-      "investors": "Investors"
+      "heading": "Company",
+      "about": "About Us",
+      "blog": "Blog",
+      "press": "Press",
+      "careers": "Careers"
     },
-    "copyright": "© 2026 Handled, Inc. · Korean local experiences for international travelers"
+    "support": {
+      "heading": "Support",
+      "helpCenter": "Help Center",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms"
+    },
+    "copyright": "© 2026 Handled. All rights reserved.",
+    "bottomTagline": "Made with ♥ for Korea travelers"
   },
   "home": {
     "hero": {

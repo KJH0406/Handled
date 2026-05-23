@@ -35,21 +35,31 @@
     "accountMenuAria": "계정 메뉴"
   },
   "footer": {
+    "brand": {
+      "tagline": "AI가 짜주는 일정과 엄선된 현지 체험 — 한국을 여행하는 새로운 방법."
+    },
+    "product": {
+      "heading": "프로덕트",
+      "aiPlanner": "AI 플래너",
+      "experience": "체험",
+      "koreaStory": "한국 스토리"
+    },
+    "company": {
+      "heading": "회사",
+      "about": "회사 소개",
+      "blog": "블로그",
+      "press": "보도자료",
+      "careers": "채용"
+    },
     "support": {
       "heading": "고객지원",
       "helpCenter": "고객센터",
-      "cancellation": "취소 안내",
-      "safety": "안전 정보",
-      "report": "신고하기"
+      "contact": "문의",
+      "privacy": "개인정보 처리방침",
+      "terms": "이용약관"
     },
-    "company": {
-      "heading": "Handled",
-      "about": "회사 소개",
-      "newsroom": "뉴스룸",
-      "partners": "파트너",
-      "investors": "투자자 정보"
-    },
-    "copyright": "© 2026 Handled, Inc. · 해외 여행자를 위한 한국 로컬 체험"
+    "copyright": "© 2026 Handled. All rights reserved.",
+    "bottomTagline": "한국 여행자를 위해 ♥로 만들었어요"
   },
   "home": {
     "hero": {
