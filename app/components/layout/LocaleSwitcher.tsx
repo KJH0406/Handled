@@ -8,6 +8,7 @@ import Icon from "../ui/Icon"
 
 const LABELS: Record<string, string> = {
   en: "English",
+  ko: "한국어",
 }
 
 export default function LocaleSwitcher() {

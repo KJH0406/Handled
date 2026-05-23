@@ -1,0 +1,527 @@
+{
+  "common": {
+    "all": "전체",
+    "guest": "명",
+    "guests": "명",
+    "review": "리뷰",
+    "reviews": "리뷰",
+    "hour": "시간",
+    "hours": "시간",
+    "perPerson": "1인 기준",
+    "perHour": "/ 시간",
+    "perPersonShort": "/ 인",
+    "package_one": "패키지",
+    "package_other": "패키지",
+    "or": "또는",
+    "noChargeUntilConfirm": "예약 확정 전에는 결제되지 않습니다",
+    "back": "뒤로",
+    "language": "언어",
+    "currency": "USD"
+  },
+  "site": {
+    "name": "Handled",
+    "title": "Handled — 한국 로컬 체험",
+    "description": "신뢰할 수 있는 현지 가이드와 함께하는 진짜 한국 체험을 만나보세요."
+  },
+  "nav": {
+    "home": "홈",
+    "experiences": "체험",
+    "planner": "AI 플래너",
+    "myPlans": "내 여행 계획",
+    "help": "고객센터",
+    "logoAria": "Handled — 홈",
+    "languageAria": "언어",
+    "accountMenuAria": "계정 메뉴"
+  },
+  "footer": {
+    "support": {
+      "heading": "고객지원",
+      "helpCenter": "고객센터",
+      "cancellation": "취소 안내",
+      "safety": "안전 정보",
+      "report": "신고하기"
+    },
+    "company": {
+      "heading": "Handled",
+      "about": "회사 소개",
+      "newsroom": "뉴스룸",
+      "partners": "파트너",
+      "investors": "투자자 정보"
+    },
+    "copyright": "© 2026 Handled, Inc. · 해외 여행자를 위한 한국 로컬 체험"
+  },
+  "home": {
+    "hero": {
+      "kicker": "AI 여행 플래너",
+      "titleLine1": "당신의 여행 계획,",
+      "titleLine2": "단 1분 만에 완성!",
+      "lede": "검색은 그만. Handled가 여행을 대신 계획해 드릴게요.",
+      "planCta": "새 여행 만들기"
+    },
+    "why": {
+      "curatedTitle": "엄선된 체험",
+      "curatedDesc": "검증된 현지인이 직접 설계하고 테스트한 패키지 — 뻔한 관광버스 코스는 없습니다.",
+      "smallGroupTitle": "소규모 그룹",
+      "smallGroupDesc": "최대 4~8명까지만 모집해 궁금한 걸 물어보고, 원하는 곳에서 멈출 수 있어요.",
+      "multilingualTitle": "다국어 가능 호스트",
+      "multilingualDesc": "영어, 일본어, 중국어, 프랑스어. 가장 편한 언어로 예약하세요."
+    },
+    "featured": {
+      "heading": "이번 주 인기 체험",
+      "viewAll": "전체 체험 보기"
+    },
+    "loved": {
+      "rating": "4.96",
+      "heading": "여행자들의 사랑",
+      "subtitle": "Handled와 함께 한국을 여행한 500명 이상의 후기로 평가되었습니다"
+    }
+  },
+  "list": {
+    "title": "현지 가이드 찾기",
+    "lede": "검증된 현지 가이드와 시간 단위로 매칭하세요. 시간당 $40부터.",
+    "searchPlaceholder": "이름, 도시, 스타일로 검색",
+    "filters": {
+      "city": "도시",
+      "style": "스타일",
+      "languages": "언어"
+    },
+    "results": "{count, plural, other {가이드 #명}} 일치",
+    "resultsInCity": "{count, plural, other {가이드 #명}} 일치 · {city}",
+    "clearFilters": "필터 초기화",
+    "empty": {
+      "title": "조건에 맞는 가이드가 없어요",
+      "subtitle": "필터를 줄여서 다시 시도해 보세요.",
+      "cta": "필터 초기화"
+    },
+    "clearSearchAria": "검색어 지우기"
+  },
+  "planner": {
+    "wizard": {
+      "stepLabel": "{total}단계 중 {current}단계",
+      "step1": {
+        "heading": "여행에 대해 알려주세요",
+        "subheading": "어디로, 언제, 누구와 함께 가나요?",
+        "cityLabel": "여행지",
+        "datesLabel": "여행 일정",
+        "startLabel": "출발일",
+        "endLabel": "도착일",
+        "datesError": "도착일은 출발일과 같거나 이후여야 합니다.",
+        "dayUnit": "{count, plural, other {#일}}",
+        "travelersLabel": "동행자",
+        "adults": "성인",
+        "adultsHint": "만 18세 이상",
+        "teens": "청소년",
+        "teensHint": "만 13~17세",
+        "kids": "어린이",
+        "kidsHint": "만 0~12세"
+      },
+      "step2": {
+        "heading": "어떤 걸 좋아하세요?",
+        "subheading": "관심사를 몇 가지 선택해 주세요 — 일정에 우선 반영해 드려요.",
+        "interestsLabel": "관심사",
+        "interestsHint": "계속하려면 최소 한 가지를 선택하세요."
+      },
+      "step3": {
+        "heading": "여행을 확인해 주세요",
+        "subheading": "맞는지 확인하면 다음 단계에서 계획을 짜드릴게요.",
+        "destinationLabel": "여행지",
+        "datesLabel": "여행 일정",
+        "travelersLabel": "동행자",
+        "interestsLabel": "관심사",
+        "adultsSummary": "{count, plural, other {성인 #명}}",
+        "teensSummary": "{count, plural, other {청소년 #명}}",
+        "kidsSummary": "{count, plural, other {어린이 #명}}",
+        "datesSummary": "{start} → {end} · {count, plural, other {#일}}"
+      },
+      "back": "이전",
+      "next": "다음",
+      "edit": "수정",
+      "submit": "✨ 내 여행 계획 만들기",
+      "generating": "여행 계획을 짜는 중…",
+      "splash": {
+        "title": "여행 계획을 짜는 중…",
+        "step1": "{city}에 관심사를 맞춰 보는 중",
+        "step2": "시간대별로 일정을 정리하는 중",
+        "step3": "지치지 않도록 일정 페이스를 조절하는 중",
+        "step4": "일자별 일정을 다듬는 중"
+      }
+    },
+    "canvas": {
+      "backToWizard": "새 계획 시작하기",
+      "loading": "계획을 불러오는 중…",
+      "loadingHint": "다시 정리하고 있어요",
+      "datesSummary": "{start} → {end} · {count, plural, other {#일}}",
+      "travelersSummary": "{count, plural, other {여행자 #명}}",
+      "slotCount": "{count, plural, other {#곳}}",
+      "dayTabs": {
+        "ariaLabel": "일자 전환",
+        "label": "{n}일차"
+      },
+      "share": "공유",
+      "save": "저장",
+      "shareToast": "링크가 클립보드에 복사되었어요",
+      "shareError": "링크 복사에 실패했어요 — 다시 시도해 주세요",
+      "savedModal": {
+        "title": "내 여행 계획에 저장되었어요",
+        "body": "계정 메뉴의 ‘내 여행 계획’에서 언제든 다시 볼 수 있어요.",
+        "viewMyPlans": "내 여행 계획 보기",
+        "close": "닫기"
+      },
+      "empty": {
+        "title": "계획을 찾을 수 없어요",
+        "subtitle": "해당 계획을 찾지 못했어요. 삭제되었거나, 다른 브라우저에서 만든 링크일 수 있어요.",
+        "cta": "새 계획 시작하기"
+      },
+      "map": {
+        "ariaLabel": "{city} 일정의 지도 미리보기 — {count, plural, other {#곳}}",
+        "demoNotice": "지도 미리보기 · 데모용 위치"
+      },
+      "saveCallout": {
+        "title": "이 계획이 마음에 드세요?",
+        "body": "내 여행 계획에 저장하면 언제든 다시 보고 수정할 수 있어요."
+      },
+      "savedBadge": {
+        "label": "저장됨",
+        "aria": "저장됨 — 내 여행 계획 보기"
+      },
+      "recommendations": {
+        "eyebrow": "더 둘러보기",
+        "heading": "{city}에서 즐길 만한 엄선된 체험",
+        "subheading": "이 계획 외에도, 현지 가이드가 추천하는 추가 아이디어예요.",
+        "viewAll": "전체 체험 보기",
+        "empty": "{city}의 더 많은 체험을 준비 중이에요 — 잠시 후 다시 확인해 주세요."
+      },
+      "saveBar": {
+        "summary": "{city} · {count, plural, other {#일}}",
+        "cta": "내 계획에 저장",
+        "saved": "저장됨",
+        "viewMyPlans": "내 여행 계획 보기"
+      }
+    }
+  },
+  "experiences": {
+    "title": "한국의 모든 체험",
+    "lede": "현지 가이드가 운영하는 {count}개의 체험 패키지 중 골라보세요.",
+    "searchPlaceholder": "체험, 카테고리, 가이드, 도시로 검색",
+    "filters": {
+      "city": "도시",
+      "category": "카테고리"
+    },
+    "results": "{count, plural, other {체험 #개}} 일치",
+    "resultsInCity": "{count, plural, other {체험 #개}} 일치 · {city}",
+    "resultsInCategory": "{count, plural, other {체험 #개}} 일치 · {category}",
+    "resultsInCityAndCategory": "{count, plural, other {체험 #개}} 일치 · {city} · {category}",
+    "clearFilters": "필터 초기화",
+    "empty": {
+      "title": "조건에 맞는 체험이 없어요",
+      "subtitle": "필터를 줄여서 다시 시도해 보세요.",
+      "cta": "필터 초기화"
+    },
+    "clearSearchAria": "검색어 지우기"
+  },
+  "experienceDetail": {
+    "backTo": "{name}으로 돌아가기",
+    "packageHeader": "{duration}시간 패키지 · 최대 {maxGuests}명",
+    "reviewCount": "· 리뷰 {count}개",
+    "hostedBy": "{name} 호스트 운영",
+    "whatYouWillDo": "이 체험에서 할 일",
+    "itinerary": "일정",
+    "itineraryTotal": "총 {duration}시간",
+    "aboutHost": "호스트 소개",
+    "superhost": "· 슈퍼호스트",
+    "hostStats": "{years}년 호스팅 · 리뷰 {reviews}개 · ★{rating}",
+    "viewProfile": "프로필 보기",
+    "meetingPlace": "만남 장소",
+    "goodToKnow": "알아두면 좋은 점",
+    "groupSize": "그룹 규모",
+    "groupSizeValue": "최대 {max}명 (소규모 그룹)",
+    "duration": "소요 시간",
+    "durationValue": "{hours}시간",
+    "language": "언어",
+    "cancellation": "취소 정책",
+    "cancellationValue": "체험 시작 24시간 전까지 무료 취소",
+    "reviewsHeading": "{rating} · 리뷰 {count}개",
+    "reviewsSubtitle": "{name} 호스트의 모든 체험에 대한 리뷰",
+    "empty": {
+      "title": "체험을 찾을 수 없습니다.",
+      "cta": "홈으로"
+    }
+  },
+  "profile": {
+    "backToGuides": "가이드 목록으로",
+    "superhost": "슈퍼호스트",
+    "stats": {
+      "rating": "평점",
+      "reviews": "리뷰",
+      "hosting": "호스팅",
+      "packages": "패키지"
+    },
+    "about": "{name} 소개",
+    "offers": "{name}이(가) 제공하는 체험",
+    "goodToKnow": "알아두면 좋은 점",
+    "languages": "언어",
+    "cities": "도시",
+    "specialty": "전문 분야",
+    "reviewsHeading": "{rating} · 리뷰 {count}개",
+    "seeAllReviews": "리뷰 {count}개 모두 보기",
+    "experiencesByHeading": "{name} 호스트의 체험",
+    "experiencesByCount": "{count, plural, other {패키지 #개}}",
+    "experiencesByLede": "체험 카드를 눌러 일정과 사진을 확인하세요. 옆 패널에서 맞춤 일정을 만들 수도 있어요.",
+    "empty": {
+      "title": "가이드를 찾을 수 없습니다.",
+      "cta": "목록으로 돌아가기"
+    }
+  },
+  "payment": {
+    "backToExperience": "체험으로 돌아가기",
+    "backToGuide": "가이드로 돌아가기",
+    "heading": "결제",
+    "summary": {
+      "heading": "예약 요약",
+      "type": "유형",
+      "typeExperience": "체험 패키지",
+      "typeCustom": "맞춤 투어",
+      "experience": "체험",
+      "date": "날짜",
+      "time": "시간",
+      "timeValue": "{time} · {hours}시간",
+      "guests": "인원",
+      "guestsValue": "{count, plural, other {#명}}",
+      "interests": "관심사",
+      "specialRequests": "특별 요청 사항"
+    },
+    "method": {
+      "heading": "결제 수단",
+      "cardholder": "카드 명의자",
+      "cardholderPlaceholder": "HONG GILDONG",
+      "cardNumber": "카드 번호",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "expiry": "유효기간",
+      "expiryPlaceholder": "MM/YY",
+      "cvc": "CVC",
+      "cvcPlaceholder": "123",
+      "zip": "우편번호",
+      "zipPlaceholder": "10001"
+    },
+    "policy": {
+      "heading": "취소 정책",
+      "free24h": "체험 시작 24시간 전까지 무료 취소 — 전액 환불.",
+      "within24h": "24시간 이내 취소 시 50% 환불.",
+      "ssl": "모든 결제는 SSL로 암호화되어 안전하게 처리됩니다."
+    },
+    "terms": "계속 진행하면 Handled <terms>이용약관</terms>, <privacy>개인정보 처리방침</privacy> 및 취소 정책에 동의하게 됩니다.",
+    "cta": "{amount} 결제",
+    "ctaLoading": "처리 중...",
+    "sideCard": {
+      "guidedBy": "{city} · {name} 가이드",
+      "customTourWith": "{name}과의 맞춤 투어",
+      "priceDetails": "가격 상세",
+      "linePerPerson": "{amount} × {count, plural, other {#명}}",
+      "linePerHour": "{amount} × {hours}시간",
+      "serviceFee": "서비스 수수료",
+      "totalUSD": "총액 (USD)"
+    },
+    "errors": {
+      "name": "카드 명의자명을 입력하세요",
+      "card": "16자리 카드 번호를 입력하세요",
+      "exp": "MM/YY 형식으로 입력하세요",
+      "cvc": "3자리 CVC를 입력하세요",
+      "zip": "우편번호를 입력하세요"
+    },
+    "empty": {
+      "title": "예약 정보가 없습니다.",
+      "cta": "홈으로"
+    }
+  },
+  "confirm": {
+    "title": "예약이 확정되었어요!",
+    "subtitle": "{name} 호스트가 곧 환영 메시지를 보낼 거예요.",
+    "host": "호스트",
+    "typeExperience": "체험",
+    "typeCustom": "맞춤 투어",
+    "experience": "체험",
+    "date": "날짜",
+    "time": "시간",
+    "timeValue": "{time} · {hours}시간",
+    "guests": "인원",
+    "guestsValue": "{count, plural, other {#명}}",
+    "interests": "관심사",
+    "specialRequests": "특별 요청 사항",
+    "payment": "결제",
+    "paymentValue": "{amount} · 카드 끝 {last4}",
+    "bookingId": "예약 번호",
+    "emailReceipt": "영수증을 이메일로 보내드렸어요.",
+    "backHome": "홈으로 돌아가기",
+    "browseMore": "다른 가이드 둘러보기",
+    "empty": {
+      "title": "예약을 찾을 수 없습니다.",
+      "cta": "홈으로"
+    }
+  },
+  "booking": {
+    "custom": {
+      "label": "맞춤 투어 견적",
+      "perHour": "/ 시간",
+      "subtitle": "원하는 시간과 관심사로 투어를 구성하세요",
+      "tourHours": "투어 시간",
+      "tourHoursValue": "{hours}시간",
+      "tourHoursRange": "최소 1시간 · 최대 8시간",
+      "date": "날짜",
+      "selectDate": "날짜 선택",
+      "startTime": "시작 시간",
+      "guests": "인원",
+      "interests": "관심사 (복수 선택)",
+      "specialRequests": "특별 요청 사항 (선택)",
+      "requestsPlaceholder": "예: 채식 · 4세 아이 동반 · 사진 많이 부탁드려요",
+      "reserveCta": "맞춤 투어 예약",
+      "selectDateCta": "날짜를 선택하세요",
+      "lineHourly": "{rate} × {hours}시간",
+      "serviceFee": "서비스 수수료",
+      "total": "총액",
+      "noCharge": "예약 확정 전에는 결제되지 않습니다",
+      "decHoursAria": "시간 줄이기",
+      "incHoursAria": "시간 늘리기",
+      "decGuestsAria": "인원 줄이기",
+      "incGuestsAria": "인원 늘리기"
+    },
+    "experience": {
+      "perPerson": "/ 인",
+      "duration": "· {duration}시간 패키지",
+      "upTo": "최대 {max}명 · 소규모 그룹",
+      "date": "날짜",
+      "selectDate": "날짜 선택",
+      "startTime": "시작 시간",
+      "guestsUpTo": "인원 (최대 {max}명)",
+      "specialRequests": "특별 요청 사항 (선택)",
+      "requestsPlaceholder": "예: 알레르기, 사진 요청",
+      "reserveCta": "이 체험 예약",
+      "selectDateCta": "날짜를 선택하세요",
+      "linePerPerson": "{price} × {count, plural, other {#명}}",
+      "serviceFee": "서비스 수수료",
+      "total": "총액",
+      "noCharge": "예약 확정 전에는 결제되지 않습니다",
+      "decGuestsAria": "인원 줄이기",
+      "incGuestsAria": "인원 늘리기"
+    }
+  },
+  "calendar": {
+    "prevAria": "이전 달",
+    "nextAria": "다음 달",
+    "months": {
+      "0": "1월",
+      "1": "2월",
+      "2": "3월",
+      "3": "4월",
+      "4": "5월",
+      "5": "6월",
+      "6": "7월",
+      "7": "8월",
+      "8": "9월",
+      "9": "10월",
+      "10": "11월",
+      "11": "12월"
+    },
+    "dows": {
+      "0": "일",
+      "1": "월",
+      "2": "화",
+      "3": "수",
+      "4": "목",
+      "5": "금",
+      "6": "토"
+    }
+  },
+  "myPlans": {
+    "heading": "내 여행 계획",
+    "subheading": "저장한 여행이에요. 하나를 열어 일자별 계획을 확인해 보세요.",
+    "loading": "저장된 계획을 불러오는 중…",
+    "tabs": {
+      "trips": "내 여행 {count}",
+      "reviews": "리뷰",
+      "journal": "여행 일지"
+    },
+    "createCard": {
+      "title": "새 여행 계획하기",
+      "subtitle": "어디로, 언제 갈지 알려주시면 — 일정을 짜드릴게요."
+    },
+    "sections": {
+      "upcoming": "다가오는 여행",
+      "past": "지난 여행"
+    },
+    "rowMenu": {
+      "aria": "더 보기",
+      "edit": "수정",
+      "delete": "삭제"
+    },
+    "deleteModal": {
+      "title": "이 계획을 삭제할까요?",
+      "body": "“{name}”이(가) 내 여행 계획에서 영구히 삭제됩니다. 되돌릴 수 없어요.",
+      "cancel": "취소",
+      "confirm": "삭제"
+    },
+    "empty": {
+      "title": "아직 저장된 계획이 없어요",
+      "subtitle": "여행 계획을 만든 뒤 저장을 눌러 여기에 보관하세요."
+    }
+  },
+  "error": {
+    "title": "문제가 발생했어요",
+    "subtitle": "예기치 못한 오류가 발생했어요. 다시 시도해 주세요.",
+    "tryAgain": "다시 시도",
+    "backHome": "홈으로 돌아가기"
+  },
+  "notFound": {
+    "title": "페이지를 찾을 수 없어요",
+    "subtitle": "찾으시는 페이지가 존재하지 않거나 이동되었어요.",
+    "backHome": "홈으로 돌아가기"
+  },
+  "cards": {
+    "experience": {
+      "duration": "{hours}시간",
+      "upTo": "최대 {max}명",
+      "hostedBy": "{city} · {name} 호스트",
+      "perPerson": "1인 기준",
+      "learnMore": "자세히 보기 →"
+    },
+    "guide": {
+      "superhost": "슈퍼호스트",
+      "perHour": "/ 시간",
+      "aria": "{name} — {city} 가이드"
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "Handled — 한국 로컬 체험",
+      "description": "신뢰할 수 있는 현지 가이드와 함께하는 진짜 한국 체험을 만나보세요."
+    },
+    "experiences": {
+      "title": "한국의 모든 체험",
+      "description": "한국 곳곳의 현지 가이드가 운영하는 엄선된 체험 패키지에서 골라보세요."
+    },
+    "guides": {
+      "title": "현지 가이드 찾기",
+      "description": "한국 전역의 검증된 현지 가이드와 시간 단위로 매칭하세요. 시간당 $40부터."
+    },
+    "checkout": {
+      "title": "결제"
+    },
+    "planNew": {
+      "title": "AI로 여행 계획하기",
+      "description": "여행에 대한 몇 가지만 알려주세요 — 수정 가능한 일자별 계획을 짜드릴게요."
+    },
+    "plan": {
+      "title": "내 여행 계획"
+    },
+    "myPlans": {
+      "title": "내 여행 계획"
+    },
+    "notFound": {
+      "title": "페이지를 찾을 수 없어요"
+    },
+    "guideNotFound": "가이드를 찾을 수 없습니다",
+    "experienceNotFound": "체험을 찾을 수 없습니다",
+    "guideTitle": "{name} · {city} 가이드",
+    "experienceTitle": "{title} — {host}",
+    "experienceTitleNoHost": "{title}"
+  }
+}
