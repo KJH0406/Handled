@@ -12,19 +12,30 @@ import ExpPhoto from "./ExpPhoto"
 export interface ExperienceCardProps {
   exp: Experience
   showGuide?: boolean
+  comingSoon?: boolean
 }
 
 export default function ExperienceCard({
   exp,
   showGuide = false,
+  comingSoon = false,
 }: ExperienceCardProps) {
   const t = useTranslations("cards.experience")
+  const tHome = useTranslations("home.featured")
   const guide = showGuide ? guidesRepo.findById(exp.guideId) : null
   return (
-    <Link href={`/experiences/${exp.id}`} className="exp-card">
+    <Link
+      href={`/experiences/${exp.id}`}
+      className={`exp-card${comingSoon ? " exp-card--coming-soon" : ""}`}
+    >
       <div className="exp-card-photo">
         <ExpPhoto src={exp.photo} alt={exp.title} category={exp.category} />
         <span className="exp-card-cat badge-pill">{exp.category}</span>
+        {comingSoon && (
+          <span className="exp-card-coming-badge">
+            {tHome("comingSoonBadge")}
+          </span>
+        )}
       </div>
       <div className="exp-card-body">
         <div className="t-title-md ink" style={{ minHeight: 40 }}>

@@ -4,28 +4,9 @@ import Image from "next/image"
 import { useTranslations } from "next-intl"
 import mapImg from "@/img/guides/map.png"
 import ExperienceCard from "../components/cards/ExperienceCard"
-import Avatar from "../components/ui/Avatar"
 import Icon, { type IconName } from "../components/ui/Icon"
-import Stars from "../components/ui/Stars"
 import { useAppNavigate } from "../lib/navigation"
 import { experiencesRepo } from "../lib/repositories/experiences"
-import { reviewsRepo } from "../lib/repositories/reviews"
-
-interface WhyFeature {
-  icon: IconName
-  titleKey: "curatedTitle" | "smallGroupTitle" | "multilingualTitle"
-  descKey: "curatedDesc" | "smallGroupDesc" | "multilingualDesc"
-}
-
-const WHY_FEATURES: WhyFeature[] = [
-  { icon: "sparkles", titleKey: "curatedTitle", descKey: "curatedDesc" },
-  { icon: "users", titleKey: "smallGroupTitle", descKey: "smallGroupDesc" },
-  {
-    icon: "globe",
-    titleKey: "multilingualTitle",
-    descKey: "multilingualDesc",
-  },
-]
 
 interface HeroChip {
   label: string
@@ -42,6 +23,37 @@ const HERO_INTEREST_CHIPS: HeroChip[] = [
   { label: "Beach", active: false },
   { label: "Nightlife", active: false },
 ]
+
+const STATS_KEYS = [
+  "travelersHosted",
+  "licensedGuides",
+  "avgRating",
+  "koreanCities",
+] as const
+
+const PLANNER_STEPS = ["one", "two", "three"] as const
+
+interface ValueProp {
+  key: "licensed" | "themed" | "stories"
+  icon: IconName
+  accentClass: string
+}
+
+const VALUE_PROPS: ValueProp[] = [
+  { key: "licensed", icon: "shield", accentClass: "value-prop-card--accent-1" },
+  { key: "themed", icon: "map", accentClass: "value-prop-card--accent-2" },
+  {
+    key: "stories",
+    icon: "sparkles",
+    accentClass: "value-prop-card--accent-3",
+  },
+]
+
+const VALUE_PROP_ICON_COLORS: Record<ValueProp["accentClass"], string> = {
+  "value-prop-card--accent-1": "var(--rausch)",
+  "value-prop-card--accent-2": "#2563eb",
+  "value-prop-card--accent-3": "#daa520",
+}
 
 export default function HomeScreen() {
   const t = useTranslations("home")
@@ -148,80 +160,112 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      <section style={{ padding: "32px 0" }}>
+      <section className="home-stats" aria-label={t("featured.heading")}>
+        <div className="container home-stats-row">
+          {STATS_KEYS.map((k) => (
+            <div key={k} className="home-stats-item">
+              <div className="home-stats-value">{t(`stats.${k}.value`)}</div>
+              <div className="home-stats-label">{t(`stats.${k}.label`)}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ padding: "68px 0" }}>
         <div className="container">
-          <div className="feature-grid">
-            {WHY_FEATURES.map((f) => (
-              <div
-                key={f.titleKey}
-                className="card card-pad-lg"
-                style={{ border: "none" }}
+          <div className="section-header" style={{ marginBottom: 32 }}>
+            <div>
+              <h2 className="t-display-md ink">{t("featured.heading")}</h2>
+              <p className="t-body-sm muted" style={{ marginTop: 6 }}>
+                {t("featured.subtitle")}
+              </p>
+            </div>
+            <div className="section-header-actions">
+              <span className="badge-launching">
+                {t("featured.launchingSoon")}
+              </span>
+              <button
+                className="btn-tertiary t-body-sm"
+                style={{ textDecoration: "underline" }}
+                onClick={() => navigate("experiences")}
               >
-                <div className="icon-circle icon-circle--lg mb-base">
-                  <Icon name={f.icon} size={22} stroke="var(--rausch)" />
+                {t("featured.viewAll")}
+              </button>
+            </div>
+          </div>
+          <div className="exp-grid">
+            {featured.map((exp) => (
+              <ExperienceCard
+                key={exp.id}
+                exp={exp}
+                showGuide
+                comingSoon
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="planner-cta">
+        <div className="container planner-cta-grid">
+          <div>
+            <span className="planner-cta-eyebrow">
+              {t("plannerCta.eyebrow")}
+            </span>
+            <h2 className="planner-cta-title">
+              {t("plannerCta.titleLine1")}
+              <br />
+              {t("plannerCta.titleLine2")}
+            </h2>
+            <p className="planner-cta-lede">{t("plannerCta.lede")}</p>
+            <button className="btn btn-primary" onClick={onPlan}>
+              {t("plannerCta.cta")}
+            </button>
+          </div>
+          <div className="planner-cta-card">
+            {PLANNER_STEPS.map((s) => (
+              <div key={s} className="planner-step-row">
+                <div className="planner-step-num">
+                  {t(`plannerCta.steps.${s}.n`)}
                 </div>
-                <div className="t-display-sm ink mb-sm">
-                  {t(`why.${f.titleKey}`)}
+                <div>
+                  <div className="planner-step-title">
+                    {t(`plannerCta.steps.${s}.title`)}
+                  </div>
+                  <div className="planner-step-desc">
+                    {t(`plannerCta.steps.${s}.desc`)}
+                  </div>
                 </div>
-                <div className="t-body-sm muted">{t(`why.${f.descKey}`)}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "32px 0" }}>
+      <section className="real-korea">
         <div className="container">
-          <div className="section-header" style={{ marginBottom: 24 }}>
-            <h2 className="t-display-md ink">{t("featured.heading")}</h2>
-            <button
-              className="btn-tertiary t-body-sm"
-              style={{ textDecoration: "underline" }}
-              onClick={() => navigate("experiences")}
-            >
-              {t("featured.viewAll")}
-            </button>
+          <div className="real-korea-head">
+            <h2 className="real-korea-heading">{t("realKorea.heading")}</h2>
+            <p className="real-korea-sub">{t("realKorea.subheading")}</p>
           </div>
-          <div className="exp-grid">
-            {featured.map((exp) => (
-              <ExperienceCard key={exp.id} exp={exp} showGuide />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        style={{
-          padding: "64px 0",
-          background: "var(--surface-soft)",
-          marginTop: 32,
-        }}
-      >
-        <div className="container">
-          <div
-            className="row"
-            style={{ gap: 16, marginBottom: 32, flexWrap: "wrap" }}
-          >
-            <span className="t-rating ink">{t("loved.rating")}</span>
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div className="t-display-sm ink">{t("loved.heading")}</div>
-              <div className="t-body-sm muted">{t("loved.subtitle")}</div>
-            </div>
-          </div>
-          <div className="review-grid">
-            {reviewsRepo.listHome().map((r, i) => (
-              <div key={i} className="stack-sm">
-                <div className="row row-gap-sm">
-                  <Avatar size={36} name={r.name} src="" />
-                  <div>
-                    <div className="t-title-sm ink">{r.name}</div>
-                    <div className="t-caption-sm muted">{r.country}</div>
-                  </div>
+          <div className="real-korea-grid">
+            {VALUE_PROPS.map((vp) => (
+              <div
+                key={vp.key}
+                className={`value-prop-card ${vp.accentClass}`}
+              >
+                <div className="value-prop-icon">
+                  <Icon
+                    name={vp.icon}
+                    size={22}
+                    stroke={VALUE_PROP_ICON_COLORS[vp.accentClass]}
+                  />
                 </div>
-                <Stars rating={r.rating} />
-                <div className="t-body-sm body">&quot;{r.text}&quot;</div>
-                <div className="t-caption-sm muted-soft">
-                  {r.date} · {r.guide}
+                <div className="value-prop-title">
+                  {t(`realKorea.items.${vp.key}.title`)}
+                </div>
+                <div className="value-prop-desc">
+                  {t(`realKorea.items.${vp.key}.desc`)}
                 </div>
               </div>
             ))}

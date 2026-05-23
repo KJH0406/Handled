@@ -67,22 +67,72 @@
         "planHint": "Let Handled plan your stay."
       }
     },
-    "why": {
-      "curatedTitle": "Curated experiences",
-      "curatedDesc": "Every package is designed and tested by a vetted local — no generic tour-bus stops.",
-      "smallGroupTitle": "Small groups",
-      "smallGroupDesc": "Up to 4–8 guests so you actually get to ask questions and stop where you want.",
-      "multilingualTitle": "Multilingual hosts",
-      "multilingualDesc": "English, Japanese, Mandarin, French. Book in the language you are most comfortable in."
+    "stats": {
+      "travelersHosted": {
+        "value": "4,200+",
+        "label": "Travelers Hosted"
+      },
+      "licensedGuides": {
+        "value": "47",
+        "label": "Licensed Guides"
+      },
+      "avgRating": {
+        "value": "4.95★",
+        "label": "Average Rating"
+      },
+      "koreanCities": {
+        "value": "10+",
+        "label": "Korean Cities"
+      }
     },
     "featured": {
-      "heading": "Top experiences this week",
-      "viewAll": "View all experiences"
+      "heading": "Popular Experiences",
+      "subtitle": "Handpicked tours designed by certified local guides",
+      "launchingSoon": "🚀 Launching Soon",
+      "comingSoonBadge": "Coming Soon",
+      "viewAll": "View All →"
     },
-    "loved": {
-      "rating": "4.96",
-      "heading": "Loved by travelers",
-      "subtitle": "Rated by 500+ travelers who explored Korea with Handled"
+    "plannerCta": {
+      "eyebrow": "AI PLANNER",
+      "titleLine1": "Your Perfect Itinerary,",
+      "titleLine2": "Ready in Minutes",
+      "lede": "Tell us where you're going, how long you're staying, and what you love — our AI builds the perfect day-by-day plan. Three free plans with sign-up.",
+      "cta": "Start Planning — It's Free →",
+      "steps": {
+        "one": {
+          "n": "01",
+          "title": "Pick Your Destination & Dates",
+          "desc": "Tell us where and how long you want to travel"
+        },
+        "two": {
+          "n": "02",
+          "title": "Choose Your Travel Style",
+          "desc": "History, food, adventure — pick what excites you"
+        },
+        "three": {
+          "n": "03",
+          "title": "AI Builds Your Itinerary",
+          "desc": "Get a day-by-day plan optimized for your trip in minutes"
+        }
+      }
+    },
+    "realKorea": {
+      "heading": "The Real Korea, Beyond the Guidebook",
+      "subheading": "Stories, hidden gems, and local secrets you'll never find on the internet",
+      "items": {
+        "licensed": {
+          "title": "Government-Licensed Guides Only",
+          "desc": "Every guide holds an official tourism certification — not just anyone with a blog. Your safety and experience come first, always."
+        },
+        "themed": {
+          "title": "Themed Journeys, Not Generic Tours",
+          "desc": "Each experience is personally designed by your guide — from Seoul's trendiest streets to midnight food crawls you can't book anywhere else."
+        },
+        "stories": {
+          "title": "Stories You Won't Read Anywhere Else",
+          "desc": "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours — they're memories waiting to happen."
+        }
+      }
     }
   },
   "list": {
