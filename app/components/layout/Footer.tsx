@@ -24,21 +24,6 @@ export default function Footer() {
             </a>
           </div>
           <div className="stack-md">
-            <div className="t-title-md ink">{t("hosting.heading")}</div>
-            <a className="t-body-sm body" href="#">
-              {t("hosting.becomeHost")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("hosting.hostExperience")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("hosting.community")}
-            </a>
-            <a className="t-body-sm body" href="#">
-              {t("hosting.responsible")}
-            </a>
-          </div>
-          <div className="stack-md">
             <div className="t-title-md ink">{t("company.heading")}</div>
             <a className="t-body-sm body" href="#">
               {t("company.about")}

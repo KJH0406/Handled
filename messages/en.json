@@ -26,10 +26,12 @@
   "nav": {
     "home": "Home",
     "experiences": "Experiences",
-    "becomeHost": "Become a host",
+    "planner": "AI Planner",
+    "myPlans": "My Plans",
+    "help": "Help center",
     "logoAria": "Handled — home",
     "languageAria": "Language",
-    "searchAria": "Search"
+    "accountMenuAria": "Account menu"
   },
   "footer": {
     "support": {
@@ -38,13 +40,6 @@
       "cancellation": "Cancellation",
       "safety": "Safety info",
       "report": "Report"
-    },
-    "hosting": {
-      "heading": "Hosting",
-      "becomeHost": "Become a host",
-      "hostExperience": "Host an experience",
-      "community": "Community forum",
-      "responsible": "Responsible hosting"
     },
     "company": {
       "heading": "Handled",
@@ -57,18 +52,11 @@
   },
   "home": {
     "hero": {
-      "titleLine1": "Korea, made local —",
-      "titleLine2": "experiences hosted by people you trust.",
-      "lede": "Discover handpicked Korean experiences, hosted by vetted locals."
-    },
-    "search": {
-      "where": "Where",
-      "when": "When",
-      "who": "Who",
-      "wherePlaceholder": "Anywhere in Korea?",
-      "whereMobilePlaceholder": "Where in Korea?",
-      "addDates": "Add dates",
-      "addGuests": "Add guests"
+      "kicker": "AI trip planner",
+      "titleLine1": "Plan your trip",
+      "titleLine2": "in just 1 minute!",
+      "lede": "Skip the search. Handled plans your trip for you.",
+      "planCta": "Create a New Trip"
     },
     "why": {
       "curatedTitle": "Curated experiences",
@@ -106,6 +94,110 @@
       "cta": "Clear filters"
     },
     "clearSearchAria": "Clear search"
+  },
+  "planner": {
+    "wizard": {
+      "stepLabel": "Step {current} of {total}",
+      "step1": {
+        "heading": "Tell us about your trip",
+        "subheading": "Where, when, and who's coming along.",
+        "cityLabel": "Destination",
+        "datesLabel": "Travel dates",
+        "startLabel": "Departure",
+        "endLabel": "Arrival",
+        "datesError": "Arrival must be on or after departure.",
+        "dayUnit": "{count, plural, one {# day} other {# days}}",
+        "travelersLabel": "Travelers",
+        "adults": "Adults",
+        "adultsHint": "Age 18+",
+        "teens": "Teens",
+        "teensHint": "Age 13–17",
+        "kids": "Kids",
+        "kidsHint": "Age 0–12"
+      },
+      "step2": {
+        "heading": "What are you into?",
+        "subheading": "Pick a few interests — we'll prioritize them across the days.",
+        "interestsLabel": "Interests",
+        "interestsHint": "Pick at least one to continue."
+      },
+      "step3": {
+        "heading": "Review your trip",
+        "subheading": "Make sure everything looks right — we'll draft your plan next.",
+        "destinationLabel": "Destination",
+        "datesLabel": "Travel dates",
+        "travelersLabel": "Travelers",
+        "interestsLabel": "Interests",
+        "adultsSummary": "{count, plural, one {# adult} other {# adults}}",
+        "teensSummary": "{count, plural, one {# teen} other {# teens}}",
+        "kidsSummary": "{count, plural, one {# kid} other {# kids}}",
+        "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}"
+      },
+      "back": "Back",
+      "next": "Next",
+      "edit": "Edit",
+      "submit": "✨ Build my plan",
+      "generating": "Drafting your plan…",
+      "splash": {
+        "title": "Drafting your plan…",
+        "step1": "Mapping your interests to {city}",
+        "step2": "Sorting stops by time of day",
+        "step3": "Pacing the days so you don't burn out",
+        "step4": "Polishing your day-by-day itinerary"
+      }
+    },
+    "canvas": {
+      "backToWizard": "Start a new plan",
+      "loading": "Loading your plan…",
+      "loadingHint": "Pulling it back together",
+      "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
+      "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
+      "slotCount": "{count, plural, one {# stop} other {# stops}}",
+      "dayTabs": {
+        "ariaLabel": "Switch day",
+        "label": "Day {n}"
+      },
+      "share": "Share",
+      "save": "Save",
+      "shareToast": "Link copied to clipboard",
+      "shareError": "Couldn't copy link — try again",
+      "savedModal": {
+        "title": "Saved to My Plans",
+        "body": "You can find this trip anytime under My Plans in the account menu.",
+        "viewMyPlans": "View My Plans",
+        "close": "Close"
+      },
+      "empty": {
+        "title": "Plan not found",
+        "subtitle": "We couldn't find that plan. It may have been removed, or the link is from a different browser.",
+        "cta": "Start a new plan"
+      },
+      "map": {
+        "ariaLabel": "Map preview of {city} itinerary with {count, plural, one {# stop} other {# stops}}",
+        "demoNotice": "Map preview · demo locations"
+      },
+      "saveCallout": {
+        "title": "Love this plan?",
+        "body": "Save it to your plans — you can revisit and edit it anytime."
+      },
+      "savedBadge": {
+        "label": "Saved",
+        "aria": "Saved — view my plans"
+      },
+      "recommendations": {
+        "eyebrow": "More to explore",
+        "heading": "Hand-picked experiences in {city}",
+        "subheading": "Beyond your plan — extra ideas curated by local guides.",
+        "viewAll": "View all experiences",
+        "empty": "We're lining up more experiences for {city} — check back soon."
+      },
+      "saveBar": {
+        "summary": "{city} · {count, plural, one {# day} other {# days}}",
+        "cta": "Save to my plans",
+        "saved": "Saved",
+        "viewMyPlans": "View my plans"
+      }
+    }
   },
   "experiences": {
     "title": "All Korean experiences",
@@ -339,6 +431,39 @@
       "6": "Sat"
     }
   },
+  "myPlans": {
+    "heading": "My Plans",
+    "subheading": "Trips you've saved. Open one to review the day-by-day plan.",
+    "loading": "Loading your saved plans…",
+    "tabs": {
+      "trips": "My trips {count}",
+      "reviews": "Reviews",
+      "journal": "Journal"
+    },
+    "createCard": {
+      "title": "Plan a new trip",
+      "subtitle": "Tell us where and when — we'll draft the days."
+    },
+    "sections": {
+      "upcoming": "Upcoming trips",
+      "past": "Past trips"
+    },
+    "rowMenu": {
+      "aria": "More actions",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "deleteModal": {
+      "title": "Delete this plan?",
+      "body": "“{name}” will be permanently removed from My Plans. This can't be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "empty": {
+      "title": "No saved plans yet",
+      "subtitle": "Build a trip plan and tap Save to keep it here."
+    }
+  },
   "error": {
     "title": "Something went wrong",
     "subtitle": "We hit an unexpected error. Please try again.",
@@ -379,6 +504,16 @@
     },
     "checkout": {
       "title": "Checkout"
+    },
+    "planNew": {
+      "title": "Plan your trip with AI",
+      "description": "Tell us a few things about your trip — we'll draft a day-by-day plan you can edit."
+    },
+    "plan": {
+      "title": "Your trip plan"
+    },
+    "myPlans": {
+      "title": "My Plans"
     },
     "notFound": {
       "title": "Page not found"
