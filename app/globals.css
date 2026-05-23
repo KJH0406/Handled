@@ -1577,7 +1577,10 @@ a {
        Hero
        ───────────────────────────────────────────── */
 .hero {
+  min-height: calc(100vh - 80px);
   padding: 64px 0 48px;
+  display: flex;
+  align-items: center;
 }
 @media (max-width: 744px) {
   .hero {

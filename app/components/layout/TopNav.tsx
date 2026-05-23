@@ -81,7 +81,7 @@ export default function TopNav() {
               color: "var(--rausch)",
             }}
           >
-            handled
+            Handled
           </span>
         </Link>
 
