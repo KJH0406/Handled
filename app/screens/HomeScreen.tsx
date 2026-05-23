@@ -1,6 +1,8 @@
 "use client"
 
+import Image from "next/image"
 import { useTranslations } from "next-intl"
+import mapImg from "@/img/guides/map.png"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Avatar from "../components/ui/Avatar"
 import Icon, { type IconName } from "../components/ui/Icon"
@@ -25,6 +27,22 @@ const WHY_FEATURES: WhyFeature[] = [
   },
 ]
 
+interface HeroChip {
+  label: string
+  active: boolean
+}
+
+const HERO_INTEREST_CHIPS: HeroChip[] = [
+  { label: "Food", active: true },
+  { label: "Culture", active: true },
+  { label: "Photo", active: true },
+  { label: "Nature", active: false },
+  { label: "Art", active: false },
+  { label: "Urban", active: false },
+  { label: "Beach", active: false },
+  { label: "Nightlife", active: false },
+]
+
 export default function HomeScreen() {
   const t = useTranslations("home")
   const navigate = useAppNavigate()
@@ -37,28 +55,9 @@ export default function HomeScreen() {
   return (
     <main className="fade-in">
       <section className="hero">
-        <div className="container">
-          <div
-            style={{
-              maxWidth: 760,
-              margin: "0 auto",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "6px 14px",
-                borderRadius: 999,
-                background: "rgba(255, 56, 92, 0.1)",
-                color: "var(--rausch)",
-                fontSize: 13,
-                fontWeight: 600,
-                marginBottom: 20,
-              }}
-            >
+        <div className="container hero-grid">
+          <div className="hero-copy">
+            <div className="hero-kicker">
               <Icon
                 name="sparkles"
                 size={14}
@@ -68,33 +67,17 @@ export default function HomeScreen() {
               />
               {t("hero.kicker")}
             </div>
-            <h1 className="t-display-xl ink" style={{ marginBottom: 20 }}>
+            <h1 className="t-display-xl ink hero-title">
               {t("hero.titleLine1")}
               <br />
               <span style={{ color: "var(--rausch)" }}>
                 {t("hero.titleLine2")}
               </span>
             </h1>
-            <p
-              className="t-body-md muted"
-              style={{
-                maxWidth: 560,
-                margin: "0 auto 40px",
-                fontSize: 17,
-              }}
-            >
-              {t("hero.lede")}
-            </p>
+            <p className="t-body-md muted hero-lede">{t("hero.lede")}</p>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary hero-cta"
               onClick={onPlan}
-              style={{
-                height: 60,
-                padding: "0 36px",
-                fontSize: 17,
-                borderRadius: 999,
-                minWidth: 280,
-              }}
             >
               <Icon
                 name="sparkles"
@@ -105,6 +88,56 @@ export default function HomeScreen() {
               />
               {t("hero.planCta")}
             </button>
+          </div>
+
+          <div className="hero-mock" aria-hidden="true">
+            <div className="hero-mock-card hero-mock-card--interests">
+              <div className="hero-mock-icon">
+                <Icon name="sparkles" size={22} stroke="var(--rausch)" />
+              </div>
+              <div className="t-display-sm ink hero-mock-title">
+                {t("hero.mock.interestsTitle")}
+              </div>
+              <div className="t-caption-sm muted hero-mock-hint">
+                {t("hero.mock.interestsHint")}
+              </div>
+              <div className="hero-mock-chips">
+                {HERO_INTEREST_CHIPS.map((c) => (
+                  <span
+                    key={c.label}
+                    className={`chip ${c.active ? "active" : ""}`}
+                  >
+                    {c.active && <Icon name="check" size={12} />}
+                    {c.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-mock-card hero-mock-card--plan">
+              <div className="hero-mock-icon">
+                <Icon name="map" size={22} stroke="var(--rausch)" />
+              </div>
+              <div className="t-display-sm ink hero-mock-plan-title">
+                {t("hero.mock.planTitlePrefix")}
+                <span style={{ color: "var(--rausch)" }}>
+                  {t("hero.mock.planTitleHighlight")}
+                </span>
+                {t("hero.mock.planTitleSuffix")}
+              </div>
+              <div className="t-caption-sm muted hero-mock-plan-hint">
+                {t("hero.mock.planHint")}
+              </div>
+              <div className="hero-mock-plan-map">
+                <Image
+                  src={mapImg}
+                  alt=""
+                  sizes="308px"
+                  placeholder="blur"
+                />
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

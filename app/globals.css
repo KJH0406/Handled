@@ -1578,9 +1578,157 @@ a {
        ───────────────────────────────────────────── */
 .hero {
   min-height: calc(100vh - 80px);
-  padding: 64px 0 48px;
+  padding: 32px 0;
   display: flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero > .container {
+  position: relative;
+  z-index: 1;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.hero-copy {
+  text-align: left;
+}
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 56, 92, 0.1);
+  color: var(--rausch);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.hero-title {
+  margin-bottom: 20px;
+}
+.hero-lede {
+  max-width: 520px;
+  margin: 0 0 40px;
+  font-size: 17px;
+}
+.hero-cta {
+  height: 60px;
+  padding: 0 36px;
+  font-size: 17px;
+  border-radius: 999px;
+  min-width: 260px;
+}
+
+.hero-mock {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 540px;
+  padding-top: 8px;
+}
+.hero-mock-card {
+  background: var(--canvas);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px rgba(17, 24, 39, 0.12),
+    0 4px 12px rgba(17, 24, 39, 0.06);
+  border: 1px solid var(--hairline-soft);
+}
+.hero-mock-card--interests {
+  width: 100%;
+  max-width: 308px;
+  padding: 26px 26px 24px;
+  text-align: center;
+}
+.hero-mock-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  background: rgba(255, 56, 92, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-mock-title {
+  margin-bottom: 2px;
+  font-size: 18px;
+}
+.hero-mock-hint {
+  margin-bottom: 16px;
+}
+.hero-mock-chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 12px;
+}
+.hero-mock-chips .chip {
+  cursor: default;
+  pointer-events: none;
+  justify-content: center;
+  padding: 8px 14px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.hero-mock-card--plan {
+  position: absolute;
+  top: 260px;
+  left: 50%;
+  width: 308px;
+  padding: 22px 22px 0;
+  overflow: hidden;
+  text-align: center;
+  transform: translateX(10%);
+  z-index: 2;
+}
+.hero-mock-plan-title {
+  margin-bottom: 6px;
+  font-size: 18px;
+  line-height: 1.35;
+}
+.hero-mock-plan-hint {
+  margin-bottom: 14px;
+}
+.hero-mock-plan-map {
+  position: relative;
+  width: calc(100% + 44px);
+  margin: 0 -22px;
+  aspect-ratio: 476 / 200;
+  background: #eef3f7;
+  overflow: hidden;
+}
+.hero-mock-plan-map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .hero-copy {
+    text-align: center;
+  }
+  .hero-lede {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-mock {
+    min-height: 540px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
 }
 @media (max-width: 744px) {
   .hero {
@@ -1591,8 +1739,11 @@ a {
   .hero h1 br {
     display: none;
   }
-  .hero p {
-    font-size: 15px !important;
+  .hero p.hero-lede {
+    font-size: 15px;
+  }
+  .hero-mock {
+    display: none;
   }
   /* tighten section vertical rhythm on mobile */
   .container > section,
@@ -1696,7 +1847,9 @@ a {
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
   transform: translateY(0);
   opacity: 1;
-  transition: transform 240ms ease, opacity 200ms ease;
+  transition:
+    transform 240ms ease,
+    opacity 200ms ease;
 }
 .plan-save-bar.hidden {
   transform: translateY(100%);
@@ -1913,4 +2066,3 @@ a {
   box-shadow: rgba(0, 0, 0, 0.16) 0 16px 40px;
   animation: modalIn 0.18s ease;
 }
-

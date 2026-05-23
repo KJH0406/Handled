@@ -6,9 +6,10 @@ export interface PlanMapProps {
   slots: PlanSlot[]
   dayLabel?: string
   ariaLabel: string
+  pointsOverride?: Point[]
 }
 
-interface Point {
+export interface Point {
   x: number
   y: number
 }
@@ -50,8 +51,13 @@ const layoutPoints = (slots: PlanSlot[]): Point[] => {
   })
 }
 
-export default function PlanMap({ slots, dayLabel, ariaLabel }: PlanMapProps) {
-  const points = layoutPoints(slots)
+export default function PlanMap({
+  slots,
+  dayLabel,
+  ariaLabel,
+  pointsOverride,
+}: PlanMapProps) {
+  const points = pointsOverride ?? layoutPoints(slots)
 
   const pathD = points
     .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
