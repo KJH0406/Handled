@@ -30,9 +30,33 @@
     "stories": "Stories",
     "myPlans": "My Plans",
     "help": "Help center",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "logoAria": "Handled - home",
     "languageAria": "Language",
     "accountMenuAria": "Account menu"
+  },
+  "auth": {
+    "tagline": "Korea Your Way",
+    "logoAria": "Handled - home",
+    "createAccount": "Create your account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "logIn": "Log in",
+    "signUp": "Sign up",
+    "forgotPassword": "Forgot your password?",
+    "haveAccount": "Already have an account?",
+    "or": "Or",
+    "recentLogin": "Recent Login Method",
+    "continueWith": "Continue with {provider}",
+    "errors": {
+      "required": "Please enter your email and password.",
+      "passwordMismatch": "Passwords do not match."
+    }
   },
   "footer": {
     "brand": {
@@ -592,6 +616,14 @@
     "planNew": {
       "title": "Plan your trip with AI",
       "description": "Tell us a few things about your trip - we'll draft a day-by-day plan you can edit."
+    },
+    "signIn": {
+      "title": "Sign in",
+      "description": "Sign in to Handled to plan trips and save your favorite Korean experiences."
+    },
+    "signUp": {
+      "title": "Sign up",
+      "description": "Create a Handled account to plan trips and book authentic Korean experiences."
     },
     "plan": {
       "title": "Your trip plan"

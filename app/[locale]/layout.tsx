@@ -5,6 +5,7 @@ import localFont from "next/font/local"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 import { routing } from "../../i18n/routing"
+import { AuthProvider } from "../components/auth/AuthProvider"
 import { BookingProvider } from "../components/booking/BookingProvider"
 import FooterSlot from "../components/layout/FooterSlot"
 import TopNav from "../components/layout/TopNav"
@@ -68,11 +69,13 @@ export default function LocaleLayout({
       <body>
         <div id="root">
           <NextIntlClientProvider>
-            <BookingProvider>
-              <TopNav />
-              {children}
-              <FooterSlot />
-            </BookingProvider>
+            <AuthProvider>
+              <BookingProvider>
+                <TopNav />
+                {children}
+                <FooterSlot />
+              </BookingProvider>
+            </AuthProvider>
           </NextIntlClientProvider>
         </div>
       </body>

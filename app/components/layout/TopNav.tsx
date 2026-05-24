@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import { Link, usePathname } from "../../../i18n/navigation"
+import { useAuth } from "../auth/AuthProvider"
 import Icon from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
 
@@ -48,6 +49,7 @@ const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
 export default function TopNav() {
   const t = useTranslations("nav")
   const pathname = usePathname()
+  const { user, signOut, hydrated } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
 
@@ -122,41 +124,76 @@ export default function TopNav() {
           <div className="hide-mobile">
             <LocaleSwitcher />
           </div>
-          <div ref={menuRef} style={{ position: "relative" }}>
-            <button
-              className="nav-account"
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-haspopup="menu"
-              aria-expanded={menuOpen}
-              aria-label={t("accountMenuAria")}
-            >
-              <Icon name="menu" size={14} />
-              <div className="nav-avatar">
-                <Icon name="user" size={16} stroke="white" />
-              </div>
-            </button>
-            {menuOpen && (
-              <div className="account-dropdown" role="menu">
-                <Link
-                  href="/my-plans"
-                  className="account-dropdown-item"
-                  role="menuitem"
-                >
-                  <Icon name="bookmark" size={16} />
-                  {t("myPlans")}
-                </Link>
-                <div className="account-dropdown-divider" />
-                <a
-                  href="#"
-                  className="account-dropdown-item muted"
-                  role="menuitem"
-                >
-                  <Icon name="message" size={16} />
-                  {t("help")}
-                </a>
-              </div>
-            )}
-          </div>
+          {hydrated && !user ? (
+            <Link href="/sign-in" className="nav-signin">
+              {t("signIn")}
+            </Link>
+          ) : (
+            <div ref={menuRef} style={{ position: "relative" }}>
+              <button
+                className="nav-account"
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                aria-label={t("accountMenuAria")}
+              >
+                <Icon name="menu" size={14} />
+                <div className="nav-avatar">
+                  <Icon name="user" size={16} stroke="white" />
+                </div>
+              </button>
+              {menuOpen && (
+                <div className="account-dropdown" role="menu">
+                  {user && (
+                    <>
+                      <div className="account-dropdown-user">
+                        <div className="account-dropdown-user-name">
+                          {user.name}
+                        </div>
+                        <div className="account-dropdown-user-email">
+                          {user.email}
+                        </div>
+                      </div>
+                      <div className="account-dropdown-divider" />
+                    </>
+                  )}
+                  <Link
+                    href="/my-plans"
+                    className="account-dropdown-item"
+                    role="menuitem"
+                  >
+                    <Icon name="bookmark" size={16} />
+                    {t("myPlans")}
+                  </Link>
+                  <a
+                    href="#"
+                    className="account-dropdown-item muted"
+                    role="menuitem"
+                  >
+                    <Icon name="message" size={16} />
+                    {t("help")}
+                  </a>
+                  {user && (
+                    <>
+                      <div className="account-dropdown-divider" />
+                      <button
+                        type="button"
+                        className="account-dropdown-item"
+                        role="menuitem"
+                        onClick={() => {
+                          signOut()
+                          setMenuOpen(false)
+                        }}
+                      >
+                        <Icon name="logOut" size={16} />
+                        {t("signOut")}
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>

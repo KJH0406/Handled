@@ -55,6 +55,8 @@ export type RouteParamsByName = {
   planNew: PlanNewRouteParams | void
   plan: PlanRouteParams
   myPlans: void
+  signIn: void
+  signUp: void
 }
 
 export type RouteName = keyof RouteParamsByName
@@ -92,6 +94,8 @@ const ROUTE_BUILDERS: { [K in RouteName]: RouteBuilder<RouteParamsByName[K]> } =
     },
     plan: ({ planId }) => `/plan/${planId}`,
     myPlans: () => "/my-plans",
+    signIn: () => "/sign-in",
+    signUp: () => "/sign-up",
   }
 
 export type AppNavigate = <K extends RouteName>(
