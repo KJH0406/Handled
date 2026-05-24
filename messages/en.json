@@ -21,7 +21,7 @@
   "site": {
     "name": "Handled",
     "title": "Handled - Korean local experiences",
-    "description": "Discover authentic Korean local experiences hosted by people you trust."
+    "description": "Discover authentic Korean local experiences guided by people you trust."
   },
   "nav": {
     "home": "Home",
@@ -104,7 +104,7 @@
     "stats": {
       "travelersHosted": {
         "value": "4,200+",
-        "label": "Travelers Hosted"
+        "label": "Travelers Guided"
       },
       "licensedGuides": {
         "value": "47",
@@ -309,7 +309,7 @@
   },
   "experiences": {
     "title": "All Korean experiences",
-    "lede": "Pick from {count} experience packages hosted by local guides.",
+    "lede": "Pick from {count} experience packages led by local guides.",
     "searchPlaceholder": "Search by experience, category, guide, or city",
     "filters": {
       "city": "City",
@@ -329,15 +329,16 @@
   },
   "experienceDetail": {
     "backTo": "Back to {name}",
+    "backToExperiences": "Back to experiences",
     "packageHeader": "{duration}h package · Up to {maxGuests}",
     "reviewCount": "· {count} reviews",
-    "hostedBy": "Hosted by {name}",
+    "hostedBy": "Guided by {name}",
     "whatYouWillDo": "What you will do",
     "itinerary": "Itinerary",
     "itineraryTotal": "Total {duration} hours",
-    "aboutHost": "About your host",
-    "superhost": "· Superhost",
-    "hostStats": "{years}y hosting · {reviews} reviews · ★{rating}",
+    "aboutHost": "About your guide",
+    "superhost": "· Top guide",
+    "hostStats": "{years}y guiding · {reviews} reviews · ★{rating}",
     "viewProfile": "View profile",
     "meetingPlace": "Meeting place",
     "goodToKnow": "Good to know",
@@ -349,7 +350,7 @@
     "cancellation": "Cancellation",
     "cancellationValue": "Free cancellation up to 24h before",
     "reviewsHeading": "{rating} · {count} reviews",
-    "reviewsSubtitle": "Reviews for all experiences hosted by {name}",
+    "reviewsSubtitle": "Reviews for all experiences guided by {name}",
     "empty": {
       "title": "Experience not found.",
       "cta": "Home"
@@ -357,11 +358,11 @@
   },
   "profile": {
     "backToGuides": "Back to guides",
-    "superhost": "Superhost",
+    "superhost": "Top guide",
     "stats": {
       "rating": "Rating",
       "reviews": "Reviews",
-      "hosting": "Hosting",
+      "hosting": "Guiding",
       "packages": "Packages"
     },
     "about": "About {name}",
@@ -372,7 +373,7 @@
     "specialty": "Specialty",
     "reviewsHeading": "{rating} · {count} reviews",
     "seeAllReviews": "See all {count} reviews",
-    "experiencesByHeading": "Experiences hosted by {name}",
+    "experiencesByHeading": "Experiences guided by {name}",
     "experiencesByCount": "{count, plural, one {# package} other {# packages}}",
     "experiencesByLede": "Click an experience card to see schedule and photos. Or build a custom plan in the side panel.",
     "empty": {
@@ -444,7 +445,7 @@
   "confirm": {
     "title": "Booking confirmed!",
     "subtitle": "{name} will send a welcome message shortly.",
-    "host": "Host",
+    "host": "Guide",
     "typeExperience": "Experience",
     "typeCustom": "Custom tour",
     "experience": "Experience",
@@ -587,12 +588,12 @@
     "experience": {
       "duration": "{hours} hours",
       "upTo": "Up to {max}",
-      "hostedBy": "{city} · Hosted by {name}",
+      "hostedBy": "{city} · Guided by {name}",
       "perPerson": "Per person",
       "learnMore": "Learn more →"
     },
     "guide": {
-      "superhost": "Superhost",
+      "superhost": "Top guide",
       "perHour": "/ hour",
       "aria": "{name} - {city} guide"
     }
@@ -600,11 +601,11 @@
   "metadata": {
     "home": {
       "title": "Handled - Korean local experiences",
-      "description": "Discover authentic Korean local experiences hosted by people you trust."
+      "description": "Discover authentic Korean local experiences guided by people you trust."
     },
     "experiences": {
       "title": "All Korean experiences",
-      "description": "Pick from curated experience packages hosted by local guides across Korea."
+      "description": "Pick from curated experience packages led by local guides across Korea."
     },
     "guides": {
       "title": "Find a local guide",

@@ -63,8 +63,8 @@ export default function ExperienceDetailScreen({
   return (
     <main className="fade-in">
       <div className="container screen-pad">
-        <Breadcrumb onBack={() => navigate("profile", { guideId: guide.id })}>
-          {t("backTo", { name: guide.name })}
+        <Breadcrumb onBack={() => navigate("experiences")}>
+          {t("backToExperiences")}
         </Breadcrumb>
 
         <div style={{ marginBottom: 16 }}>

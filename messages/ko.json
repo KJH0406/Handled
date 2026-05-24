@@ -329,15 +329,16 @@
   },
   "experienceDetail": {
     "backTo": "{name}으로 돌아가기",
+    "backToExperiences": "체험 목록으로",
     "packageHeader": "{duration}시간 패키지 · 최대 {maxGuests}명",
     "reviewCount": "· 리뷰 {count}개",
-    "hostedBy": "{name} 호스트 운영",
+    "hostedBy": "{name} 가이드 운영",
     "whatYouWillDo": "이 체험에서 할 일",
     "itinerary": "일정",
     "itineraryTotal": "총 {duration}시간",
-    "aboutHost": "호스트 소개",
-    "superhost": "· 슈퍼호스트",
-    "hostStats": "{years}년 호스팅 · 리뷰 {reviews}개 · ★{rating}",
+    "aboutHost": "가이드 소개",
+    "superhost": "· 톱가이드",
+    "hostStats": "{years}년 가이드 경력 · 리뷰 {reviews}개 · ★{rating}",
     "viewProfile": "프로필 보기",
     "meetingPlace": "만남 장소",
     "goodToKnow": "알아두면 좋은 점",
@@ -349,7 +350,7 @@
     "cancellation": "취소 정책",
     "cancellationValue": "체험 시작 24시간 전까지 무료 취소",
     "reviewsHeading": "{rating} · 리뷰 {count}개",
-    "reviewsSubtitle": "{name} 호스트의 모든 체험에 대한 리뷰",
+    "reviewsSubtitle": "{name} 가이드의 모든 체험에 대한 리뷰",
     "empty": {
       "title": "체험을 찾을 수 없습니다.",
       "cta": "홈으로"
@@ -357,11 +358,11 @@
   },
   "profile": {
     "backToGuides": "가이드 목록으로",
-    "superhost": "슈퍼호스트",
+    "superhost": "톱가이드",
     "stats": {
       "rating": "평점",
       "reviews": "리뷰",
-      "hosting": "호스팅",
+      "hosting": "가이드 경력",
       "packages": "패키지"
     },
     "about": "{name} 소개",
@@ -372,7 +373,7 @@
     "specialty": "전문 분야",
     "reviewsHeading": "{rating} · 리뷰 {count}개",
     "seeAllReviews": "리뷰 {count}개 모두 보기",
-    "experiencesByHeading": "{name} 호스트의 체험",
+    "experiencesByHeading": "{name} 가이드의 체험",
     "experiencesByCount": "{count, plural, other {패키지 #개}}",
     "experiencesByLede": "체험 카드를 눌러 일정과 사진을 확인하세요. 옆 패널에서 맞춤 일정을 만들 수도 있어요.",
     "empty": {
@@ -443,8 +444,8 @@
   },
   "confirm": {
     "title": "예약이 확정되었어요!",
-    "subtitle": "{name} 호스트가 곧 환영 메시지를 보낼 거예요.",
-    "host": "호스트",
+    "subtitle": "{name} 가이드가 곧 환영 메시지를 보낼 거예요.",
+    "host": "가이드",
     "typeExperience": "체험",
     "typeCustom": "맞춤 투어",
     "experience": "체험",
@@ -587,12 +588,12 @@
     "experience": {
       "duration": "{hours}시간",
       "upTo": "최대 {max}명",
-      "hostedBy": "{city} · {name} 호스트",
+      "hostedBy": "{city} · {name} 가이드",
       "perPerson": "1인 기준",
       "learnMore": "자세히 보기 →"
     },
     "guide": {
-      "superhost": "슈퍼호스트",
+      "superhost": "톱가이드",
       "perHour": "/ 시간",
       "aria": "{name} - {city} 가이드"
     }
