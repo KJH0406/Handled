@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server"
 import localFont from "next/font/local"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
+import ogImage from "@/img/thumbnail.png"
 import { routing } from "../../i18n/routing"
 import { AuthProvider } from "../components/auth/AuthProvider"
 import { BookingProvider } from "../components/booking/BookingProvider"
@@ -38,11 +39,20 @@ export const metadata: Metadata = {
     url: "/",
     title: `${SITE_NAME} - Korean local experiences`,
     description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: ogImage.src,
+        width: ogImage.width,
+        height: ogImage.height,
+        alt: SITE_NAME,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} - Korean local experiences`,
     description: SITE_DESCRIPTION,
+    images: [ogImage.src],
   },
 }
 
