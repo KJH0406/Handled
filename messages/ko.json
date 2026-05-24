@@ -28,7 +28,7 @@
     "experiences": "체험",
     "planner": "AI 일정 생성",
     "stories": "스토리",
-    "myPlans": "내 여행 계획",
+    "myPlans": "내 페이지",
     "help": "고객센터",
     "signIn": "로그인",
     "signOut": "로그아웃",
@@ -545,13 +545,29 @@
     }
   },
   "myPlans": {
-    "heading": "내 여행 계획",
-    "subheading": "저장한 여행이에요. 하나를 열어 일자별 계획을 확인해 보세요.",
-    "loading": "저장된 계획을 불러오는 중…",
+    "heading": "내 페이지",
+    "subheading": "내 일정, 예약한 체험, 계정 정보를 한눈에 확인하세요.",
+    "loading": "페이지를 불러오는 중…",
+    "guestName": "여행자",
+    "guestEmail": "로그인하지 않음",
+    "profile": {
+      "copyEmail": "이메일 주소 복사",
+      "copied": "복사됨"
+    },
+    "credits": {
+      "label": "일정 크레딧",
+      "hint": "크레딧 1개로 AI 일정 하나를 만들 수 있어요.",
+      "value": "{count}개",
+      "topUp": "충전하기"
+    },
     "tabs": {
-      "trips": "내 여행 {count}",
-      "reviews": "리뷰",
-      "journal": "여행 일지"
+      "itineraries": "일정 {count}",
+      "experiences": "예약한 체험"
+    },
+    "experiences": {
+      "title": "아직 예약한 체험이 없어요",
+      "subtitle": "체험 서비스가 시작되면 예약한 현지 투어가 여기에 표시돼요.",
+      "browse": "체험 둘러보기"
     },
     "createCard": {
       "title": "새 여행 계획하기",

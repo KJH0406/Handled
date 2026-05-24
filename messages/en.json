@@ -28,7 +28,7 @@
     "experiences": "Experiences",
     "planner": "Plan with AI",
     "stories": "Stories",
-    "myPlans": "My Plans",
+    "myPlans": "My Page",
     "help": "Help center",
     "signIn": "Sign in",
     "signOut": "Sign out",
@@ -545,13 +545,29 @@
     }
   },
   "myPlans": {
-    "heading": "My Plans",
-    "subheading": "Trips you've saved. Open one to review the day-by-day plan.",
-    "loading": "Loading your saved plans…",
+    "heading": "My Page",
+    "subheading": "Your itineraries, booked experiences, and account at a glance.",
+    "loading": "Loading your page…",
+    "guestName": "Traveler",
+    "guestEmail": "Not signed in",
+    "profile": {
+      "copyEmail": "Copy email address",
+      "copied": "Copied"
+    },
+    "credits": {
+      "label": "Itinerary credits",
+      "hint": "Each credit creates one AI-crafted itinerary.",
+      "value": "{count, plural, one {# credit} other {# credits}}",
+      "topUp": "Top up"
+    },
     "tabs": {
-      "trips": "My trips {count}",
-      "reviews": "Reviews",
-      "journal": "Journal"
+      "itineraries": "Itineraries {count}",
+      "experiences": "Booked experiences"
+    },
+    "experiences": {
+      "title": "No booked experiences yet",
+      "subtitle": "Once Experiences launch, the local tours you book will show up here.",
+      "browse": "Browse experiences"
     },
     "createCard": {
       "title": "Plan a new trip",

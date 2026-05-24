@@ -8,17 +8,25 @@ import {
   type ReactNode,
 } from "react"
 
+/** Itinerary credits granted to every new account. */
+export const DEFAULT_CREDITS = 3
+
 export interface AuthUser {
   email: string
   name: string
+  /** Remaining itinerary-generation credits, counted in whole units. */
+  credits: number
 }
 
 interface AuthContextValue {
   user: AuthUser | null
-  signIn: (user: AuthUser) => void
+  signIn: (user: SignInInput) => void
   signOut: () => void
   hydrated: boolean
 }
+
+/** New accounts may omit credits; they default to {@link DEFAULT_CREDITS}. */
+export type SignInInput = Omit<AuthUser, "credits"> & { credits?: number }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 const STORAGE_KEY = "handled.user"
@@ -30,6 +38,10 @@ const reviveUser = (raw: unknown): AuthUser | null => {
   return {
     email: obj.email,
     name: typeof obj.name === "string" ? obj.name : obj.email,
+    credits:
+      typeof obj.credits === "number" && Number.isFinite(obj.credits)
+        ? obj.credits
+        : DEFAULT_CREDITS,
   }
 }
 
@@ -47,7 +59,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setHydrated(true)
   }, [])
 
-  const signIn = (next: AuthUser) => {
+  const signIn = (input: SignInInput) => {
+    const next: AuthUser = {
+      ...input,
+      credits: input.credits ?? DEFAULT_CREDITS,
+    }
     setUserState(next)
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next))

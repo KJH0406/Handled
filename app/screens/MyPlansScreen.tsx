@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useAuth } from "../components/auth/AuthProvider"
 import { useRequireAuth } from "../components/auth/RequireAuthProvider"
 import Icon from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
@@ -203,15 +204,127 @@ const todayISO = (): string => {
   return `${y}-${m}-${day}`
 }
 
-type TabId = "trips" | "reviews" | "journal"
+type TabId = "itineraries" | "experiences"
+
+interface ProfileHeaderProps {
+  name: string
+  email: string
+  copyAria: string
+  copiedLabel: string
+}
+
+function ProfileHeader({
+  name,
+  email,
+  copyAria,
+  copiedLabel,
+}: ProfileHeaderProps) {
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (!copied) return
+    const id = window.setTimeout(() => setCopied(false), 1600)
+    return () => window.clearTimeout(id)
+  }, [copied])
+
+  const copyEmail = () => {
+    if (!navigator.clipboard) return
+    navigator.clipboard.writeText(email).then(
+      () => setCopied(true),
+      () => {
+        /* clipboard blocked - leave state unchanged */
+      },
+    )
+  }
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 24,
+        marginBottom: 24,
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          width: 88,
+          height: 88,
+          borderRadius: 999,
+          background: "var(--surface-strong, #f2f2f2)",
+          color: "var(--muted-soft, #b0b0b0)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        <Icon name="user" size={44} stroke="currentColor" sw={1.5} />
+      </div>
+      <div style={{ minWidth: 0 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 4,
+          }}
+        >
+          <span
+            className="ink"
+            style={{
+              fontSize: 26,
+              fontWeight: 600,
+              letterSpacing: -0.4,
+              lineHeight: 1.2,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {email}
+          </span>
+          <button
+            onClick={copyEmail}
+            aria-label={copyAria}
+            style={{
+              border: "none",
+              background: "transparent",
+              padding: 2,
+              cursor: "pointer",
+              color: "var(--rausch)",
+              display: "inline-flex",
+              alignItems: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Icon
+              name={copied ? "check" : "copy"}
+              size={20}
+              stroke="currentColor"
+            />
+          </button>
+          {copied && (
+            <span className="t-caption-sm" style={{ color: "var(--rausch)" }}>
+              {copiedLabel}
+            </span>
+          )}
+        </div>
+        <div className="t-body-md muted">{name}</div>
+      </div>
+    </div>
+  )
+}
 
 export default function MyPlansScreen() {
   const t = useTranslations("myPlans")
   const tCanvas = useTranslations("planner.canvas")
   const navigate = useAppNavigate()
   const { requireAuth } = useRequireAuth()
+  const { user, hydrated } = useAuth()
   const [plans, setPlans] = useState<Plan[] | null>(null)
-  const [tab, setTab] = useState<TabId>("trips")
+  const [tab, setTab] = useState<TabId>("itineraries")
   const [deleting, setDeleting] = useState<Plan | null>(null)
 
   useEffect(() => {
@@ -232,7 +345,7 @@ export default function MyPlansScreen() {
     return { upcoming: up, past: pa }
   }, [plans])
 
-  if (plans === null) {
+  if (plans === null || !hydrated) {
     return (
       <main className="fade-in">
         <section style={{ padding: "48px 0" }}>
@@ -245,18 +358,90 @@ export default function MyPlansScreen() {
   }
 
   const totalCount = plans.length
+  const credits = user?.credits ?? 0
+  const displayName = user?.name ?? t("guestName")
+  const displayEmail = user?.email ?? t("guestEmail")
+
+  const tabButton = (id: TabId, label: string) => (
+    <button
+      role="tab"
+      aria-selected={tab === id}
+      onClick={() => setTab(id)}
+      style={{
+        background: "transparent",
+        border: "none",
+        padding: "12px 0",
+        cursor: "pointer",
+        color: tab === id ? "var(--ink)" : "var(--muted)",
+        fontWeight: tab === id ? 600 : 500,
+        fontSize: 15,
+        borderBottom:
+          tab === id ? "2px solid var(--ink)" : "2px solid transparent",
+        marginBottom: -1,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </button>
+  )
 
   return (
     <main className="fade-in">
       <section style={{ padding: "40px 0 80px" }}>
         <div className="container" style={{ maxWidth: 720 }}>
-          <h1 className="t-display-lg ink" style={{ marginBottom: 8 }}>
-            {t("heading")}
-          </h1>
-          <p className="t-body-md muted" style={{ marginBottom: 24 }}>
-            {t("subheading")}
-          </p>
+          <h1 className="sr-only">{t("heading")}</h1>
 
+          <ProfileHeader
+            name={displayName}
+            email={displayEmail}
+            copyAria={t("profile.copyEmail")}
+            copiedLabel={t("profile.copied")}
+          />
+
+          {/* Credit card */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+              padding: "20px 24px",
+              borderRadius: 18,
+              border: "1px solid var(--hairline-soft)",
+              marginBottom: 40,
+            }}
+          >
+            <span
+              className="ink"
+              style={{ fontSize: 19, fontWeight: 500, letterSpacing: -0.2 }}
+            >
+              {t("credits.label")}
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <span
+                style={{
+                  color: "var(--rausch)",
+                  fontSize: 19,
+                  fontWeight: 700,
+                  letterSpacing: -0.2,
+                }}
+              >
+                {t("credits.value", { count: credits })}
+              </span>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  /* Top-up flow ships later. */
+                }}
+                style={{ padding: "8px 16px", fontSize: 14 }}
+              >
+                {t("credits.topUp")}
+              </button>
+            </div>
+          </div>
+
+          {/* Tabs */}
           <div
             role="tablist"
             style={{
@@ -266,104 +451,135 @@ export default function MyPlansScreen() {
               marginBottom: 24,
             }}
           >
-            <button
-              role="tab"
-              aria-selected={tab === "trips"}
-              onClick={() => setTab("trips")}
-              style={{
-                background: "transparent",
-                border: "none",
-                padding: "12px 0",
-                cursor: "pointer",
-                color: tab === "trips" ? "var(--ink)" : "var(--muted)",
-                fontWeight: tab === "trips" ? 600 : 500,
-                fontSize: 15,
-                borderBottom:
-                  tab === "trips"
-                    ? "2px solid var(--ink)"
-                    : "2px solid transparent",
-                marginBottom: -1,
-              }}
-            >
-              {t("tabs.trips", { count: totalCount })}
-            </button>
-            <button
-              role="tab"
-              aria-selected={false}
-              disabled
-              style={{
-                background: "transparent",
-                border: "none",
-                padding: "12px 0",
-                color: "var(--muted-soft, #929292)",
-                fontWeight: 500,
-                fontSize: 15,
-                cursor: "not-allowed",
-              }}
-            >
-              {t("tabs.reviews")}
-            </button>
-            <button
-              role="tab"
-              aria-selected={false}
-              disabled
-              style={{
-                background: "transparent",
-                border: "none",
-                padding: "12px 0",
-                color: "var(--muted-soft, #929292)",
-                fontWeight: 500,
-                fontSize: 15,
-                cursor: "not-allowed",
-              }}
-            >
-              {t("tabs.journal")}
-            </button>
+            {tabButton("itineraries", t("tabs.itineraries", { count: totalCount }))}
+            {tabButton("experiences", t("tabs.experiences"))}
           </div>
 
-          <button
-            onClick={() => requireAuth(() => navigate("planNew"))}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "56px 1fr",
-              gap: 16,
-              alignItems: "center",
-              width: "100%",
-              padding: "16px 20px",
-              background: "var(--surface-soft, #f7f7f7)",
-              borderRadius: 14,
-              border: "none",
-              cursor: "pointer",
-              marginBottom: 32,
-              textAlign: "left",
-            }}
-          >
-            <div
-              aria-hidden="true"
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: 999,
-                background: "var(--rausch)",
-                color: "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Icon name="plus" size={22} stroke="#fff" sw={2.5} />
-            </div>
-            <div>
-              <div className="t-title-md ink" style={{ marginBottom: 2 }}>
-                {t("createCard.title")}
-              </div>
-              <div className="t-body-sm muted">
-                {t("createCard.subtitle")}
-              </div>
-            </div>
-          </button>
+          {tab === "itineraries" && (
+            <>
+              <button
+                onClick={() => requireAuth(() => navigate("planNew"))}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "56px 1fr",
+                  gap: 16,
+                  alignItems: "center",
+                  width: "100%",
+                  padding: "16px 20px",
+                  background: "var(--surface-soft, #f7f7f7)",
+                  borderRadius: 14,
+                  border: "none",
+                  cursor: "pointer",
+                  marginBottom: 32,
+                  textAlign: "left",
+                }}
+              >
+                <div
+                  aria-hidden="true"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 999,
+                    background: "var(--rausch)",
+                    color: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon name="plus" size={22} stroke="#fff" sw={2.5} />
+                </div>
+                <div>
+                  <div className="t-title-md ink" style={{ marginBottom: 2 }}>
+                    {t("createCard.title")}
+                  </div>
+                  <div className="t-body-sm muted">{t("createCard.subtitle")}</div>
+                </div>
+              </button>
 
-          {totalCount === 0 ? (
+              {totalCount === 0 ? (
+                <div
+                  style={{
+                    border: "1px dashed var(--hairline)",
+                    borderRadius: 14,
+                    padding: "48px 24px",
+                    textAlign: "center",
+                  }}
+                >
+                  <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+                    {t("empty.title")}
+                  </h2>
+                  <p className="t-body-md muted">{t("empty.subtitle")}</p>
+                </div>
+              ) : (
+                <>
+                  {upcoming.length > 0 && (
+                    <section style={{ marginBottom: 40 }}>
+                      <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+                        {t("sections.upcoming")}
+                      </h2>
+                      <div
+                        style={{ borderBottom: "1px solid var(--hairline-soft)" }}
+                      >
+                        {upcoming.map((p) => (
+                          <PlanRow
+                            key={p.id}
+                            plan={p}
+                            daysLabel={
+                              tCanvas("datesSummary", {
+                                start: p.input.startDate,
+                                end: p.input.endDate,
+                                count: planDayCount(p.input),
+                              }).split(" · ")[1] ?? ""
+                            }
+                            menuAria={t("rowMenu.aria")}
+                            editLabel={t("rowMenu.edit")}
+                            deleteLabel={t("rowMenu.delete")}
+                            onOpen={() => navigate("plan", { planId: p.id })}
+                            onEdit={() => navigate("plan", { planId: p.id })}
+                            onDelete={() => setDeleting(p)}
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  )}
+
+                  {past.length > 0 && (
+                    <section>
+                      <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
+                        {t("sections.past")}
+                      </h2>
+                      <div
+                        style={{ borderBottom: "1px solid var(--hairline-soft)" }}
+                      >
+                        {past.map((p) => (
+                          <PlanRow
+                            key={p.id}
+                            plan={p}
+                            daysLabel={
+                              tCanvas("datesSummary", {
+                                start: p.input.startDate,
+                                end: p.input.endDate,
+                                count: planDayCount(p.input),
+                              }).split(" · ")[1] ?? ""
+                            }
+                            menuAria={t("rowMenu.aria")}
+                            editLabel={t("rowMenu.edit")}
+                            deleteLabel={t("rowMenu.delete")}
+                            onOpen={() => navigate("plan", { planId: p.id })}
+                            onEdit={() => navigate("plan", { planId: p.id })}
+                            onDelete={() => setDeleting(p)}
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  )}
+                </>
+              )}
+            </>
+          )}
+
+          {tab === "experiences" && (
             <div
               style={{
                 border: "1px dashed var(--hairline)",
@@ -372,73 +588,38 @@ export default function MyPlansScreen() {
                 textAlign: "center",
               }}
             >
+              <div
+                aria-hidden="true"
+                style={{
+                  width: 56,
+                  height: 56,
+                  margin: "0 auto 16px",
+                  borderRadius: 999,
+                  background: "var(--surface-soft, #f7f7f7)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "var(--rausch)",
+                }}
+              >
+                <Icon name="calendar" size={24} stroke="currentColor" />
+              </div>
               <h2 className="t-display-sm ink" style={{ marginBottom: 8 }}>
-                {t("empty.title")}
+                {t("experiences.title")}
               </h2>
-              <p className="t-body-md muted">{t("empty.subtitle")}</p>
+              <p
+                className="t-body-md muted"
+                style={{ maxWidth: 420, margin: "0 auto 24px" }}
+              >
+                {t("experiences.subtitle")}
+              </p>
+              <button
+                className="btn btn-secondary"
+                onClick={() => navigate("experiences")}
+              >
+                {t("experiences.browse")}
+              </button>
             </div>
-          ) : (
-            <>
-              {upcoming.length > 0 && (
-                <section style={{ marginBottom: 40 }}>
-                  <h2
-                    className="t-display-sm ink"
-                    style={{ marginBottom: 8 }}
-                  >
-                    {t("sections.upcoming")}
-                  </h2>
-                  <div style={{ borderBottom: "1px solid var(--hairline-soft)" }}>
-                    {upcoming.map((p) => (
-                      <PlanRow
-                        key={p.id}
-                        plan={p}
-                        daysLabel={tCanvas("datesSummary", {
-                          start: p.input.startDate,
-                          end: p.input.endDate,
-                          count: planDayCount(p.input),
-                        }).split(" · ")[1] ?? ""}
-                        menuAria={t("rowMenu.aria")}
-                        editLabel={t("rowMenu.edit")}
-                        deleteLabel={t("rowMenu.delete")}
-                        onOpen={() => navigate("plan", { planId: p.id })}
-                        onEdit={() => navigate("plan", { planId: p.id })}
-                        onDelete={() => setDeleting(p)}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {past.length > 0 && (
-                <section>
-                  <h2
-                    className="t-display-sm ink"
-                    style={{ marginBottom: 8 }}
-                  >
-                    {t("sections.past")}
-                  </h2>
-                  <div style={{ borderBottom: "1px solid var(--hairline-soft)" }}>
-                    {past.map((p) => (
-                      <PlanRow
-                        key={p.id}
-                        plan={p}
-                        daysLabel={tCanvas("datesSummary", {
-                          start: p.input.startDate,
-                          end: p.input.endDate,
-                          count: planDayCount(p.input),
-                        }).split(" · ")[1] ?? ""}
-                        menuAria={t("rowMenu.aria")}
-                        editLabel={t("rowMenu.edit")}
-                        deleteLabel={t("rowMenu.delete")}
-                        onOpen={() => navigate("plan", { planId: p.id })}
-                        onEdit={() => navigate("plan", { planId: p.id })}
-                        onDelete={() => setDeleting(p)}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </>
           )}
         </div>
       </section>
