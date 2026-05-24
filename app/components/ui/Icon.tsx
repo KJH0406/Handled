@@ -197,6 +197,13 @@ const PATHS: Record<string, ReactElement> = {
       <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
     </>
   ),
+  alertCircle: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </>
+  ),
   trash: (
     <>
       <polyline points="3,6 5,6 21,6" />

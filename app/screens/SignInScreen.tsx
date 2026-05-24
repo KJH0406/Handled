@@ -13,10 +13,17 @@ const nameFromEmail = (email: string): string => {
   return handle.charAt(0).toUpperCase() + handle.slice(1)
 }
 
-export default function SignInScreen() {
+interface SignInScreenProps {
+  next?: string
+}
+
+export default function SignInScreen({ next }: SignInScreenProps) {
   const t = useTranslations("auth")
   const navigate = useAppNavigate()
   const { user, signIn, hydrated } = useAuth()
+
+  // Only honor an allowlisted redirect intent; any other login lands home.
+  const destination: "planNew" | "home" = next === "planNew" ? "planNew" : "home"
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -24,8 +31,8 @@ export default function SignInScreen() {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    if (hydrated && user) navigate("home")
-  }, [hydrated, user, navigate])
+    if (hydrated && user) navigate(destination)
+  }, [hydrated, user, navigate, destination])
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,13 +42,13 @@ export default function SignInScreen() {
       return
     }
     signIn({ email: email.trim(), name: nameFromEmail(email.trim()) })
-    navigate("home")
+    navigate(destination)
   }
 
   const onSocial = (provider: string) => {
     const handle = provider.toLowerCase()
     signIn({ email: `${handle}@handled.demo`, name: provider })
-    navigate("home")
+    navigate(destination)
   }
 
   return (

@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import mapImg from "@/img/guides/map.png"
+import { useRequireAuth } from "../components/auth/RequireAuthProvider"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon, { type IconName } from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
@@ -58,10 +59,11 @@ const VALUE_PROP_ICON_COLORS: Record<ValueProp["accentClass"], string> = {
 export default function HomeScreen() {
   const t = useTranslations("home")
   const navigate = useAppNavigate()
+  const { requireAuth } = useRequireAuth()
   const featured = experiencesRepo.featured(3)
 
   const onPlan = () => {
-    navigate("planNew")
+    requireAuth(() => navigate("planNew"))
   }
 
   return (

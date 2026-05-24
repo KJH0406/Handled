@@ -56,6 +56,10 @@
     "errors": {
       "required": "이메일과 비밀번호를 입력해 주세요.",
       "passwordMismatch": "비밀번호가 일치하지 않습니다."
+    },
+    "loginRequired": {
+      "title": "로그인이 필요합니다.",
+      "confirm": "확인"
     }
   },
   "footer": {

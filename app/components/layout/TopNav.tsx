@@ -3,7 +3,9 @@
 import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import { Link, usePathname } from "../../../i18n/navigation"
+import { useAppNavigate } from "../../lib/navigation"
 import { useAuth } from "../auth/AuthProvider"
+import { useRequireAuth } from "../auth/RequireAuthProvider"
 import Icon from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
 
@@ -49,6 +51,8 @@ const isActive = (tabId: NavTab["id"], pathname: string): boolean => {
 export default function TopNav() {
   const t = useTranslations("nav")
   const pathname = usePathname()
+  const navigate = useAppNavigate()
+  const { requireAuth } = useRequireAuth()
   const { user, signOut, hydrated } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
@@ -104,6 +108,14 @@ export default function TopNav() {
                   href={tab.href}
                   className={`nav-tab ${active ? "active" : ""}`}
                   aria-current={active ? "page" : undefined}
+                  onClick={
+                    tab.id === "planner"
+                      ? (e) => {
+                          e.preventDefault()
+                          requireAuth(() => navigate("planNew"))
+                        }
+                      : undefined
+                  }
                 >
                   {tab.icon === "sparkles" && (
                     <span className="nav-tab-icon" aria-hidden>

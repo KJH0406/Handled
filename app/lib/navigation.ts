@@ -44,6 +44,11 @@ export interface PlanNewRouteParams {
   initialEnd?: string
 }
 
+export interface SignInRouteParams {
+  /** Route name to navigate to after a successful sign-in. */
+  next?: RouteName
+}
+
 export type RouteParamsByName = {
   home: void
   list: ListRouteParams | void
@@ -55,7 +60,7 @@ export type RouteParamsByName = {
   planNew: PlanNewRouteParams | void
   plan: PlanRouteParams
   myPlans: void
-  signIn: void
+  signIn: SignInRouteParams | void
   signUp: void
 }
 
@@ -94,7 +99,10 @@ const ROUTE_BUILDERS: { [K in RouteName]: RouteBuilder<RouteParamsByName[K]> } =
     },
     plan: ({ planId }) => `/plan/${planId}`,
     myPlans: () => "/my-plans",
-    signIn: () => "/sign-in",
+    signIn: (params) => {
+      const { next } = (params ?? {}) as SignInRouteParams
+      return `/sign-in${buildSearch({ next })}`
+    },
     signUp: () => "/sign-up",
   }
 

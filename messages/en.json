@@ -56,6 +56,10 @@
     "errors": {
       "required": "Please enter your email and password.",
       "passwordMismatch": "Passwords do not match."
+    },
+    "loginRequired": {
+      "title": "Login required.",
+      "confirm": "Confirm"
     }
   },
   "footer": {
