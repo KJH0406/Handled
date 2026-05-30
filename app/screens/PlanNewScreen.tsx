@@ -1,7 +1,7 @@
 "use client"
 
-import { useTranslations } from "next-intl"
-import { useMemo, useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
+import { useEffect, useMemo, useState } from "react"
 import { DEFAULT_CREDITS, useAuth } from "../components/auth/AuthProvider"
 import AuthRequiredModal from "../components/auth/AuthRequiredModal"
 import Icon from "../components/ui/Icon"
@@ -10,13 +10,13 @@ import { useAppNavigate } from "../lib/navigation"
 import { generatePlan } from "../lib/planner/generate"
 import { savePlan } from "../lib/planner/storage"
 import {
-  BUDGET_DEFAULT,
-  BUDGET_MAX,
-  BUDGET_MIN,
   BUDGET_STEP,
-  SPECIAL_REQUESTS_MAX,
+  KRW_PER_USD,
+  computeBudgetDefault,
+  computeBudgetMaximum,
+  computeBudgetMinimum,
   planDayCount,
-  type TourClass,
+  type Transport,
 } from "../lib/planner/types"
 import type { City, ExperienceCategory } from "../lib/types/domain"
 
@@ -39,7 +39,11 @@ const INTERESTS: readonly ExperienceCategory[] = [
   "Nature",
 ] as const
 
-const TOUR_CLASSES: readonly TourClass[] = ["first", "business", "economy"] as const
+const TRANSPORTS: ReadonlyArray<{ value: Transport; icon: string }> = [
+  { value: "public", icon: "🚇" },
+  { value: "taxi", icon: "🚕" },
+  { value: "car", icon: "🚗" },
+] as const
 
 const TOTAL_STEPS = 3
 type Step = 1 | 2 | 3
@@ -62,7 +66,11 @@ const addDaysISO = (iso: string, n: number): string => {
   return toISO(d)
 }
 
-const fmtBudget = (v: number): string => `$${v.toLocaleString()}`
+const fmtBudget = (krw: number, locale: string): string => {
+  if (locale === "ko") return `₩${krw.toLocaleString("ko-KR")}`
+  const usd = Math.round(krw / KRW_PER_USD / 10) * 10
+  return `$${usd.toLocaleString("en-US")}`
+}
 
 const cardStyle: React.CSSProperties = {
   background: "var(--canvas)",
@@ -283,6 +291,7 @@ export default function PlanNewScreen({
   initialEndDate,
 }: PlanNewScreenProps = {}) {
   const t = useTranslations("planner.wizard")
+  const locale = useLocale()
   const navigate = useAppNavigate()
   const { user } = useAuth()
 
@@ -300,9 +309,10 @@ export default function PlanNewScreen({
   const [teens, setTeens] = useState<number>(0)
   const [kids, setKids] = useState<number>(0)
   const [interests, setInterests] = useState<ExperienceCategory[]>([])
-  const [tourClass, setTourClass] = useState<TourClass | "">("")
-  const [budget, setBudget] = useState<number>(BUDGET_DEFAULT)
-  const [specialRequests, setSpecialRequests] = useState<string>("")
+  const [transport, setTransport] = useState<Transport | "">("")
+  const [budget, setBudget] = useState<number>(() =>
+    computeBudgetDefault({ adults: 1, teens: 0, days: 2 }),
+  )
   const [generating, setGenerating] = useState<boolean>(false)
   const [authOpen, setAuthOpen] = useState<boolean>(false)
 
@@ -312,9 +322,9 @@ export default function PlanNewScreen({
   )
   const dayCount = useMemo(
     () =>
-      dateRangeValid && city
+      dateRangeValid
         ? planDayCount({
-            city,
+            city: (city || "Seoul") as City,
             startDate,
             endDate,
             adults,
@@ -325,6 +335,31 @@ export default function PlanNewScreen({
         : 0,
     [city, startDate, endDate, adults, teens, kids, dateRangeValid],
   )
+
+  const budgetMin = useMemo(
+    () =>
+      computeBudgetMinimum({
+        adults,
+        teens,
+        days: dayCount > 0 ? dayCount : 1,
+      }),
+    [adults, teens, dayCount],
+  )
+
+  const budgetMax = useMemo(
+    () =>
+      computeBudgetMaximum({
+        adults,
+        teens,
+        days: dayCount > 0 ? dayCount : 1,
+      }),
+    [adults, teens, dayCount],
+  )
+
+  useEffect(() => {
+    if (budget < budgetMin) setBudget(budgetMin)
+    else if (budget > budgetMax) setBudget(budgetMax)
+  }, [budgetMin, budgetMax, budget])
 
   const handleStartChange = (next: string) => {
     setStartDate(next)
@@ -356,9 +391,8 @@ export default function PlanNewScreen({
         teens,
         kids,
         interests,
-        tourClass: tourClass || undefined,
+        transport: transport || undefined,
         budget,
-        specialRequests: specialRequests.trim() || undefined,
       })
       savePlan(plan)
       navigate("plan", { planId: plan.id })
@@ -380,9 +414,6 @@ export default function PlanNewScreen({
     if (kids > 0) parts.push(t("step3.kidsSummary", { count: kids }))
     return parts.join(", ")
   }
-
-  const tourClassLabel = (tc: TourClass | ""): string =>
-    tc ? t(`step2.tourClass.${tc}.label`) : t("step3.tourClassFallback")
 
   return (
     <main
@@ -633,45 +664,83 @@ export default function PlanNewScreen({
 
               <div style={{ marginBottom: 28 }}>
                 <span style={{ ...labelStyle, marginBottom: 14 }}>
-                  {t("step2.tourClassLabel")}
+                  {t("step2.transportLabel")}
                 </span>
-                <div style={{ display: "flex", gap: 10 }}>
-                  {TOUR_CLASSES.map((tc) => {
-                    const on = tourClass === tc
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 10 }}
+                >
+                  {TRANSPORTS.map(({ value, icon }) => {
+                    const on = transport === value
                     return (
                       <button
-                        key={tc}
+                        key={value}
                         type="button"
-                        onClick={() => setTourClass(tc)}
+                        onClick={() => setTransport(value)}
                         aria-pressed={on}
                         style={{
-                          flex: 1,
-                          padding: "18px 14px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 14,
+                          padding: "14px 18px",
                           borderRadius: 16,
                           border: `2px solid ${on ? "var(--rausch)" : "var(--hairline-soft)"}`,
                           background: on ? "#fff0f3" : "var(--canvas)",
-                          textAlign: "center",
-                          cursor: "pointer",
+                          textAlign: "left",
                           transition: "all .15s",
+                          cursor: "pointer",
+                          width: "100%",
                         }}
                       >
-                        <div
-                          style={{
-                            fontSize: 15,
-                            fontWeight: 700,
-                            color: on ? "var(--rausch)" : "var(--ink)",
-                            marginBottom: 4,
-                          }}
+                        <span
+                          aria-hidden="true"
+                          style={{ fontSize: 22, flexShrink: 0 }}
                         >
-                          {t(`step2.tourClass.${tc}.label`)}
+                          {icon}
+                        </span>
+                        <div style={{ flex: 1 }}>
+                          <div
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 700,
+                              color: on ? "var(--rausch)" : "var(--ink)",
+                            }}
+                          >
+                            {t(`step2.transport.${value}.label`)}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: on ? "var(--rausch)" : "var(--muted)",
+                              marginTop: 2,
+                            }}
+                          >
+                            {t(`step2.transport.${value}.desc`)}
+                          </div>
                         </div>
                         <div
+                          aria-hidden="true"
                           style={{
-                            fontSize: 12,
-                            color: on ? "var(--rausch)" : "var(--muted)",
+                            width: 20,
+                            height: 20,
+                            borderRadius: "50%",
+                            border: `2px solid ${on ? "var(--rausch)" : "var(--hairline)"}`,
+                            background: on ? "var(--rausch)" : "transparent",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
                           }}
                         >
-                          {t(`step2.tourClass.${tc}.desc`)}
+                          {on && (
+                            <div
+                              style={{
+                                width: 8,
+                                height: 8,
+                                borderRadius: "50%",
+                                background: "#fff",
+                              }}
+                            />
+                          )}
                         </div>
                       </button>
                     )
@@ -689,14 +758,14 @@ export default function PlanNewScreen({
                       color: "var(--rausch)",
                     }}
                   >
-                    {fmtBudget(budget)}
+                    {fmtBudget(budget, locale)}
                   </span>
                 </div>
                 <input
                   type="range"
                   aria-label={t("step2.budgetLabel")}
-                  min={BUDGET_MIN}
-                  max={BUDGET_MAX}
+                  min={budgetMin}
+                  max={budgetMax}
                   step={BUDGET_STEP}
                   value={budget}
                   onChange={(e) => setBudget(Number(e.target.value))}
@@ -714,10 +783,10 @@ export default function PlanNewScreen({
                   }}
                 >
                   <span style={{ fontSize: 12, color: "var(--muted)" }}>
-                    {fmtBudget(BUDGET_MIN)}
+                    {fmtBudget(budgetMin, locale)}
                   </span>
                   <span style={{ fontSize: 12, color: "var(--muted)" }}>
-                    {fmtBudget(BUDGET_MAX)}
+                    {fmtBudget(budgetMax, locale)}
                   </span>
                 </div>
               </div>
@@ -750,51 +819,6 @@ export default function PlanNewScreen({
               <h1 style={headingStyle}>{t("step3.heading")}</h1>
               <p style={subheadingStyle}>{t("step3.subheading")}</p>
 
-              <div style={{ ...cardStyle, marginBottom: 24 }}>
-                <label htmlFor="plan-requests" style={labelStyle}>
-                  {t("step3.specialRequestsLabel")}
-                </label>
-                <textarea
-                  id="plan-requests"
-                  value={specialRequests}
-                  onChange={(e) => {
-                    if (e.target.value.length <= SPECIAL_REQUESTS_MAX)
-                      setSpecialRequests(e.target.value)
-                  }}
-                  placeholder={t("step3.specialRequestsPlaceholder")}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    border: "1.5px solid var(--hairline-soft)",
-                    borderRadius: 12,
-                    padding: 14,
-                    fontSize: 14,
-                    marginTop: 10,
-                    color: "var(--body)",
-                    resize: "vertical",
-                    minHeight: 80,
-                    lineHeight: 1.6,
-                    background: "var(--canvas)",
-                  }}
-                />
-                <div
-                  style={{
-                    textAlign: "right",
-                    marginTop: 6,
-                    fontSize: 12,
-                    color:
-                      specialRequests.length >= SPECIAL_REQUESTS_MAX - 10
-                        ? "var(--rausch)"
-                        : "var(--muted-soft)",
-                  }}
-                >
-                  {t("step3.specialRequestsCounter", {
-                    count: specialRequests.length,
-                    max: SPECIAL_REQUESTS_MAX,
-                  })}
-                </div>
-              </div>
-
               <div style={{ ...cardStyle, marginBottom: 16 }}>
                 <SummaryRow
                   label={t("step3.destinationLabel")}
@@ -825,20 +849,18 @@ export default function PlanNewScreen({
                   }
                 />
                 <SummaryRow
-                  label={t("step3.tourClassLabel")}
-                  value={tourClassLabel(tourClass)}
+                  label={t("step3.transportLabel")}
+                  value={
+                    transport
+                      ? t(`step2.transport.${transport}.label`)
+                      : t("step3.transportFallback")
+                  }
                 />
                 <SummaryRow
                   label={t("step3.budgetLabel")}
-                  value={fmtBudget(budget)}
+                  value={fmtBudget(budget, locale)}
+                  last
                 />
-                {specialRequests.trim() && (
-                  <SummaryRow
-                    label={t("step3.specialRequestsSummaryLabel")}
-                    value={specialRequests.trim()}
-                    last
-                  />
-                )}
               </div>
 
               <div

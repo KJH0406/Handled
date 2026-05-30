@@ -2,13 +2,66 @@ import type { City, ExperienceCategory } from "../types/domain"
 
 export type SlotTimeOfDay = "morning" | "lunch" | "afternoon" | "evening"
 
-export type TourClass = "first" | "business" | "economy"
+export type Transport = "public" | "taxi" | "car"
 
-export const BUDGET_MIN = 1000
-export const BUDGET_MAX = 30000
-export const BUDGET_STEP = 500
-export const BUDGET_DEFAULT = 5000
-export const SPECIAL_REQUESTS_MAX = 150
+/** Fixed prototype FX rate. KRW is the canonical unit; USD is display-only. */
+export const KRW_PER_USD = 1350
+
+/** Per-counted-traveler daily spend assumption used as the floor (KRW). */
+export const BUDGET_PER_PERSON_PER_DAY = 100_000
+
+/** Per-counted-traveler daily spend assumption used as the ceiling (KRW). */
+export const BUDGET_MAX_PER_PERSON_PER_DAY = 500_000
+
+/** Default sits this fraction above the computed floor. */
+export const BUDGET_DEFAULT_MULT = 1.3
+
+/** Slider step in KRW. */
+export const BUDGET_STEP = 10_000
+
+interface BudgetFloorInput {
+  adults: number
+  teens: number
+  days: number
+}
+
+/**
+ * Floor budget in KRW for the given party + duration.
+ * Kids are excluded from the counted headcount.
+ */
+export const computeBudgetMinimum = ({
+  adults,
+  teens,
+  days,
+}: BudgetFloorInput): number => {
+  const people = adults + teens
+  const raw = people * days * BUDGET_PER_PERSON_PER_DAY
+  return Math.max(
+    BUDGET_STEP,
+    Math.ceil(raw / BUDGET_STEP) * BUDGET_STEP,
+  )
+}
+
+/** Ceiling budget in KRW for the given party + duration (kids excluded). */
+export const computeBudgetMaximum = ({
+  adults,
+  teens,
+  days,
+}: BudgetFloorInput): number => {
+  const people = adults + teens
+  const raw = people * days * BUDGET_MAX_PER_PERSON_PER_DAY
+  return Math.max(
+    BUDGET_STEP,
+    Math.ceil(raw / BUDGET_STEP) * BUDGET_STEP,
+  )
+}
+
+/** Default budget sits BUDGET_DEFAULT_MULT above the floor, snapped to step. */
+export const computeBudgetDefault = (input: BudgetFloorInput): number => {
+  const floor = computeBudgetMinimum(input)
+  const raw = floor * BUDGET_DEFAULT_MULT
+  return Math.ceil(raw / BUDGET_STEP) * BUDGET_STEP
+}
 
 export interface PlanInput {
   city: City
@@ -18,9 +71,8 @@ export interface PlanInput {
   teens: number
   kids: number
   interests: ExperienceCategory[]
-  tourClass?: TourClass
+  transport?: Transport
   budget?: number
-  specialRequests?: string
 }
 
 export interface PlanSlot {

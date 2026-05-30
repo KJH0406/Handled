@@ -220,23 +220,26 @@
       },
       "step2": {
         "heading": "여행을 맞춤 설정하세요",
-        "subheading": "관심사, 클래스, 예산을 선택하세요",
+        "subheading": "관심사, 교통, 예산을 선택하세요",
         "interestsLabel": "여행 관심사",
         "interestsHint": "계속하려면 최소 한 가지를 선택하세요.",
-        "tourClassLabel": "투어 클래스",
-        "tourClass": {
-          "first": { "label": "퍼스트 클래스", "desc": "VIP & 럭셔리" },
-          "business": { "label": "비즈니스", "desc": "균형 잡힌 큐레이션" },
-          "economy": { "label": "이코노미", "desc": "합리적인 예산" }
+        "transportLabel": "교통수단",
+        "transport": {
+          "public": {
+            "label": "대중교통",
+            "desc": "지하철·버스 - 가성비 좋은 정통 코스"
+          },
+          "taxi": { "label": "택시", "desc": "카카오택시 - 빠르고 편리하게" },
+          "car": {
+            "label": "프라이빗 차량 & 기사",
+            "desc": "전용 기사 풀데이 동행"
+          }
         },
         "budgetLabel": "총 예산"
       },
       "step3": {
         "heading": "여행을 확인해 주세요",
-        "subheading": "추가 요청 사항이 있다면 적어주세요",
-        "specialRequestsLabel": "추가 요청 사항 (선택)",
-        "specialRequestsPlaceholder": "예) 휠체어 접근 경로, 채식 식단, 영유아 동반 등…",
-        "specialRequestsCounter": "{count}/{max}",
+        "subheading": "내용 확인 후 일정을 생성합니다",
         "destinationLabel": "여행지",
         "destinationFallback": "미선택",
         "arrivalLabel": "도착일",
@@ -246,10 +249,9 @@
         "travelersLabel": "동행자",
         "interestsLabel": "관심사",
         "interestsFallback": "미선택",
-        "tourClassLabel": "투어 클래스",
-        "tourClassFallback": "미선택",
+        "transportLabel": "교통수단",
+        "transportFallback": "미선택",
         "budgetLabel": "예산",
-        "specialRequestsSummaryLabel": "요청 사항",
         "adultsSummary": "{count, plural, other {성인 #명}}",
         "teensSummary": "{count, plural, other {청소년 #명}}",
         "kidsSummary": "{count, plural, other {어린이 #명}}",
