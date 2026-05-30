@@ -12,12 +12,14 @@ import { savePlan } from "../lib/planner/storage"
 import {
   BUDGET_STEP,
   KRW_PER_USD,
+  MAX_TRIP_DAYS,
   computeBudgetDefault,
   computeBudgetMaximum,
   computeBudgetMinimum,
   planDayCount,
   type Transport,
 } from "../lib/planner/types"
+import DateRangePicker from "../components/ui/DateRangePicker"
 import type { City, ExperienceCategory } from "../lib/types/domain"
 
 const DESTINATIONS = CITIES.filter((c) => c !== "All") as readonly City[]
@@ -295,11 +297,18 @@ export default function PlanNewScreen({
   const navigate = useAppNavigate()
   const { user } = useAuth()
 
-  const initialStart = isISODate(initialStartDate) ? initialStartDate : todayISO()
-  const initialEnd =
+  const initialStart = isISODate(initialStartDate)
+    ? initialStartDate
+    : addDaysISO(todayISO(), 7)
+  const initialEndCandidate =
     isISODate(initialEndDate) && Date.parse(initialEndDate) >= Date.parse(initialStart)
       ? initialEndDate
       : addDaysISO(initialStart, 1)
+  const clampCap = addDaysISO(initialStart, MAX_TRIP_DAYS - 1)
+  const initialEnd =
+    Date.parse(initialEndCandidate) > Date.parse(clampCap)
+      ? clampCap
+      : initialEndCandidate
 
   const [step, setStep] = useState<Step>(1)
   const [city, setCity] = useState<City | "">(isCity(initialCity) ? initialCity : "")
@@ -360,13 +369,6 @@ export default function PlanNewScreen({
     if (budget < budgetMin) setBudget(budgetMin)
     else if (budget > budgetMax) setBudget(budgetMax)
   }, [budgetMin, budgetMax, budget])
-
-  const handleStartChange = (next: string) => {
-    setStartDate(next)
-    if (Date.parse(endDate) < Date.parse(next)) {
-      setEndDate(next)
-    }
-  }
 
   const toggleInterest = (c: ExperienceCategory) => {
     setInterests((prev) =>
@@ -494,77 +496,18 @@ export default function PlanNewScreen({
                 </select>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                  marginBottom: 14,
-                }}
-              >
-                <div style={{ ...cardStyle, marginBottom: 0 }}>
-                  <label htmlFor="plan-arrival" style={labelStyle}>
-                    {t("step1.startLabel")}
-                  </label>
-                  <input
-                    id="plan-arrival"
-                    type="date"
-                    value={startDate}
-                    min={todayISO()}
-                    onChange={(e) => handleStartChange(e.target.value)}
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      border: "none",
-                      fontSize: 15,
-                      marginTop: 8,
-                      color: "var(--body)",
-                      background: "transparent",
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    ...cardStyle,
-                    marginBottom: 0,
-                    border: dateRangeValid
-                      ? undefined
-                      : "1px solid var(--error)",
+              <div style={cardStyle}>
+                <span style={labelStyle}>{t("step1.datesLabel")}</span>
+                <DateRangePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={(s, e) => {
+                    setStartDate(s)
+                    setEndDate(e)
                   }}
-                >
-                  <label htmlFor="plan-departure" style={labelStyle}>
-                    {t("step1.endLabel")}
-                  </label>
-                  <input
-                    id="plan-departure"
-                    type="date"
-                    value={endDate}
-                    min={startDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      border: "none",
-                      fontSize: 15,
-                      marginTop: 8,
-                      color: "var(--body)",
-                      background: "transparent",
-                    }}
-                  />
-                </div>
+                  maxDays={MAX_TRIP_DAYS}
+                />
               </div>
-              {!dateRangeValid && (
-                <div
-                  style={{
-                    color: "var(--error)",
-                    fontSize: 12,
-                    marginBottom: 14,
-                    paddingLeft: 4,
-                  }}
-                >
-                  {t("step1.datesError")}
-                </div>
-              )}
 
               <div style={cardStyle}>
                 <span style={labelStyle}>{t("step1.travelersLabel")}</span>
