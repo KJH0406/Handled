@@ -90,3 +90,23 @@ export interface ScheduleItem {
   title: string
   desc: string
 }
+
+export type StoryCategory =
+  | "Culture"
+  | "Food"
+  | "Travel Tips"
+  | "Neighborhoods"
+  | "Nature"
+  | "Destinations"
+
+export interface Story {
+  id: string
+  title: string
+  category: StoryCategory
+  date: string
+  readMinutes: number
+  summary: string
+  bg: string
+  body: string[]
+  featured?: boolean
+}

@@ -619,6 +619,32 @@
     "subtitle": "The page you are looking for does not exist or has moved.",
     "backHome": "Back to home"
   },
+  "stories": {
+    "kicker": "Korea Story",
+    "title": "Stories from the heart of Korea",
+    "lede": "Insider guides, local perspectives, and the stories that make Korea impossible to forget.",
+    "latest": "Latest stories",
+    "readMore": "min read",
+    "filters": {
+      "all": "All"
+    },
+    "empty": {
+      "title": "No stories in this category yet",
+      "subtitle": "Try a different category — more stories are added every week.",
+      "cta": "Show all stories"
+    },
+    "subscribe": {
+      "title": "More stories every week",
+      "body": "Follow Handled for the latest Korea travel guides, insider tips, and cultural stories.",
+      "cta": "Subscribe to Korea Story"
+    },
+    "backToStories": "Back to stories",
+    "related": "Keep reading",
+    "notFound": {
+      "title": "We couldn't find that story.",
+      "cta": "Back to home"
+    }
+  },
   "cards": {
     "experience": {
       "duration": "{hours} hours",
@@ -667,11 +693,16 @@
     "myPlans": {
       "title": "My Plans"
     },
+    "stories": {
+      "title": "Korea Story - travel guides & local perspectives",
+      "description": "Insider guides, local perspectives, and the stories that make Korea impossible to forget."
+    },
     "notFound": {
       "title": "Page not found"
     },
     "guideNotFound": "Guide not found",
     "experienceNotFound": "Experience not found",
+    "storyNotFound": "Story not found",
     "guideTitle": "{name} · {city} guide",
     "experienceTitle": "{title} - {host}",
     "experienceTitleNoHost": "{title}"
