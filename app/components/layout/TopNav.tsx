@@ -6,12 +6,14 @@ import { Link, usePathname } from "../../../i18n/navigation"
 import { useAuth } from "../auth/AuthProvider"
 import Icon from "../ui/Icon"
 import LocaleSwitcher from "./LocaleSwitcher"
+import MobileLocaleSwitcher from "./MobileLocaleSwitcher"
 
 interface NavTab {
   id: "planner" | "experiences" | "stories"
   labelKey: "planner" | "experiences" | "stories"
   href: string
   icon?: "sparkles"
+  menuIcon: "sparkles" | "map" | "home"
 }
 
 const TABS: NavTab[] = [
@@ -20,16 +22,19 @@ const TABS: NavTab[] = [
     labelKey: "planner",
     href: "/plan/new",
     icon: "sparkles",
+    menuIcon: "sparkles",
   },
   {
     id: "experiences",
     labelKey: "experiences",
     href: "/experiences",
+    menuIcon: "map",
   },
   {
     id: "stories",
     labelKey: "stories",
     href: "/stories",
+    menuIcon: "home",
   },
 ]
 
@@ -124,76 +129,111 @@ export default function TopNav() {
           <div className="hide-mobile">
             <LocaleSwitcher />
           </div>
-          {hydrated && !user ? (
-            <Link href="/sign-in" className="nav-signin">
+          <MobileLocaleSwitcher />
+          {hydrated && !user && (
+            <Link href="/sign-in" className="nav-signin hide-mobile">
               {t("signIn")}
             </Link>
-          ) : (
-            <div ref={menuRef} style={{ position: "relative" }}>
-              <button
-                className="nav-account"
-                onClick={() => setMenuOpen((v) => !v)}
-                aria-haspopup="menu"
-                aria-expanded={menuOpen}
-                aria-label={t("accountMenuAria")}
-              >
-                <Icon name="menu" size={14} />
-                <div className="nav-avatar">
-                  <Icon name="user" size={16} stroke="white" />
-                </div>
-              </button>
-              {menuOpen && (
-                <div className="account-dropdown" role="menu">
-                  {user && (
-                    <>
-                      <div className="account-dropdown-user">
-                        <div className="account-dropdown-user-name">
-                          {user.name}
-                        </div>
-                        <div className="account-dropdown-user-email">
-                          {user.email}
-                        </div>
+          )}
+          <div ref={menuRef} style={{ position: "relative" }}>
+            <button
+              className={`nav-account ${hydrated && !user ? "show-mobile" : ""}`}
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-label={t("accountMenuAria")}
+            >
+              <Icon name="menu" size={14} />
+              <div className="nav-avatar">
+                <Icon name="user" size={16} stroke="white" />
+              </div>
+            </button>
+            {menuOpen && (
+              <div className="account-dropdown" role="menu">
+                {user && (
+                  <>
+                    <div className="account-dropdown-user">
+                      <div className="account-dropdown-user-name">
+                        {user.name}
                       </div>
-                      <div className="account-dropdown-divider" />
-                    </>
-                  )}
+                      <div className="account-dropdown-user-email">
+                        {user.email}
+                      </div>
+                    </div>
+                    <div className="account-dropdown-divider" />
+                  </>
+                )}
+                <div className="account-dropdown-mobile-only">
+                  {TABS.map((tab) => {
+                    const active = isActive(tab.id, pathname)
+                    return (
+                      <Link
+                        key={tab.id}
+                        href={tab.href}
+                        className={`account-dropdown-item ${active ? "active" : ""}`}
+                        role="menuitem"
+                        aria-current={active ? "page" : undefined}
+                      >
+                        {tab.menuIcon === "sparkles" ? (
+                          <Icon
+                            name="sparkles"
+                            size={16}
+                            stroke="var(--rausch)"
+                            fill="var(--rausch)"
+                            sw={1.5}
+                          />
+                        ) : (
+                          <Icon name={tab.menuIcon} size={16} />
+                        )}
+                        {t(tab.labelKey)}
+                      </Link>
+                    )
+                  })}
+                  <div className="account-dropdown-divider" />
+                </div>
+                <Link
+                  href="/my-plans"
+                  className="account-dropdown-item"
+                  role="menuitem"
+                >
+                  <Icon name="bookmark" size={16} />
+                  {t("myPlans")}
+                </Link>
+                <a
+                  href="#"
+                  className="account-dropdown-item muted"
+                  role="menuitem"
+                >
+                  <Icon name="message" size={16} />
+                  {t("help")}
+                </a>
+                <div className="account-dropdown-divider" />
+                {user ? (
+                  <button
+                    type="button"
+                    className="account-dropdown-item"
+                    role="menuitem"
+                    onClick={() => {
+                      signOut()
+                      setMenuOpen(false)
+                    }}
+                  >
+                    <Icon name="logOut" size={16} />
+                    {t("signOut")}
+                  </button>
+                ) : (
                   <Link
-                    href="/my-plans"
+                    href="/sign-in"
                     className="account-dropdown-item"
                     role="menuitem"
                   >
-                    <Icon name="bookmark" size={16} />
-                    {t("myPlans")}
+                    <Icon name="user" size={16} />
+                    {t("signIn")}
                   </Link>
-                  <a
-                    href="#"
-                    className="account-dropdown-item muted"
-                    role="menuitem"
-                  >
-                    <Icon name="message" size={16} />
-                    {t("help")}
-                  </a>
-                  {user && (
-                    <>
-                      <div className="account-dropdown-divider" />
-                      <button
-                        type="button"
-                        className="account-dropdown-item"
-                        role="menuitem"
-                        onClick={() => {
-                          signOut()
-                          setMenuOpen(false)
-                        }}
-                      >
-                        <Icon name="logOut" size={16} />
-                        {t("signOut")}
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>
