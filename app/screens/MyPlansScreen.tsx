@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useAuth } from "../components/auth/AuthProvider"
-import { useRequireAuth } from "../components/auth/RequireAuthProvider"
 import Icon from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
 import { listSavedPlans, removePlan } from "../lib/planner/storage"
@@ -321,7 +320,6 @@ export default function MyPlansScreen() {
   const t = useTranslations("myPlans")
   const tCanvas = useTranslations("planner.canvas")
   const navigate = useAppNavigate()
-  const { requireAuth } = useRequireAuth()
   const { user, hydrated } = useAuth()
   const [plans, setPlans] = useState<Plan[] | null>(null)
   const [tab, setTab] = useState<TabId>("itineraries")
@@ -458,7 +456,7 @@ export default function MyPlansScreen() {
           {tab === "itineraries" && (
             <>
               <button
-                onClick={() => requireAuth(() => navigate("planNew"))}
+                onClick={() => navigate("planNew")}
                 style={{
                   display: "grid",
                   gridTemplateColumns: "56px 1fr",

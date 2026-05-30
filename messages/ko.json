@@ -57,9 +57,17 @@
       "required": "이메일과 비밀번호를 입력해 주세요.",
       "passwordMismatch": "비밀번호가 일치하지 않습니다."
     },
-    "loginRequired": {
-      "title": "로그인이 필요합니다.",
-      "confirm": "확인"
+    "modal": {
+      "signUpTitle": "Handled로 일정 만들기",
+      "signInTitle": "다시 오신 걸 환영해요",
+      "creditPromise": "가입하면 무료 크레딧 {credits}개를 드려요. AI 일정 {credits}개를 만들 수 있어요.",
+      "signUpCta": "가입하고 {credits} 크레딧 받기",
+      "signInCta": "로그인하고 생성하기",
+      "togglePromptHaveAccount": "이미 계정이 있으세요?",
+      "togglePromptNoAccount": "처음이신가요?",
+      "toggleToSignIn": "로그인",
+      "toggleToSignUp": "가입하기",
+      "closeAria": "닫기"
     }
   },
   "footer": {
@@ -247,7 +255,8 @@
         "kidsSummary": "{count, plural, other {어린이 #명}}",
         "travelersFallback": "성인 1명",
         "datesSummary": "{start} → {end} · {count, plural, other {#일}}",
-        "creditInfo": "이 일정 생성에는 <b>크레딧 1개</b>가 사용됩니다 · 잔여 <b>크레딧 3개</b>"
+        "creditInfoSignedIn": "이 일정 생성에는 <b>크레딧 1개</b>가 사용됩니다 · 잔여 <b>크레딧 {count, plural, other {#개}}</b>",
+        "creditInfoGuest": "이 일정 생성에는 <b>크레딧 1개</b>가 사용됩니다 · <b>가입하면</b> 무료 크레딧 {credits}개 제공"
       },
       "back": "← 이전",
       "next": "다음 →",

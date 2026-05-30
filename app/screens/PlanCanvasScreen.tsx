@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { useRequireAuth } from "../components/auth/RequireAuthProvider"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon from "../components/ui/Icon"
 import PlanMap from "../components/ui/PlanMap"
@@ -76,7 +75,6 @@ function SlotCard({ slot }: { slot: PlanSlot }) {
 export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const t = useTranslations("planner.canvas")
   const navigate = useAppNavigate()
-  const { requireAuth } = useRequireAuth()
   const [state, setState] = useState<LoadState>({ kind: "loading" })
   const [toast, setToast] = useState<string | null>(null)
   const [savedModalOpen, setSavedModalOpen] = useState<boolean>(false)
@@ -167,7 +165,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             </p>
             <button
               className="btn btn-primary"
-              onClick={() => requireAuth(() => navigate("planNew"))}
+              onClick={() => navigate("planNew")}
             >
               {t("empty.cta")}
             </button>

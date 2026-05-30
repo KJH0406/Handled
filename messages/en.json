@@ -57,9 +57,17 @@
       "required": "Please enter your email and password.",
       "passwordMismatch": "Passwords do not match."
     },
-    "loginRequired": {
-      "title": "Login required.",
-      "confirm": "Confirm"
+    "modal": {
+      "signUpTitle": "Create your trip with Handled",
+      "signInTitle": "Welcome back",
+      "creditPromise": "Sign up and we'll give you {credits} free credits — enough for {credits} AI itineraries.",
+      "signUpCta": "Sign up — get {credits} credits",
+      "signInCta": "Log in and generate",
+      "togglePromptHaveAccount": "Already have an account?",
+      "togglePromptNoAccount": "New to Handled?",
+      "toggleToSignIn": "Log in",
+      "toggleToSignUp": "Sign up",
+      "closeAria": "Close"
     }
   },
   "footer": {
@@ -247,7 +255,8 @@
         "kidsSummary": "{count, plural, one {# child} other {# children}}",
         "travelersFallback": "1 Adult",
         "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
-        "creditInfo": "This will use <b>1 credit</b> · You have <b>3 credits</b> remaining"
+        "creditInfoSignedIn": "This will use <b>1 credit</b> · You have <b>{count, plural, one {# credit} other {# credits}}</b> remaining",
+        "creditInfoGuest": "This will use <b>1 credit</b> · <b>Sign up</b> to get {credits} free credits"
       },
       "back": "← Back",
       "next": "Next →",

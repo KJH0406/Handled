@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
+import { DEFAULT_CREDITS, useAuth } from "../components/auth/AuthProvider"
+import AuthRequiredModal from "../components/auth/AuthRequiredModal"
 import Icon from "../components/ui/Icon"
 import { CITIES } from "../lib/data/filters"
 import { useAppNavigate } from "../lib/navigation"
@@ -282,6 +284,7 @@ export default function PlanNewScreen({
 }: PlanNewScreenProps = {}) {
   const t = useTranslations("planner.wizard")
   const navigate = useAppNavigate()
+  const { user } = useAuth()
 
   const initialStart = isISODate(initialStartDate) ? initialStartDate : todayISO()
   const initialEnd =
@@ -301,6 +304,7 @@ export default function PlanNewScreen({
   const [budget, setBudget] = useState<number>(BUDGET_DEFAULT)
   const [specialRequests, setSpecialRequests] = useState<string>("")
   const [generating, setGenerating] = useState<boolean>(false)
+  const [authOpen, setAuthOpen] = useState<boolean>(false)
 
   const dateRangeValid = useMemo(
     () => Date.parse(endDate) >= Date.parse(startDate),
@@ -340,8 +344,8 @@ export default function PlanNewScreen({
   const step2Valid = interests.length > 0
   const canSubmit = step1Valid && step2Valid
 
-  const onSubmit = () => {
-    if (!canSubmit || generating || !city) return
+  const runGeneration = () => {
+    if (!city) return
     setGenerating(true)
     setTimeout(() => {
       const plan = generatePlan({
@@ -359,6 +363,15 @@ export default function PlanNewScreen({
       savePlan(plan)
       navigate("plan", { planId: plan.id })
     }, 2400)
+  }
+
+  const onSubmit = () => {
+    if (!canSubmit || generating || !city) return
+    if (!user) {
+      setAuthOpen(true)
+      return
+    }
+    runGeneration()
   }
 
   const travelerSummary = (): string => {
@@ -843,9 +856,15 @@ export default function PlanNewScreen({
                   ✦
                 </span>
                 <p style={{ color: "var(--ink)", fontSize: 13, lineHeight: 1.65 }}>
-                  {t.rich("step3.creditInfo", {
-                    b: (chunks) => <strong>{chunks}</strong>,
-                  })}
+                  {user
+                    ? t.rich("step3.creditInfoSignedIn", {
+                        count: user.credits,
+                        b: (chunks) => <strong>{chunks}</strong>,
+                      })
+                    : t.rich("step3.creditInfoGuest", {
+                        credits: DEFAULT_CREDITS,
+                        b: (chunks) => <strong>{chunks}</strong>,
+                      })}
                 </p>
               </div>
 
@@ -876,6 +895,15 @@ export default function PlanNewScreen({
           )}
         </div>
       </section>
+
+      <AuthRequiredModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        onAuthenticated={() => {
+          setAuthOpen(false)
+          runGeneration()
+        }}
+      />
     </main>
   )
 }

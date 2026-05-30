@@ -4,7 +4,6 @@ import SignInScreen from "../../screens/SignInScreen"
 
 interface PageProps {
   params: { locale: string }
-  searchParams: { next?: string }
 }
 
 export async function generateMetadata({
@@ -18,6 +17,6 @@ export async function generateMetadata({
   }
 }
 
-export default function Page({ searchParams }: PageProps) {
-  return <SignInScreen next={searchParams.next} />
+export default function Page() {
+  return <SignInScreen />
 }

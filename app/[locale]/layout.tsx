@@ -7,7 +7,6 @@ import type { ReactNode } from "react"
 import ogImage from "@/img/thumbnail.png"
 import { routing } from "../../i18n/routing"
 import { AuthProvider } from "../components/auth/AuthProvider"
-import { RequireAuthProvider } from "../components/auth/RequireAuthProvider"
 import { BookingProvider } from "../components/booking/BookingProvider"
 import FooterSlot from "../components/layout/FooterSlot"
 import TopNav from "../components/layout/TopNav"
@@ -81,13 +80,11 @@ export default function LocaleLayout({
         <div id="root">
           <NextIntlClientProvider>
             <AuthProvider>
-              <RequireAuthProvider>
-                <BookingProvider>
-                  <TopNav />
-                  {children}
-                  <FooterSlot />
-                </BookingProvider>
-              </RequireAuthProvider>
+              <BookingProvider>
+                <TopNav />
+                {children}
+                <FooterSlot />
+              </BookingProvider>
             </AuthProvider>
           </NextIntlClientProvider>
         </div>
