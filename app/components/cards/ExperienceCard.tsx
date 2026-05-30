@@ -87,7 +87,7 @@ export default function ExperienceCard({
           </div>
           <span
             className="t-caption"
-            style={{ color: "var(--rausch)", fontWeight: 600 }}
+            style={{ color: "var(--primary)", fontWeight: 600 }}
           >
             {t("learnMore")}
           </span>

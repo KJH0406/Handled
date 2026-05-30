@@ -116,7 +116,7 @@ export default function AuthRequiredModal({
               height: 48,
               margin: "0 auto 12px",
               borderRadius: 999,
-              background: "var(--rausch)",
+              background: "var(--primary)",
               color: "white",
               display: "inline-flex",
               alignItems: "center",
@@ -233,7 +233,7 @@ export default function AuthRequiredModal({
               background: "transparent",
               border: "none",
               padding: 0,
-              color: "var(--rausch)",
+              color: "var(--primary)",
               fontWeight: 600,
               cursor: "pointer",
             }}

@@ -92,7 +92,7 @@ export default function TopNav() {
               fontWeight: 800,
               fontSize: 22,
               letterSpacing: -0.5,
-              color: "var(--rausch)",
+              color: "var(--primary)",
             }}
           >
             Handled
@@ -115,8 +115,8 @@ export default function TopNav() {
                       <Icon
                         name="sparkles"
                         size={16}
-                        stroke="var(--rausch)"
-                        fill="var(--rausch)"
+                        stroke="var(--primary)"
+                        fill="var(--primary)"
                         sw={1.5}
                       />
                     </span>
@@ -178,8 +178,8 @@ export default function TopNav() {
                           <Icon
                             name="sparkles"
                             size={16}
-                            stroke="var(--rausch)"
-                            fill="var(--rausch)"
+                            stroke="var(--primary)"
+                            fill="var(--primary)"
                             sw={1.5}
                           />
                         ) : (

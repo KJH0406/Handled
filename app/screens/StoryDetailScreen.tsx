@@ -53,7 +53,7 @@ export default function StoryDetailScreen({
           >
             <span
               className="badge-pill badge-pill--accent"
-              style={{ background: "#fff0f3", color: "var(--rausch)" }}
+              style={{ background: "var(--primary-light)", color: "var(--primary)" }}
             >
               {story.category}
             </span>
@@ -127,7 +127,7 @@ export default function StoryDetailScreen({
                   <div style={{ padding: 16 }}>
                     <span
                       className="t-caption"
-                      style={{ color: "var(--rausch)", fontWeight: 700 }}
+                      style={{ color: "var(--primary)", fontWeight: 700 }}
                     >
                       {r.category}
                     </span>

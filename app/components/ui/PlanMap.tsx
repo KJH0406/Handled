@@ -73,7 +73,7 @@ export default function PlanMap({
         borderRadius: 16,
         overflow: "hidden",
         border: "1px solid var(--hairline-soft)",
-        background: "#eef3f7",
+        background: "var(--primary-light)",
       }}
     >
       <svg
@@ -106,7 +106,7 @@ export default function PlanMap({
           </linearGradient>
         </defs>
 
-        <rect width={WIDTH} height={HEIGHT} fill="#eef3f7" />
+        <rect width={WIDTH} height={HEIGHT} fill="var(--primary-light)" />
         <rect width={WIDTH} height={HEIGHT} fill="url(#plan-map-grid)" />
 
         <path
@@ -151,7 +151,7 @@ export default function PlanMap({
           <path
             d={pathD}
             fill="none"
-            stroke="var(--rausch)"
+            stroke="var(--primary)"
             strokeWidth="2.5"
             strokeDasharray="6 6"
             strokeLinecap="round"
@@ -173,7 +173,7 @@ export default function PlanMap({
               cx="0"
               cy="0"
               r="18"
-              fill="var(--rausch)"
+              fill="var(--primary)"
               stroke="#fff"
               strokeWidth="3"
             />

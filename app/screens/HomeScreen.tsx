@@ -50,7 +50,7 @@ const VALUE_PROPS: ValueProp[] = [
 ]
 
 const VALUE_PROP_ICON_COLORS: Record<ValueProp["accentClass"], string> = {
-  "value-prop-card--accent-1": "var(--rausch)",
+  "value-prop-card--accent-1": "var(--primary)",
   "value-prop-card--accent-2": "#2563eb",
   "value-prop-card--accent-3": "#daa520",
 }
@@ -82,7 +82,7 @@ export default function HomeScreen() {
             <h1 className="t-display-xl ink hero-title">
               {t("hero.titleLine1")}
               <br />
-              <span style={{ color: "var(--rausch)" }}>
+              <span style={{ color: "var(--primary)" }}>
                 {t("hero.titleLine2")}
               </span>
             </h1>
@@ -108,8 +108,8 @@ export default function HomeScreen() {
                 <Icon
                   name="heart"
                   size={22}
-                  stroke="var(--rausch)"
-                  fill="var(--rausch)"
+                  stroke="var(--primary)"
+                  fill="var(--primary)"
                   sw={1.5}
                 />
               </div>
@@ -134,11 +134,11 @@ export default function HomeScreen() {
 
             <div className="hero-mock-card hero-mock-card--plan">
               <div className="hero-mock-icon">
-                <Icon name="map" size={22} stroke="var(--rausch)" />
+                <Icon name="map" size={22} stroke="var(--primary)" />
               </div>
               <div className="t-display-sm ink hero-mock-plan-title">
                 {t("hero.mock.planTitlePrefix")}
-                <span style={{ color: "var(--rausch)" }}>
+                <span style={{ color: "var(--primary)" }}>
                   {t("hero.mock.planTitleHighlight")}
                 </span>
                 {t("hero.mock.planTitleSuffix")}

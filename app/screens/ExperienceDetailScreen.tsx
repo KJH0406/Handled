@@ -116,7 +116,7 @@ export default function ExperienceDetailScreen({
                   height: "100%",
                   background:
                     CAT_FALLBACK[exp.category]?.bg ??
-                    "linear-gradient(135deg, #ff385c, #ffa07a)",
+                    "linear-gradient(135deg, #0f4c81, #ea6863)",
                 }}
                 aria-label={exp.title}
               />
@@ -191,7 +191,7 @@ export default function ExperienceDetailScreen({
                   <Icon
                     name="check"
                     size={18}
-                    stroke="var(--rausch)"
+                    stroke="var(--primary)"
                     sw={2.5}
                   />
                   <span className="t-body-md ink">{item}</span>
@@ -244,7 +244,7 @@ export default function ExperienceDetailScreen({
                   {guide.superhost && (
                     <span
                       className="t-caption"
-                      style={{ color: "var(--rausch)", fontWeight: 600 }}
+                      style={{ color: "var(--primary)", fontWeight: 600 }}
                     >
                       {t("superhost")}
                     </span>
@@ -272,7 +272,7 @@ export default function ExperienceDetailScreen({
             <h2 className="t-display-sm ink mb-base">{t("meetingPlace")}</h2>
             <div className="meet-map mb-md">
               <div className="meet-pin">
-                <Icon name="pin" size={16} stroke="var(--rausch)" />
+                <Icon name="pin" size={16} stroke="var(--primary)" />
                 <span className="t-body-sm ink value-strong">
                   {guide.district}
                 </span>
@@ -344,8 +344,8 @@ export default function ExperienceDetailScreen({
               <Icon
                 name="star"
                 size={18}
-                fill="var(--ink)"
-                stroke="var(--ink)"
+                fill="var(--gold)"
+                stroke="var(--gold)"
                 style={{ display: "inline-block", verticalAlign: "-3px" }}
               />{" "}
               {t("reviewsHeading", {

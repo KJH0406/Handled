@@ -85,7 +85,7 @@ const cardStyle: React.CSSProperties = {
 const labelStyle: React.CSSProperties = {
   fontSize: 11,
   fontWeight: 700,
-  color: "var(--rausch)",
+  color: "var(--primary)",
   letterSpacing: 0.8,
   display: "block",
 }
@@ -203,7 +203,7 @@ function ProgressDots({ step, allDone }: ProgressDotsProps) {
                 width: 36,
                 height: 36,
                 borderRadius: "50%",
-                background: reached ? "var(--rausch)" : "var(--surface-strong)",
+                background: reached ? "var(--primary)" : "var(--surface-strong)",
                 color: reached ? "var(--on-primary)" : "var(--muted-soft)",
                 display: "flex",
                 alignItems: "center",
@@ -223,7 +223,7 @@ function ProgressDots({ step, allDone }: ProgressDotsProps) {
                   height: 2.5,
                   borderRadius: 2,
                   background: passed
-                    ? "var(--rausch)"
+                    ? "var(--primary)"
                     : "var(--surface-strong)",
                   transition: "all .25s",
                 }}
@@ -255,7 +255,7 @@ const primaryBtn: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "var(--rausch)",
+  background: "var(--primary)",
   color: "var(--on-primary)",
   border: "none",
   borderRadius: 14,
@@ -271,8 +271,8 @@ const outlineBtn: React.CSSProperties = {
   alignItems: "center",
   justifyContent: "center",
   background: "transparent",
-  color: "var(--rausch)",
-  border: "2px solid var(--rausch)",
+  color: "var(--primary)",
+  border: "2px solid var(--primary)",
   borderRadius: 14,
   fontSize: 15,
   fontWeight: 700,
@@ -438,7 +438,7 @@ export default function PlanNewScreen({
                   width: 60,
                   height: 60,
                   border: "3px solid var(--hairline-soft)",
-                  borderTopColor: "var(--rausch)",
+                  borderTopColor: "var(--primary)",
                   borderRadius: "50%",
                   margin: "0 auto 28px",
                   animation: "spin .8s linear infinite",
@@ -446,7 +446,7 @@ export default function PlanNewScreen({
               />
               <h3
                 style={{
-                  color: "var(--rausch)",
+                  color: "var(--primary)",
                   fontWeight: 800,
                   fontSize: 22,
                   marginBottom: 8,
@@ -576,9 +576,9 @@ export default function PlanNewScreen({
                         style={{
                           padding: "15px 18px",
                           borderRadius: 16,
-                          border: `2px solid ${on ? "var(--rausch)" : "var(--hairline-soft)"}`,
-                          background: on ? "#fff0f3" : "var(--canvas)",
-                          color: on ? "var(--rausch)" : "var(--body)",
+                          border: `2px solid ${on ? "var(--primary)" : "var(--hairline-soft)"}`,
+                          background: on ? "var(--primary-light)" : "var(--canvas)",
+                          color: on ? "var(--primary)" : "var(--body)",
                           fontSize: 14,
                           fontWeight: on ? 700 : 500,
                           textAlign: "left",
@@ -626,8 +626,8 @@ export default function PlanNewScreen({
                           gap: 14,
                           padding: "14px 18px",
                           borderRadius: 16,
-                          border: `2px solid ${on ? "var(--rausch)" : "var(--hairline-soft)"}`,
-                          background: on ? "#fff0f3" : "var(--canvas)",
+                          border: `2px solid ${on ? "var(--primary)" : "var(--hairline-soft)"}`,
+                          background: on ? "var(--primary-light)" : "var(--canvas)",
                           textAlign: "left",
                           transition: "all .15s",
                           cursor: "pointer",
@@ -645,7 +645,7 @@ export default function PlanNewScreen({
                             style={{
                               fontSize: 14,
                               fontWeight: 700,
-                              color: on ? "var(--rausch)" : "var(--ink)",
+                              color: on ? "var(--primary)" : "var(--ink)",
                             }}
                           >
                             {t(`step2.transport.${value}.label`)}
@@ -653,7 +653,7 @@ export default function PlanNewScreen({
                           <div
                             style={{
                               fontSize: 12,
-                              color: on ? "var(--rausch)" : "var(--muted)",
+                              color: on ? "var(--primary)" : "var(--muted)",
                               marginTop: 2,
                             }}
                           >
@@ -666,8 +666,8 @@ export default function PlanNewScreen({
                             width: 20,
                             height: 20,
                             borderRadius: "50%",
-                            border: `2px solid ${on ? "var(--rausch)" : "var(--hairline)"}`,
-                            background: on ? "var(--rausch)" : "transparent",
+                            border: `2px solid ${on ? "var(--primary)" : "var(--hairline)"}`,
+                            background: on ? "var(--primary)" : "transparent",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -698,7 +698,7 @@ export default function PlanNewScreen({
                     style={{
                       fontSize: 28,
                       fontWeight: 900,
-                      color: "var(--rausch)",
+                      color: "var(--primary)",
                     }}
                   >
                     {fmtBudget(budget, locale)}
@@ -715,7 +715,7 @@ export default function PlanNewScreen({
                   style={{
                     width: "100%",
                     marginTop: 12,
-                    accentColor: "var(--rausch)",
+                    accentColor: "var(--primary)",
                   }}
                 />
                 <div
@@ -808,7 +808,7 @@ export default function PlanNewScreen({
 
               <div
                 style={{
-                  background: "#fff0f3",
+                  background: "var(--primary-light)",
                   borderRadius: 14,
                   padding: "14px 18px",
                   marginBottom: 26,
@@ -817,7 +817,7 @@ export default function PlanNewScreen({
                   alignItems: "flex-start",
                 }}
               >
-                <span style={{ color: "var(--rausch)", fontSize: 16, marginTop: 1 }}>
+                <span style={{ color: "var(--primary)", fontSize: 16, marginTop: 1 }}>
                   ✦
                 </span>
                 <p style={{ color: "var(--ink)", fontSize: 13, lineHeight: 1.65 }}>

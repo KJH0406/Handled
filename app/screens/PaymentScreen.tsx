@@ -106,7 +106,7 @@ export default function PaymentScreen() {
                   <span className="t-body-sm body">{t("summary.type")}</span>
                   <span
                     className="t-body-md value-strong"
-                    style={{ color: "var(--rausch)" }}
+                    style={{ color: "var(--primary)" }}
                   >
                     {booking.experience
                       ? t("summary.typeExperience")

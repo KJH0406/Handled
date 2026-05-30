@@ -234,8 +234,8 @@ export default function DateRangePicker({
               marginLeft: 12,
               padding: "5px 12px",
               borderRadius: 999,
-              background: "#fff0f3",
-              color: "var(--rausch)",
+              background: "var(--primary-light)",
+              color: "var(--primary)",
               fontSize: 13,
               fontWeight: 700,
               lineHeight: 1.2,
@@ -358,9 +358,9 @@ export default function DateRangePicker({
               let bg = "transparent"
               let color = isCurrentMonth ? "var(--ink)" : "var(--muted-soft)"
               if (disabled) color = "var(--muted-soft)"
-              if (middle) bg = "#fff0f3"
+              if (middle) bg = "var(--primary-light)"
               if (isStart || isEnd) {
-                bg = "var(--rausch)"
+                bg = "var(--primary)"
                 color = "#fff"
               }
 
@@ -389,7 +389,7 @@ export default function DateRangePicker({
                     opacity: !isCurrentMonth && !disabled ? 0.45 : 1,
                     outline:
                       isToday && !isStart && !isEnd
-                        ? "1.5px solid var(--rausch)"
+                        ? "1.5px solid var(--primary)"
                         : "none",
                     outlineOffset: -2,
                     padding: 0,

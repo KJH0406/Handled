@@ -292,7 +292,7 @@ function ProfileHeader({
               background: "transparent",
               padding: 2,
               cursor: "pointer",
-              color: "var(--rausch)",
+              color: "var(--primary)",
               display: "inline-flex",
               alignItems: "center",
               flexShrink: 0,
@@ -305,7 +305,7 @@ function ProfileHeader({
             />
           </button>
           {copied && (
-            <span className="t-caption-sm" style={{ color: "var(--rausch)" }}>
+            <span className="t-caption-sm" style={{ color: "var(--primary)" }}>
               {copiedLabel}
             </span>
           )}
@@ -418,7 +418,7 @@ export default function MyPlansScreen() {
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <span
                 style={{
-                  color: "var(--rausch)",
+                  color: "var(--primary)",
                   fontSize: 19,
                   fontWeight: 700,
                   letterSpacing: -0.2,
@@ -478,7 +478,7 @@ export default function MyPlansScreen() {
                     width: 56,
                     height: 56,
                     borderRadius: 999,
-                    background: "var(--rausch)",
+                    background: "var(--primary)",
                     color: "#fff",
                     display: "flex",
                     alignItems: "center",
@@ -597,7 +597,7 @@ export default function MyPlansScreen() {
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "var(--rausch)",
+                  color: "var(--primary)",
                 }}
               >
                 <Icon name="calendar" size={24} stroke="currentColor" />

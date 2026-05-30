@@ -232,14 +232,14 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                     padding: "6px 12px",
                     borderRadius: 999,
                     background: "rgba(255, 56, 92, 0.1)",
-                    color: "var(--rausch)",
+                    color: "var(--primary)",
                     fontWeight: 600,
                     border: "none",
                     cursor: "pointer",
                   }}
                   aria-label={t("savedBadge.aria")}
                 >
-                  <Icon name="check" size={12} stroke="var(--rausch)" />
+                  <Icon name="check" size={12} stroke="var(--primary)" />
                   {t("savedBadge.label")}
                 </button>
               )}
@@ -397,8 +397,8 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                   <Icon
                     name="bookmark"
                     size={24}
-                    fill="var(--rausch)"
-                    stroke="var(--rausch)"
+                    fill="var(--primary)"
+                    stroke="var(--primary)"
                   />
                 </div>
                 <h2
@@ -489,8 +489,8 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                 <Icon
                   name="bookmark"
                   size={20}
-                  fill="var(--rausch)"
-                  stroke="var(--rausch)"
+                  fill="var(--primary)"
+                  stroke="var(--primary)"
                 />
               </div>
               <h2 className="t-display-sm ink" style={{ marginBottom: 6 }}>
@@ -534,7 +534,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             className="t-uppercase-tag"
             style={{
               display: "inline-block",
-              color: "var(--rausch)",
+              color: "var(--primary)",
               letterSpacing: "0.4px",
               marginBottom: 8,
               fontWeight: 700,
@@ -562,7 +562,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               href={`/experiences?city=${encodeURIComponent(plan.input.city)}`}
               className="t-body-sm"
               style={{
-                color: "var(--rausch)",
+                color: "var(--primary)",
                 fontWeight: 600,
                 display: "inline-flex",
                 alignItems: "center",
@@ -571,7 +571,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               }}
             >
               {t("recommendations.viewAll")}
-              <Icon name="chevronRight" size={12} stroke="var(--rausch)" />
+              <Icon name="chevronRight" size={12} stroke="var(--primary)" />
             </Link>
           </div>
 

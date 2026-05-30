@@ -20,7 +20,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
     <main className="fade-in">
       <div className="container status-page">
         <div className="status-page__icon">
-          <Icon name="x" size={32} stroke="var(--rausch)" sw={2.5} />
+          <Icon name="x" size={32} stroke="var(--primary)" sw={2.5} />
         </div>
         <h1 className="t-display-md ink mb-base">{t("title")}</h1>
         <p className="t-body-md muted">{t("subtitle")}</p>

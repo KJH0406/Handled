@@ -10,7 +10,7 @@ import type {
 
 const DEFAULT_FALLBACK: CategoryFallback = {
   emoji: "✨",
-  bg: "linear-gradient(135deg, #ff385c, #ffa07a)",
+  bg: "linear-gradient(135deg, #0f4c81, #ea6863)",
 }
 
 export interface ExpPhotoProps {

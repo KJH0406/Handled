@@ -4,12 +4,12 @@ import Image from "next/image"
 import { useState } from "react"
 
 const COLORS = [
-  "#ff385c",
+  "#0F4C81",
+  "#EA6863",
   "#0891B2",
   "#7C3AED",
   "#10B981",
   "#F59E0B",
-  "#EC4899",
 ]
 
 export interface AvatarProps {

@@ -11,8 +11,8 @@ export default function Stars({ rating, size = 12 }: StarsProps) {
       <Icon
         name="star"
         size={size}
-        fill="var(--ink)"
-        stroke="var(--ink)"
+        fill="var(--gold)"
+        stroke="var(--gold)"
         sw={1}
       />
       <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>

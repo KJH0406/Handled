@@ -40,7 +40,7 @@ export default function StoriesScreen() {
           <div
             className="row row-gap-xs"
             style={{
-              color: "var(--rausch)",
+              color: "var(--primary)",
               marginBottom: 12,
               fontSize: 12,
               fontWeight: 700,
@@ -51,8 +51,8 @@ export default function StoriesScreen() {
             <Icon
               name="sparkles"
               size={14}
-              stroke="var(--rausch)"
-              fill="var(--rausch)"
+              stroke="var(--primary)"
+              fill="var(--primary)"
               sw={1.5}
             />
             {t("kicker")}
@@ -290,7 +290,7 @@ function StoriesStyles() {
         display: inline-flex;
         align-items: center;
         align-self: flex-start;
-        background: var(--rausch);
+        background: var(--primary);
         color: #fff;
         font-size: 11px;
         font-weight: 700;

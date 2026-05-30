@@ -20,8 +20,8 @@ export default function Heart({ filled, onClick }: HeartProps) {
       <Icon
         name="heart"
         size={22}
-        fill={filled ? "var(--rausch)" : "rgba(0,0,0,0.5)"}
-        stroke={filled ? "var(--rausch)" : "white"}
+        fill={filled ? "var(--coral)" : "rgba(0,0,0,0.5)"}
+        stroke={filled ? "var(--coral)" : "white"}
         sw={2}
       />
     </button>

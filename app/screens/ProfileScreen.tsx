@@ -130,7 +130,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
               {guide.highlights.map((h, i) => (
                 <div key={i} className="row row-gap-md">
                   <div className="icon-circle">
-                    <Icon name="sparkles" size={14} stroke="var(--rausch)" />
+                    <Icon name="sparkles" size={14} stroke="var(--primary)" />
                   </div>
                   <span className="t-body-md ink">{h}</span>
                 </div>
@@ -186,8 +186,8 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
               <Icon
                 name="star"
                 size={18}
-                fill="var(--ink)"
-                stroke="var(--ink)"
+                fill="var(--gold)"
+                stroke="var(--gold)"
                 style={{ display: "inline-block", verticalAlign: "-3px" }}
               />{" "}
               {t("reviewsHeading", {

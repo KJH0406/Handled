@@ -1,6 +1,6 @@
 ## Overview
 
-Airbnb is the canonical example of a generous, photography-led consumer marketplace. The base canvas is **pure white** (`{colors.canvas}` - #ffffff) with deep near-black ink (`{colors.ink}` - #222222) for headlines and body, and a single voltage of **Rausch** (`{colors.primary}` - #ff385c) carrying every primary CTA, the search-button orb, the heart save state, and inline brand links. There is no secondary brand color in mainline marketing - the **Luxe purple** (`{colors.luxe}` - #460479) and **Plus magenta** (`{colors.plus}` - #92174d) tokens are sub-brand accents that only appear inside Airbnb Luxe / Plus contexts.
+Handled is a curated Korea travel marketplace built on Airbnb's component DNA — generous, photography-led — but expressed through its own Pantone 2-color brand. The base canvas is **pure white** (`{colors.canvas}` - #ffffff) with deep near-black ink (`{colors.ink}` - #222222) for headlines and body. **Classic Blue** (`{colors.primary}` - #0f4c81, Pantone 19-4052) is the trust anchor — every primary CTA, the search-button orb, navigation accents, and inline links. **Deep Coral** (`{colors.coral}` - #ea6863, Pantone 17-1564 TCX) returns warmth as the secondary, owning the heart save state, discovery badges, and hero radial glows. **Gold** (`{colors.gold}` - #f0a830) is the earned-signal accent — star ratings and spotlight badges. The previous Airbnb sub-brand tokens (Luxe purple, Plus magenta) are removed.
 
 Type runs **Airbnb Cereal VF** (a custom variable font Airbnb licenses), with **Circular** as the historic in-house fallback and a system stack underneath. Cereal sits at modest weights - display headlines render at 22–28px in weight 500–600, not the heavy 700+ weights that financial or enterprise systems lean on. The hero h1 ("Inspiration for future getaways") on the homepage is just 28px / 700, which would feel small on a typical SaaS page; here it works because the layout leans on photography (city collage, property cards) for visual weight rather than typographic muscle.
 
@@ -8,10 +8,10 @@ The shape language is **soft**. Buttons are 8px radius (`{rounded.sm}`), propert
 
 **Key Characteristics:**
 
-- Single accent color: `{colors.primary}` (#ff385c - "Rausch") carries every primary CTA, the search orb, the heart save state, and the brand wordmark. Used scarcely - most pages are 90% white + ink with one or two Rausch moments.
+- Two brand colors with assigned roles: `{colors.primary}` (#0f4c81 - "Classic Blue") for trust / CTAs / search orb / navigation; `{colors.coral}` (#ea6863 - "Deep Coral") for emotional accents (heart save state, discovery badges, hero glow). `{colors.gold}` (#f0a830) is reserved for star ratings and earned-signal badges. Pages stay 90% white + ink with a few brand-color moments.
 - Custom variable type: `Airbnb Cereal VF`. Display weights sit at 500–700, body at 400. Modest weight is intentional - the system trusts photography for visual heft.
 - Three-product top nav: Homes, Experiences, Services - each with a hand-illustrated 32px icon and "NEW" badges (`{component.new-tag}`) on the two newer products. Active tab uses an underline rule (`{component.product-tab-active}`).
-- Pill-shaped global search bar: white surface, fully rounded (`{rounded.full}`), divided by 1px hairlines into Where / When / Who segments, terminated by a circular Rausch search orb (`{component.search-orb}`).
+- Pill-shaped global search bar: white surface, fully rounded (`{rounded.full}`), divided by 1px hairlines into Where / When / Who segments, terminated by a circular Classic Blue search orb (`{component.search-orb}`).
 - Property cards are photo-first: aspect-ratio rectangles with `{rounded.md}` corner clipping, swipeable image carousel, "Guest favorite" floating badge top-left, heart icon top-right, then 4–5 lines of meta beneath.
 - Editorial dropdowns (footer, language picker) are clean text columns over the white canvas - no card surface, no shadow.
 - The design system caps elevation at one shadow tier (`box-shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px`) - used on hover-floated cards and search/account dropdowns.
@@ -21,11 +21,25 @@ The shape language is **soft**. Buttons are 8px radius (`{rounded.sm}`), propert
 
 ### Brand & Accent
 
-- **Rausch** (`{colors.primary}` - #ff385c): The single brand color. Used for primary CTA backgrounds (Reserve, Continue), the search orb, the heart save state on property cards, and inline brand links. The most recognizable color in consumer travel.
-- **Rausch Active** (`{colors.primary-active}` - #e00b41): The press / pointer-down variant - slightly more saturated. Used on `{component.button-primary-active}`.
-- **Rausch Disabled** (`{colors.primary-disabled}` - #ffd1da): A pale tint used on disabled CTAs.
-- **Luxe Purple** (`{colors.luxe}` - #460479): Sub-brand accent for Airbnb Luxe. Only appears inside Luxe-branded surfaces - never in mainline marketing.
-- **Plus Magenta** (`{colors.plus}` - #92174d): Sub-brand accent for Airbnb Plus. Same scoping as Luxe - sub-product only.
+**Primary — Classic Blue (Pantone 19-4052)**
+
+- **Classic Blue** (`{colors.primary}` - #0f4c81): The trust anchor. Primary CTA backgrounds (Reserve, Continue, Search), the search orb, navigation active indicators, inline links, and `:focus-visible` outlines.
+- **Classic Blue Dark** (`{colors.primary-dark}` - #0a3460): Press / pointer-down state on primary CTAs (`{component.button-primary-active}`); also the deep footer surface background.
+- **Classic Blue Mid** (`{colors.primary-mid}` - #1e6bb0): Lighter accent — used in hero gradient blends.
+- **Classic Blue Light** (`{colors.primary-light}` - #e8f0fb): Pale tint — active tab backgrounds, badge/label fills paired with primary text, soft accent surfaces.
+- **Primary Disabled** (`{colors.primary-disabled}` - #b8c4d9): Desaturated blue-gray on disabled CTAs.
+
+**Secondary — Deep Coral (Pantone 17-1564 TCX)**
+
+- **Deep Coral** (`{colors.coral}` - #ea6863): The warm secondary. Heart save state on cards, "Best Seller" / "Trending" discovery badges, hero radial glow accents.
+- **Coral Dark** (`{colors.coral-dark}` - #c0413a): Used when coral needs to sit behind white text and pass WCAG AA (≈5.2:1 on white). Required for any coral CTA / pill that carries white text.
+- **Coral Mid** (`{colors.coral-mid}` - #f08a86): Softer secondary used in gradient blends.
+- **Coral Light** (`{colors.coral-light}` - #fceae8): Very pale coral wash for soft accent surfaces.
+
+**Accent — Gold (earned-signal)**
+
+- **Gold** (`{colors.gold}` - #f0a830): Star icons on rating displays, "Launching Soon" type spotlight badges.
+- **Gold Background** (`{colors.gold-bg}` - #fef8ec): Very pale gold for badge fills.
 
 ### Surface
 
@@ -45,12 +59,12 @@ The shape language is **soft**. Buttons are 8px radius (`{rounded.sm}`), propert
 - **Body** (`{colors.body}` - #3f3f3f): A secondary running-text color used inside long-form review and amenity copy where ink would feel too heavy.
 - **Muted** (`{colors.muted}` - #6a6a6a): Sub-titles inside city link blocks ("Cottage rentals", "Villa rentals"), inactive product-tab labels, footer category sub-labels, "View all" links.
 - **Muted Soft** (`{colors.muted-soft}` - #929292): Disabled link text. Used very sparingly.
-- **Star Rating** (`{colors.star-rating}` - #222222): The same ink token - Airbnb's star icon and "4.81" rating numbers all render in ink rather than a yellow/gold color, which is a deliberate brand choice (yellow stars feel cheap in travel context).
-- **On Primary** (`{colors.on-primary}` - #ffffff): White text on Rausch CTAs.
+- **Star Rating** (`{colors.gold}` - #f0a830): Star icons render in gold per the Handled brand. Rating numbers ("4.81") still render in ink — only the icon carries the gold treatment, balancing distinctiveness with the "no cheap yellow" principle.
+- **On Primary** (`{colors.on-primary}` - #ffffff): White text on Classic Blue CTAs.
 
 ### Semantic
 
-- **Error** (`{colors.primary-error-text}` - #c13515): Inline error text for form validation. Distinct from Rausch - slightly darker, more saturated red.
+- **Error** (`{colors.primary-error-text}` - #c13515): Inline error text for form validation. Distinct from the brand coral — narrower red, used only on validation failures.
 - **Error Hover** (`{colors.primary-error-text-hover}` - #b32505): Darkens on link hover.
 - **Legal Link Blue** (`{colors.legal-link}` - #428bff): Inline links inside legal copy (Privacy, Terms). Only used inside the legal sub-band.
 
@@ -134,23 +148,23 @@ There are no progressive elevation tiers - the system either has the one shadow 
 
 ### Buttons
 
-**`button-primary`** - Rausch fill, white text, 8px radius, 14×24px padding, 48px height, weight 500. The most common CTA across the system: "Reserve", "Continue", "Search", account-flow primaries.
+**`button-primary`** - Classic Blue fill, white text, 8px radius, 14×24px padding, 48px height, weight 500. The most common CTA across the system: "Reserve", "Continue", "Search", account-flow primaries.
 
-**`button-primary-active`** - The press state. Background flips to `{colors.primary-active}`. No transform, no shadow change.
+**`button-primary-active`** - The press state. Background flips to `{colors.primary-active}` (#0a3460, the dark variant). No transform, no shadow change.
 
-**`button-primary-disabled`** - Pale Rausch tint at #ffd1da with white text. Cursor not-allowed.
+**`button-primary-disabled`** - Desaturated blue-gray (#b8c4d9, `{colors.primary-disabled}`) with white text. Cursor not-allowed.
 
-**`button-secondary`** - White fill with ink text and a 1px ink outline. 8px radius. Used for "Save", "Cancel", and inverse CTAs over Rausch surfaces.
+**`button-secondary`** - White fill with ink text and a 1px ink outline. 8px radius. Used for "Save", "Cancel", and inverse CTAs over Classic Blue surfaces.
 
 **`button-tertiary-text`** - Plain ink text, no surface, no border. Underlined on hover. Used for "Show more" type links and modal close labels.
 
-**`button-pill-rausch`** - A pill-shaped Rausch CTA used on featured cells (e.g., "Become a host" sub-CTA) - 9999px radius, 10×20px padding, 14px label.
+**`button-pill-primary`** - A pill-shaped Classic Blue CTA used on featured cells (e.g., "Become a host" sub-CTA) - 9999px radius, 10×20px padding, 14px label.
 
 ### Search Surface
 
 **`search-bar-pill`** - The signature global search bar. White fill, 9999px radius, 64px height, 1px hairline 1px-shadow border. Internally divided by vertical hairline rules into `{component.search-field-segment}` cells (Where / When / Who). Each segment holds an uppercase caption label above a placeholder line in `{typography.caption}`.
 
-**`search-orb`** - The circular Rausch orb terminating the right edge of the search bar. 48×48px, fully rounded, white magnifying-glass icon centered. The hottest single color moment on the homepage.
+**`search-orb`** - The circular Classic Blue orb terminating the right edge of the search bar. 48×48px, fully rounded, white magnifying-glass icon centered. The hottest single color moment on the homepage.
 
 ### Top Navigation
 
@@ -164,7 +178,7 @@ There are no progressive elevation tiers - the system either has the one shadow 
 
 ### Listing Cards
 
-**`property-card`** - A photo-first card. 1:1 aspect-ratio image with `{rounded.md}` corner clipping, image carousel dots overlay, "Guest favorite" floating badge top-left (`{component.guest-favorite-badge}`), and a heart icon top-right (`{component.icon-button-circle}` in default outlined state, Rausch-filled when saved). Beneath the image: 4–5 lines of meta - title (`{typography.title-md}`), distance / dates (`{typography.body-sm}` muted), and price ("$X night") right-aligned.
+**`property-card`** - A photo-first card. 1:1 aspect-ratio image with `{rounded.md}` corner clipping, image carousel dots overlay, "Guest favorite" floating badge top-left (`{component.guest-favorite-badge}`), and a heart icon top-right (`{component.icon-button-circle}` in default outlined state, **Deep Coral-filled when saved** — the heart is the secondary's flagship role). Beneath the image: 4–5 lines of meta - title (`{typography.title-md}`), distance / dates (`{typography.body-sm}` muted), and price ("$X night") right-aligned.
 
 **`property-card-photo`** - The photo plate itself, separated as a token because some surfaces (wishlist, search results) reuse just the photo without the meta block.
 
@@ -227,6 +241,6 @@ There are no progressive elevation tiers - the system either has the one shadow 
 
 - **Hover state colors:** intentionally not documented per the global no-hover policy - Airbnb's actual `:hover` styling for property cards is a subtle elevation lift, but precise extraction is unreliable.
 - **Loading states / skeleton screens:** not visible on the extracted surfaces.
-- **Map view styling:** the search-results map uses Mapbox-tinted tiles with custom Rausch markers; not captured here.
+- **Map view styling:** the search-results map uses tinted tiles with custom Classic Blue markers; not captured here.
 - **Form input error states:** error text color (`{colors.primary-error-text}`) is documented, but the full input outline + helper-text combination on validation failure was not visible in the captured surfaces.
-- **Sub-brand palettes:** Luxe (`{colors.luxe}`) and Plus (`{colors.plus}`) are documented as tokens, but their full sub-system (typography overrides, surface treatment) lives on separate sub-domains and is not captured here.
+- **Sub-brand palettes:** Removed in the Classic Blue + Deep Coral rebrand. The Airbnb Luxe / Plus sub-brand tokens are no longer part of the system.
