@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Handled - Discover Korea, Beautifully Handled</title>
+    <title>Handled — Discover Korea, Beautifully Handled (v7)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -95,9 +95,9 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: #03462e;
+        background: #0f4c81;
         cursor: pointer;
-        box-shadow: 0 2px 6px rgba(3, 70, 46, 0.3);
+        box-shadow: 0 2px 6px rgba(15, 76, 129, 0.3);
       }
       /* Scrollbar */
       ::-webkit-scrollbar {
@@ -125,27 +125,28 @@
       const { useState, useEffect, useRef } = React
 
       /* ─── Design Tokens ─── */
+      // Classic Blue (Pantone 19-4052) + Deep Coral (Pantone 17-1564)
       const C = {
-        p: "#03462E",
-        pDark: "#022D1E",
-        pMid: "#0A6B47",
-        pLight: "#E6F0EB",
-        pText: "#1A4A36",
-        s: "#D97941",
-        sDark: "#B55E28",
-        sMid: "#E8915A",
-        sLight: "#FDF0E7",
-        gold: "#E8A838",
+        p: "#0F4C81",
+        pDark: "#0A3460",
+        pMid: "#1E6BB0",
+        pLight: "#E8F0FB",
+        pText: "#0A3560",
+        s: "#E2703A",
+        sDark: "#C05828",
+        sMid: "#EC8A5A",
+        sLight: "#FEF0E8",
+        gold: "#F0A830",
         goldBg: "#FEF8EC",
         w: "#FFFFFF",
-        warm: "#FEFAF6",
-        g50: "#F8F5F1",
-        g100: "#EEEAE4",
-        g200: "#DDD8D1",
-        g300: "#C3BDB6",
-        g500: "#78726C",
-        g700: "#48433E",
-        g900: "#1E1B18",
+        warm: "#F8FAFD",
+        g50: "#F4F7FB",
+        g100: "#E8EDF5",
+        g200: "#D5DCE9",
+        g300: "#B8C4D9",
+        g500: "#6B7A99",
+        g700: "#3D4D6B",
+        g900: "#1A2235",
       }
       const sh = {
         sm: "0 1px 3px rgba(0,0,0,0.08)",
@@ -168,7 +169,7 @@
           cat: "Trending",
           max: 6,
           badge: "Best Seller",
-          desc: "Walk Seoul's coolest neighborhood with trendsetter Jenny - from Instagram-famous spots to locals-only hidden cafés you won't find in any guidebook.",
+          desc: "Walk Seoul's coolest neighborhood with trendsetter Jenny — from Instagram-famous spots to locals-only hidden cafés you won't find in any guidebook.",
           bg: "linear-gradient(155deg,#132e13 0%,#1f5c1f 100%)",
           course: [
             "Yeonmujang-gil Street",
@@ -189,7 +190,7 @@
           rev: 214,
           cat: "History",
           max: 8,
-          desc: "Uncover the hidden stories of Gyeongbokgung Palace with history expert Junho - secret chambers and royal gardens most visitors never see.",
+          desc: "Uncover the hidden stories of Gyeongbokgung Palace with history expert Junho — secret chambers and royal gardens most visitors never see.",
           bg: "linear-gradient(155deg,#14213d 0%,#2a4580 100%)",
           course: [
             "Gwanghwamun Square",
@@ -210,7 +211,7 @@
           rev: 89,
           cat: "Art",
           max: 6,
-          desc: "Explore Seoul's hidden art scene with former curator Soyeon - galleries, artist studios, and creative spaces tucked into charming traditional alleyways.",
+          desc: "Explore Seoul's hidden art scene with former curator Soyeon — galleries, artist studios, and creative spaces tucked into charming traditional alleyways.",
           bg: "linear-gradient(155deg,#251535 0%,#4a1f6e 100%)",
           course: [
             "Tongin Market Entrance",
@@ -232,7 +233,7 @@
           cat: "Food",
           max: 4,
           badge: "Top Rated",
-          desc: "Taste the Seoul only locals know with foodie Minjae - from traditional taverns to trendy street-food bars under the city lights.",
+          desc: "Taste the Seoul only locals know with foodie Minjae — from traditional taverns to trendy street-food bars under the city lights.",
           bg: "linear-gradient(155deg,#2a1200 0%,#6b3510 100%)",
           course: [
             "Mangwon Market Street Eats",
@@ -253,7 +254,7 @@
           rev: 73,
           cat: "Activities",
           max: 6,
-          desc: "Paddle through a Seoul sunset with Hayeon - the skyline glowing from the water is unlike anything you've ever experienced.",
+          desc: "Paddle through a Seoul sunset with Hayeon — the skyline glowing from the water is unlike anything you've ever experienced.",
           bg: "linear-gradient(155deg,#091520 0%,#0f3d66 100%)",
           course: [
             "Equipment Rental & Safety Briefing",
@@ -274,7 +275,7 @@
           rev: 112,
           cat: "Workshops",
           max: 4,
-          desc: "Create your own pottery piece in a traditional Bukchon workshop with ceramic artist Soojin - the perfect keepsake to bring home from Seoul.",
+          desc: "Create your own pottery piece in a traditional Bukchon workshop with ceramic artist Soojin — the perfect keepsake to bring home from Seoul.",
           bg: "linear-gradient(155deg,#1c0909 0%,#541515 100%)",
           course: [
             "Bukchon Alley Stroll",
@@ -290,84 +291,314 @@
         {
           n: 1,
           theme: "History & Hidden Gems",
-          accent: "#03462E",
+          accent: "#0F4C81",
+          hotel: {
+            name: "Jongno Heritage Hotel",
+            area: "Jongno-gu · Historic Core",
+            stars: 4,
+            price: 110,
+            desc: "Hanok-inspired boutique hotel within walking distance of Gyeongbokgung and Bukchon.",
+          },
+          transportDay: { public: 5, taxi: 20, car: 130 },
           spots: [
             {
               t: "9:00 AM",
               place: "Gyeongbokgung Palace",
               type: "Sightseeing",
               dur: "2 hrs",
-              tip: "Arrive at opening to beat the crowds - catch the guard ceremony at 10 AM",
+              budget: 3,
+              budgetNote: "Admission fee",
+              tip: "Arrive at opening — catch the Royal Guard Ceremony at 10 AM before the crowds arrive",
+              transits: null,
             },
             {
               t: "11:30 AM",
               place: "Tongin Market",
               type: "Dining",
               dur: "1 hr",
-              tip: "Try the lunch-box café - pay with old brass coins",
+              budget: 8,
+              budgetNote: "Brass-coin lunch set",
+              tip: "Exchange tokens at the entrance and fill your lunch box at each stall — the bindaetteok stall is unmissable",
+              transits: {
+                public: {
+                  icon: "🚶",
+                  line: null,
+                  info: "12 min walk south along Jahamun-ro from the palace West Gate",
+                  time: "12 min",
+                  cost: 0,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Gyeongbokgung West Gate → Tongin Market",
+                  time: "5 min",
+                  cost: 3.5,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver picks up at palace West Gate → Tongin Market drop-off",
+                  time: "5 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "1:00 PM",
               place: "Bukchon Hanok Village",
               type: "Sightseeing",
               dur: "1.5 hrs",
-              tip: "Gahoedong 31 is the best photo spot",
+              budget: 0,
+              budgetNote: "Free",
+              tip: "Gahoedong 31 is the best photo spot — arrive before 2 PM and be quiet for residents",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 3 (Orange)",
+                  info: "Gyeongbokgung Stn (Exit 5) → Anguk Stn (Exit 1) → 8 min walk uphill",
+                  time: "15 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Tongin Market → Bukchon Hanok Village entrance",
+                  time: "7 min",
+                  cost: 4,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver takes you to Bukchon upper entrance (Gahoe-dong)",
+                  time: "7 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "3:00 PM",
               place: "Insadong",
               type: "Shopping",
               dur: "1.5 hrs",
-              tip: "Ssamziegil for handmade crafts and souvenirs",
+              budget: 15,
+              budgetNote: "Shopping & snacks",
+              tip: "Ssamziegil courtyard has the best K-art gifts — handcrafted ceramics make perfect souvenirs",
+              transits: {
+                public: {
+                  icon: "🚶",
+                  line: null,
+                  info: "10 min walk south from Bukchon along Changdeokgung-gil",
+                  time: "10 min",
+                  cost: 0,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Short ride from Bukchon to Insadong main street",
+                  time: "5 min",
+                  cost: 3,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver waiting at Bukchon lower exit → Insadong drop-off",
+                  time: "5 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "6:00 PM",
               place: "Gwangjang Market",
               type: "Dining",
               dur: "1.5 hrs",
-              tip: "Must-try: mung-bean pancakes and gimbap",
+              budget: 12,
+              budgetNote: "Dinner at stalls",
+              tip: "Must-try: mung-bean pancakes (bindaetteok) and handrolled gimbap at the inner food stalls",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 1 (Dark Blue)",
+                  info: "Jonggak Stn (Exit 3-1) → Jongno 5-ga Stn (Exit 8) → 5 min walk to market",
+                  time: "12 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Insadong to Gwangjang Market main gate",
+                  time: "8 min",
+                  cost: 4,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver takes you to Gwangjang Market main entrance",
+                  time: "8 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
           ],
         },
         {
           n: 2,
-          theme: "Hip Seoul & Cool Neighborhoods",
-          accent: "#C8867C",
+          theme: "K-Beauty & Hip Seoul",
+          accent: "#1A6BB0",
+          hotel: {
+            name: "Novotel Ambassador Seoul Gangnam",
+            area: "Gangnam-gu · Gangnam",
+            stars: 4,
+            price: 155,
+            desc: "Stylish 4-star hotel in the heart of Gangnam — ideal base for K-beauty, Cheongdam and Hongdae.",
+          },
+          transportDay: { public: 6, taxi: 38, car: 150 },
           spots: [
             {
               t: "10:00 AM",
               place: "Seongsu Café Tour",
               type: "Café",
-              dur: "2 hrs",
-              tip: "Start at Onion, then hit Daerim Warehouse",
+              dur: "1.5 hrs",
+              budget: 15,
+              budgetNote: "2–3 specialty coffees",
+              tip: "Start at Café Onion (converted factory), then Daerim Warehouse — Seoul's coolest café district",
+              transits: null,
             },
             {
-              t: "12:30 PM",
-              place: "Ttukseom Hangang Park",
-              type: "Leisure",
-              dur: "1.5 hrs",
-              tip: "Grab chicken from the convenience store for a river picnic",
+              t: "12:00 PM",
+              place: "Ryu Salon · Cheongdam",
+              type: "Beauty",
+              dur: "2 hrs",
+              budget: 85,
+              budgetNote: "Cut & styling (reservation required)",
+              tip: "Book via Naver Reservation at least 2 weeks ahead — Ryu's celebrity cut is the signature service, ask by name",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 2 (Green)",
+                  info: "Seongsu Stn → Gangnam Stn (Exit 11) → 15 min walk or short taxi to Cheongdam-dong",
+                  time: "30 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Seongsu directly to Ryu Salon, Cheongdam-dong",
+                  time: "18 min",
+                  cost: 9,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver picks up at Seongsu café → direct drop-off at Ryu Salon",
+                  time: "18 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "2:30 PM",
-              place: "Seoul Forest",
-              type: "Sightseeing",
+              place: "Banobagi Clinic · Apgujeong",
+              type: "Beauty",
               dur: "1.5 hrs",
-              tip: "Walk the Metasequoia path and say hi to the deer",
+              budget: 120,
+              budgetNote: "Skin treatment (pre-booked)",
+              tip: "Book online in advance — the Aqua Peel + LED Therapy combo is what international visitors rave about; results visible same day",
+              transits: {
+                public: {
+                  icon: "🚶",
+                  line: null,
+                  info: "12 min walk west from Ryu Salon along Dosan-daero toward Apgujeong-ro",
+                  time: "12 min",
+                  cost: 0,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Short Kakao Taxi from Cheongdam-dong to Banobagi Clinic, Apgujeong-ro",
+                  time: "5 min",
+                  cost: 4,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver takes you from Ryu Salon directly to Banobagi Clinic entrance",
+                  time: "5 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
-              t: "5:00 PM",
-              place: "Yeonnam-dong Alleys",
+              t: "4:30 PM",
+              place: "Apgujeong Rodeo Street",
               type: "Shopping",
               dur: "1.5 hrs",
-              tip: "Indie bookshops and vintage boutiques everywhere",
+              budget: 40,
+              budgetNote: "K-fashion & cosmetics",
+              tip: "MCM, Gentle Monster, and local designer boutiques line the street — great for K-beauty top-ups after the clinic",
+              transits: {
+                public: {
+                  icon: "🚶",
+                  line: null,
+                  info: "5 min walk south from Banobagi Clinic to Apgujeong Rodeo main street",
+                  time: "5 min",
+                  cost: 0,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Essentially walkable — short ride from Banobagi to Rodeo Street",
+                  time: "3 min",
+                  cost: 3,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver waits nearby during clinic → drops you at Rodeo Street entrance",
+                  time: "3 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "7:30 PM",
-              place: "Hongdae Busking",
+              place: "Hongdae Night Scene",
               type: "Entertainment",
-              dur: "2 hrs",
-              tip: "Live street performances and dinner by the stage",
+              dur: "2.5 hrs",
+              budget: 30,
+              budgetNote: "Dinner + drinks",
+              tip: "Start at Yeonnam-dong for dinner, then head to Hongdae main stage — live busking runs until midnight on weekends",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 3 (Orange)",
+                  info: "Apgujeong Stn (Exit 3) → Express Bus Terminal → transfer Line 7 → Hongik Univ. Stn",
+                  time: "35 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Apgujeong Rodeo to Hongdae main street",
+                  time: "22 min",
+                  cost: 12,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver takes you directly from Apgujeong to Hongdae drop-off point",
+                  time: "22 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
           ],
         },
@@ -375,41 +606,156 @@
           n: 3,
           theme: "Views, Vibes & Night Lights",
           accent: "#7D4E1A",
+          hotel: {
+            name: "Myeongdong Luxury Central Hotel",
+            area: "Myeongdong · City Center",
+            stars: 5,
+            price: 145,
+            desc: "Five-star property in the heart of Myeongdong — steps from premier shopping and major transit links.",
+          },
+          transportDay: { public: 7, taxi: 30, car: 130 },
           spots: [
             {
               t: "9:30 AM",
-              place: "Namsan Seoul Tower",
+              place: "N Seoul Tower",
               type: "Sightseeing",
               dur: "2 hrs",
-              tip: "Take the bus instead of the cable car to skip the line",
+              budget: 12,
+              budgetNote: "Cable car + observatory",
+              tip: "Take Bus 02 from Chungmuro Stn instead of the cable car — much shorter wait and equally scenic",
+              transits: null,
             },
             {
               t: "12:00 PM",
               place: "Itaewon Lunch",
               type: "Dining",
               dur: "1.5 hrs",
-              tip: "Amazing variety of international cuisines",
+              budget: 18,
+              budgetNote: "International restaurant",
+              tip: "Rooftop terraces along The Hill strip have incredible views — perfect for a long weekend lunch",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 6 (Brown)",
+                  info: "Chungmuro Stn (Line 3/4) → Itaewon Stn (Exit 1, Line 6) → 5 min walk uphill",
+                  time: "18 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from N Seoul Tower base to Itaewon main street",
+                  time: "10 min",
+                  cost: 6,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver picks up at tower → drops at Itaewon restaurant entrance",
+                  time: "10 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "2:00 PM",
               place: "War Memorial of Korea",
               type: "Sightseeing",
               dur: "1.5 hrs",
-              tip: "Free admission - surprisingly moving exhibits",
+              budget: 0,
+              budgetNote: "Free admission",
+              tip: "Outdoor aircraft and tank exhibits are as impressive as the interior — allow at least 90 min",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 6 (Brown)",
+                  info: "Itaewon Stn → Samgakji Stn (Exit 12, Line 4) → 5 min walk to entrance",
+                  time: "10 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Itaewon to War Memorial main gate",
+                  time: "7 min",
+                  cost: 5,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver from Itaewon → War Memorial main entrance drop-off",
+                  time: "7 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "4:30 PM",
               place: "Ichon Hangang Park",
               type: "Leisure",
               dur: "1.5 hrs",
-              tip: "Best sunset spot along the river",
+              budget: 5,
+              budgetNote: "Snacks & drinks",
+              tip: "Face west from the main lawn for a golden-hour view of Wonhyo Bridge — the best sunset in Seoul",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 4 (Blue)",
+                  info: "Samgakji Stn → Ichon Stn (Exit 2, Line 1/4) → 15 min walk south along Ichon-ro",
+                  time: "20 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from War Memorial to Ichon Hangang Park entrance",
+                  time: "10 min",
+                  cost: 6,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver takes you to riverside park entrance",
+                  time: "10 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
             {
               t: "7:00 PM",
               place: "Myeongdong Shopping",
               type: "Shopping",
               dur: "2 hrs",
-              tip: "Last chance for souvenirs and K-beauty hauls",
+              budget: 30,
+              budgetNote: "Dinner + K-beauty haul",
+              tip: "Hit the street stalls for tteokbokki and hotteok first — K-beauty brands stay open until 10 PM",
+              transits: {
+                public: {
+                  icon: "🚇",
+                  line: "Line 4 (Blue)",
+                  info: "Ichon Stn → Myeongdong Stn (Exit 6, Line 4) → 5 min walk to shopping street",
+                  time: "15 min",
+                  cost: 1.5,
+                },
+                taxi: {
+                  icon: "🚕",
+                  line: null,
+                  info: "Kakao Taxi from Ichon Park to Myeongdong main street",
+                  time: "12 min",
+                  cost: 7,
+                },
+                car: {
+                  icon: "🚗",
+                  line: null,
+                  info: "Driver picks up at park entrance → drops at Myeongdong",
+                  time: "12 min",
+                  cost: 0,
+                  note: "Included",
+                },
+              },
             },
           ],
         },
@@ -444,7 +790,7 @@
           date: "May 8, 2026",
           readTime: "7 min read",
           summary:
-            "Everything you need to know before visiting Seoul's most iconic landmark - including what most tour guides skip.",
+            "Everything you need to know before visiting Seoul's most iconic landmark — including what most tour guides skip.",
           bg: "linear-gradient(155deg,#03462E,#0A6B47)",
         },
         {
@@ -474,7 +820,7 @@
           date: "Apr 22, 2026",
           readTime: "8 min read",
           summary:
-            "The volcanic island has far more to offer than lava tubes and haenyeo divers - if you know where to look.",
+            "The volcanic island has far more to offer than lava tubes and haenyeo divers — if you know where to look.",
           bg: "linear-gradient(155deg,#251535,#4a1f6e)",
         },
       ]
@@ -528,14 +874,35 @@
         "Destinations",
       ]
       const TYPE_CLR = {
-        Sightseeing: "#03462E",
+        Sightseeing: "#0F4C81",
         Dining: "#C17E18",
         Café: "#7D4E1A",
         Shopping: "#534AB7",
-        Leisure: "#185FA5",
-        Entertainment: "#B03010",
-        Activity: "#0A6B47",
+        Leisure: "#1A6BB0",
+        Entertainment: "#C05828",
+        Activity: "#1565A0",
+        Beauty: "#A0278A",
       }
+      const TRANSPORT_MODES = [
+        {
+          value: "public",
+          icon: "🚇",
+          label: "Public Transit",
+          desc: "Subway & bus - authentic and affordable",
+        },
+        {
+          value: "taxi",
+          icon: "🚕",
+          label: "Taxi",
+          desc: "Kakao Taxi - fast and convenient",
+        },
+        {
+          value: "car",
+          icon: "🚗",
+          label: "Private Car & Driver",
+          desc: "Dedicated driver for the full day",
+        },
+      ]
 
       /* ─── Shared Components ─── */
       const Btn = ({
@@ -1046,7 +1413,7 @@
             {/* ── Hero ── */}
             <div
               style={{
-                background: `linear-gradient(150deg, ${C.pDark} 0%, ${C.p} 45%, #085038 80%, #0A5A3A 100%)`,
+                background: `linear-gradient(150deg, ${C.pDark} 0%, ${C.p} 45%, #1A5C96 80%, ${C.pMid} 100%)`,
                 minHeight: 680,
                 position: "relative",
                 overflow: "hidden",
@@ -1076,7 +1443,7 @@
                     height: 560,
                     borderRadius: "50%",
                     background:
-                      "radial-gradient(circle, rgba(217,121,65,0.2) 0%, transparent 68%)",
+                      "radial-gradient(circle, rgba(226,112,58,0.22) 0%, transparent 68%)",
                   }}
                 />
                 <div
@@ -1088,7 +1455,7 @@
                     height: 380,
                     borderRadius: "50%",
                     background:
-                      "radial-gradient(circle, rgba(232,168,56,0.13) 0%, transparent 65%)",
+                      "radial-gradient(circle, rgba(240,168,48,0.15) 0%, transparent 65%)",
                   }}
                 />
               </div>
@@ -1155,7 +1522,7 @@
                     animationDelay: ".12s",
                   }}
                 >
-                  AI-crafted itineraries and handpicked local experiences - your
+                  AI-crafted itineraries and handpicked local experiences — your
                   dream Korea trip, planned in minutes.
                 </p>
 
@@ -1598,11 +1965,11 @@
                     }}
                   >
                     Tell us where you're going, how long you're staying, and
-                    what you love - our AI builds the perfect day-by-day plan.
+                    what you love — our AI builds the perfect day-by-day plan.
                     Three free plans with sign-up.
                   </p>
                   <Btn sz="lg" onClick={() => go("planner-input")}>
-                    Start Planning - It's Free →
+                    Start Planning — It's Free →
                   </Btn>
                 </div>
                 <div
@@ -1622,7 +1989,7 @@
                     {
                       n: "02",
                       title: "Choose Your Travel Style",
-                      desc: "History, food, adventure - pick what excites you",
+                      desc: "History, food, adventure — pick what excites you",
                     },
                     {
                       n: "03",
@@ -1723,21 +2090,21 @@
                     accent: C.p,
                     accentBg: C.pLight,
                     title: "Government-Licensed Guides Only",
-                    desc: "Every guide holds an official tourism certification - not just anyone with a blog. Your safety and experience come first, always.",
+                    desc: "Every guide holds an official tourism certification — not just anyone with a blog. Your safety and experience come first, always.",
                   },
                   {
                     icon: "🗺",
                     accent: C.s,
                     accentBg: C.sLight,
                     title: "Themed Journeys, Not Generic Tours",
-                    desc: "Each experience is personally designed by your guide - from Seoul's trendiest streets to midnight food crawls you can't book anywhere else.",
+                    desc: "Each experience is personally designed by your guide — from Seoul's trendiest streets to midnight food crawls you can't book anywhere else.",
                   },
                   {
                     icon: "💡",
                     accent: C.gold,
                     accentBg: C.goldBg,
                     title: "Stories You Won't Read Anywhere Else",
-                    desc: "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours - they're memories waiting to happen.",
+                    desc: "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours — they're memories waiting to happen.",
                   },
                 ].map((f, i) => (
                   <div
@@ -1812,6 +2179,7 @@
           styles: [],
           tourClass: "",
           budget: 5000,
+          transport: "public",
           specialNeeds: "",
         })
         const [loading, setLoading] = useState(false)
@@ -1826,7 +2194,13 @@
         const fmtBudget = (v) => `$${v.toLocaleString()}`
         const generate = () => {
           setLoading(true)
-          setTimeout(() => go("planner-result"), 2400)
+          setTimeout(
+            () =>
+              go("planner-result", undefined, {
+                transportMode: form.transport,
+              }),
+            2400,
+          )
         }
 
         const cardStyle = {
@@ -1988,7 +2362,7 @@
                     Building your perfect itinerary...
                   </h3>
                   <p style={{ color: C.g500 }}>
-                    Hang tight - this only takes a moment
+                    Hang tight — this only takes a moment
                   </p>
                 </div>
               ) : step === 1 ? (
@@ -2217,6 +2591,96 @@
                       })}
                     </div>
                   </div>
+                  <div style={{ marginBottom: 28 }}>
+                    <label
+                      style={{
+                        ...labelStyle,
+                        display: "block",
+                        marginBottom: 14,
+                      }}
+                    >
+                      TRANSPORTATION
+                    </label>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      {TRANSPORT_MODES.map((tm) => {
+                        const on = form.transport === tm.value
+                        return (
+                          <button
+                            key={tm.value}
+                            onClick={() =>
+                              setForm((f) => ({ ...f, transport: tm.value }))
+                            }
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 14,
+                              padding: "14px 18px",
+                              borderRadius: 16,
+                              border: `2px solid ${on ? C.p : C.g100}`,
+                              background: on ? C.pLight : C.w,
+                              textAlign: "left",
+                              transition: "all .15s",
+                              width: "100%",
+                            }}
+                          >
+                            <span style={{ fontSize: 22, flexShrink: 0 }}>
+                              {tm.icon}
+                            </span>
+                            <div style={{ flex: 1 }}>
+                              <div
+                                style={{
+                                  fontSize: 14,
+                                  fontWeight: 700,
+                                  color: on ? C.p : C.g900,
+                                }}
+                              >
+                                {tm.label}
+                              </div>
+                              <div
+                                style={{
+                                  fontSize: 12,
+                                  color: on ? C.p : C.g500,
+                                  marginTop: 2,
+                                }}
+                              >
+                                {tm.desc}
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: "50%",
+                                border: `2px solid ${on ? C.p : C.g200}`,
+                                background: on ? C.p : "transparent",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              {on && (
+                                <div
+                                  style={{
+                                    width: 8,
+                                    height: 8,
+                                    borderRadius: "50%",
+                                    background: C.w,
+                                  }}
+                                />
+                              )}
+                            </div>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
                   <div style={cardStyle}>
                     <label style={labelStyle}>TOTAL BUDGET</label>
                     <div style={{ marginTop: 12 }}>
@@ -2353,6 +2817,12 @@
                         TOUR_CLASSES.find((tc) => tc.value === form.tourClass)
                           ?.label || "Not selected",
                       ],
+                      [
+                        "Transportation",
+                        TRANSPORT_MODES.find(
+                          (tm) => tm.value === form.transport,
+                        )?.label || "Public Transit",
+                      ],
                       ["Budget", fmtBudget(form.budget)],
                       ...(form.specialNeeds
                         ? [["Special Requests", form.specialNeeds]]
@@ -2466,7 +2936,7 @@
                                 marginBottom: 6,
                               }}
                             >
-                              Sign up free - get 3 itinerary credits
+                              Sign up free — get 3 itinerary credits
                             </div>
                             <div
                               style={{
@@ -2529,9 +2999,134 @@
       }
 
       /* ─── PlannerResult ─── */
-      const PlannerResult = ({ go }) => {
+      const StarRating = ({ n }) => (
+        <span>
+          {[...Array(5)].map((_, i) => (
+            <span
+              key={i}
+              style={{ color: i < n ? C.gold : C.g200, fontSize: 12 }}
+            >
+              ★
+            </span>
+          ))}
+        </span>
+      )
+
+      const TransitConnector = ({ transits, mode }) => {
+        if (!transits) return null
+        const tr = transits[mode]
+        if (!tr) return null
+        const modeLabel =
+          mode === "public"
+            ? tr.line || "Walking"
+            : mode === "taxi"
+              ? "Kakao Taxi"
+              : "Private Driver"
+        const bg =
+          mode === "public" ? C.g50 : mode === "taxi" ? "#FFFBF0" : "#F0FDF4"
+        const bd =
+          mode === "public"
+            ? C.g200
+            : mode === "taxi"
+              ? "#F0A83060"
+              : "#86EFAC60"
+        return (
+          <div
+            style={{
+              display: "flex",
+              padding: "8px 22px 8px 72px",
+              marginBottom: 6,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: bg,
+                borderRadius: 10,
+                padding: "8px 14px",
+                flex: 1,
+                border: `1px dashed ${bd}`,
+              }}
+            >
+              <span style={{ fontSize: 16 }}>{tr.icon}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: C.g500,
+                    marginBottom: 2,
+                  }}
+                >
+                  {modeLabel}
+                </div>
+                <div style={{ fontSize: 12, color: C.g700, lineHeight: 1.45 }}>
+                  {tr.info}
+                </div>
+              </div>
+              <div
+                style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700, color: C.p }}>
+                  {tr.time}
+                </div>
+                {tr.note ? (
+                  <div
+                    style={{ fontSize: 11, color: "#16A34A", fontWeight: 600 }}
+                  >
+                    {tr.note}
+                  </div>
+                ) : tr.cost > 0 ? (
+                  <div style={{ fontSize: 11, color: C.g500 }}>
+                    ${tr.cost.toFixed(2)}
+                  </div>
+                ) : (
+                  <div
+                    style={{ fontSize: 11, color: "#16A34A", fontWeight: 600 }}
+                  >
+                    Free
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      }
+
+      const PlannerResult = ({ go, transportMode = "public" }) => {
         const [di, setDi] = useState(0)
         const d = DAYS[di]
+
+        const tDay = (day) =>
+          day.transportDay[transportMode] ?? day.transportDay.public
+        const actTotal = d.spots.reduce((s, sp) => s + sp.budget, 0)
+        const transTotal = tDay(d)
+        const daySubtotal = actTotal + transTotal
+        const dayWithHotel = daySubtotal + d.hotel.price
+        const grandTotal = DAYS.reduce(
+          (s, day) =>
+            s +
+            day.spots.reduce((a, sp) => a + sp.budget, 0) +
+            tDay(day) +
+            day.hotel.price,
+          0,
+        )
+
+        const tLabel =
+          transportMode === "public"
+            ? "🚇 Public Transit"
+            : transportMode === "taxi"
+              ? "🚕 Taxi (Kakao)"
+              : "🚗 Private Car & Driver"
+        const tLineLabel =
+          transportMode === "public"
+            ? "Local Transport"
+            : transportMode === "taxi"
+              ? "Taxi Fares (est.)"
+              : "Private Driver Service"
+
         return (
           <div
             id="page-scroll"
@@ -2542,6 +3137,7 @@
               paddingTop: 72,
             }}
           >
+            {/* Header */}
             <div
               style={{
                 background: C.w,
@@ -2551,7 +3147,7 @@
             >
               <div
                 style={{
-                  maxWidth: 880,
+                  maxWidth: 920,
                   margin: "0 auto",
                   display: "flex",
                   justifyContent: "space-between",
@@ -2570,7 +3166,8 @@
                     Seoul · 3-Day Itinerary ✦
                   </h1>
                   <p style={{ color: C.g500, fontSize: 13, marginTop: 4 }}>
-                    AI-generated · 1 credit used
+                    AI-generated · 1 credit used · Est. total $
+                    {grandTotal.toLocaleString()} / person
                   </p>
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
@@ -2581,37 +3178,71 @@
                 </div>
               </div>
             </div>
+
             <div
-              style={{ maxWidth: 880, margin: "0 auto", padding: "36px 40px" }}
+              style={{ maxWidth: 920, margin: "0 auto", padding: "36px 40px" }}
             >
-              <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
-                {DAYS.map((it, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setDi(i)}
-                    style={{
-                      padding: "10px 24px",
-                      borderRadius: 999,
-                      border: `2px solid ${di === i ? C.p : C.g200}`,
-                      background: di === i ? C.p : C.w,
-                      color: di === i ? C.w : C.g700,
-                      fontSize: 14,
-                      fontWeight: di === i ? 700 : 400,
-                      transition: "all .15s",
-                    }}
-                  >
-                    Day {i + 1}
-                  </button>
-                ))}
+              {/* Transport badge */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: C.pLight,
+                  borderRadius: 999,
+                  padding: "6px 14px",
+                  marginBottom: 20,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: C.p,
+                }}
+              >
+                {tLabel}
               </div>
+
+              {/* Day tabs */}
+              <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
+                {DAYS.map((it, i) => {
+                  const dtotal =
+                    it.spots.reduce((s, sp) => s + sp.budget, 0) +
+                    tDay(it) +
+                    it.hotel.price
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setDi(i)}
+                      style={{
+                        padding: "10px 22px",
+                        borderRadius: 14,
+                        border: `2px solid ${di === i ? C.p : C.g200}`,
+                        background: di === i ? C.p : C.w,
+                        color: di === i ? C.w : C.g700,
+                        fontSize: 14,
+                        fontWeight: di === i ? 700 : 400,
+                        transition: "all .15s",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div>Day {i + 1}</div>
+                      <div
+                        style={{ fontSize: 11, opacity: 0.75, marginTop: 1 }}
+                      >
+                        ~${dtotal}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Day header */}
               <div
                 className="fade-up"
-                key={di}
+                key={"hdr" + di}
                 style={{
                   background: d.accent,
                   borderRadius: 18,
                   padding: "20px 28px",
-                  marginBottom: 28,
+                  marginBottom: 22,
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -2633,10 +3264,107 @@
                     {d.theme}
                   </div>
                 </div>
-                <div style={{ color: "rgba(255,255,255,.6)", fontSize: 13 }}>
-                  {d.spots.length} stops
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ color: "rgba(255,255,255,.6)", fontSize: 12 }}>
+                    {d.spots.length} stops
+                  </div>
+                  <div
+                    style={{
+                      color: C.w,
+                      fontSize: 16,
+                      fontWeight: 800,
+                      marginTop: 2,
+                    }}
+                  >
+                    ~${dayWithHotel}/person
+                  </div>
                 </div>
               </div>
+
+              {/* Hotel card */}
+              <div
+                className="fade-up"
+                key={"hotel" + di}
+                style={{
+                  background: C.w,
+                  borderRadius: 16,
+                  padding: "18px 22px",
+                  marginBottom: 22,
+                  boxShadow: sh.sm,
+                  border: `1px solid ${C.g100}`,
+                  display: "flex",
+                  gap: 18,
+                  alignItems: "flex-start",
+                  animationDelay: ".04s",
+                }}
+              >
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 14,
+                    background: C.pLight,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 22,
+                    flexShrink: 0,
+                  }}
+                >
+                  🏨
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      marginBottom: 4,
+                    }}
+                  >
+                    <div>
+                      <div
+                        style={{ fontWeight: 800, fontSize: 16, color: C.g900 }}
+                      >
+                        {d.hotel.name}
+                      </div>
+                      <div
+                        style={{ fontSize: 13, color: C.g500, marginTop: 2 }}
+                      >
+                        {d.hotel.area} · <StarRating n={d.hotel.stars} />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        flexShrink: 0,
+                        marginLeft: 16,
+                      }}
+                    >
+                      <div
+                        style={{ fontWeight: 900, fontSize: 20, color: C.p }}
+                      >
+                        ${d.hotel.price}
+                      </div>
+                      <div style={{ fontSize: 11, color: C.g500 }}>
+                        per night
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: C.g500,
+                      lineHeight: 1.6,
+                      marginTop: 6,
+                    }}
+                  >
+                    {d.hotel.desc}
+                  </div>
+                </div>
+              </div>
+
+              {/* Spots timeline */}
               <div style={{ position: "relative", paddingLeft: 4 }}>
                 <div
                   style={{
@@ -2650,124 +3378,377 @@
                 />
                 {d.spots.map((sp, i) => (
                   <div
-                    key={`${di}-${i}`}
+                    key={di + "-" + i}
                     className="fade-up"
-                    style={{
-                      display: "flex",
-                      gap: 20,
-                      marginBottom: 18,
-                      animationDelay: `${i * 0.06}s`,
-                    }}
+                    style={{ animationDelay: `${(i + 1) * 0.06}s` }}
                   >
-                    <div
-                      style={{
-                        width: 52,
-                        height: 52,
-                        borderRadius: "50%",
-                        background: C.w,
-                        border: `2.5px solid ${d.accent}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        zIndex: 1,
-                        fontSize: 14,
-                        fontWeight: 900,
-                        color: d.accent,
-                      }}
-                    >
-                      {i + 1}
-                    </div>
-                    <div
-                      style={{
-                        flex: 1,
-                        background: C.w,
-                        borderRadius: 16,
-                        padding: "16px 22px",
-                        boxShadow: sh.sm,
-                        transition: "transform .2s, box-shadow .2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "translateY(-2px)"
-                        e.currentTarget.style.boxShadow = sh.md
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "none"
-                        e.currentTarget.style.boxShadow = sh.sm
-                      }}
-                    >
+                    {sp.transits && (
+                      <TransitConnector
+                        transits={sp.transits}
+                        mode={transportMode}
+                      />
+                    )}
+                    <div style={{ display: "flex", gap: 20, marginBottom: 12 }}>
                       <div
                         style={{
+                          width: 52,
+                          height: 52,
+                          borderRadius: "50%",
+                          background: C.w,
+                          border: `2.5px solid ${d.accent}`,
                           display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
-                          marginBottom: 8,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          zIndex: 1,
+                          fontSize: 14,
+                          fontWeight: 900,
+                          color: d.accent,
+                        }}
+                      >
+                        {i + 1}
+                      </div>
+                      <div
+                        style={{
+                          flex: 1,
+                          background: C.w,
+                          borderRadius: 16,
+                          padding: "16px 22px",
+                          boxShadow: sh.sm,
+                          transition: "transform .2s,box-shadow .2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "translateY(-2px)"
+                          e.currentTarget.style.boxShadow = sh.md
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "none"
+                          e.currentTarget.style.boxShadow = sh.sm
                         }}
                       >
                         <div
                           style={{
                             display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            marginBottom: 8,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: 12,
+                                color: C.g500,
+                                fontWeight: 700,
+                              }}
+                            >
+                              {sp.t}
+                            </span>
+                            <span
+                              style={{
+                                fontSize: 11,
+                                padding: "2px 9px",
+                                borderRadius: 6,
+                                background:
+                                  (TYPE_CLR[sp.type] || "#888") + "18",
+                                color: TYPE_CLR[sp.type] || "#888",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {sp.type}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: 12, color: C.g300 }}>
+                            ~{sp.dur}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 17,
+                            fontWeight: 800,
+                            color: C.g900,
+                            marginBottom: 7,
+                          }}
+                        >
+                          {sp.place}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            color: C.g500,
+                            display: "flex",
+                            gap: 5,
+                            alignItems: "flex-start",
+                            marginBottom: 10,
+                          }}
+                        >
+                          <span style={{ color: C.p, flexShrink: 0 }}>✦</span>
+                          {sp.tip}
+                        </div>
+                        <div
+                          style={{
+                            display: "inline-flex",
                             alignItems: "center",
-                            gap: 8,
+                            gap: 5,
+                            background: sp.budget === 0 ? "#F0FDF4" : "#FEF9EC",
+                            borderRadius: 8,
+                            padding: "4px 10px",
                           }}
                         >
                           <span
                             style={{
-                              fontSize: 12,
-                              color: C.g500,
-                              fontWeight: 700,
+                              fontSize: 13,
+                              fontWeight: 800,
+                              color: sp.budget === 0 ? "#16A34A" : C.g700,
                             }}
                           >
-                            {sp.t}
+                            {sp.budget === 0 ? "Free" : "$" + sp.budget}
                           </span>
-                          <span
-                            style={{
-                              fontSize: 11,
-                              padding: "2px 9px",
-                              borderRadius: 6,
-                              background: (TYPE_CLR[sp.type] || "#888") + "18",
-                              color: TYPE_CLR[sp.type] || "#888",
-                              fontWeight: 700,
-                            }}
-                          >
-                            {sp.type}
+                          <span style={{ fontSize: 11, color: C.g500 }}>
+                            · {sp.budgetNote}
                           </span>
                         </div>
-                        <span style={{ fontSize: 12, color: C.g300 }}>
-                          ~{sp.dur}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 17,
-                          fontWeight: 800,
-                          color: C.g900,
-                          marginBottom: 7,
-                        }}
-                      >
-                        {sp.place}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: C.g500,
-                          display: "flex",
-                          gap: 5,
-                          alignItems: "center",
-                        }}
-                      >
-                        <span style={{ color: C.p }}>✦</span>
-                        {sp.tip}
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {/* Day Budget Summary */}
+              <div
+                style={{
+                  background: C.w,
+                  borderRadius: 18,
+                  padding: "22px 26px",
+                  marginTop: 10,
+                  marginBottom: 28,
+                  boxShadow: sh.sm,
+                  border: `1px solid ${C.g100}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 800,
+                    color: C.g900,
+                    marginBottom: 16,
+                  }}
+                >
+                  Day {d.n} Budget Summary{" "}
+                  <span
+                    style={{ fontWeight: 400, color: C.g500, fontSize: 13 }}
+                  >
+                    (per person)
+                  </span>
+                </div>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 9 }}
+                >
+                  {d.spots.map((sp, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: 13,
+                        color: C.g700,
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 18,
+                            height: 18,
+                            borderRadius: "50%",
+                            background: C.g50,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 10,
+                            fontWeight: 700,
+                            color: C.g500,
+                            flexShrink: 0,
+                          }}
+                        >
+                          {i + 1}
+                        </span>
+                        {sp.place}
+                      </span>
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          color: sp.budget === 0 ? "#16A34A" : C.g900,
+                        }}
+                      >
+                        {sp.budget === 0 ? "Free" : "$" + sp.budget}
+                      </span>
+                    </div>
+                  ))}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: 13,
+                      color: C.g700,
+                      paddingTop: 8,
+                      borderTop: `1px dashed ${C.g100}`,
+                      marginTop: 4,
+                    }}
+                  >
+                    <span>{tLineLabel}</span>
+                    <span style={{ fontWeight: 600, color: C.g900 }}>
+                      ${transTotal}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                    marginTop: 18,
+                    paddingTop: 18,
+                    borderTop: `2px solid ${C.g100}`,
+                  }}
+                >
+                  <div
+                    style={{
+                      background: C.g50,
+                      borderRadius: 12,
+                      padding: "12px 16px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: C.g500,
+                        fontWeight: 700,
+                        marginBottom: 4,
+                      }}
+                    >
+                      ACTIVITIES + TRANSPORT
+                    </div>
+                    <div
+                      style={{ fontSize: 22, fontWeight: 900, color: C.g900 }}
+                    >
+                      ${daySubtotal}
+                    </div>
+                    <div style={{ fontSize: 11, color: C.g500, marginTop: 2 }}>
+                      per person
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      background: C.pLight,
+                      borderRadius: 12,
+                      padding: "12px 16px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        color: C.p,
+                        fontWeight: 700,
+                        marginBottom: 4,
+                      }}
+                    >
+                      INCL. HOTEL ({d.hotel.stars}★)
+                    </div>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: C.p }}>
+                      ${dayWithHotel}
+                    </div>
+                    <div style={{ fontSize: 11, color: C.g500, marginTop: 2 }}>
+                      per person · 1 night
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Grand Total */}
+              <div
+                style={{
+                  background: `linear-gradient(135deg,${C.pDark},${C.p})`,
+                  borderRadius: 20,
+                  padding: "24px 30px",
+                  marginBottom: 28,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,.65)",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: 1,
+                      marginBottom: 6,
+                    }}
+                  >
+                    3-DAY ESTIMATED TOTAL
+                  </div>
+                  <div
+                    style={{
+                      color: C.w,
+                      fontSize: 32,
+                      fontWeight: 900,
+                      letterSpacing: -1,
+                    }}
+                  >
+                    ${grandTotal.toLocaleString()}
+                  </div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,.6)",
+                      fontSize: 13,
+                      marginTop: 4,
+                    }}
+                  >
+                    per person · activities, transport & hotels
+                  </div>
+                </div>
+                <div
+                  style={{ textAlign: "right", flexShrink: 0, marginLeft: 24 }}
+                >
+                  {DAYS.map((day, i) => {
+                    const dt =
+                      day.spots.reduce((s, sp) => s + sp.budget, 0) +
+                      tDay(day) +
+                      day.hotel.price
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          color: "rgba(255,255,255,.75)",
+                          fontSize: 13,
+                          marginBottom: 4,
+                        }}
+                      >
+                        Day {i + 1}:{" "}
+                        <strong style={{ color: C.w }}>${dt}</strong>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
               {/* Upsell */}
               <div
                 style={{
-                  marginTop: 32,
-                  background: `linear-gradient(135deg,${C.pDark},${C.p})`,
+                  background: `linear-gradient(135deg,${C.sDark},${C.s})`,
                   borderRadius: 20,
                   padding: "28px 34px",
                   display: "flex",
@@ -2856,7 +3837,7 @@
                   height: 400,
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(circle, rgba(217,121,65,0.15) 0%, transparent 68%)",
+                    "radial-gradient(circle, rgba(226,112,58,0.2) 0%, transparent 68%)",
                   pointerEvents: "none",
                 }}
               />
@@ -2952,7 +3933,7 @@
                   <span
                     style={{ fontWeight: 700, color: C.g900, fontSize: 14 }}
                   >
-                    Experience is launching soon -{" "}
+                    Experience is launching soon —{" "}
                   </span>
                   <span style={{ color: C.g700, fontSize: 14 }}>
                     Browse our curated tours and get notified when booking
@@ -3572,7 +4553,7 @@
                   <p style={{ color: C.g500, fontSize: 14 }}>
                     {mode === "signup"
                       ? "Join thousands of travelers discovering the real Korea"
-                      : "Welcome back - your next adventure awaits"}
+                      : "Welcome back — your next adventure awaits"}
                   </p>
                 </div>
 
@@ -3725,7 +4706,7 @@
                         }}
                       >
                         You'll receive <strong>3 free itinerary credits</strong>{" "}
-                        when you sign up - no credit card needed.
+                        when you sign up — no credit card needed.
                       </span>
                     </div>
                   )}
@@ -3787,7 +4768,7 @@
                           : "Logging in..."}
                       </span>
                     ) : mode === "signup" ? (
-                      "Create Account - It's Free"
+                      "Create Account — It's Free"
                     ) : (
                       "Log In"
                     )}
@@ -3887,7 +4868,7 @@
                   height: 320,
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(circle,rgba(232,168,56,.18) 0%,transparent 68%)",
+                    "radial-gradient(circle,rgba(226,112,58,.22) 0%,transparent 68%)",
                   pointerEvents: "none",
                 }}
               />
@@ -4053,7 +5034,7 @@
                       cursor: "not-allowed",
                     }}
                   >
-                    Get More Credits - Coming Soon
+                    Get More Credits — Coming Soon
                   </button>
                 </div>
               </div>
@@ -4365,7 +5346,7 @@
                           cursor: "not-allowed",
                         }}
                       >
-                        Edit Profile - Coming Soon
+                        Edit Profile — Coming Soon
                       </button>
                     </div>
                   </div>
@@ -4460,7 +5441,7 @@
                   bottom: 0,
                   width: "40%",
                   background:
-                    "radial-gradient(ellipse at right,rgba(232,168,56,.12),transparent 70%)",
+                    "radial-gradient(ellipse at right,rgba(226,112,58,.18),transparent 70%)",
                   pointerEvents: "none",
                 }}
               />
@@ -4870,13 +5851,15 @@
         const [user, setUser] = useState(null)
         const [authMode, setAuthMode] = useState("signup")
         const [plannerInit, setPlannerInit] = useState({})
+        const [transportMode, setTransportMode] = useState("public")
 
         const go = (s, id, extra) => {
           if (id !== undefined && id !== "_") setPid(Number(id))
           if (typeof extra === "string") {
             setAuthMode(extra)
           } else if (extra && typeof extra === "object") {
-            setPlannerInit(extra)
+            if (extra.transportMode) setTransportMode(extra.transportMode)
+            else setPlannerInit(extra)
           }
           setScreen(s)
           const el = document.getElementById("page-scroll")
@@ -4903,7 +5886,9 @@
               plannerInit={plannerInit}
             />
           ),
-          "planner-result": <PlannerResult go={go} />,
+          "planner-result": (
+            <PlannerResult go={go} transportMode={transportMode} />
+          ),
           "experience-browse": <ExperienceBrowse go={go} />,
           "experience-detail": <ExperienceDetail go={go} pid={pid} />,
           auth: <AuthScreen go={go} login={login} initMode={authMode} />,
