@@ -146,62 +146,69 @@ export default function AuthRequiredModal({
         </div>
 
         <form className="auth-form" onSubmit={onSubmit} noValidate>
-          <div>
-            <div className="auth-input-row">
-              <span className="auth-input-icon" aria-hidden>
+          <div className="field">
+            <label htmlFor="auth-modal-email">{t("email")}</label>
+            <div className="input-affix" data-invalid={error ? "true" : undefined}>
+              <span className="affix-icon" aria-hidden>
                 <Icon name="mail" size={20} />
               </span>
               <input
+                id="auth-modal-email"
                 type="email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value)
                   setError("")
                 }}
-                placeholder={t("email")}
+                placeholder={t("emailPlaceholder")}
                 autoComplete="email"
-                aria-label={t("email")}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? "auth-modal-error" : undefined}
               />
             </div>
           </div>
 
-          <div>
-            <div className="auth-input-row">
-              <span className="auth-input-icon" aria-hidden>
+          <div className="field">
+            <label htmlFor="auth-modal-password">{t("password")}</label>
+            <div className="input-affix" data-invalid={error ? "true" : undefined}>
+              <span className="affix-icon" aria-hidden>
                 <Icon name="lock" size={20} />
               </span>
               <input
+                id="auth-modal-password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
                   setError("")
                 }}
-                placeholder={t("password")}
                 autoComplete={
                   mode === "signUp" ? "new-password" : "current-password"
                 }
-                aria-label={t("password")}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? "auth-modal-error" : undefined}
               />
               <button
                 type="button"
-                className="auth-eye"
+                className="affix-action"
                 onClick={() => setShowPassword((v) => !v)}
                 aria-label={
                   showPassword ? t("hidePassword") : t("showPassword")
                 }
+                aria-pressed={showPassword}
               >
                 <Icon name={showPassword ? "eye" : "eyeOff"} size={20} />
               </button>
             </div>
-            {error && <div className="auth-error">{error}</div>}
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary auth-btn"
-            style={{ width: "100%" }}
-          >
+          {error && (
+            <div id="auth-modal-error" className="auth-error" role="alert">
+              {error}
+            </div>
+          )}
+
+          <button type="submit" className="btn btn-primary auth-btn btn-block">
             {tm(ctaKey, { credits: DEFAULT_CREDITS })}
           </button>
         </form>

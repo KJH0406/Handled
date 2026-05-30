@@ -53,52 +53,63 @@ export default function SignInScreen() {
         <span className="auth-tagline">{t("tagline")}</span>
 
         <form className="auth-form" onSubmit={onSubmit} noValidate>
-          <div>
-            <div className="auth-input-row">
-              <span className="auth-input-icon" aria-hidden>
+          <div className="field">
+            <label htmlFor="auth-email">{t("email")}</label>
+            <div className="input-affix" data-invalid={error ? "true" : undefined}>
+              <span className="affix-icon" aria-hidden>
                 <Icon name="mail" size={20} />
               </span>
               <input
+                id="auth-email"
                 type="email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value)
                   setError("")
                 }}
-                placeholder={t("email")}
+                placeholder={t("emailPlaceholder")}
                 autoComplete="email"
-                aria-label={t("email")}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? "auth-error" : undefined}
               />
             </div>
           </div>
 
-          <div>
-            <div className="auth-input-row">
-              <span className="auth-input-icon" aria-hidden>
+          <div className="field">
+            <label htmlFor="auth-password">{t("password")}</label>
+            <div className="input-affix" data-invalid={error ? "true" : undefined}>
+              <span className="affix-icon" aria-hidden>
                 <Icon name="lock" size={20} />
               </span>
               <input
+                id="auth-password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
                   setError("")
                 }}
-                placeholder={t("password")}
                 autoComplete="current-password"
-                aria-label={t("password")}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? "auth-error" : undefined}
               />
               <button
                 type="button"
-                className="auth-eye"
+                className="affix-action"
                 onClick={() => setShowPassword((v) => !v)}
                 aria-label={showPassword ? t("hidePassword") : t("showPassword")}
+                aria-pressed={showPassword}
               >
                 <Icon name={showPassword ? "eye" : "eyeOff"} size={20} />
               </button>
             </div>
-            {error && <div className="auth-error">{error}</div>}
           </div>
+
+          {error && (
+            <div id="auth-error" className="auth-error" role="alert">
+              {error}
+            </div>
+          )}
 
           <div className="auth-actions">
             <button type="submit" className="btn btn-primary auth-btn">

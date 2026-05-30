@@ -209,7 +209,7 @@ export default function ProfileScreen({ guideId }: ProfileScreenProps) {
                   <p className="t-body-sm body review-cell-text">
                     &quot;{r.text}&quot;
                   </p>
-                  <div className="t-caption-sm muted-soft review-cell-date">
+                  <div className="t-caption-sm muted review-cell-date">
                     {r.date}
                   </div>
                 </div>

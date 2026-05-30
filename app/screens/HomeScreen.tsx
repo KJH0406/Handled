@@ -51,8 +51,8 @@ const VALUE_PROPS: ValueProp[] = [
 
 const VALUE_PROP_ICON_COLORS: Record<ValueProp["accentClass"], string> = {
   "value-prop-card--accent-1": "var(--primary)",
-  "value-prop-card--accent-2": "#2563eb",
-  "value-prop-card--accent-3": "#daa520",
+  "value-prop-card--accent-2": "var(--coral)",
+  "value-prop-card--accent-3": "var(--gold)",
 }
 
 export default function HomeScreen() {
