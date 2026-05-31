@@ -530,6 +530,18 @@
       "noCharge": "예약 확정 전에는 결제되지 않습니다",
       "decGuestsAria": "인원 줄이기",
       "incGuestsAria": "인원 늘리기"
+    },
+    "notify": {
+      "perPerson": "/ 인",
+      "comingSoonTitle": "출시 예정",
+      "comingSoonBody": "이 체험은 곧 정식 오픈됩니다. 예약이 열리면 가장 먼저 알려드릴게요.",
+      "label": "출시되면 알림 받기",
+      "placeholder": "your@email.com",
+      "cta": "알림 신청",
+      "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
+      "successTitle": "신청이 완료되었어요!",
+      "successBody": "예약이 열리는 즉시 이메일로 알려드릴게요.",
+      "disclaimer": "스팸 없음 · 언제든 수신 거부 가능"
     }
   },
   "calendar": {

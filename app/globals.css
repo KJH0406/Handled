@@ -138,7 +138,10 @@
 }
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* clip (not hidden) prevents a horizontal scrollbar WITHOUT establishing a
+     scroll container — `overflow-x: hidden` would silently break every
+     `position: sticky` descendant (e.g. the experience-detail side panel). */
+  overflow-x: clip;
 }
 body {
   font-family: var(--font);
@@ -151,7 +154,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   min-width: 320px;
 }
 img {
@@ -1191,6 +1194,50 @@ a {
 .exp-pill.active {
   border-color: var(--primary);
   background: var(--primary-light);
+}
+/* Pre-launch notify panel (experience detail) */
+.notify-callout {
+  background: var(--gold-bg);
+  border: 1.5px solid rgba(240, 168, 48, 0.25);
+  border-radius: var(--r-md);
+  padding: 24px 20px;
+  text-align: center;
+}
+.notify-callout-icon {
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.notify-label {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.8px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.notify-field {
+  display: flex;
+  gap: 8px;
+}
+.notify-field .input {
+  flex: 1;
+  min-width: 0;
+}
+.notify-field .btn {
+  flex-shrink: 0;
+}
+.notify-success {
+  background: var(--primary-light);
+  border-radius: var(--r-sm);
+  padding: 16px 18px;
+  text-align: center;
+}
+.notify-success-icon {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--primary);
+  margin-bottom: 6px;
 }
 /* ─────────────────────────────────────────────
        Experience card (profile page)

@@ -4,8 +4,7 @@ import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { useBooking } from "../components/booking/BookingProvider"
-import ExpBookingPanel from "../components/booking/ExpBookingPanel"
+import ExpNotifyPanel from "../components/booking/ExpNotifyPanel"
 import Breadcrumb from "../components/layout/Breadcrumb"
 import Avatar from "../components/ui/Avatar"
 import Icon from "../components/ui/Icon"
@@ -18,7 +17,6 @@ import { useAppNavigate } from "../lib/navigation"
 import { experiencesRepo } from "../lib/repositories/experiences"
 import { guidesRepo } from "../lib/repositories/guides"
 import { reviewsRepo } from "../lib/repositories/reviews"
-import type { Booking } from "../lib/types/domain"
 
 export interface ExperienceDetailScreenProps {
   expId: string
@@ -29,11 +27,6 @@ export default function ExperienceDetailScreen({
 }: ExperienceDetailScreenProps) {
   const t = useTranslations("experienceDetail")
   const navigate = useAppNavigate()
-  const { setBooking } = useBooking()
-  const onReserve = (b: Booking) => {
-    setBooking(b)
-    navigate("payment")
-  }
   const exp = useMemo(() => experiencesRepo.findById(expId), [expId])
   const guide = useMemo(
     () => (exp ? guidesRepo.findById(exp.guideId) : null),
@@ -385,7 +378,7 @@ export default function ExperienceDetailScreen({
             </div>
           </div>
 
-          <ExpBookingPanel exp={exp} guide={guide} onReserve={onReserve} />
+          <ExpNotifyPanel exp={exp} />
         </div>
       </div>
     </main>
