@@ -309,7 +309,8 @@
           },
           "minutes": "{min}분",
           "free": "무료",
-          "included": "포함"
+          "included": "포함",
+          "walk": "도보"
         },
         "note": {
           "dining": "식사",

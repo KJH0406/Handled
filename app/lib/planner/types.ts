@@ -90,6 +90,12 @@ export interface PlanSlot {
   category: ExperienceCategory
   title: string
   note?: string
+  /** Locality of the picked venue (e.g. "Jongno"); drives transit routes. */
+  area?: string
+  /** Nearest subway station with exit (e.g. "Anguk Stn (Exit 1)"). */
+  station?: string
+  /** Representative subway line serving the venue (e.g. "Line 3"). */
+  line?: string
   locked?: boolean
 }
 

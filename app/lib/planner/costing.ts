@@ -36,6 +36,18 @@ export interface CostedTransit {
   costKRW: number
   /** Private car is bundled with the service → shown as "included", not a fare. */
   included: boolean
+  /** Previous stop's name / area / station, when known. */
+  fromName?: string
+  fromArea?: string
+  fromStation?: string
+  /** This stop's name / area / station, when known. */
+  toName?: string
+  toArea?: string
+  toStation?: string
+  /** Representative subway line for this leg (public transit only). */
+  line?: string
+  /** Short same-area hop shown as a walk (🚶), no fare. */
+  walk?: boolean
 }
 
 export interface CostedSlot {
@@ -162,10 +174,29 @@ const buildTransit = (
   mode: Transport,
   dayIdx: number,
   slotIdx: number,
+  fromSlot: PlanSlot | undefined,
+  toSlot: PlanSlot,
 ): CostedTransit => {
   const seed = dayIdx * 4 + slotIdx
+  const ends = {
+    fromName: fromSlot?.title,
+    fromArea: fromSlot?.area,
+    fromStation: fromSlot?.station,
+    toName: toSlot.title,
+    toArea: toSlot.area,
+    toStation: toSlot.station,
+  }
+  const line = toSlot.line
+  const sameArea = !!fromSlot?.area && fromSlot.area === toSlot.area
+
   if (mode === "car") {
-    return { mode, durationMin: 8 + (seed % 4) * 2, costKRW: 0, included: true }
+    return {
+      mode,
+      durationMin: 8 + (seed % 4) * 2,
+      costKRW: 0,
+      included: true,
+      ...ends,
+    }
   }
   if (mode === "taxi") {
     return {
@@ -173,15 +204,20 @@ const buildTransit = (
       durationMin: 6 + ((seed * 5) % 14),
       costKRW: roundTo(4_000 + (seed % 5) * 1_500, 500),
       included: false,
+      ...ends,
     }
   }
-  // public transit — cheap flat fare, occasional free walking leg
-  const walk = seed % 3 === 0
+  // public transit — same locality is a walk; otherwise a flat-fare subway/bus
+  // leg with a representative line badge.
+  const walk = sameArea || seed % 3 === 0
   return {
     mode,
-    durationMin: 12 + ((seed * 7) % 24),
+    durationMin: walk ? 6 + (seed % 4) * 2 : 12 + ((seed * 7) % 24),
     costKRW: walk ? 0 : 1_500,
     included: false,
+    ...ends,
+    line: walk ? undefined : line,
+    walk,
   }
 }
 
@@ -210,7 +246,9 @@ const costDay = (
   const slots: CostedSlot[] = day.slots.map((slot, slotIdx) => {
     const { costKRW, noteKey } = activityCost(slot.category, tier, slotIdx)
     const rawTransit =
-      slotIdx === 0 ? null : buildTransit(transport, dayIdx, slotIdx)
+      slotIdx === 0
+        ? null
+        : buildTransit(transport, dayIdx, slotIdx, day.slots[slotIdx - 1], slot)
     // Activity and transit read as per-head spend → scale to the whole party.
     // Lodging is a per-room/night figure, so it is left as-is downstream.
     const transit =

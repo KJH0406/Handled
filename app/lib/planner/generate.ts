@@ -1,5 +1,6 @@
 import { SCHEDULE_BY_CATEGORY } from "../data/schedules"
-import type { ExperienceCategory } from "../types/domain"
+import { pickVenue } from "../data/venues"
+import type { City, ExperienceCategory } from "../types/domain"
 import {
   planDayCount,
   type Plan,
@@ -79,10 +80,13 @@ const buildSlot = (
   category: ExperienceCategory,
   dayIdx: number,
   slotIdx: number,
+  city: City,
 ): PlanSlot => {
+  // Prefer a real, city-specific venue; fall back to generic schedule steps.
+  const venue = pickVenue(city, category, dayIdx + slotIdx)
   const steps = SCHEDULE_BY_CATEGORY[category]
-  const title = steps[0]?.title ?? category
-  const note = steps[1]?.desc
+  const title = venue?.name ?? steps[0]?.title ?? category
+  const note = venue?.desc ?? steps[1]?.desc
 
   return {
     id: `slot-${dayIdx}-${slotIdx}-${category.toLowerCase()}`,
@@ -92,6 +96,9 @@ const buildSlot = (
     category,
     title,
     note,
+    area: venue?.area,
+    station: venue?.station,
+    line: venue?.line,
   }
 }
 
@@ -111,7 +118,7 @@ const buildDay = (
       rotationOffset + slotIdx,
     )
     used.add(category)
-    slots.push(buildSlot(anchor, category, dayIdx, slotIdx))
+    slots.push(buildSlot(anchor, category, dayIdx, slotIdx, input.city))
   })
 
   return {
@@ -195,7 +202,7 @@ export const regenerateSlot = (
         used,
         dayIdx + slotIdx + Date.now(),
       )
-      return buildSlot(anchor, next, dayIdx, slotIdx)
+      return buildSlot(anchor, next, dayIdx, slotIdx, plan.input.city)
     })
     return { ...day, slots }
   })

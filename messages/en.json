@@ -312,7 +312,8 @@
           },
           "minutes": "{min} min",
           "free": "Free",
-          "included": "Included"
+          "included": "Included",
+          "walk": "Walk"
         },
         "note": {
           "dining": "Meals",

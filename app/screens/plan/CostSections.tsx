@@ -33,6 +33,25 @@ export function TransitConnector({ transit }: { transit: CostedTransit }) {
       ? t("transit.free")
       : money(transit.costKRW, locale)
   const free = !transit.included && transit.costKRW === 0
+  const walk = !!transit.walk
+  const label = walk ? t("transit.walk") : t(`transit.label.${transit.mode}`)
+  const names =
+    transit.fromName && transit.toName
+      ? `${transit.fromName} → ${transit.toName}`
+      : null
+  const stations =
+    transit.fromStation && transit.toStation
+      ? `${transit.fromStation} → ${transit.toStation}`
+      : null
+  const areas =
+    transit.fromArea && transit.toArea
+      ? `${transit.fromArea} → ${transit.toArea}`
+      : null
+  // Public legs lead with station→station; taxi/car/walk lead with venue names.
+  const route =
+    !walk && transit.mode === "public"
+      ? (stations ?? names ?? areas ?? t(`transit.info.${transit.mode}`))
+      : (names ?? areas ?? t(`transit.info.${transit.mode}`))
   return (
     <div
       style={{
@@ -45,15 +64,36 @@ export function TransitConnector({ transit }: { transit: CostedTransit }) {
       }}
     >
       <span aria-hidden style={{ fontSize: 15 }}>
-        {TRANSPORT_EMOJI[transit.mode]}
+        {walk ? "🚶" : TRANSPORT_EMOJI[transit.mode]}
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div className="t-caption-sm muted" style={{ fontWeight: 600 }}>
-          {t(`transit.label.${transit.mode}`)}
+        <div
+          className="t-caption-sm muted"
+          style={{
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            flexWrap: "wrap",
+          }}
+        >
+          {label}
+          {transit.line && (
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                padding: "1px 6px",
+                borderRadius: 999,
+                background: "var(--primary-light)",
+                color: "var(--primary)",
+              }}
+            >
+              {transit.line}
+            </span>
+          )}
         </div>
-        <div className="t-caption-sm muted">
-          {t(`transit.info.${transit.mode}`)}
-        </div>
+        <div className="t-caption-sm muted">{route}</div>
       </div>
       <div style={{ textAlign: "right", flexShrink: 0 }}>
         <div
@@ -135,9 +175,18 @@ export function CostedSlotCard({ costed }: { costed: CostedSlot }) {
             {free ? t("free") : money(costKRW, locale)}
           </span>
         </div>
-        <div className="t-title-md ink" style={{ margin: "8px 0 4px" }}>
+        <div className="t-title-md ink" style={{ margin: "8px 0 2px" }}>
           {slot.title}
         </div>
+        {slot.area && (
+          <div
+            className="t-caption-sm muted"
+            style={{ marginBottom: 4 }}
+            aria-label={`지역 ${slot.area}`}
+          >
+            📍 {slot.area}
+          </div>
+        )}
         {slot.note && <p className="t-body-sm body">{slot.note}</p>}
         <div className="t-caption-sm muted" style={{ marginTop: 6 }}>
           {t(`note.${noteKey}`)}
