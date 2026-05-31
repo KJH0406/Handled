@@ -283,14 +283,14 @@
       "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
       "slotCount": "{count, plural, one {# stop} other {# stops}}",
       "cost": {
-        "estTotalLine": "Est. total {amount} / person",
+        "estTotalLine": "Est. total {amount}",
         "transportBadge": {
           "public": "🚇 Public transit",
           "taxi": "🚕 Taxi",
           "car": "🚗 Private car"
         },
         "dayTabTotal": "~{amount}",
-        "dayHeaderTotal": "~{amount}/person",
+        "dayHeaderTotal": "~{amount}",
         "lodging": {
           "perNight": "per night",
           "blurb": {
@@ -329,11 +329,11 @@
           "car": "Private driver service"
         },
         "activityPlusTransport": "Activities + transport",
-        "perPerson": "per person",
+        "perPerson": "for the group",
         "inclLodging": "Incl. hotel ({stars}★)",
-        "oneNight": "per person · 1 night",
+        "oneNight": "1 night",
         "grandTitle": "{count, plural, one {# day} other {# days}} estimated total",
-        "grandSub": "per person · activities, transport & hotels",
+        "grandSub": "activities, transport & hotels for the whole group",
         "dayLine": "Day {n}",
         "estNotice": "Estimated costs · not a final quote"
       },

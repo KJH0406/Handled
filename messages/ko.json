@@ -280,14 +280,14 @@
       "travelersSummary": "{count, plural, other {여행자 #명}}",
       "slotCount": "{count, plural, other {#곳}}",
       "cost": {
-        "estTotalLine": "예상 총액 {amount} / 1인",
+        "estTotalLine": "예상 총액 {amount}",
         "transportBadge": {
           "public": "🚇 대중교통",
           "taxi": "🚕 택시",
           "car": "🚗 전용 차량"
         },
         "dayTabTotal": "~{amount}",
-        "dayHeaderTotal": "~{amount}/1인",
+        "dayHeaderTotal": "~{amount}",
         "lodging": {
           "perNight": "1박",
           "blurb": {
@@ -326,11 +326,11 @@
           "car": "교통비 (전용 차량)"
         },
         "activityPlusTransport": "활동 + 교통",
-        "perPerson": "1인 기준",
+        "perPerson": "일행 전체 기준",
         "inclLodging": "숙박 포함 ({stars}★)",
-        "oneNight": "1인 · 1박",
+        "oneNight": "1박",
         "grandTitle": "{count, plural, other {#일}} 예상 총액",
-        "grandSub": "1인 · 활동·교통·숙박 포함",
+        "grandSub": "일행 전체 · 활동·교통·숙박 포함",
         "dayLine": "{n}일차",
         "estNotice": "예상 비용 · 확정 견적이 아니에요"
       },

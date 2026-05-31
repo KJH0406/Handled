@@ -205,12 +205,19 @@ const costDay = (
   tier: BudgetTier,
   transport: Transport,
   isLastNight: boolean,
+  partySize: number,
 ): CostedDay => {
   const slots: CostedSlot[] = day.slots.map((slot, slotIdx) => {
     const { costKRW, noteKey } = activityCost(slot.category, tier, slotIdx)
-    const transit =
+    const rawTransit =
       slotIdx === 0 ? null : buildTransit(transport, dayIdx, slotIdx)
-    return { slot, costKRW, noteKey, transit }
+    // Activity and transit read as per-head spend → scale to the whole party.
+    // Lodging is a per-room/night figure, so it is left as-is downstream.
+    const transit =
+      rawTransit && !rawTransit.included
+        ? { ...rawTransit, costKRW: rawTransit.costKRW * partySize }
+        : rawTransit
+    return { slot, costKRW: costKRW * partySize, noteKey, transit }
   })
 
   const activityKRW = slots.reduce((s, c) => s + c.costKRW, 0)
@@ -237,9 +244,13 @@ export const costPlan = (plan: Plan): CostedPlan => {
   const tier = tierFor(plan)
   const transport: Transport = plan.input.transport ?? "public"
   const lastIdx = plan.days.length - 1
+  const partySize = Math.max(
+    1,
+    plan.input.adults + plan.input.teens + plan.input.kids,
+  )
 
   const days = plan.days.map((day, dayIdx) =>
-    costDay(plan, day, dayIdx, tier, transport, dayIdx === lastIdx),
+    costDay(plan, day, dayIdx, tier, transport, dayIdx === lastIdx, partySize),
   )
 
   const grandTotalKRW = days.reduce((s, d) => s + d.totalKRW, 0)
