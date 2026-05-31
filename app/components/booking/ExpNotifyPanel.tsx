@@ -1,38 +1,59 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useId, useState } from "react"
+import { useEffect, useState } from "react"
+import {
+  addConsultation,
+  hasConsultation,
+} from "../../lib/booking/consultations"
 import { usd } from "../../lib/format"
 import type { Experience } from "../../lib/types/domain"
+import AuthRequiredModal from "../auth/AuthRequiredModal"
+import { useAuth } from "../auth/AuthProvider"
+import Portal from "../ui/Portal"
 
 export interface ExpNotifyPanelProps {
   exp: Experience
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 /**
- * Pre-launch panel for the experience detail page. Booking is not yet open, so
- * instead of the reservation flow we collect an email to notify the visitor at
- * launch. Shares the sticky `.reservation` shell (sticky on desktop, static on
- * mobile). NOTE: the email is not persisted anywhere yet — see ExpBookingPanel
- * for the real reservation flow to restore when the service opens.
+ * Pre-launch panel for the experience detail page. Booking is not open yet, so
+ * instead of a reservation we collect a *manual consultation request*: a guide
+ * follows up by email. Logged-out visitors are sent through login first; the
+ * request is stored per user+experience so a repeat visit shows "already
+ * applied". Shares the sticky `.reservation` shell.
+ *
+ * NOTE: requests are only persisted in the visitor's browser (localStorage) —
+ * see lib/booking/consultations for the real-sink follow-up.
  */
 export default function ExpNotifyPanel({ exp }: ExpNotifyPanelProps) {
   const t = useTranslations("booking.notify")
-  const inputId = useId()
-  const [email, setEmail] = useState("")
-  const [error, setError] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const { user, hydrated } = useAuth()
+  const [applied, setApplied] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [sentTo, setSentTo] = useState<string | null>(null)
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!EMAIL_RE.test(email.trim())) {
-      setError(true)
+  useEffect(() => {
+    if (!hydrated) return
+    setApplied(user ? hasConsultation(user.email, exp.id) : false)
+  }, [hydrated, user, exp.id])
+
+  const submit = () => {
+    if (!user) return
+    addConsultation(user.email, exp.id)
+    setSentTo(user.email)
+    setApplied(true)
+    setConfirmOpen(true)
+  }
+
+  const onApply = () => {
+    // Logged-out visitors authenticate first, then click apply again.
+    if (!user) {
+      setAuthOpen(true)
       return
     }
-    setError(false)
-    setSubmitted(true)
+    submit()
   }
 
   return (
@@ -55,7 +76,7 @@ export default function ExpNotifyPanel({ exp }: ExpNotifyPanelProps) {
         <p className="t-body-sm body">{t("comingSoonBody")}</p>
       </div>
 
-      {submitted ? (
+      {applied ? (
         <div className="notify-success" style={{ marginTop: 20 }}>
           <div className="notify-success-icon" aria-hidden="true">
             ✓
@@ -64,38 +85,19 @@ export default function ExpNotifyPanel({ exp }: ExpNotifyPanelProps) {
             className="t-title-sm"
             style={{ color: "var(--primary)", marginBottom: 4 }}
           >
-            {t("successTitle")}
+            {t("appliedTitle")}
           </div>
-          <p className="t-body-sm muted">{t("successBody")}</p>
+          <p className="t-body-sm muted">{t("appliedBody")}</p>
         </div>
       ) : (
-        <form onSubmit={onSubmit} style={{ marginTop: 20 }} noValidate>
-          <label htmlFor={inputId} className="notify-label">
-            {t("label")}
-          </label>
-          <div className="notify-field">
-            <input
-              id={inputId}
-              type="email"
-              className="input"
-              placeholder={t("placeholder")}
-              value={email}
-              aria-invalid={error}
-              onChange={(e) => {
-                setEmail(e.target.value)
-                if (error) setError(false)
-              }}
-            />
-            <button type="submit" className="btn btn-primary">
-              {t("cta")}
-            </button>
-          </div>
-          {error && (
-            <p className="t-caption-sm" style={{ color: "var(--error)" }}>
-              {t("invalidEmail")}
-            </p>
-          )}
-        </form>
+        <button
+          type="button"
+          className="btn btn-primary btn-block"
+          style={{ marginTop: 20 }}
+          onClick={onApply}
+        >
+          {user ? t("ctaLoggedIn") : t("ctaLoggedOut")}
+        </button>
       )}
 
       <p
@@ -104,6 +106,87 @@ export default function ExpNotifyPanel({ exp }: ExpNotifyPanelProps) {
       >
         {t("disclaimer")}
       </p>
+
+      <Portal>
+        <AuthRequiredModal
+          open={authOpen}
+          onClose={() => setAuthOpen(false)}
+          onAuthenticated={() => setAuthOpen(false)}
+          title={t("authTitle")}
+          subtitle={t("authSubtitle")}
+          cta={t("authCta")}
+        />
+      </Portal>
+
+      {confirmOpen && (
+        <Portal>
+          <div
+            className="modal-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="consult-confirm-title"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setConfirmOpen(false)
+            }}
+          >
+          <div
+            className="modal-card"
+            style={{ maxWidth: 400, textAlign: "center" }}
+          >
+            <div
+              aria-hidden
+              style={{
+                width: 48,
+                height: 48,
+                margin: "0 auto 12px",
+                borderRadius: 999,
+                background: "var(--primary)",
+                color: "white",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 22,
+              }}
+            >
+              ✓
+            </div>
+            <h2
+              id="consult-confirm-title"
+              className="t-title-md ink"
+              style={{ marginBottom: 8 }}
+            >
+              {t("confirmTitle")}
+            </h2>
+            <p className="t-body-sm muted" style={{ marginBottom: 12 }}>
+              {t("confirmBody")}
+            </p>
+            {sentTo && (
+              <div
+                className="t-body-sm ink"
+                style={{
+                  fontWeight: 600,
+                  padding: "10px 14px",
+                  marginBottom: 20,
+                  borderRadius: 10,
+                  background: "var(--surface-soft)",
+                  wordBreak: "break-all",
+                  textAlign: "center",
+                }}
+              >
+                ✉️ {sentTo}
+              </div>
+            )}
+            <button
+              type="button"
+              className="btn btn-primary btn-block"
+              onClick={() => setConfirmOpen(false)}
+            >
+              {t("confirmCta")}
+            </button>
+          </div>
+          </div>
+        </Portal>
+      )}
     </aside>
   )
 }

@@ -17,12 +17,19 @@ interface AuthRequiredModalProps {
   open: boolean
   onClose: () => void
   onAuthenticated: () => void
+  /** Context copy overrides; default to the planner/credits messaging. */
+  title?: string
+  subtitle?: string
+  cta?: string
 }
 
 export default function AuthRequiredModal({
   open,
   onClose,
   onAuthenticated,
+  title,
+  subtitle,
+  cta,
 }: AuthRequiredModalProps) {
   const t = useTranslations("auth")
   const tm = useTranslations("auth.modal")
@@ -136,12 +143,16 @@ export default function AuthRequiredModal({
             className="t-title-md ink"
             style={{ marginBottom: 6 }}
           >
-            {tm(titleKey)}
+            {title ?? tm(titleKey)}
           </h2>
-          {mode === "signUp" && (
-            <p className="t-body-sm muted">
-              {tm("creditPromise", { credits: DEFAULT_CREDITS })}
-            </p>
+          {subtitle ? (
+            <p className="t-body-sm muted">{subtitle}</p>
+          ) : (
+            mode === "signUp" && (
+              <p className="t-body-sm muted">
+                {tm("creditPromise", { credits: DEFAULT_CREDITS })}
+              </p>
+            )
           )}
         </div>
 
@@ -209,7 +220,7 @@ export default function AuthRequiredModal({
           )}
 
           <button type="submit" className="btn btn-primary auth-btn btn-block">
-            {tm(ctaKey, { credits: DEFAULT_CREDITS })}
+            {cta ?? tm(ctaKey, { credits: DEFAULT_CREDITS })}
           </button>
         </form>
 

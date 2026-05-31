@@ -592,15 +592,19 @@
     },
     "notify": {
       "perPerson": "/ person",
-      "comingSoonTitle": "Coming Soon",
-      "comingSoonBody": "This experience is officially launching soon. Be the first to know when booking opens.",
-      "label": "NOTIFY ME WHEN AVAILABLE",
-      "placeholder": "your@email.com",
-      "cta": "Notify Me",
-      "invalidEmail": "Please enter a valid email address.",
-      "successTitle": "You're on the list!",
-      "successBody": "We'll email you the moment booking opens.",
-      "disclaimer": "No spam · Unsubscribe anytime"
+      "comingSoonTitle": "Booking Coming Soon",
+      "comingSoonBody": "Full booking opens soon. Request now and a guide will reach out by email to help you personally.",
+      "ctaLoggedOut": "Request a consultation",
+      "ctaLoggedIn": "Request manual consultation",
+      "appliedTitle": "You're on the list",
+      "appliedBody": "We'll email you within 24 hours.",
+      "confirmTitle": "Request received!",
+      "confirmBody": "We'll reply within 24 hours to your account email below.",
+      "confirmCta": "Got it",
+      "disclaimer": "Handled manually until booking opens.",
+      "authTitle": "Log in to request a consultation",
+      "authSubtitle": "Log in to request a manual consultation.",
+      "authCta": "Continue"
     }
   },
   "calendar": {
