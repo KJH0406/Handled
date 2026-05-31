@@ -181,6 +181,10 @@
           "desc": "Local hangouts, insider food spots, the trends shaping Korea right now. These aren't tours - they're memories waiting to happen."
         }
       }
+    },
+    "stories": {
+      "heading": "Useful Korea Travel Info",
+      "viewAll": "View all stories →"
     }
   },
   "list": {

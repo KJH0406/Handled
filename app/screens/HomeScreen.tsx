@@ -3,10 +3,22 @@
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import mapImg from "@/img/guides/map.png"
+import { Link } from "../../i18n/navigation"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon, { type IconName } from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
 import { experiencesRepo } from "../lib/repositories/experiences"
+import { storiesRepo } from "../lib/repositories/stories"
+
+/** Deterministic pseudo view-count per story, formatted like "8K+" / "2.2M+". */
+const formatViews = (id: string): string => {
+  let h = 0
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0
+  const n = 40_000 + (h % 2_600_000)
+  return n >= 1_000_000
+    ? `${(n / 1_000_000).toFixed(1)}M+`
+    : `${Math.round(n / 1000)}K+`
+}
 
 interface HeroChip {
   label: string
@@ -59,6 +71,7 @@ export default function HomeScreen() {
   const t = useTranslations("home")
   const navigate = useAppNavigate()
   const featured = experiencesRepo.featured(3)
+  const stories = storiesRepo.list()
 
   const onPlan = () => {
     navigate("planNew")
@@ -206,6 +219,42 @@ export default function HomeScreen() {
         </div>
       </section>
 
+      <section className="home-stories">
+        <div className="container">
+          <div className="home-stories-head">
+            <h2 className="home-stories-heading">{t("stories.heading")}</h2>
+          </div>
+          <div className="home-stories-grid">
+            {stories.map((s) => (
+              <Link
+                key={s.id}
+                href={`/stories/${s.id}`}
+                className="home-story-card"
+              >
+                <div
+                  className="home-story-thumb"
+                  style={{ background: s.bg }}
+                  aria-hidden
+                />
+                <div className="home-story-meta">
+                  <span className="home-story-cat">{s.category}</span>
+                  <span className="home-story-views">
+                    <Icon name="eye" size={13} /> {formatViews(s.id)}
+                  </span>
+                </div>
+                <h3 className="home-story-title">{s.title}</h3>
+                <p className="home-story-summary">{s.summary}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="home-stories-foot">
+            <Link href="/stories" className="home-stories-all">
+              {t("stories.viewAll")}
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="planner-cta">
         <div className="container planner-cta-grid">
           <div>
@@ -272,6 +321,7 @@ export default function HomeScreen() {
           </div>
         </div>
       </section>
+
     </main>
   )
 }
