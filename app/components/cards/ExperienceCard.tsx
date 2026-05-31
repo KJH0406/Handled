@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import Link from "next/link"
+import { categoryColor } from "../../lib/data/categoryColors"
 import { usd } from "../../lib/format"
 import { guidesRepo } from "../../lib/repositories/guides"
 import type { Experience } from "../../lib/types/domain"
@@ -30,7 +31,15 @@ export default function ExperienceCard({
     >
       <div className="exp-card-photo">
         <ExpPhoto src={exp.photo} alt={exp.title} category={exp.category} />
-        <span className="exp-card-cat badge-pill">{exp.category}</span>
+        <span
+          className="exp-card-cat badge-pill"
+          style={{
+            background: categoryColor(exp.category).solid,
+            color: "var(--on-primary)",
+          }}
+        >
+          {exp.category}
+        </span>
         {comingSoon && (
           <span className="exp-card-coming-badge">
             {tHome("comingSoonBadge")}

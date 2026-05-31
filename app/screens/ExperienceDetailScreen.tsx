@@ -10,6 +10,7 @@ import Breadcrumb from "../components/layout/Breadcrumb"
 import Avatar from "../components/ui/Avatar"
 import Icon from "../components/ui/Icon"
 import Stars from "../components/ui/Stars"
+import { categoryColor } from "../lib/data/categoryColors"
 import { CAT_FALLBACK } from "../lib/data/categories"
 import { expGallery, meetingPlace } from "../lib/data/experiences"
 import { SCHEDULE_BY_CATEGORY } from "../lib/data/schedules"
@@ -72,7 +73,13 @@ export default function ExperienceDetailScreen({
             className="row row-gap-sm"
             style={{ marginBottom: 8, flexWrap: "wrap" }}
           >
-            <span className="badge-pill badge-pill--accent">
+            <span
+              className="badge-pill badge-pill--accent"
+              style={{
+                background: categoryColor(exp.category).softBg,
+                color: categoryColor(exp.category).solid,
+              }}
+            >
               {exp.category}
             </span>
             <span className="t-caption muted">

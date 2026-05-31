@@ -8,7 +8,7 @@ import Icon from "../components/ui/Icon"
 import PlanMap from "../components/ui/PlanMap"
 import { useAppNavigate } from "../lib/navigation"
 import { formatDate } from "../lib/format"
-import { categoryBg } from "../lib/planner/categoryBg"
+import { categoryColor } from "../lib/data/categoryColors"
 import { recommendExperiences } from "../lib/planner/recommend"
 import { getPlan, markPlanSaved } from "../lib/planner/storage"
 import {
@@ -55,7 +55,7 @@ function SlotCard({ slot }: { slot: PlanSlot }) {
             display: "inline-block",
             padding: "3px 8px",
             borderRadius: 999,
-            background: categoryBg(slot.category),
+            background: categoryColor(slot.category).softBg,
             color: "var(--ink)",
             letterSpacing: "0.32px",
             marginBottom: 8,

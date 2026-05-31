@@ -117,6 +117,14 @@
 
 - `.chip`: 인터랙티브 필터(hover/`.active`). · `.tag`: 정적 라벨. · `.badge-pill`: 알림/카운트 마이크로(`--text-micro`).
 - 의미가 겹치면 위 3종으로 수렴.
+- **선택/활성 채움은 브랜드 남색(`--primary`)** 을 쓴다 — `.chip.active`·`.cal-day.selected`·`.time-cell.active`·`.nav-tab.active` 밑줄·`.schedule-step-num`(흰 글자, 8.9:1). 검정(`--ink`)은 **텍스트·중립 테두리(`.btn-secondary` 등)·토스트**에만 쓰고, 선택 상태의 채움으로는 쓰지 않는다.
+
+**카테고리 색상 시스템** — 카테고리 배지는 흰색/먹색으로 떨어뜨리지 말고 **카테고리별 고유 색**을 쓴다. 단일 기준은 `app/lib/data/categoryColors.ts`(`CATEGORY_COLOR`). 카테고리 팔레트는 본질적으로 다색 *데이터*라 `:root` 브랜드 토큰이 아니라 이 타입 맵에 모은다 — 컴포넌트에 카테고리 hex를 다시 하드코딩하지 말 것. 각 카테고리는 두 처리를 노출한다:
+  - `solid`: 채도 높은 진한 색(흰 글자). **사진 위 배지**(경험/스토리 카드, 피처드)에 사용 — 연한 틴트는 사진 위에서 안 보임.
+  - `softBg`: 연한 틴트. **흰 배경 배지**(상세페이지 알약, latest-row 태그)에서 글자색 `solid`와 짝지어 사용.
+  - 모든 `흰/solid`·`solid/softBg` 쌍은 4.5:1(WCAG 1.4.3) 검증 완료. 브랜드 앵커 유지(Urban=`--primary`, Food=코랄 계열).
+  - 플래너 슬롯 틴트(`categoryBg`)·사진 폴백 그라데이션(`CAT_FALLBACK`)도 같은 카테고리 색 언어를 따른다.
+  - **상태/선택은 카테고리가 아니다**: "Coming Soon"(상태)·`.chip.active`(선택)은 이 색을 쓰지 않는다.
 
 ### 2.5 모달 / 오버레이
 

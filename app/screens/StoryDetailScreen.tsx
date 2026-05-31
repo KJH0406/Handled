@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl"
 import { useMemo } from "react"
 import { Link } from "../../i18n/navigation"
 import Breadcrumb from "../components/layout/Breadcrumb"
+import { categoryColor } from "../lib/data/categoryColors"
 import { useAppNavigate } from "../lib/navigation"
 import { storiesRepo } from "../lib/repositories/stories"
 
@@ -11,9 +12,7 @@ export interface StoryDetailScreenProps {
   storyId: string
 }
 
-export default function StoryDetailScreen({
-  storyId,
-}: StoryDetailScreenProps) {
+export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
   const t = useTranslations("stories")
   const navigate = useAppNavigate()
   const story = useMemo(() => storiesRepo.findById(storyId), [storyId])
@@ -53,21 +52,23 @@ export default function StoryDetailScreen({
           >
             <span
               className="badge-pill badge-pill--accent"
-              style={{ background: "var(--primary-light)", color: "var(--primary)" }}
+              style={{
+                background: categoryColor(story.category).softBg,
+                color: categoryColor(story.category).solid,
+              }}
             >
               {story.category}
             </span>
             <span className="t-caption muted">{story.date}</span>
-            <span className="t-caption muted" aria-hidden>·</span>
+            <span className="t-caption muted" aria-hidden>
+              ·
+            </span>
             <span className="t-caption muted">
               {story.readMinutes} {t("readMore")}
             </span>
           </div>
 
-          <h1
-            className="t-display-xl ink"
-            style={{ marginBottom: 16 }}
-          >
+          <h1 className="t-display-xl ink" style={{ marginBottom: 16 }}>
             {story.title}
           </h1>
           <p
@@ -87,7 +88,10 @@ export default function StoryDetailScreen({
             aria-hidden
           />
 
-          <div className="stack-base" style={{ fontSize: 17, lineHeight: 1.75 }}>
+          <div
+            className="stack-base"
+            style={{ fontSize: 17, lineHeight: 1.75 }}
+          >
             {story.body.map((para, i) => (
               <p key={i} style={{ color: "var(--body)" }}>
                 {para}
@@ -127,7 +131,10 @@ export default function StoryDetailScreen({
                   <div style={{ padding: 16 }}>
                     <span
                       className="t-caption"
-                      style={{ color: "var(--primary)", fontWeight: 700 }}
+                      style={{
+                        color: categoryColor(r.category).solid,
+                        fontWeight: 700,
+                      }}
                     >
                       {r.category}
                     </span>
@@ -137,10 +144,7 @@ export default function StoryDetailScreen({
                     >
                       {r.title}
                     </div>
-                    <div
-                      className="t-caption muted"
-                      style={{ marginTop: 8 }}
-                    >
+                    <div className="t-caption muted" style={{ marginTop: 8 }}>
                       {r.date} · {r.readMinutes} min
                     </div>
                   </div>

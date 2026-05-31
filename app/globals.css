@@ -732,9 +732,9 @@ a {
   border-color: var(--ink);
 }
 .chip.active {
-  background: var(--ink);
+  background: var(--primary);
   color: var(--on-primary);
-  border-color: var(--ink);
+  border-color: var(--primary);
 }
 
 /* ─────────────────────────────────────────────
@@ -902,7 +902,7 @@ a {
   bottom: 2px;
   height: 2px;
   border-radius: 2px;
-  background: var(--ink);
+  background: var(--primary);
 }
 .nav-tab-icon {
   display: inline-flex;
@@ -1295,7 +1295,7 @@ a {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--primary);
   color: var(--on-primary);
   display: inline-flex;
   align-items: center;
@@ -1530,7 +1530,7 @@ a {
   background: var(--surface-soft);
 }
 .cal-day.selected {
-  background: var(--ink);
+  background: var(--primary);
   color: var(--on-primary);
 }
 .cal-day:disabled {
@@ -1562,9 +1562,9 @@ a {
   border-color: var(--ink);
 }
 .time-cell.active {
-  background: var(--ink);
+  background: var(--primary);
   color: var(--on-primary);
-  border-color: var(--ink);
+  border-color: var(--primary);
 }
 @media (max-width: 480px) {
   .time-grid {

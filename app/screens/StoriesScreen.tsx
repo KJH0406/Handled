@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { useMemo, useState } from "react"
 import { Link } from "../../i18n/navigation"
 import Icon from "../components/ui/Icon"
+import { categoryColor } from "../lib/data/categoryColors"
 import { STORY_CATEGORIES } from "../lib/data/stories"
 import { storiesRepo } from "../lib/repositories/stories"
 import type { Story } from "../lib/types/domain"
@@ -170,7 +171,12 @@ function FeaturedCard({
       <div className="stories-featured-bg" style={{ background: story.bg }} />
       <div className="stories-featured-overlay" />
       <div className="stories-featured-body">
-        <span className="stories-featured-tag">{story.category}</span>
+        <span
+          className="stories-featured-tag"
+          style={{ background: categoryColor(story.category).solid }}
+        >
+          {story.category}
+        </span>
         <h2 className="stories-featured-title">{story.title}</h2>
         <p className="stories-featured-summary">{story.summary}</p>
         <div className="stories-featured-meta">
@@ -194,7 +200,14 @@ function LatestRow({ story }: { story: Story }) {
         aria-hidden
       />
       <div style={{ minWidth: 0 }}>
-        <span className="tag" style={{ marginBottom: 6 }}>
+        <span
+          className="tag"
+          style={{
+            marginBottom: 6,
+            background: categoryColor(story.category).softBg,
+            color: categoryColor(story.category).solid,
+          }}
+        >
           {story.category}
         </span>
         <div className="t-title-sm ink stories-latest-title">{story.title}</div>
@@ -210,7 +223,15 @@ function StoryCard({ story }: { story: Story }) {
   return (
     <Link href={`/stories/${story.id}`} className="story-card">
       <div className="story-card-photo" style={{ background: story.bg }}>
-        <span className="story-card-cat">{story.category}</span>
+        <span
+          className="story-card-cat"
+          style={{
+            background: categoryColor(story.category).solid,
+            color: "var(--on-primary)",
+          }}
+        >
+          {story.category}
+        </span>
       </div>
       <div className="story-card-body">
         <h3 className="t-title-md ink story-card-title">{story.title}</h3>
@@ -272,7 +293,6 @@ function StoriesStyles() {
         display: inline-flex;
         align-items: center;
         align-self: flex-start;
-        background: var(--primary);
         color: #fff;
         font-size: 11px;
         font-weight: 700;
@@ -362,12 +382,11 @@ function StoriesStyles() {
         position: absolute;
         top: 14px;
         left: 14px;
-        background: rgba(255,255,255,.94);
-        color: var(--ink);
         font-size: 11px;
         font-weight: 700;
         padding: 4px 10px;
         border-radius: var(--r-full);
+        box-shadow: var(--shadow-card);
       }
       .story-card-body {
         padding: 20px;
