@@ -33,13 +33,13 @@ const DAY_TEMPLATE: TimeAnchor[] = [
     timeOfDay: "afternoon",
     time: "15:30",
     durationH: 3,
-    bucket: ["Shopping", "Art", "Urban", "Beach", "Photo"],
+    bucket: ["Shopping", "Art", "Urban", "Beach", "Photo", "Beauty", "KPop"],
   },
   {
     timeOfDay: "evening",
     time: "19:00",
     durationH: 3,
-    bucket: ["Nightlife", "Food", "Urban"],
+    bucket: ["Nightlife", "Food", "Urban", "KPop"],
   },
 ]
 

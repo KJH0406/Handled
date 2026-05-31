@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react"
 import { DEFAULT_CREDITS, useAuth } from "../components/auth/AuthProvider"
 import AuthRequiredModal from "../components/auth/AuthRequiredModal"
 import Icon from "../components/ui/Icon"
-import { CITIES } from "../lib/data/filters"
 import { useAppNavigate } from "../lib/navigation"
 import { generatePlan } from "../lib/planner/generate"
 import { savePlan } from "../lib/planner/storage"
@@ -22,7 +21,20 @@ import {
 import DateRangePicker from "../components/ui/DateRangePicker"
 import type { City, ExperienceCategory } from "../lib/types/domain"
 
-const DESTINATIONS = CITIES.filter((c) => c !== "All") as readonly City[]
+// Planner destinations — mirrors mockup v7 (independent of the experience
+// city filter, which only lists cities that currently have experiences).
+const DESTINATIONS: readonly City[] = [
+  "Seoul",
+  "Busan",
+  "Jeju",
+  "Jeonju",
+  "Gangneung",
+  "Gyeongju",
+  "Incheon",
+  "Sokcho",
+  "Daegu",
+  "Yeosu",
+]
 
 const isCity = (v: string | undefined): v is City =>
   v !== undefined && (DESTINATIONS as readonly string[]).includes(v)
@@ -30,16 +42,21 @@ const isCity = (v: string | undefined): v is City =>
 const isISODate = (v: string | undefined): v is string =>
   typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v))
 
-const INTERESTS: readonly ExperienceCategory[] = [
-  "Food",
-  "Culture",
-  "Photo",
-  "Shopping",
-  "Nightlife",
-  "Architecture",
-  "Art",
-  "Nature",
+const INTERESTS: ReadonlyArray<{ value: ExperienceCategory; label: string }> = [
+  { value: "Culture", label: "Culture & History" },
+  { value: "Nature", label: "Nature & Adventure" },
+  { value: "Food", label: "Food & Dining" },
+  { value: "Shopping", label: "Shopping & Design" },
+  { value: "Art", label: "Art & Architecture" },
+  { value: "KPop", label: "K-Pop & Entertainment" },
+  { value: "Beauty", label: "Beauty & Wellness" },
+  { value: "Nightlife", label: "Nightlife & Bars" },
 ] as const
+
+const MAX_INTERESTS = 3
+
+const INTEREST_LABEL: Partial<Record<ExperienceCategory, string>> =
+  Object.fromEntries(INTERESTS.map((i) => [i.value, i.label]))
 
 const TRANSPORTS: ReadonlyArray<{ value: Transport; icon: string }> = [
   { value: "public", icon: "🚇" },
@@ -371,9 +388,11 @@ export default function PlanNewScreen({
   }, [budgetMin, budgetMax, budget])
 
   const toggleInterest = (c: ExperienceCategory) => {
-    setInterests((prev) =>
-      prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c],
-    )
+    setInterests((prev) => {
+      if (prev.includes(c)) return prev.filter((x) => x !== c)
+      if (prev.length >= MAX_INTERESTS) return prev
+      return [...prev, c]
+    })
   }
 
   const step1Valid =
@@ -555,9 +574,38 @@ export default function PlanNewScreen({
               <p style={subheadingStyle}>{t("step2.subheading")}</p>
 
               <div style={{ marginBottom: 28 }}>
-                <span style={{ ...labelStyle, marginBottom: 14 }}>
-                  {t("step2.interestsLabel")}
-                </span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    marginBottom: 4,
+                  }}
+                >
+                  <span style={labelStyle}>{t("step2.interestsLabel")}</span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color:
+                        interests.length >= MAX_INTERESTS
+                          ? "var(--primary)"
+                          : "var(--muted)",
+                    }}
+                  >
+                    {interests.length}/{MAX_INTERESTS}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "var(--muted)",
+                    marginBottom: 14,
+                  }}
+                >
+                  {t("step2.interestsHint", { max: MAX_INTERESTS })}
+                </div>
                 <div
                   style={{
                     display: "grid",
@@ -565,14 +613,16 @@ export default function PlanNewScreen({
                     gap: 10,
                   }}
                 >
-                  {INTERESTS.map((c) => {
-                    const on = interests.includes(c)
+                  {INTERESTS.map((i) => {
+                    const on = interests.includes(i.value)
+                    const disabled = !on && interests.length >= MAX_INTERESTS
                     return (
                       <button
-                        key={c}
+                        key={i.value}
                         type="button"
-                        onClick={() => toggleInterest(c)}
+                        onClick={() => toggleInterest(i.value)}
                         aria-pressed={on}
+                        disabled={disabled}
                         style={{
                           padding: "15px 18px",
                           borderRadius: 16,
@@ -582,27 +632,17 @@ export default function PlanNewScreen({
                           fontSize: 14,
                           fontWeight: on ? 700 : 500,
                           textAlign: "left",
-                          cursor: "pointer",
+                          cursor: disabled ? "not-allowed" : "pointer",
+                          opacity: disabled ? 0.45 : 1,
                           transition: "all .15s",
                         }}
                       >
                         {on && <span style={{ marginRight: 6 }}>✓</span>}
-                        {c}
+                        {i.label}
                       </button>
                     )
                   })}
                 </div>
-                {interests.length === 0 && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: "var(--muted)",
-                      marginTop: 10,
-                    }}
-                  >
-                    {t("step2.interestsHint")}
-                  </div>
-                )}
               </div>
 
               <div style={{ marginBottom: 28 }}>
@@ -787,7 +827,7 @@ export default function PlanNewScreen({
                   label={t("step3.interestsLabel")}
                   value={
                     interests.length > 0
-                      ? interests.join(", ")
+                      ? interests.map((c) => INTEREST_LABEL[c] ?? c).join(", ")
                       : t("step3.interestsFallback")
                   }
                 />

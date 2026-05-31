@@ -42,6 +42,8 @@ export const CATEGORY_COLOR: Record<
   Nature: { solid: "#136c34", softBg: "#e6f4ec" }, // forest green
   Traditional: { solid: "#9a3412", softBg: "#fbeae1" }, // terracotta
   Urban: { solid: "#0f4c81", softBg: "#e8f0fb" }, // Classic Blue (--primary)
+  KPop: { solid: "#a21d6b", softBg: "#fbe7f1" }, // magenta-violet (stage energy)
+  Beauty: { solid: "#be185d", softBg: "#fce8ef" }, // rose (K-beauty glow)
 
   // ── Story-only categories ──
   "Travel Tips": { solid: "#0f766e", softBg: "#e1f1ef" }, // teal

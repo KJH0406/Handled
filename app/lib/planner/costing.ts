@@ -90,6 +90,8 @@ const ACTIVITY_COST: Record<
   Nature: { krw: 4_000, note: "admission" },
   Traditional: { krw: 25_000, note: "experience" },
   Urban: { krw: 10_000, note: "activity" },
+  KPop: { krw: 30_000, note: "experience" },
+  Beauty: { krw: 45_000, note: "experience" },
 }
 
 const TIER_ACTIVITY_MULT: Record<BudgetTier, number> = {

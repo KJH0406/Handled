@@ -200,4 +200,40 @@ export const SCHEDULE_BY_CATEGORY: Record<ExperienceCategory, ScheduleItem[]> =
         desc: "Rest at a nearby café and wrap up.",
       },
     ],
+    KPop: [
+      {
+        title: "Meet & briefing",
+        desc: "Meet your guide and map out the K-pop highlights of the day.",
+      },
+      {
+        title: "Entertainment district",
+        desc: "Visit agency buildings, idol-favorite spots, and photo zones.",
+      },
+      {
+        title: "Album & merch hunt",
+        desc: "Shop official albums and merch, then try a K-pop themed café.",
+      },
+      {
+        title: "Dance or karaoke",
+        desc: "Cap it off with a dance class or a noraebang session.",
+      },
+    ],
+    Beauty: [
+      {
+        title: "Skin & style consult",
+        desc: "Quick consult on your skin type, concerns, and the look you want.",
+      },
+      {
+        title: "K-beauty stores",
+        desc: "Curated visit to skincare and cosmetics stores with guide picks.",
+      },
+      {
+        title: "Treatment or makeover",
+        desc: "Enjoy a spa treatment, facial, or on-the-spot makeover.",
+      },
+      {
+        title: "Glow café wrap-up",
+        desc: "Wind down with photos and tea, looking your best.",
+      },
+    ],
   }

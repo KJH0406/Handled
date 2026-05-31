@@ -46,4 +46,8 @@ export const CAT_FALLBACK: Record<ExperienceCategory, CategoryFallback> = {
   },
   // Urban — city navy to sky (kept)
   Urban: { emoji: "🌆", bg: "linear-gradient(135deg, #1e40af, #38bdf8)" },
+  // K-Pop — vivid magenta to violet (stage-light energy)
+  KPop: { emoji: "🎤", bg: "linear-gradient(135deg, #be185d, #7c3aed)" },
+  // Beauty — soft rose to blush (K-beauty glow)
+  Beauty: { emoji: "💄", bg: "linear-gradient(135deg, #db2777, #fb7185)" },
 }

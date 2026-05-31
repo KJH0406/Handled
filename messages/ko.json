@@ -225,7 +225,7 @@
         "heading": "여행을 맞춤 설정하세요",
         "subheading": "관심사, 교통, 예산을 선택하세요",
         "interestsLabel": "여행 관심사",
-        "interestsHint": "계속하려면 최소 한 가지를 선택하세요.",
+        "interestsHint": "관심사를 1~{max}개 선택하세요",
         "transportLabel": "교통수단",
         "transport": {
           "public": {

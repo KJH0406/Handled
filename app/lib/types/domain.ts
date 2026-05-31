@@ -1,4 +1,14 @@
-export type City = "Seoul" | "Busan" | "Jeju" | "Incheon"
+export type City =
+  | "Seoul"
+  | "Busan"
+  | "Jeju"
+  | "Jeonju"
+  | "Gangneung"
+  | "Gyeongju"
+  | "Incheon"
+  | "Sokcho"
+  | "Daegu"
+  | "Yeosu"
 
 export type Language = "Korean" | "English" | "Japanese" | "Mandarin" | "French"
 
@@ -35,6 +45,8 @@ export type ExperienceCategory =
   | "Nature"
   | "Traditional"
   | "Urban"
+  | "KPop"
+  | "Beauty"
 
 export interface Experience {
   id: string

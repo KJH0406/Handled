@@ -225,7 +225,7 @@
         "heading": "Customize your trip",
         "subheading": "Select your interests, transport, and budget",
         "interestsLabel": "Travel interests",
-        "interestsHint": "Pick at least one to continue.",
+        "interestsHint": "Pick 1–{max} interests",
         "transportLabel": "Transportation",
         "transport": {
           "public": {
