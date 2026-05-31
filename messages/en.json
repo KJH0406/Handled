@@ -282,6 +282,61 @@
       "datesSummary": "{start} → {end} · {count, plural, one {# day} other {# days}}",
       "travelersSummary": "{count, plural, one {# traveler} other {# travelers}}",
       "slotCount": "{count, plural, one {# stop} other {# stops}}",
+      "cost": {
+        "estTotalLine": "Est. total {amount} / person",
+        "transportBadge": {
+          "public": "🚇 Public transit",
+          "taxi": "🚕 Taxi",
+          "car": "🚗 Private car"
+        },
+        "dayTabTotal": "~{amount}",
+        "dayHeaderTotal": "~{amount}/person",
+        "lodging": {
+          "perNight": "per night",
+          "blurb": {
+            "3": "Comfortable 3-star stay in {area}, close to transit.",
+            "4": "Stylish 4-star hotel in the heart of {area}.",
+            "5": "Five-star property in {area}, steps from the action."
+          }
+        },
+        "transit": {
+          "label": {
+            "public": "Subway & bus",
+            "taxi": "Kakao Taxi",
+            "car": "Private driver"
+          },
+          "info": {
+            "public": "Travel by subway or bus",
+            "taxi": "Hop in a Kakao Taxi",
+            "car": "Your private car & driver"
+          },
+          "minutes": "{min} min",
+          "free": "Free",
+          "included": "Included"
+        },
+        "note": {
+          "dining": "Meals",
+          "shopping": "Shopping & gifts",
+          "admission": "Admission",
+          "experience": "Experience fee",
+          "activity": "Activity",
+          "free": "Free"
+        },
+        "free": "Free",
+        "transitLine": {
+          "public": "Local transport (public transit)",
+          "taxi": "Taxi fares (est.)",
+          "car": "Private driver service"
+        },
+        "activityPlusTransport": "Activities + transport",
+        "perPerson": "per person",
+        "inclLodging": "Incl. hotel ({stars}★)",
+        "oneNight": "per person · 1 night",
+        "grandTitle": "{count, plural, one {# day} other {# days}} estimated total",
+        "grandSub": "per person · activities, transport & hotels",
+        "dayLine": "Day {n}",
+        "estNotice": "Estimated costs · not a final quote"
+      },
       "dayTabs": {
         "ariaLabel": "Switch day",
         "label": "Day {n}"

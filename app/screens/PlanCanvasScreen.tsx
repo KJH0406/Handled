@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ExperienceCard from "../components/cards/ExperienceCard"
 import Icon from "../components/ui/Icon"
 import PlanMap from "../components/ui/PlanMap"
 import { useAppNavigate } from "../lib/navigation"
-import { formatDate } from "../lib/format"
-import { categoryColor } from "../lib/data/categoryColors"
+import { formatDate, money } from "../lib/format"
+import { costPlan, type CostedPlan } from "../lib/planner/costing"
+import {
+  CostedSlotCard,
+  DayTotals,
+  GrandTotalCard,
+  HotelCard,
+  TransitConnector,
+} from "./plan/CostSections"
 import { recommendExperiences } from "../lib/planner/recommend"
 import { getPlan, markPlanSaved } from "../lib/planner/storage"
 import {
   planDayCount,
   planTotalTravelers,
   type Plan,
-  type PlanSlot,
 } from "../lib/planner/types"
 
 type LoadState =
@@ -27,53 +33,9 @@ export interface PlanCanvasScreenProps {
   planId: string
 }
 
-const formatDuration = (h: number): string => (h === 1 ? "1h" : `${h}h`)
-
-function SlotCard({ slot }: { slot: PlanSlot }) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "72px 1fr",
-        gap: 16,
-        padding: "16px 0",
-        borderTop: "1px solid var(--hairline-soft)",
-      }}
-    >
-      <div>
-        <div className="t-title-md ink" style={{ lineHeight: 1.2 }}>
-          {slot.time}
-        </div>
-        <div className="t-caption-sm muted" style={{ marginTop: 2 }}>
-          {formatDuration(slot.durationH)}
-        </div>
-      </div>
-      <div style={{ minWidth: 0 }}>
-        <span
-          className="t-uppercase-tag"
-          style={{
-            display: "inline-block",
-            padding: "3px 8px",
-            borderRadius: 999,
-            background: categoryColor(slot.category).softBg,
-            color: "var(--ink)",
-            letterSpacing: "0.32px",
-            marginBottom: 8,
-          }}
-        >
-          {slot.category}
-        </span>
-        <div className="t-title-md ink" style={{ marginBottom: 4 }}>
-          {slot.title}
-        </div>
-        {slot.note && <p className="t-body-sm body">{slot.note}</p>}
-      </div>
-    </div>
-  )
-}
-
 export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const t = useTranslations("planner.canvas")
+  const locale = useLocale()
   const navigate = useAppNavigate()
   const [state, setState] = useState<LoadState>({ kind: "loading" })
   const [toast, setToast] = useState<string | null>(null)
@@ -96,6 +58,11 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const recommendations = useMemo(
     () =>
       state.kind === "ready" ? recommendExperiences(state.plan.input, 6) : [],
+    [state],
+  )
+
+  const costed = useMemo<CostedPlan | null>(
+    () => (state.kind === "ready" ? costPlan(state.plan) : null),
     [state],
   )
 
@@ -181,6 +148,8 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
   const activeDay = plan.days[activeDayIdx] ?? plan.days[0]
   const mapSlots = activeDay?.slots ?? []
   const hasTabs = plan.days.length > 1
+  const costedDay = costed?.days[activeDayIdx] ?? costed?.days[0] ?? null
+  const transport = costed?.transport ?? null
   const activeDayDate = (() => {
     const base = Date.parse(`${plan.input.startDate}T00:00:00`)
     if (Number.isNaN(base)) return null
@@ -289,6 +258,44 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             </span>
           </div>
 
+          {costed && (
+            <div
+              className="row"
+              style={{
+                gap: 12,
+                flexWrap: "wrap",
+                alignItems: "center",
+                marginBottom: plan.input.transport ? 16 : 24,
+              }}
+            >
+              <span className="t-body-sm ink" style={{ fontWeight: 600 }}>
+                {t("cost.estTotalLine", {
+                  amount: money(costed.grandTotalKRW, locale),
+                })}
+              </span>
+              <span className="t-caption-sm muted">{t("cost.estNotice")}</span>
+            </div>
+          )}
+
+          {plan.input.transport && (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "var(--primary-light)",
+                color: "var(--primary)",
+                borderRadius: 999,
+                padding: "6px 14px",
+                fontWeight: 700,
+                marginBottom: 24,
+              }}
+              className="t-body-sm"
+            >
+              {t(`cost.transportBadge.${plan.input.transport}`)}
+            </span>
+          )}
+
           {plan.input.interests.length > 0 && (
             <div
               className="row"
@@ -341,6 +348,7 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
             >
               {plan.days.map((day, idx) => {
                 const active = idx === activeDayIdx
+                const dayTotal = costed?.days[idx]?.totalKRW
                 return (
                   <button
                     key={day.id}
@@ -353,10 +361,21 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
                     style={{
                       flexShrink: 0,
                       minWidth: 88,
+                      flexDirection: "column",
+                      gap: 2,
+                      alignItems: "center",
                       justifyContent: "center",
+                      lineHeight: 1.2,
                     }}
                   >
-                    {t("dayTabs.label", { n: idx + 1 })}
+                    <span>{t("dayTabs.label", { n: idx + 1 })}</span>
+                    {typeof dayTotal === "number" && (
+                      <span style={{ fontSize: 11, opacity: 0.75 }}>
+                        {t("cost.dayTabTotal", {
+                          amount: money(dayTotal, locale),
+                        })}
+                      </span>
+                    )}
                   </button>
                 )
               })}
@@ -445,20 +464,59 @@ export default function PlanCanvasScreen({ planId }: PlanCanvasScreenProps) {
               aria-labelledby={hasTabs ? `day-tab-${activeDay.id}` : undefined}
               style={{ marginTop: hasTabs ? 0 : 24 }}
             >
-              <h2 className="t-display-sm ink" style={{ marginBottom: 4 }}>
-                {hasTabs && activeDayDate
-                  ? formatDate(activeDayDate)
-                  : activeDay.label}
-              </h2>
-              <div className="t-caption-sm muted" style={{ marginBottom: 8 }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  gap: 12,
+                  flexWrap: "wrap",
+                  marginBottom: 4,
+                }}
+              >
+                <h2 className="t-display-sm ink" style={{ margin: 0 }}>
+                  {hasTabs && activeDayDate
+                    ? formatDate(activeDayDate)
+                    : activeDay.label}
+                </h2>
+                {costedDay && (
+                  <span
+                    className="t-title-md"
+                    style={{ color: "var(--primary)", flexShrink: 0 }}
+                  >
+                    {t("cost.dayHeaderTotal", {
+                      amount: money(costedDay.totalKRW, locale),
+                    })}
+                  </span>
+                )}
+              </div>
+              <div className="t-caption-sm muted" style={{ marginBottom: 16 }}>
                 {t("slotCount", { count: activeDay.slots.length })}
               </div>
+
+              {costedDay?.lodging && <HotelCard lodging={costedDay.lodging} />}
+
               <div style={{ borderBottom: "1px solid var(--hairline-soft)" }}>
-                {activeDay.slots.map((slot) => (
-                  <SlotCard key={slot.id} slot={slot} />
-                ))}
+                {costedDay
+                  ? costedDay.slots.map((cs) => (
+                      <div key={cs.slot.id}>
+                        {cs.transit && (
+                          <TransitConnector transit={cs.transit} />
+                        )}
+                        <CostedSlotCard costed={cs} />
+                      </div>
+                    ))
+                  : null}
               </div>
+
+              {costedDay && transport && (
+                <DayTotals costedDay={costedDay} transport={transport} />
+              )}
             </section>
+          )}
+
+          {costed && costed.days.length > 0 && (
+            <GrandTotalCard costed={costed} />
           )}
 
           {!plan.savedAt && (

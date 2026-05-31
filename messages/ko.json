@@ -279,6 +279,61 @@
       "datesSummary": "{start} → {end} · {count, plural, other {#일}}",
       "travelersSummary": "{count, plural, other {여행자 #명}}",
       "slotCount": "{count, plural, other {#곳}}",
+      "cost": {
+        "estTotalLine": "예상 총액 {amount} / 1인",
+        "transportBadge": {
+          "public": "🚇 대중교통",
+          "taxi": "🚕 택시",
+          "car": "🚗 전용 차량"
+        },
+        "dayTabTotal": "~{amount}",
+        "dayHeaderTotal": "~{amount}/1인",
+        "lodging": {
+          "perNight": "1박",
+          "blurb": {
+            "3": "{area}에 위치한 교통이 편리한 3성급 숙소예요.",
+            "4": "{area} 중심부의 세련된 4성급 호텔이에요.",
+            "5": "{area}의 핵심 위치에 자리한 5성급 호텔이에요."
+          }
+        },
+        "transit": {
+          "label": {
+            "public": "지하철·버스",
+            "taxi": "카카오 택시",
+            "car": "전용 기사"
+          },
+          "info": {
+            "public": "지하철·버스로 이동",
+            "taxi": "카카오 택시로 이동",
+            "car": "전용 차량으로 이동"
+          },
+          "minutes": "{min}분",
+          "free": "무료",
+          "included": "포함"
+        },
+        "note": {
+          "dining": "식사",
+          "shopping": "쇼핑·기념품",
+          "admission": "입장료",
+          "experience": "체험비",
+          "activity": "활동비",
+          "free": "무료"
+        },
+        "free": "무료",
+        "transitLine": {
+          "public": "교통비 (대중교통)",
+          "taxi": "교통비 (택시, 예상)",
+          "car": "교통비 (전용 차량)"
+        },
+        "activityPlusTransport": "활동 + 교통",
+        "perPerson": "1인 기준",
+        "inclLodging": "숙박 포함 ({stars}★)",
+        "oneNight": "1인 · 1박",
+        "grandTitle": "{count, plural, other {#일}} 예상 총액",
+        "grandSub": "1인 · 활동·교통·숙박 포함",
+        "dayLine": "{n}일차",
+        "estNotice": "예상 비용 · 확정 견적이 아니에요"
+      },
       "dayTabs": {
         "ariaLabel": "일자 전환",
         "label": "{n}일차"
