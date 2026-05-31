@@ -329,6 +329,7 @@
     }
   },
   "experiences": {
+    "kicker": "Curated Experiences",
     "title": "All Korean experiences",
     "lede": "Pick from {count} experience packages led by local guides.",
     "searchPlaceholder": "Search by experience, category, guide, or city",

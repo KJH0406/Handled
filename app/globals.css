@@ -15,6 +15,7 @@
   --muted: #6a6a6a;
   --muted-soft: #929292;
   --on-primary: #ffffff;
+  --on-primary-muted: rgba(255, 255, 255, 0.72);
 
   /* brand - Classic Blue (Pantone 19-4052) */
   --primary: #0f4c81;
@@ -737,6 +738,68 @@ a {
 }
 
 /* ─────────────────────────────────────────────
+       Page intro (navy hero) — listing pages
+       ───────────────────────────────────────────── */
+.page-intro {
+  background: linear-gradient(
+    135deg,
+    var(--primary-dark) 0%,
+    var(--primary) 100%
+  );
+  color: var(--on-primary);
+  padding: 56px 0 44px;
+}
+.page-intro .ink {
+  color: var(--on-primary);
+}
+.page-intro .muted {
+  color: var(--on-primary-muted);
+}
+.page-intro-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: var(--on-primary-muted);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────
+       Listing toolbar — grouped search + filters
+       ───────────────────────────────────────────── */
+.listing-toolbar {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.listing-toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.listing-toolbar-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-size: var(--text-body-sm);
+  color: var(--ink);
+}
+.listing-toolbar-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 18px 18px;
+}
+
+/* ─────────────────────────────────────────────
        Cards
        ───────────────────────────────────────────── */
 .card {
@@ -1327,7 +1390,11 @@ a {
   gap: 24px;
   padding: 32px;
   border-radius: var(--r-md);
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-light) 0%,
+    var(--primary-light) 100%
+  );
   margin-bottom: 32px;
   flex-wrap: wrap;
 }

@@ -326,6 +326,7 @@
     }
   },
   "experiences": {
+    "kicker": "엄선한 체험",
     "title": "한국의 모든 체험",
     "lede": "현지 가이드가 운영하는 {count}개의 체험 패키지 중 골라보세요.",
     "searchPlaceholder": "체험, 카테고리, 가이드, 도시로 검색",

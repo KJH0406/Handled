@@ -54,71 +54,68 @@ export default function ExperiencesScreen() {
 
   return (
     <main className="fade-in">
-      <section
-        style={{
-          padding: "32px 0 24px",
-          borderBottom: "1px solid var(--hairline-soft)",
-        }}
-      >
+      <section className="page-intro">
         <div className="container">
-          <h1 className="t-display-md ink" style={{ marginBottom: 4 }}>
+          <div className="page-intro-kicker">
+            <Icon name="map" size={14} stroke="var(--on-primary)" sw={1.5} />
+            {t("kicker")}
+          </div>
+          <h1
+            className="t-display-xl ink"
+            style={{ marginBottom: 12, maxWidth: 720 }}
+          >
             {t("title")}
           </h1>
-          <p className="t-body-sm muted" style={{ marginBottom: 24 }}>
+          <p
+            className="t-body-md muted"
+            style={{ maxWidth: 560, marginBottom: 0 }}
+          >
             {t("lede", { count: totalCount })}
           </p>
-
-          <div
-            className="row row-gap-sm"
-            style={{
-              background: "var(--canvas)",
-              border: "1px solid var(--hairline)",
-              borderRadius: 999,
-              padding: "8px 8px 8px 20px",
-              maxWidth: 560,
-            }}
-          >
-            <Icon name="search" size={16} stroke="var(--muted)" />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={t("searchPlaceholder")}
-              style={{
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                fontSize: 14,
-              }}
-            />
-            {q && (
-              <button
-                onClick={() => setQ("")}
-                className="icon-btn"
-                aria-label={t("clearSearchAria")}
-              >
-                <Icon name="x" size={14} />
-              </button>
-            )}
-          </div>
-
-          <FilterRow
-            label={t("filters.city")}
-            options={CITIES}
-            value={city}
-            onChange={setCity}
-          />
-          <FilterRow
-            label={t("filters.category")}
-            options={EXP_CATEGORIES}
-            value={category}
-            onChange={setCategory}
-          />
         </div>
       </section>
 
-      <section style={{ padding: "32px 0 64px" }}>
+      <section style={{ padding: "40px 0 64px" }}>
         <div className="container">
-          <div className="section-header" style={{ marginBottom: 24 }}>
+          <div className="listing-toolbar">
+            <div className="listing-toolbar-search">
+              <Icon name="search" size={16} stroke="var(--muted)" />
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder={t("searchPlaceholder")}
+                aria-label={t("searchPlaceholder")}
+              />
+              {q && (
+                <button
+                  onClick={() => setQ("")}
+                  className="icon-btn"
+                  aria-label={t("clearSearchAria")}
+                >
+                  <Icon name="x" size={14} />
+                </button>
+              )}
+            </div>
+            <div className="listing-toolbar-filters">
+              <FilterRow
+                label={t("filters.city")}
+                options={CITIES}
+                value={city}
+                onChange={setCity}
+              />
+              <FilterRow
+                label={t("filters.category")}
+                options={EXP_CATEGORIES}
+                value={category}
+                onChange={setCategory}
+              />
+            </div>
+          </div>
+
+          <div
+            className="section-header"
+            style={{ marginTop: 32, marginBottom: 24 }}
+          >
             <span className="t-body-sm muted">{resultText()}</span>
             {(city !== "All" || category !== "All" || q) && (
               <button

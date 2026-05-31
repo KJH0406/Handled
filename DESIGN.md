@@ -26,6 +26,7 @@
 | | `--muted` | `#6a6a6a` | 보조 텍스트 (5.4:1, AA 통과) |
 | | `--muted-soft` | `#929292` | **비활성/placeholder/비텍스트 전용** (3.1:1) |
 | | `--on-primary` | `#ffffff` | 컬러 배경 위 텍스트 |
+| | `--on-primary-muted` | `rgba(255,255,255,.72)` | 컬러(남색) 배경 위 보조 텍스트 |
 | 브랜드 | `--primary` (+`-dark`/`-mid`/`-light`/`-active`/`-disabled`) | `#0f4c81` … | 주 액션·링크 (흰 위 8.9:1) |
 | | `--coral` (+`-dark`/`-mid`/`-light`) | `#ea6863` … | 보조 강조 (**텍스트엔 `--coral-dark`**) |
 | | `--gold` / `--gold-bg` | `#f0a830` / `#fef8ec` | 별점·스포트라이트 |
@@ -120,6 +121,11 @@
 ### 2.5 모달 / 오버레이
 
 - `.modal-overlay`: `--scrim` 배경 + `--z-modal`. `role="dialog"`/`aria-modal`. · `.modal-card`: `--shadow-lg`.
+
+### 2.6 리스팅 페이지 패턴 (스토리 / 경험)
+
+- **`.page-intro`** (남색 히어로): 상단 소개 섹션을 `--primary-dark`→`--primary` 그라데이션 배경으로 깔아 본문(흰 배경)과 시각 분리. 내부 텍스트는 `.ink`→`--on-primary`, `.muted`→`--on-primary-muted`로 자동 반전. 키커는 `.page-intro-kicker`(아이콘 stroke/fill을 `--on-primary`로) 사용.
+- **`.listing-toolbar`**: 검색 + 필터를 하나의 카드(`--canvas`+`--hairline`+`--shadow-sm`)로 묶어 "툴바"로 인식되게 함. `.listing-toolbar-search`(하단 hairline 구분선 동반) + `.listing-toolbar-filters`(`FilterRow` 묶음). 개별 요소가 떠 보이지 않도록 그룹화하는 것이 목적.
 
 ---
 

@@ -16,10 +16,7 @@ export default function StoriesScreen() {
   const [category, setCategory] = useState<string>(initialCategory)
 
   const featured = useMemo(() => storiesRepo.featured(), [])
-  const latest = useMemo(
-    () => storiesRepo.latest(3, featured?.id),
-    [featured],
-  )
+  const latest = useMemo(() => storiesRepo.latest(3, featured?.id), [featured])
   const grid = useMemo(
     () =>
       storiesRepo
@@ -30,29 +27,14 @@ export default function StoriesScreen() {
 
   return (
     <main className="fade-in">
-      <section
-        style={{
-          padding: "48px 0 24px",
-          borderBottom: "1px solid var(--hairline-soft)",
-        }}
-      >
+      <section className="page-intro">
         <div className="container">
-          <div
-            className="row row-gap-xs"
-            style={{
-              color: "var(--primary)",
-              marginBottom: 12,
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: 1.2,
-              textTransform: "uppercase",
-            }}
-          >
+          <div className="page-intro-kicker">
             <Icon
               name="sparkles"
               size={14}
-              stroke="var(--primary)"
-              fill="var(--primary)"
+              stroke="var(--on-primary)"
+              fill="var(--on-primary)"
               sw={1.5}
             />
             {t("kicker")}
