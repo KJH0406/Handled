@@ -339,6 +339,10 @@ export default function PlanNewScreen({
   const [budget, setBudget] = useState<number>(() =>
     computeBudgetDefault({ adults: 1, teens: 0, days: 2 }),
   )
+  // Until the user drags the slider, budget tracks the computed default
+  // (2× floor) as party/duration change. After a manual edit it sticks,
+  // only clamped back into [min, max].
+  const [budgetTouched, setBudgetTouched] = useState<boolean>(false)
   const [generating, setGenerating] = useState<boolean>(false)
   const [authOpen, setAuthOpen] = useState<boolean>(false)
 
@@ -383,9 +387,18 @@ export default function PlanNewScreen({
   )
 
   useEffect(() => {
-    if (budget < budgetMin) setBudget(budgetMin)
-    else if (budget > budgetMax) setBudget(budgetMax)
-  }, [budgetMin, budgetMax, budget])
+    if (!budgetTouched) {
+      setBudget(
+        computeBudgetDefault({
+          adults,
+          teens,
+          days: dayCount > 0 ? dayCount : 1,
+        }),
+      )
+    } else {
+      setBudget((b) => Math.min(Math.max(b, budgetMin), budgetMax))
+    }
+  }, [adults, teens, dayCount, budgetTouched, budgetMin, budgetMax])
 
   const toggleInterest = (c: ExperienceCategory) => {
     setInterests((prev) => {
@@ -751,7 +764,10 @@ export default function PlanNewScreen({
                   max={budgetMax}
                   step={BUDGET_STEP}
                   value={budget}
-                  onChange={(e) => setBudget(Number(e.target.value))}
+                  onChange={(e) => {
+                    setBudgetTouched(true)
+                    setBudget(Number(e.target.value))
+                  }}
                   style={{
                     width: "100%",
                     marginTop: 12,

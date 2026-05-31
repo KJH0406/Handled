@@ -10,14 +10,17 @@ export const MAX_TRIP_DAYS = 5
 /** Fixed prototype FX rate. KRW is the canonical unit; USD is display-only. */
 export const KRW_PER_USD = 1350
 
-/** Per-counted-traveler daily spend assumption used as the floor (KRW). */
+/** Per-counted-traveler daily spend assumption (activities/food) used as the raw floor (KRW). */
 export const BUDGET_PER_PERSON_PER_DAY = 100_000
+
+/** Lodging allowance added on top of the raw daily floor when computing the minimum (+30%). */
+export const BUDGET_MIN_LODGING_MULT = 1.3
 
 /** Per-counted-traveler daily spend assumption used as the ceiling (KRW). */
 export const BUDGET_MAX_PER_PERSON_PER_DAY = 500_000
 
-/** Default sits this fraction above the computed floor. */
-export const BUDGET_DEFAULT_MULT = 1.3
+/** Default budget is this multiple of the computed floor. */
+export const BUDGET_DEFAULT_MULT = 2.0
 
 /** Slider step in KRW. */
 export const BUDGET_STEP = 10_000
@@ -29,8 +32,8 @@ interface BudgetFloorInput {
 }
 
 /**
- * Floor budget in KRW for the given party + duration.
- * Kids are excluded from the counted headcount.
+ * Minimum budget in KRW for the given party + duration: the raw daily floor
+ * plus a 30% lodging allowance. Kids are excluded from the counted headcount.
  */
 export const computeBudgetMinimum = ({
   adults,
@@ -38,7 +41,8 @@ export const computeBudgetMinimum = ({
   days,
 }: BudgetFloorInput): number => {
   const people = adults + teens
-  const raw = people * days * BUDGET_PER_PERSON_PER_DAY
+  const raw =
+    people * days * BUDGET_PER_PERSON_PER_DAY * BUDGET_MIN_LODGING_MULT
   return Math.max(
     BUDGET_STEP,
     Math.ceil(raw / BUDGET_STEP) * BUDGET_STEP,
@@ -59,10 +63,10 @@ export const computeBudgetMaximum = ({
   )
 }
 
-/** Default budget sits BUDGET_DEFAULT_MULT above the floor, snapped to step. */
+/** Default budget is the minimum × BUDGET_DEFAULT_MULT, snapped to step. */
 export const computeBudgetDefault = (input: BudgetFloorInput): number => {
-  const floor = computeBudgetMinimum(input)
-  const raw = floor * BUDGET_DEFAULT_MULT
+  const minimum = computeBudgetMinimum(input)
+  const raw = minimum * BUDGET_DEFAULT_MULT
   return Math.ceil(raw / BUDGET_STEP) * BUDGET_STEP
 }
 
