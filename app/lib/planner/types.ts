@@ -5,7 +5,7 @@ export type SlotTimeOfDay = "morning" | "lunch" | "afternoon" | "evening"
 export type Transport = "public" | "taxi" | "car"
 
 /** Hard upper bound on trip length (days, inclusive). */
-export const MAX_TRIP_DAYS = 7
+export const MAX_TRIP_DAYS = 5
 
 /** Fixed prototype FX rate. KRW is the canonical unit; USD is display-only. */
 export const KRW_PER_USD = 1350
