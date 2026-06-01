@@ -1,10 +1,9 @@
 "use client"
 
-import Image from "next/image"
 import { useTranslations } from "next-intl"
-import mapImg from "@/img/guides/map.png"
 import { Link } from "../../i18n/navigation"
 import ExperienceCard from "../components/cards/ExperienceCard"
+import HeroPlanPreview from "../components/home/HeroPlanPreview"
 import Icon, { type IconName } from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
 import { experiencesRepo } from "../lib/repositories/experiences"
@@ -19,22 +18,6 @@ const formatViews = (id: string): string => {
     ? `${(n / 1_000_000).toFixed(1)}M+`
     : `${Math.round(n / 1000)}K+`
 }
-
-interface HeroChip {
-  label: string
-  active: boolean
-}
-
-const HERO_INTEREST_CHIPS: HeroChip[] = [
-  { label: "Food", active: true },
-  { label: "Culture", active: true },
-  { label: "Photo", active: true },
-  { label: "Nature", active: false },
-  { label: "Art", active: false },
-  { label: "Urban", active: false },
-  { label: "Beach", active: false },
-  { label: "Nightlife", active: false },
-]
 
 const STATS_KEYS = [
   "travelersHosted",
@@ -115,60 +98,8 @@ export default function HomeScreen() {
             </button>
           </div>
 
-          <div className="hero-mock" aria-hidden="true">
-            <div className="hero-mock-card hero-mock-card--interests">
-              <div className="hero-mock-icon">
-                <Icon
-                  name="heart"
-                  size={22}
-                  stroke="var(--primary)"
-                  fill="var(--primary)"
-                  sw={1.5}
-                />
-              </div>
-              <div className="t-display-sm ink hero-mock-title">
-                {t("hero.mock.interestsTitle")}
-              </div>
-              <div className="t-caption-sm muted hero-mock-hint">
-                {t("hero.mock.interestsHint")}
-              </div>
-              <div className="hero-mock-chips">
-                {HERO_INTEREST_CHIPS.map((c) => (
-                  <span
-                    key={c.label}
-                    className={`chip ${c.active ? "active" : ""}`}
-                  >
-                    {c.active && <Icon name="check" size={12} />}
-                    {c.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="hero-mock-card hero-mock-card--plan">
-              <div className="hero-mock-icon">
-                <Icon name="map" size={22} stroke="var(--primary)" />
-              </div>
-              <div className="t-display-sm ink hero-mock-plan-title">
-                {t("hero.mock.planTitlePrefix")}
-                <span style={{ color: "var(--primary)" }}>
-                  {t("hero.mock.planTitleHighlight")}
-                </span>
-                {t("hero.mock.planTitleSuffix")}
-              </div>
-              <div className="t-caption-sm muted hero-mock-plan-hint">
-                {t("hero.mock.planHint")}
-              </div>
-              <div className="hero-mock-plan-map">
-                <Image
-                  src={mapImg}
-                  alt=""
-                  sizes="308px"
-                  placeholder="blur"
-                />
-              </div>
-            </div>
-
+          <div className="hero-mock">
+            <HeroPlanPreview />
           </div>
         </div>
       </section>

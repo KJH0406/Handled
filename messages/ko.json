@@ -105,15 +105,7 @@
       "titleLine1": "당신의 여행 계획,",
       "titleLine2": "단 1분 만에 완성!",
       "lede": "검색은 그만. Handled가 여행을 대신 계획해 드릴게요.",
-      "planCta": "새 여행 만들기",
-      "mock": {
-        "interestsTitle": "내가 선호하는\n여행 스타일은?",
-        "interestsHint": "다중 선택이 가능해요.",
-        "planTitlePrefix": "서울 4일 ",
-        "planTitleHighlight": "일정",
-        "planTitleSuffix": "",
-        "planHint": "Handled가 짜준 맞춤일정으로 떠나보세요."
-      }
+      "planCta": "새 여행 만들기"
     },
     "stats": {
       "travelersHosted": {

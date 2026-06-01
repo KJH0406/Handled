@@ -105,15 +105,7 @@
       "titleLine1": "Plan your trip",
       "titleLine2": "in just 1 minute!",
       "lede": "Skip the search. Handled plans your trip for you.",
-      "planCta": "Create a New Trip",
-      "mock": {
-        "interestsTitle": "What's your travel style?",
-        "interestsHint": "Pick a few - multi-select",
-        "planTitlePrefix": "Seoul 4-day ",
-        "planTitleHighlight": "itinerary",
-        "planTitleSuffix": "",
-        "planHint": "Let Handled plan your stay."
-      }
+      "planCta": "Create a New Trip"
     },
     "stats": {
       "travelersHosted": {
