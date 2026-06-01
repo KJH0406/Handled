@@ -20,6 +20,7 @@ export async function generateMetadata({
   return {
     title: story.title,
     description: story.summary,
+    keywords: story.tags,
     alternates: { canonical: url },
     openGraph: {
       title: `${story.title} · ${tSite("name")}`,

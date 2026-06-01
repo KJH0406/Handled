@@ -120,5 +120,7 @@ export interface Story {
   summary: string
   bg: string
   body: string[]
+  /** Free-form topic tags. Shared across stories to power tag filtering. */
+  tags: string[]
   featured?: boolean
 }

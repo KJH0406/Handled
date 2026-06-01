@@ -707,9 +707,11 @@
     "filters": {
       "all": "All"
     },
+    "exploreTopics": "Explore by topic",
+    "topics": "Topics",
     "empty": {
-      "title": "No stories in this category yet",
-      "subtitle": "Try a different category — more stories are added every week.",
+      "title": "No stories here yet",
+      "subtitle": "Try a different filter — more stories are added every week.",
       "cta": "Show all stories"
     },
     "subscribe": {

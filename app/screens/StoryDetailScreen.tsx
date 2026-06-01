@@ -98,6 +98,34 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
               </p>
             ))}
           </div>
+
+          {story.tags.length > 0 && (
+            <div
+              style={{
+                marginTop: 40,
+                paddingTop: 28,
+                borderTop: "1px solid var(--hairline-soft)",
+              }}
+            >
+              <div
+                className="t-uppercase-tag muted"
+                style={{ marginBottom: 12 }}
+              >
+                {t("topics")}
+              </div>
+              <div className="row row-gap-sm" style={{ flexWrap: "wrap" }}>
+                {story.tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    href={`/stories?tag=${encodeURIComponent(tag)}`}
+                    className="story-tag-chip"
+                  >
+                    #{tag}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </article>
 
         {related.length > 0 && (
@@ -173,6 +201,24 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
         }
         .story-related-photo {
           height: 140px;
+        }
+        .story-tag-chip {
+          display: inline-flex;
+          align-items: center;
+          padding: 6px 14px;
+          border-radius: var(--r-full);
+          border: 1px solid var(--hairline);
+          background: var(--surface-soft);
+          color: var(--body);
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: border-color .15s, background .15s, color .15s;
+        }
+        .story-tag-chip:hover {
+          border-color: var(--ink);
+          background: var(--canvas);
+          color: var(--ink);
         }
       `}</style>
     </main>

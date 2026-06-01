@@ -14,17 +14,34 @@ export default function StoriesScreen() {
   const t = useTranslations("stories")
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get("category") ?? "All"
+  const initialTag = searchParams.get("tag")
   const [category, setCategory] = useState<string>(initialCategory)
+  const [tag, setTag] = useState<string | null>(initialTag)
 
+  const tags = useMemo(() => storiesRepo.allTags(), [])
   const featured = useMemo(() => storiesRepo.featured(), [])
   const latest = useMemo(() => storiesRepo.latest(3, featured?.id), [featured])
   const grid = useMemo(
     () =>
       storiesRepo
-        .list({ category })
+        .list({ category, tag: tag ?? undefined })
         .filter((s) => !(featured && s.id === featured.id)),
-    [category, featured],
+    [category, tag, featured],
   )
+
+  // Single active facet: picking a category clears the tag, and vice versa.
+  const selectCategory = (c: string) => {
+    setCategory(c)
+    setTag(null)
+  }
+  const toggleTag = (tg: string) => {
+    setTag((prev) => (prev === tg ? null : tg))
+    setCategory("All")
+  }
+  const clearFilters = () => {
+    setCategory("All")
+    setTag(null)
+  }
 
   return (
     <main className="fade-in">
@@ -87,18 +104,36 @@ export default function StoriesScreen() {
             }}
           >
             {STORY_CATEGORIES.map((c) => {
-              const active = category === c
+              const active = category === c && !tag
               return (
                 <button
                   key={c}
                   type="button"
-                  onClick={() => setCategory(c)}
+                  onClick={() => selectCategory(c)}
                   className={`chip${active ? " active" : ""}`}
                 >
                   {c === "All" ? t("filters.all") : c}
                 </button>
               )
             })}
+          </div>
+
+          <div className="stories-topics">
+            <span className="t-uppercase-tag muted stories-topics-label">
+              {t("exploreTopics")}
+            </span>
+            <div className="stories-topics-chips">
+              {tags.map(({ tag: tg }) => (
+                <button
+                  key={tg}
+                  type="button"
+                  onClick={() => toggleTag(tg)}
+                  className={`chip chip-sm${tag === tg ? " active" : ""}`}
+                >
+                  #{tg}
+                </button>
+              ))}
+            </div>
           </div>
 
           {grid.length === 0 ? (
@@ -113,7 +148,7 @@ export default function StoriesScreen() {
               <button
                 className="btn btn-secondary"
                 style={{ marginTop: 20 }}
-                onClick={() => setCategory("All")}
+                onClick={clearFilters}
               >
                 {t("empty.cta")}
               </button>
@@ -249,6 +284,27 @@ function StoryCard({ story }: { story: Story }) {
 function StoriesStyles() {
   return (
     <style>{`
+      .stories-topics {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+      .stories-topics-label {
+        flex-shrink: 0;
+        padding-top: 4px;
+      }
+      .stories-topics-chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip-sm {
+        padding: 5px 12px;
+        font-size: 13px;
+      }
+
       .stories-featured-grid {
         display: grid;
         grid-template-columns: 1.4fr 1fr;
