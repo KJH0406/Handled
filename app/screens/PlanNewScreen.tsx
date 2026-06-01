@@ -6,6 +6,10 @@ import { DEFAULT_CREDITS, useAuth } from "../components/auth/AuthProvider"
 import AuthRequiredModal from "../components/auth/AuthRequiredModal"
 import Icon from "../components/ui/Icon"
 import { useAppNavigate } from "../lib/navigation"
+import {
+  MAX_INTERESTS,
+  TRAVEL_INTERESTS as INTERESTS,
+} from "../lib/data/interests"
 import { generatePlan } from "../lib/planner/generate"
 import { savePlan } from "../lib/planner/storage"
 import {
@@ -41,19 +45,6 @@ const isCity = (v: string | undefined): v is City =>
 
 const isISODate = (v: string | undefined): v is string =>
   typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v))
-
-const INTERESTS: ReadonlyArray<{ value: ExperienceCategory; label: string }> = [
-  { value: "Culture", label: "Culture & History" },
-  { value: "Nature", label: "Nature & Adventure" },
-  { value: "Food", label: "Food & Dining" },
-  { value: "Shopping", label: "Shopping & Design" },
-  { value: "Art", label: "Art & Architecture" },
-  { value: "KPop", label: "K-Pop & Entertainment" },
-  { value: "Beauty", label: "Beauty & Wellness" },
-  { value: "Nightlife", label: "Nightlife & Bars" },
-] as const
-
-const MAX_INTERESTS = 3
 
 const INTEREST_LABEL: Partial<Record<ExperienceCategory, string>> =
   Object.fromEntries(INTERESTS.map((i) => [i.value, i.label]))
