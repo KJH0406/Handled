@@ -3,9 +3,11 @@
 import { useTranslations } from "next-intl"
 import { useMemo } from "react"
 import { Link } from "../../i18n/navigation"
+import ExperienceCard from "../components/cards/ExperienceCard"
 import Breadcrumb from "../components/layout/Breadcrumb"
 import { categoryColor } from "../lib/data/categoryColors"
 import { useAppNavigate } from "../lib/navigation"
+import { experiencesRepo } from "../lib/repositories/experiences"
 import { storiesRepo } from "../lib/repositories/stories"
 
 export interface StoryDetailScreenProps {
@@ -16,10 +18,19 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
   const t = useTranslations("stories")
   const navigate = useAppNavigate()
   const story = useMemo(() => storiesRepo.findById(storyId), [storyId])
-  const related = useMemo(
-    () => (story ? storiesRepo.related(story, 3) : []),
-    [story],
-  )
+  // 프로토타입: 글-경험 매칭 알고리즘은 추후 정의(PRD 05 섹션4.2 참고).
+  // 지금은 글마다 다른 경험이 보이도록 임의로 3개를 고른다.
+  const relatedExperiences = useMemo(() => {
+    if (!story) return []
+    const all = experiencesRepo.list()
+    if (all.length === 0) return []
+    const seed = [...story.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0)
+    const start = seed % all.length
+    return Array.from(
+      { length: Math.min(3, all.length) },
+      (_, i) => all[(start + i) % all.length],
+    )
+  }, [story])
 
   if (!story) {
     return (
@@ -128,7 +139,7 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
           )}
         </article>
 
-        {related.length > 0 && (
+        {relatedExperiences.length > 0 && (
           <section
             style={{
               marginTop: 80,
@@ -136,47 +147,15 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
               paddingTop: 48,
             }}
           >
-            <h2 className="t-display-md ink" style={{ marginBottom: 24 }}>
-              {t("related")}
+            <h2 className="t-display-md ink" style={{ marginBottom: 8 }}>
+              {t("relatedExperiences.title")}
             </h2>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                gap: 24,
-              }}
-            >
-              {related.map((r) => (
-                <Link
-                  key={r.id}
-                  href={`/stories/${r.id}`}
-                  className="story-related-card"
-                >
-                  <div
-                    className="story-related-photo"
-                    style={{ background: r.bg }}
-                  />
-                  <div style={{ padding: 16 }}>
-                    <span
-                      className="t-caption"
-                      style={{
-                        color: categoryColor(r.category).solid,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {r.category}
-                    </span>
-                    <div
-                      className="t-title-md ink"
-                      style={{ marginTop: 8, lineHeight: 1.35 }}
-                    >
-                      {r.title}
-                    </div>
-                    <div className="t-caption muted" style={{ marginTop: 8 }}>
-                      {r.date} · {r.readMinutes} min
-                    </div>
-                  </div>
-                </Link>
+            <p className="t-body-md muted" style={{ marginBottom: 24 }}>
+              {t("relatedExperiences.subtitle")}
+            </p>
+            <div className="exp-grid">
+              {relatedExperiences.map((exp) => (
+                <ExperienceCard key={exp.id} exp={exp} showGuide />
               ))}
             </div>
           </section>
@@ -184,24 +163,6 @@ export default function StoryDetailScreen({ storyId }: StoryDetailScreenProps) {
       </div>
 
       <style>{`
-        .story-related-card {
-          display: block;
-          background: var(--canvas);
-          border: 1px solid var(--hairline-soft);
-          border-radius: var(--r-md);
-          overflow: hidden;
-          text-decoration: none;
-          color: inherit;
-          transition: transform .2s ease, box-shadow .2s ease, border-color .15s;
-        }
-        .story-related-card:hover {
-          transform: translateY(-2px);
-          box-shadow: var(--shadow-card);
-          border-color: var(--hairline);
-        }
-        .story-related-photo {
-          height: 140px;
-        }
         .story-tag-chip {
           display: inline-flex;
           align-items: center;

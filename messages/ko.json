@@ -709,7 +709,10 @@
       "cta": "Korea Story 구독하기"
     },
     "backToStories": "스토리 목록으로",
-    "related": "이어서 읽기",
+    "relatedExperiences": {
+      "title": "이 글과 어울리는 경험",
+      "subtitle": "이 이야기를 가장 잘 아는 가이드와 함께 직접 경험해 보세요."
+    },
     "notFound": {
       "title": "스토리를 찾을 수 없어요.",
       "cta": "홈으로 돌아가기"

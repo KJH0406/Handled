@@ -712,7 +712,10 @@
       "cta": "Subscribe to Korea Story"
     },
     "backToStories": "Back to stories",
-    "related": "Keep reading",
+    "relatedExperiences": {
+      "title": "Experiences from this story",
+      "subtitle": "Bring this story to life with a guide who knows it best."
+    },
     "notFound": {
       "title": "We couldn't find that story.",
       "cta": "Back to home"
