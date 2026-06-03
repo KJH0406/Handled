@@ -17,7 +17,7 @@
 | [PRD_auth.md](./PRD_auth.md)             | 인증 & 계정                             | 🟡 초안(검토 요청) | 골드 스탠다드 샘플                                              |
 | [PRD_home.md](./PRD_home.md)             | 홈 (랜딩/진입점, `/`)                   | 🟡 초안            |                                                                 |
 | [PRD_planner.md](./PRD_planner.md)       | AI 일정 플래너 ★                        | 🟡 초안            | `plan-cost-detail-requirements.md` 참조                         |
-| [PRD_experience.md](./PRD_experience.md) | 경험 목록·상세 & 예약                   | ⬜ 예정            | `/experiences` 전체(목록+상세)                                  |
+| [PRD_experience.md](./PRD_experience.md) | 경험 목록·상세 & 예약                   | 🟡 초안            | `/experiences` 전체(목록+상세)                                  |
 | [PRD_stories.md](./PRD_stories.md)       | 스토리(콘텐츠)                          | ⬜ 예정            |                                                                 |
 | [PRD_my-plans.md](./PRD_my-plans.md)     | 내 일정 (계정·크레딧 + 저장 일정)       | ⬜ 예정            | auth·planner에서 이관                                           |
 | [PRD_checkout.md](./PRD_checkout.md)     | 예약 결제 & 확정                        | ⬜ 예정            |                                                                 |
