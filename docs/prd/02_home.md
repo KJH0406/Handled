@@ -7,8 +7,8 @@
 | **상태** | 🟡 초안(검토 요청) |
 | **작성 기준** | 현재 구현된 동작 기준 (미구현·정책 공백은 §7에 분리) |
 | **관련 라우트** | `/` (홈) |
-| **관련 PRD** | [planner](./PRD_planner.md)(히어로 프리뷰·주요 CTA) · [experience](./PRD_experience.md)(추천 경험·전체 보기) · [stories](./PRD_stories.md)(스토리) · [foundation](./PRD_foundation.md)(레이아웃·내비·접근성) |
-| **범위 메모** | 이 문서는 홈 페이지(`/`)만 다룬다. 경험 목록·검색은 [experience](./PRD_experience.md), 스토리 목록은 [stories](./PRD_stories.md), 일정 생성은 [planner](./PRD_planner.md)에서 다룬다. |
+| **관련 PRD** | [planner](./03_planner.md)(히어로 프리뷰·주요 CTA) · [experience](./04_experience.md)(추천 경험·전체 보기) · [stories](./05_stories.md)(스토리) · [foundation](./07_foundation.md)(레이아웃·내비·접근성) |
+| **범위 메모** | 이 문서는 홈 페이지(`/`)만 다룬다. 경험 목록·검색은 [experience](./04_experience.md), 스토리 목록은 [stories](./05_stories.md), 일정 생성은 [planner](./03_planner.md)에서 다룬다. |
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### 성공의 정의 · 비목표(Non-goals)
 - **성공:** 방문자가 홈에서 가치를 이해하고 플래너 또는 경험·스토리로 진입한다.
-- **비목표(다른 스펙에서 다룸):** 경험 목록·검색 자체는 [experience](./PRD_experience.md), 스토리 목록은 [stories](./PRD_stories.md), 일정 생성 로직은 [planner](./PRD_planner.md). 홈은 이들로 가는 진입점만 책임진다.
+- **비목표(다른 스펙에서 다룸):** 경험 목록·검색 자체는 [experience](./04_experience.md), 스토리 목록은 [stories](./05_stories.md), 일정 생성 로직은 [planner](./03_planner.md). 홈은 이들로 가는 진입점만 책임진다.
 
 ---
 
@@ -45,7 +45,7 @@
 
 **홈 진입 → 분기**
 1. 방문자가 홈에 진입해 히어로에서 가치와 일정 결과 미리보기를 본다.
-2. 의도에 따라 분기한다: **일정 만들기**(→ [planner](./PRD_planner.md)) · **경험 둘러보기**(→ [experience](./PRD_experience.md)) · **스토리 읽기**(→ [stories](./PRD_stories.md)).
+2. 의도에 따라 분기한다: **일정 만들기**(→ [planner](./03_planner.md)) · **경험 둘러보기**(→ [experience](./04_experience.md)) · **스토리 읽기**(→ [stories](./05_stories.md)).
 
 ---
 
@@ -55,15 +55,15 @@
 - **목적:** 가치를 전달하고 핵심 퍼널로 분기시킨다.
 - **진입 경로:** 로고/직접 진입, 전역 내비.
 - **구성 · 주요 기능 (위에서 아래로):**
-  - **히어로** - 헤드라인 + 일정 만들기 CTA + 일정 결과 미리보기(플래너 산출물 형태). → [planner](./PRD_planner.md)
+  - **히어로** - 헤드라인 + 일정 만들기 CTA + 일정 결과 미리보기(플래너 산출물 형태). → [planner](./03_planner.md)
   - **신뢰 지표 통계** - 누적 여행자·가이드 수·평균 평점·도시 수 등.
-  - **추천 경험(3개)** - 카드 그리드. "출시 예정(Launching soon)"으로 표기. "전체 보기"는 경험 탐색으로 이동. → [experience](./PRD_experience.md)
-  - **스토리 그리드** - 콘텐츠 카드 + "전체 보기"(스토리). → [stories](./PRD_stories.md)
+  - **추천 경험(3개)** - 카드 그리드. "출시 예정(Launching soon)"으로 표기. "전체 보기"는 경험 탐색으로 이동. → [experience](./04_experience.md)
+  - **스토리 그리드** - 콘텐츠 카드 + "전체 보기"(스토리). → [stories](./05_stories.md)
   - **플래너 안내 + CTA** - 3단계 설명과 일정 만들기 CTA.
   - **"진짜 한국" 가치 카드(3종)** - 검증된 호스트 / 테마 경험 / 현지 스토리.
 - **정책 · 규칙:**
   - 모든 주요 CTA('일정 만들기' 등)는 **플래너 생성으로 수렴**한다.
-  - 추천 경험은 **출시 예정 상태**로 노출한다(상세 동작은 [experience](./PRD_experience.md)).
+  - 추천 경험은 **출시 예정 상태**로 노출한다(상세 동작은 [experience](./04_experience.md)).
   - 추천 경험은 현재 **고정 3개**다(개인화·큐레이션 없음). → §7
   - 신뢰 지표 통계는 마케팅 표기값이다. → §7
 - **상태별 표시:** 정적(단일 상태). 로그인 여부와 무관하게 동일 노출.
@@ -88,7 +88,7 @@
 
 | 상황 | 기대 동작 |
 |---|---|
-| 출시 예정(추천) 경험 카드 선택 | 경험 상세로 이동한다(상세에서는 예약 대신 출시 알림 신청: [experience](./PRD_experience.md)). |
+| 출시 예정(추천) 경험 카드 선택 | 경험 상세로 이동한다(상세에서는 예약 대신 출시 알림 신청: [experience](./04_experience.md)). |
 | 추천·스토리 데이터가 비어 있을 때 | 해당 섹션이 비어도 홈 레이아웃이 깨지지 않는다(현재 데이터는 항상 존재). |
 | 로그인/비로그인 | 홈은 동일하게 노출된다(개인화 없음). |
 
@@ -107,4 +107,4 @@
 
 ## 부록 - 참조
 - 용어 정의: [README 용어집](./README.md#공통-용어집-glossary)
-- 경험 목록·검색: [PRD_experience.md](./PRD_experience.md) · 스토리: [PRD_stories.md](./PRD_stories.md) · 일정 플래너: [PRD_planner.md](./PRD_planner.md) · 레이아웃·내비: [PRD_foundation.md](./PRD_foundation.md)
+- 경험 목록·검색: [04_experience.md](./04_experience.md) · 스토리: [05_stories.md](./05_stories.md) · 일정 플래너: [03_planner.md](./03_planner.md) · 레이아웃·내비: [07_foundation.md](./07_foundation.md)

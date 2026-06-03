@@ -1,4 +1,4 @@
-# Handled - 기능 명세서(PRD) 인덱스
+# Handled - 기능 명세서 인덱스
 
 이 디렉토리는 **Handled**(신뢰할 수 있는 현지인이 호스팅하는 한국 로컬 경험 마켓플레이스 + AI 일정 플래너)의 기능 명세서를 **도메인별 분할 마크다운**으로 관리한다.
 
@@ -14,19 +14,19 @@
 
 | 파일                                     | 도메인                                  | 상태               | 비고                                                            |
 | ---------------------------------------- | --------------------------------------- | ------------------ | --------------------------------------------------------------- |
-| [PRD_auth.md](./PRD_auth.md)             | 인증 & 계정                             | 🟡 초안(검토 요청) | 골드 스탠다드 샘플                                              |
-| [PRD_home.md](./PRD_home.md)             | 홈 (랜딩/진입점, `/`)                   | 🟡 초안            |                                                                 |
-| [PRD_planner.md](./PRD_planner.md)       | AI 일정 플래너 ★                        | 🟡 초안            | `plan-cost-detail-requirements.md` 참조                         |
-| [PRD_experience.md](./PRD_experience.md) | 경험 목록·상세 & 예약                   | 🟡 초안            | `/experiences` 전체(목록+상세)                                  |
-| [PRD_stories.md](./PRD_stories.md)       | 스토리(콘텐츠)                          | 🟡 초안            |                                                                 |
-| [PRD_my-plans.md](./PRD_my-plans.md)     | 내 일정 (계정·크레딧 + 저장 일정)       | 🟡 초안            | auth·planner에서 이관                                           |
-| [PRD_checkout.md](./PRD_checkout.md)     | 예약 결제 & 확정                        | ⏸️ 보류            | 예약 출시 전이라 보류(추후 작성)                                |
-| [PRD_foundation.md](./PRD_foundation.md) | 공통 기반(i18n·내비·디자인·접근성·에러) | 🟡 초안            | `/DESIGN.md` 참조                                               |
-| ~~PRD_guide.md~~                         | 가이드 프로필 & 맞춤 매칭               | ⏸️ 보류            | **현 단계 제외** (가이드 목록·프로필·맞춤 견적 포함, 추후 작성) |
+| [01_auth.md](./01_auth.md)             | 인증 & 계정                             | 🟡 초안(검토 요청) | 골드 스탠다드 샘플                                              |
+| [02_home.md](./02_home.md)             | 홈 (랜딩/진입점, `/`)                   | 🟡 초안            |                                                                 |
+| [03_planner.md](./03_planner.md)       | AI 일정 플래너 ★                        | 🟡 초안            | `plan-cost-detail-requirements.md` 참조                         |
+| [04_experience.md](./04_experience.md) | 경험 목록·상세 & 예약                   | 🟡 초안            | `/experiences` 전체(목록+상세)                                  |
+| [05_stories.md](./05_stories.md)       | 스토리(콘텐츠)                          | 🟡 초안            |                                                                 |
+| [06_my-plans.md](./06_my-plans.md)     | 내 일정 (계정·크레딧 + 저장 일정)       | 🟡 초안            | auth·planner에서 이관                                           |
+| [07_foundation.md](./07_foundation.md) | 공통 기반(i18n·내비·디자인·접근성·에러) | 🟡 초안            | `/DESIGN.md` 참조                                               |
+| [checkout.md](./checkout.md)     | 예약 결제 & 확정                        | ⏸️ 보류            | 예약 출시 전이라 보류(추후 작성)                                |
+| ~~guide.md~~                         | 가이드 프로필 & 맞춤 매칭               | ⏸️ 보류            | **현 단계 제외** (가이드 목록·프로필·맞춤 견적 포함, 추후 작성) |
 
 **작성/읽는 순서:** `home` → `experience` → `stories` → `planner` → `my-plans` → `auth`. `foundation`은 전역 공통이라 아무 때나 참조. `checkout`은 예약 출시 전이라 보류(추후 작성).
 
-> **현 단계 제외:** **가이드 도메인**(가이드 목록 `/guides`·프로필 `/guides/[id]`·맞춤 견적)은 이번 라운드에서 작성하지 않는다. 다른 문서에서 가이드 연계 지점(예: 경험 상세의 호스트 정보, 맞춤 견적 결제 경로)은 _"현 단계 제외 - 추후 `PRD_guide`"_ 로 표기한다.
+> **현 단계 제외:** **가이드 도메인**(가이드 목록 `/guides`·프로필 `/guides/[id]`·맞춤 견적)은 이번 라운드에서 작성하지 않는다. 다른 문서에서 가이드 연계 지점(예: 경험 상세의 호스트 정보, 맞춤 견적 결제 경로)은 _"현 단계 제외 - 추후 `guide`"_ 로 표기한다.
 
 ---
 
@@ -87,5 +87,5 @@
 
 ## 참조 문서
 
-- [`/DESIGN.md`](../../DESIGN.md) - 디자인 시스템 단일 기준(토큰·컴포넌트·접근성). `PRD_foundation`이 참조.
-- [`/docs/plan-cost-detail-requirements.md`](../plan-cost-detail-requirements.md) - 일정 비용 상세 요구사항. `PRD_planner`가 참조(중복 작성 금지).
+- [`/DESIGN.md`](../../DESIGN.md) - 디자인 시스템 단일 기준(토큰·컴포넌트·접근성). `07_foundation`이 참조.
+- [`/docs/plan-cost-detail-requirements.md`](../plan-cost-detail-requirements.md) - 일정 비용 상세 요구사항. `03_planner`가 참조(중복 작성 금지).

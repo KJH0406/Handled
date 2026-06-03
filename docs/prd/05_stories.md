@@ -8,7 +8,7 @@
 | **작성 기준** | 현재 구현된 동작 기준 (미구현·정책 공백은 §7에 분리) |
 | **관련 라우트** | `/stories`(목록) · `/stories/[storyId]`(상세) |
 | **범위 메모** | 콘텐츠 읽기 전용 도메인. 댓글·좋아요·공유·구독 같은 참여 기능은 현 단계 제외(→ §7). |
-| **관련 PRD** | [home](./PRD_home.md)(홈의 스토리 진입) · [foundation](./PRD_foundation.md)(언어·내비·접근성·에러) |
+| **관련 PRD** | [home](./02_home.md)(홈의 스토리 진입) · [foundation](./07_foundation.md)(언어·내비·접근성·에러) |
 
 ---
 
@@ -155,5 +155,5 @@
 
 ## 부록 - 참조
 - 용어 정의: [README 용어집](./README.md#공통-용어집-glossary)
-- 언어·내비·접근성·에러 기준: [PRD_foundation.md](./PRD_foundation.md)
-- 홈의 스토리 진입: [PRD_home.md](./PRD_home.md)
+- 언어·내비·접근성·에러 기준: [07_foundation.md](./07_foundation.md)
+- 홈의 스토리 진입: [02_home.md](./02_home.md)
