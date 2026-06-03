@@ -20,11 +20,11 @@
 | [PRD_experience.md](./PRD_experience.md) | 경험 목록·상세 & 예약                   | 🟡 초안            | `/experiences` 전체(목록+상세)                                  |
 | [PRD_stories.md](./PRD_stories.md)       | 스토리(콘텐츠)                          | 🟡 초안            |                                                                 |
 | [PRD_my-plans.md](./PRD_my-plans.md)     | 내 일정 (계정·크레딧 + 저장 일정)       | 🟡 초안            | auth·planner에서 이관                                           |
-| [PRD_checkout.md](./PRD_checkout.md)     | 예약 결제 & 확정                        | ⬜ 예정            |                                                                 |
-| [PRD_foundation.md](./PRD_foundation.md) | 공통 기반(i18n·내비·디자인·접근성·에러) | ⬜ 예정            | `/DESIGN.md` 참조                                               |
+| [PRD_checkout.md](./PRD_checkout.md)     | 예약 결제 & 확정                        | ⏸️ 보류            | 예약 출시 전이라 보류(추후 작성)                                |
+| [PRD_foundation.md](./PRD_foundation.md) | 공통 기반(i18n·내비·디자인·접근성·에러) | 🟡 초안            | `/DESIGN.md` 참조                                               |
 | ~~PRD_guide.md~~                         | 가이드 프로필 & 맞춤 매칭               | ⏸️ 보류            | **현 단계 제외** (가이드 목록·프로필·맞춤 견적 포함, 추후 작성) |
 
-**작성/읽는 순서:** `home` → `experience` → `stories` → `planner` → `my-plans` → `checkout` → `auth`. `foundation`은 전역 공통이라 아무 때나 참조.
+**작성/읽는 순서:** `home` → `experience` → `stories` → `planner` → `my-plans` → `auth`. `foundation`은 전역 공통이라 아무 때나 참조. `checkout`은 예약 출시 전이라 보류(추후 작성).
 
 > **현 단계 제외:** **가이드 도메인**(가이드 목록 `/guides`·프로필 `/guides/[id]`·맞춤 견적)은 이번 라운드에서 작성하지 않는다. 다른 문서에서 가이드 연계 지점(예: 경험 상세의 호스트 정보, 맞춤 견적 결제 경로)은 _"현 단계 제외 - 추후 `PRD_guide`"_ 로 표기한다.
 
