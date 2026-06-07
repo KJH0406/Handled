@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Handled — Korean local experiences (v11)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;}
+  button{border:none;background:none;cursor:pointer;font-family:inherit;}
+  input,select,textarea{font-family:inherit;}
+  a{text-decoration:none;}
+  input[type="date"]::-webkit-calendar-picker-indicator{opacity:0.5;cursor:pointer;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+  .fade-up{animation:fadeUp .45s ease both;}
+  .scale-in{animation:scaleIn .35s cubic-bezier(.34,1.56,.64,1) both;}
+  .slide-down{animation:slideDown .3s ease both;}
+
+  /* Range slider */
+  input[type=range]{-webkit-appearance:none;height:5px;border-radius:9px;background:#EEEAE4;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#0F4C81;cursor:pointer;box-shadow:0 2px 6px rgba(15,76,129,.3);}
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#C3BDB6;border-radius:9px;}
+  /* Select arrow */
+  select{-webkit-appearance:none;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ─── Design Tokens ─── */
+// Classic Blue #0F4C81 + Deep Coral #E2703A · Brand neutral scale
+const C = {
+  p:'#0F4C81', pDark:'#0A3460', pMid:'#1E6BB0', pLight:'#E8F0FB', pText:'#0A3460',
+  s:'#E2703A', sDark:'#C05828', sMid:'#EC8A5A', sLight:'#FEF0E8',
+  gold:'#F0A830', goldBg:'#FEF8EC',
+  w:'#FFFFFF', warm:'#F7F7F7', g50:'#F7F7F7', g100:'#EBEBEB',
+  g200:'#DDDDDD', g300:'#929292', g500:'#6A6A6A', g700:'#3F3F3F', g900:'#222222',
+};
+const sh = {
+  sm:'0 1px 2px rgba(0,0,0,0.06)',
+  md:'0 4px 12px rgba(0,0,0,0.08)',
+  lg:'0 12px 32px rgba(0,0,0,0.16)',
+  hero:'0 10px 48px rgba(0,0,0,0.24)',
+};
+
+/* ─── Data ─── */
+const PRODUCTS = [
+  { id:1, theme:'Seongsu Hip-Street Tour', guide:'Jenny Kim', area:'Seongsu · Seoul', dur:'4 hours', price:65, rating:4.97, rev:128, cat:'Trending', max:6, badge:'Best Seller',
+    desc:"Walk Seoul's coolest neighborhood with trendsetter Jenny — from Instagram-famous spots to locals-only hidden cafés you won't find in any guidebook.",
+    bg:'linear-gradient(155deg,#132e13 0%,#1f5c1f 100%)',
+    course:['Yeonmujang-gil Street','Seongsu Federation Cultural Hub','Grandfather Factory Gallery','Local Café Crawl (3 stops)','Ttukseom Hangang Park Sunset'] },
+  { id:2, theme:'Gyeongbokgung Secret History', guide:'Park Junho', area:'Jongno · Seoul', dur:'3 hours', price:54, rating:4.95, rev:214, cat:'History', max:8,
+    desc:'Uncover the hidden stories of Gyeongbokgung Palace with history expert Junho — secret chambers and royal gardens most visitors never see.',
+    bg:'linear-gradient(155deg,#14213d 0%,#2a4580 100%)',
+    course:['Gwanghwamun Square','Eastern Palace Grounds','Secret Rear Garden','Behind Gyotaejeon Hall','National Folk Museum'] },
+  { id:3, theme:'Seochon Gallery Art Walk', guide:'Lee Soyeon', area:'Seochon · Seoul', dur:'3.5 hours', price:58, rating:4.92, rev:89, cat:'Art', max:6,
+    desc:"Explore Seoul's hidden art scene with former curator Soyeon — galleries, artist studios, and creative spaces tucked into charming traditional alleyways.",
+    bg:'linear-gradient(155deg,#251535 0%,#4a1f6e 100%)',
+    course:['Tongin Market Entrance','Local Gallery Tour (3 stops)','Ceramics Studio Visit','Art Café Break','Sejong Village Viewpoint'] },
+  { id:4, theme:'Local Night Food Tour', guide:'Choi Minjae', area:'Mapo · Seoul', dur:'4 hours', price:73, rating:4.98, rev:167, cat:'Food', max:4, badge:'Top Rated',
+    desc:"Taste the Seoul only locals know with foodie Minjae — from traditional taverns to trendy street-food bars under the city lights.",
+    bg:'linear-gradient(155deg,#2a1200 0%,#6b3510 100%)',
+    course:['Mangwon Market Street Eats','Hongdae Pojang-macha Alley','Han River Night View','Mapo Local Tavern','Late-Night Hip Bar Finale'] },
+  { id:5, theme:'Han River Sunset Kayak', guide:'Jung Hayeon', area:'Ttukseom · Seoul', dur:'2.5 hours', price:49, rating:4.9, rev:73, cat:'Activities', max:6,
+    desc:"Paddle through a Seoul sunset with Hayeon — the skyline glowing from the water is unlike anything you've ever experienced.",
+    bg:'linear-gradient(155deg,#091520 0%,#0f3d66 100%)',
+    course:['Equipment Rental & Safety Briefing','Han River Main Channel','Sunset Photo Spot','City Lights Viewpoint','Return & Wrap-Up'] },
+  { id:6, theme:'Bukchon Pottery Workshop', guide:'Kim Soojin', area:'Bukchon · Seoul', dur:'3 hours', price:62, rating:4.94, rev:112, cat:'Workshops', max:4,
+    desc:'Create your own pottery piece in a traditional Bukchon workshop with ceramic artist Soojin — the perfect keepsake to bring home from Seoul.',
+    bg:'linear-gradient(155deg,#1c0909 0%,#541515 100%)',
+    course:['Bukchon Alley Stroll','Pottery Studio Entrance','Wheel Throwing Basics','Craft Your Own Piece','Bukchon Viewpoint'] },
+];
+
+const DAYS = [
+  { n:1, theme:'History & Hidden Gems', accent:'#0F4C81',
+    hotel:{ name:'Jongno Heritage Hotel', area:'Jongno-gu · Historic Core', stars:4, price:110, desc:'Hanok-inspired boutique hotel within walking distance of Gyeongbokgung and Bukchon.' },
+    transportDay:{ public:5, taxi:20, car:130 },
+    spots:[
+      { t:'9:00 AM', place:'Gyeongbokgung Palace', type:'Sightseeing', dur:'2 hrs', budget:3, budgetNote:'Admission fee',
+        tip:"Arrive at opening — catch the Royal Guard Ceremony at 10 AM before the crowds arrive",
+        transits:null },
+      { t:'11:30 AM', place:'Tongin Market', type:'Dining', dur:'1 hr', budget:8, budgetNote:'Brass-coin lunch set',
+        tip:'Exchange tokens at the entrance and fill your lunch box at each stall — the bindaetteok stall is unmissable',
+        transits:{
+          public:{ icon:'🚶', line:null, info:'12 min walk south along Jahamun-ro from the palace West Gate', time:'12 min', cost:0 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Gyeongbokgung West Gate → Tongin Market', time:'5 min', cost:3.5 },
+          car:{ icon:'🚗', line:null, info:'Driver picks up at palace West Gate → Tongin Market drop-off', time:'5 min', cost:0, note:'Included' }}},
+      { t:'1:00 PM', place:'Bukchon Hanok Village', type:'Sightseeing', dur:'1.5 hrs', budget:0, budgetNote:'Free',
+        tip:'Gahoedong 31 is the best photo spot — arrive before 2 PM and be quiet for residents',
+        transits:{
+          public:{ icon:'🚇', line:'Line 3 (Orange)', info:'Gyeongbokgung Stn (Exit 5) → Anguk Stn (Exit 1) → 8 min walk uphill', time:'15 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Tongin Market → Bukchon Hanok Village entrance', time:'7 min', cost:4 },
+          car:{ icon:'🚗', line:null, info:'Driver takes you to Bukchon upper entrance (Gahoe-dong)', time:'7 min', cost:0, note:'Included' }}},
+      { t:'3:00 PM', place:'Insadong', type:'Shopping', dur:'1.5 hrs', budget:15, budgetNote:'Shopping & snacks',
+        tip:'Ssamziegil courtyard has the best K-art gifts — handcrafted ceramics make perfect souvenirs',
+        transits:{
+          public:{ icon:'🚶', line:null, info:'10 min walk south from Bukchon along Changdeokgung-gil', time:'10 min', cost:0 },
+          taxi:{ icon:'🚕', line:null, info:'Short ride from Bukchon to Insadong main street', time:'5 min', cost:3 },
+          car:{ icon:'🚗', line:null, info:'Driver waiting at Bukchon lower exit → Insadong drop-off', time:'5 min', cost:0, note:'Included' }}},
+      { t:'6:00 PM', place:'Gwangjang Market', type:'Dining', dur:'1.5 hrs', budget:12, budgetNote:'Dinner at stalls',
+        tip:'Must-try: mung-bean pancakes (bindaetteok) and handrolled gimbap at the inner food stalls',
+        transits:{
+          public:{ icon:'🚇', line:'Line 1 (Dark Blue)', info:'Jonggak Stn (Exit 3-1) → Jongno 5-ga Stn (Exit 8) → 5 min walk to market', time:'12 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Insadong to Gwangjang Market main gate', time:'8 min', cost:4 },
+          car:{ icon:'🚗', line:null, info:'Driver takes you to Gwangjang Market main entrance', time:'8 min', cost:0, note:'Included' }}},
+    ]},
+  { n:2, theme:'K-Beauty & Hip Seoul', accent:'#1A6BB0',
+    hotel:{ name:'Novotel Ambassador Seoul Gangnam', area:'Gangnam-gu · Gangnam', stars:4, price:155, desc:'Stylish 4-star hotel in the heart of Gangnam — ideal base for K-beauty, Cheongdam and Hongdae.' },
+    transportDay:{ public:6, taxi:38, car:150 },
+    spots:[
+      { t:'10:00 AM', place:'Seongsu Café Tour', type:'Café', dur:'1.5 hrs', budget:15, budgetNote:'2–3 specialty coffees',
+        tip:"Start at Café Onion (converted factory), then Daerim Warehouse — Seoul's coolest café district",
+        transits:null },
+      { t:'12:00 PM', place:'Ryu Salon · Cheongdam', type:'Beauty', dur:'2 hrs', budget:85, budgetNote:'Cut & styling (reservation required)',
+        tip:"Book via Naver Reservation at least 2 weeks ahead — Ryu's celebrity cut is the signature service, ask by name",
+        transits:{
+          public:{ icon:'🚇', line:'Line 2 (Green)', info:'Seongsu Stn → Gangnam Stn (Exit 11) → 15 min walk or short taxi to Cheongdam-dong', time:'30 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Seongsu directly to Ryu Salon, Cheongdam-dong', time:'18 min', cost:9 },
+          car:{ icon:'🚗', line:null, info:'Driver picks up at Seongsu café → direct drop-off at Ryu Salon', time:'18 min', cost:0, note:'Included' }}},
+      { t:'2:30 PM', place:'Banobagi Clinic · Apgujeong', type:'Beauty', dur:'1.5 hrs', budget:120, budgetNote:'Skin treatment (pre-booked)',
+        tip:'Book online in advance — the Aqua Peel + LED Therapy combo is what international visitors rave about; results visible same day',
+        transits:{
+          public:{ icon:'🚶', line:null, info:'12 min walk west from Ryu Salon along Dosan-daero toward Apgujeong-ro', time:'12 min', cost:0 },
+          taxi:{ icon:'🚕', line:null, info:'Short Kakao Taxi from Cheongdam-dong to Banobagi Clinic, Apgujeong-ro', time:'5 min', cost:4 },
+          car:{ icon:'🚗', line:null, info:'Driver takes you from Ryu Salon directly to Banobagi Clinic entrance', time:'5 min', cost:0, note:'Included' }}},
+      { t:'4:30 PM', place:'Apgujeong Rodeo Street', type:'Shopping', dur:'1.5 hrs', budget:40, budgetNote:'K-fashion & cosmetics',
+        tip:'MCM, Gentle Monster, and local designer boutiques line the street — great for K-beauty top-ups after the clinic',
+        transits:{
+          public:{ icon:'🚶', line:null, info:'5 min walk south from Banobagi Clinic to Apgujeong Rodeo main street', time:'5 min', cost:0 },
+          taxi:{ icon:'🚕', line:null, info:'Essentially walkable — short ride from Banobagi to Rodeo Street', time:'3 min', cost:3 },
+          car:{ icon:'🚗', line:null, info:'Driver waits nearby during clinic → drops you at Rodeo Street entrance', time:'3 min', cost:0, note:'Included' }}},
+      { t:'7:30 PM', place:'Hongdae Night Scene', type:'Entertainment', dur:'2.5 hrs', budget:30, budgetNote:'Dinner + drinks',
+        tip:'Start at Yeonnam-dong for dinner, then head to Hongdae main stage — live busking runs until midnight on weekends',
+        transits:{
+          public:{ icon:'🚇', line:'Line 3 (Orange)', info:'Apgujeong Stn (Exit 3) → Express Bus Terminal → transfer Line 7 → Hongik Univ. Stn', time:'35 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Apgujeong Rodeo to Hongdae main street', time:'22 min', cost:12 },
+          car:{ icon:'🚗', line:null, info:'Driver takes you directly from Apgujeong to Hongdae drop-off point', time:'22 min', cost:0, note:'Included' }}},
+    ]},
+  { n:3, theme:'Views, Vibes & Night Lights', accent:'#7D4E1A',
+    hotel:{ name:'Myeongdong Luxury Central Hotel', area:'Myeongdong · City Center', stars:5, price:145, desc:'Five-star property in the heart of Myeongdong — steps from premier shopping and major transit links.' },
+    transportDay:{ public:7, taxi:30, car:130 },
+    spots:[
+      { t:'9:30 AM', place:'N Seoul Tower', type:'Sightseeing', dur:'2 hrs', budget:12, budgetNote:'Cable car + observatory',
+        tip:'Take Bus 02 from Chungmuro Stn instead of the cable car — much shorter wait and equally scenic',
+        transits:null },
+      { t:'12:00 PM', place:'Itaewon Lunch', type:'Dining', dur:'1.5 hrs', budget:18, budgetNote:'International restaurant',
+        tip:'Rooftop terraces along The Hill strip have incredible views — perfect for a long weekend lunch',
+        transits:{
+          public:{ icon:'🚇', line:'Line 6 (Brown)', info:'Chungmuro Stn (Line 3/4) → Itaewon Stn (Exit 1, Line 6) → 5 min walk uphill', time:'18 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from N Seoul Tower base to Itaewon main street', time:'10 min', cost:6 },
+          car:{ icon:'🚗', line:null, info:'Driver picks up at tower → drops at Itaewon restaurant entrance', time:'10 min', cost:0, note:'Included' }}},
+      { t:'2:00 PM', place:'War Memorial of Korea', type:'Sightseeing', dur:'1.5 hrs', budget:0, budgetNote:'Free admission',
+        tip:'Outdoor aircraft and tank exhibits are as impressive as the interior — allow at least 90 min',
+        transits:{
+          public:{ icon:'🚇', line:'Line 6 (Brown)', info:'Itaewon Stn → Samgakji Stn (Exit 12, Line 4) → 5 min walk to entrance', time:'10 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Itaewon to War Memorial main gate', time:'7 min', cost:5 },
+          car:{ icon:'🚗', line:null, info:'Driver from Itaewon → War Memorial main entrance drop-off', time:'7 min', cost:0, note:'Included' }}},
+      { t:'4:30 PM', place:'Ichon Hangang Park', type:'Leisure', dur:'1.5 hrs', budget:5, budgetNote:'Snacks & drinks',
+        tip:'Face west from the main lawn for a golden-hour view of Wonhyo Bridge — the best sunset in Seoul',
+        transits:{
+          public:{ icon:'🚇', line:'Line 4 (Blue)', info:'Samgakji Stn → Ichon Stn (Exit 2, Line 1/4) → 15 min walk south along Ichon-ro', time:'20 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from War Memorial to Ichon Hangang Park entrance', time:'10 min', cost:6 },
+          car:{ icon:'🚗', line:null, info:'Driver takes you to riverside park entrance', time:'10 min', cost:0, note:'Included' }}},
+      { t:'7:00 PM', place:'Myeongdong Shopping', type:'Shopping', dur:'2 hrs', budget:30, budgetNote:'Dinner + K-beauty haul',
+        tip:'Hit the street stalls for tteokbokki and hotteok first — K-beauty brands stay open until 10 PM',
+        transits:{
+          public:{ icon:'🚇', line:'Line 4 (Blue)', info:'Ichon Stn → Myeongdong Stn (Exit 6, Line 4) → 5 min walk to shopping street', time:'15 min', cost:1.5 },
+          taxi:{ icon:'🚕', line:null, info:'Kakao Taxi from Ichon Park to Myeongdong main street', time:'12 min', cost:7 },
+          car:{ icon:'🚗', line:null, info:'Driver picks up at park entrance → drops at Myeongdong', time:'12 min', cost:0, note:'Included' }}},
+    ]},
+];
+
+const BLOG_POSTS = [
+  { id:'hidden-alleys-bukchon', title:'The Hidden Alleys of Bukchon', category:'Culture', date:'May 18, 2026', readTime:'5 min read',
+    summary:"Beyond the famous rooftop views lies a labyrinth of quiet lanes where Seoul's past breathes quietly.",
+    bg:'linear-gradient(155deg,#14213d,#2a4580)', featured:true,
+    tags:['Seoul','Bukchon','Hanok','Walking','Hidden Gems'],
+    body:[
+      "Most travelers pour into Bukchon Hanok Village for the rooftop shot — the cascade of grey-tiled roofs falling away toward the city. But the moment you step three lanes off the main route, the crowds vanish and Bukchon's real character takes over.",
+      "Start at Gahoe-dong 31 in the early morning, before the tour buses arrive. The slope is steep enough that most visitors stop halfway, which means you get the upper alleys almost to yourself. Pay attention to the doorways: each hanok has a different carved transom, and several of the older homes are still single-family residences — the kind of detail that makes Bukchon a living neighbourhood rather than a museum.",
+      "Drop down toward Samcheong-dong via the narrow stairway behind Bukchon Cultural Center. The descent passes a series of converted hanoks now housing tiny galleries, a hand-bound notebook studio, and one of the best matcha bars in the city. None of them have signage in English — which is exactly the point.",
+      "End at the old wall of Gyeongbokgung. From here you can see the rhythm Bukchon was always meant to have: the palace below, the mountain above, and the quiet wooden homes holding the line in between.",
+      "Best exit is the northern gate, which puts you right at Cheong Wa Dae (the old Blue House) and the start of the Bukchon walk — turning a single visit into a half-day route through Seoul's historic heart.",
+    ]},
+  { id:'late-night-pojangmacha', title:"Seoul's Best Kept Food Secret: Late-Night Pojangmacha", category:'Food', date:'May 12, 2026', readTime:'4 min read',
+    summary:'When the city never sleeps, its street food scene comes alive. Here is where locals actually eat after midnight.',
+    bg:'linear-gradient(155deg,#2a1200,#6b3510)',
+    tags:['Seoul','Street Food','Local Food','Nightlife','Hidden Gems'],
+    body:[
+      "Pojangmacha — the orange-tarp street tents that bloom outside Seoul's subway exits after dark — are not the tourist version you see on travel shows. The good ones are in unexpected places: behind office towers in Yeoksam, along the Han River cycle paths, tucked into alleys in Jongno.",
+      "What to order: a small bottle of soju, a plate of nakji bokkeum (spicy octopus), and whatever the ajumma running the cart recommends from the day's stew pot. Most carts also do gyeran-mari, the rolled egg omelet, which arrives within minutes of being ordered.",
+      "The unwritten rule is that pojangmacha are for lingering. You sit on a plastic stool, you talk, you eat slowly. Trying to rush a pojangmacha visit is missing the point entirely — the whole point is that the world feels smaller and warmer for an hour.",
+      "Cash only, in most cases. And bring a Korean speaker if you want the full experience: the best stalls reward conversation.",
+    ]},
+  { id:'gyeongbokgung-first-timers', title:"A First-Timer's Guide to Gyeongbokgung Palace", category:'Travel Tips', date:'May 8, 2026', readTime:'7 min read',
+    summary:"Everything you need to know before visiting Seoul's most iconic landmark — including what most tour guides skip.",
+    bg:'linear-gradient(155deg,#03462E,#0A6B47)',
+    tags:['Seoul','Palaces','First Timer','Walking','Photo Spots'],
+    body:[
+      "Gyeongbokgung is enormous — far larger than first-time visitors expect. Plan on at least two hours, and arrive at opening (9:00 AM) to catch the Royal Guard Changing Ceremony at 10:00 AM before the tour groups roll in.",
+      "Buy your ticket at the main gate but skip the rented hanbok unless you actually want one — wearing a hanbok grants free admission, but the rental shops near the palace charge nearly the same as admission anyway.",
+      "Three spots most visitors miss: the Eastern Palace gardens behind the main throne hall (almost always empty), the small pond beside Gyeonghoeru Pavilion in late afternoon, and the National Folk Museum on the eastern edge of the grounds, which is free with admission and far better than its name suggests.",
+      "Best exit is the northern gate, which puts you right at Cheong Wa Dae (the old Blue House) and the start of the Bukchon walk — turning a single visit into a half-day route through Seoul's historic heart.",
+    ]},
+  { id:'seongsu-dong-love', title:'Why Every Traveler Falls in Love with Seongsu-dong', category:'Neighborhoods', date:'May 2, 2026', readTime:'6 min read',
+    summary:"Seoul's answer to Brooklyn: artisan coffee, converted factories, and creative energy that's impossible to bottle.",
+    bg:'linear-gradient(155deg,#132e13,#1f5c1f)',
+    tags:['Seoul','Cafés','Photo Spots','Hidden Gems','Local Food'],
+    body:[
+      "Twenty years ago, Seongsu-dong was a printing and shoe-manufacturing district. Today it is the gravitational centre of Seoul's design scene — and the conversion happened so recently that the old factories are still visible inside the new cafés.",
+      "Start at Café Onion, the original branch built inside an industrial warehouse. The pastry case is a destination on its own, and the bare-concrete interior is what every Pinterest-Seoul photo is trying to imitate.",
+      "Walk south to Daerim Warehouse and Center Coffee, both of which take the converted-industrial aesthetic in different directions — one bigger and more sculptural, one quieter and more focused on the coffee itself.",
+      "End the day at Seongsu Federation, a multi-building complex that hosts pop-up exhibitions, indie boutiques, and one of the best secondhand bookshops in the city. If you only have one neighbourhood for a creative-Seoul day, this is it.",
+    ]},
+  { id:'hangang-locals-guide', title:'Hangang River: Where Seoul Comes to Breathe', category:'Nature', date:'Apr 28, 2026', readTime:'4 min read',
+    summary:"A local's guide to the riverside parks, picnic culture, and the sunset spots that make you stay another week.",
+    bg:'linear-gradient(155deg,#091520,#0f3d66)',
+    tags:['Seoul','Hangang','Sunset','Photo Spots','Picnic'],
+    body:[
+      "Seoul has eleven Hangang Riverside Parks strung along both banks of the river. They are not equivalent — each has a different personality, and which one you visit shapes the day.",
+      "Yeouido is the famous one: cherry blossoms in spring, fireworks in fall, and the most crowds year-round. Banpo is the one with the Rainbow Bridge fountain show (best at 8 PM in summer). Ttukseom is where the surfers and paddleboarders go.",
+      "But the locals' pick is Ichon: a long stretch on the north bank with grass instead of pavement, a clear west view, and far fewer crowds. Bring a cheap mat, order chicken via the Bandi app (delivery drones literally land on the lawn), and watch the sun set behind Wonhyo Bridge.",
+      "Stay until the city lights come up. The Hangang at night is a different river — and it's the moment travelers usually decide to stay an extra week.",
+    ]},
+  { id:'jeju-beyond-tourist-trail', title:'Jeju Island: Beyond the Tourist Trail', category:'Destinations', date:'Apr 22, 2026', readTime:'8 min read',
+    summary:'The volcanic island has far more to offer than lava tubes and haenyeo divers — if you know where to look.',
+    bg:'linear-gradient(155deg,#251535,#4a1f6e)',
+    tags:['Jeju','Walking','Hiking','Sunset','Hidden Gems'],
+    body:[
+      "Jeju's tourist map is dominated by three things: Hallasan, the lava tubes, and the haenyeo (women free divers) of Seongsan. All are worth seeing once. But the island that travelers fall for is the one between those landmarks.",
+      "The Olle Trail is the secret. A 437-kilometre network of 27 walking routes loops the entire coast, threading through fishing villages, tangerine farms, basalt cliffs, and forests of black bamboo. You can walk a single route as a day hike or chain three or four together over a week.",
+      "Route 7 (Oedolgae to Wolpyeong) is the photographer's favourite — dramatic sea cliffs and tide pools. Route 10 (Hwasun to Moseulpo) ends at the otherworldly Sanbangsan rock formation. Route 14-1 takes you inland through black-pine forest to the rim of Mt. Geumoreum — one of the best sunsets in Korea.",
+      "Stay in a guesthouse run by a local resident — not a chain hotel. The conversations you'll have over breakfast are the real reason to visit Jeju.",
+    ]},
+];
+
+const DESTINATIONS = ['Seoul','Busan','Jeju','Jeonju','Gangneung','Gyeongju','Incheon','Sokcho','Daegu','Yeosu'];
+const STYLES = ['Culture & History','Nature & Adventure','Food & Dining','Shopping & Design','Art & Architecture','K-Pop & Entertainment','Beauty & Wellness','Nightlife & Bars'];
+const TOUR_CLASSES = [
+  { value:'first', label:'First Class', desc:'VIP & Luxury' },
+  { value:'business', label:'Business', desc:'Balanced & Curated' },
+  { value:'economy', label:'Economy', desc:'Budget-Friendly' },
+];
+const BUDGETS_MIN = 1000, BUDGETS_MAX = 30000, BUDGETS_STEP = 500;
+const CATS = ['All','Trending','History','Art','Food','Activities','Workshops'];
+const BLOG_CATS = ['All','Culture','Food','Travel Tips','Neighborhoods','Nature','Destinations'];
+const TYPE_CLR = { Sightseeing:'#0F4C81', Dining:'#C17E18', Café:'#7D4E1A', Shopping:'#534AB7', Leisure:'#1A6BB0', Entertainment:'#C05828', Activity:'#1565A0', Beauty:'#A0278A' };
+const TRANSPORT_MODES = [
+  { value:'public', icon:'🚇', label:'Public Transit',        desc:'Subway & bus — authentic and affordable' },
+  { value:'taxi',   icon:'🚕', label:'Taxi',                  desc:'Kakao Taxi — fast and convenient' },
+  { value:'car',    icon:'🚗', label:'Private Car & Driver',   desc:'Dedicated driver for the full day' },
+];
+
+/* ─── Responsive Hook ─── */
+const useBreakpoint = () => {
+  const [w, setW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  useEffect(()=>{
+    const h = ()=>setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return ()=>window.removeEventListener('resize', h);
+  },[]);
+  return w < 768;
+};
+
+/* ─── Shared Components ─── */
+const Btn = ({ children, v='primary', sz='md', onClick, full, style:sx }) => {
+  const base = { display:'inline-flex', alignItems:'center', justifyContent:'center',
+    borderRadius:14, fontWeight:700, cursor:'pointer', border:'none', transition:'all .15s', fontFamily:'Inter,sans-serif' };
+  const sizes = { sm:{fontSize:13,padding:'9px 18px'}, md:{fontSize:14,padding:'12px 24px'}, lg:{fontSize:15,padding:'15px 28px'} };
+  const variants = {
+    primary:{ background:C.p, color:C.w },
+    outline:{ background:'transparent', color:C.p, border:`2px solid ${C.p}` },
+    white:{ background:C.w, color:C.p },
+    ghost:{ background:'transparent', color:C.g700 },
+    gold:{ background:C.gold, color:C.g900 },
+  };
+  return <button onClick={onClick} style={{ ...base, ...sizes[sz], ...variants[v], width: full?'100%':'auto', ...sx }}>{children}</button>;
+};
+
+const Stars = ({ v }) => {
+  const full = Math.floor(v), dec = v - full;
+  return <div style={{ display:'flex', alignItems:'center', gap:2 }}>
+    {[...Array(5)].map((_,i) => <span key={i} style={{ color: i < full ? C.gold : (i === full && dec > 0.3 ? C.gold : C.g200), fontSize:13 }}>★</span>)}
+    <span style={{ fontSize:13, fontWeight:700, color:C.g700, marginLeft:3 }}>{v.toFixed(2)}</span>
+  </div>;
+};
+
+const Pill = ({ children, active, onClick }) => (
+  <button onClick={onClick} style={{
+    padding:'8px 18px', borderRadius:999, fontSize:13, fontWeight: active ? 700 : 500,
+    background: active ? C.p : C.w, color: active ? C.w : C.g700,
+    border: `1.5px solid ${active ? C.p : C.g200}`, whiteSpace:'nowrap', transition:'all .15s',
+  }}>{children}</button>
+);
+
+const XCard = ({ p, onClick, comingSoon }) => (
+  <div onClick={onClick} style={{
+    borderRadius:20, overflow:'hidden', background:C.w, boxShadow:sh.sm,
+    cursor:'pointer', transition:'transform .2s, box-shadow .2s', position:'relative',
+  }}
+  onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-4px)';e.currentTarget.style.boxShadow=sh.lg;}}
+  onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=sh.sm;}}>
+    <div style={{ height:200, background:p.bg, position:'relative', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:18 }}>
+      {p.badge && <span style={{ position:'absolute', top:14, left:14, background:'rgba(255,255,255,.92)', color:C.p, fontSize:11, fontWeight:800, padding:'4px 12px', borderRadius:999 }}>{p.badge}</span>}
+      {comingSoon && <span style={{ position:'absolute', top:14, right:14, background:C.gold, color:C.g900, fontSize:11, fontWeight:800, padding:'4px 10px', borderRadius:999 }}>Coming Soon</span>}
+      <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+        <div style={{ width:32, height:32, borderRadius:'50%', background:C.p, display:'flex', alignItems:'center', justifyContent:'center', color:C.w, fontSize:13, fontWeight:800, flexShrink:0, border:'2px solid rgba(255,255,255,.4)' }}>{p.guide[0]}</div>
+        <div>
+          <div style={{ color:'rgba(255,255,255,.9)', fontSize:12, fontWeight:700 }}>{p.guide}</div>
+          <div style={{ color:'rgba(255,255,255,.6)', fontSize:11 }}>✓ Licensed Guide</div>
+        </div>
+      </div>
+    </div>
+    <div style={{ padding:18 }}>
+      <p style={{ fontWeight:800, fontSize:16, color:C.g900, marginBottom:6, lineHeight:1.3 }}>{p.theme}</p>
+      <p style={{ color:C.g500, fontSize:13, marginBottom:12 }}>{p.area} · {p.dur}</p>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <Stars v={p.rating}/>
+        <span style={{ fontWeight:900, color:C.g900, fontSize:16 }}>${p.price}<span style={{ fontSize:12, fontWeight:500, color:C.g500 }}>/person</span></span>
+      </div>
+    </div>
+  </div>
+);
+
+const Footer = () => {
+  const mobile = useBreakpoint();
+  return (
+  <div style={{ background:C.pDark, padding:mobile?'36px 16px 24px':'48px 40px 32px', color:'rgba(255,255,255,.6)' }}>
+    <div style={{ maxWidth:1200, margin:'0 auto' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:mobile?28:40, flexWrap:'wrap', gap:mobile?20:32 }}>
+        <div style={{ maxWidth:280 }}>
+          <div style={{ color:C.w, fontSize:20, fontWeight:900, fontFamily:"'Fraunces',serif", marginBottom:10 }}>Handled</div>
+          <p style={{ lineHeight:1.7, fontSize:14 }}>Discover authentic Korean local experiences guided by people you trust.</p>
+        </div>
+        {[
+          { title:'Product', links:['AI Planner','Experience','Korea Story'] },
+          { title:'Company', links:['About Us','Blog','Press','Careers'] },
+          { title:'Support', links:['Help Center','Contact','Privacy Policy','Terms'] },
+        ].map(col=>(
+          <div key={col.title}>
+            <div style={{ color:C.w, fontWeight:700, marginBottom:14, fontSize:13 }}>{col.title}</div>
+            {col.links.map(l=><div key={l} style={{ marginBottom:8, fontSize:13, color:'rgba(255,255,255,.5)' }}>{l}</div>)}
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop:'1px solid rgba(255,255,255,.1)', paddingTop:20, display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:12, fontSize:13 }}>
+        <span>© 2026 Handled. All rights reserved.</span>
+        <span>Made with ♥ for Korea travelers</span>
+      </div>
+    </div>
+  </div>
+  );
+};
+
+/* ─── NavBar ─── */
+const NavBar = ({ screen, go, isLoggedIn, user }) => {
+  const mobile = useBreakpoint();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isHome = screen === 'home';
+  useEffect(()=>{
+    const el = document.getElementById('page-scroll');
+    if (!el) return;
+    const fn = ()=> setScrolled(el.scrollTop > 60);
+    el.addEventListener('scroll', fn);
+    return ()=> el.removeEventListener('scroll', fn);
+  }, [screen]);
+  useEffect(()=>setMenuOpen(false),[screen]);
+  const transparent = isHome && !scrolled && !menuOpen;
+  const navLinks = [
+    { label:'Plan with AI', screen:'planner-input' },
+    { label:'Experiences', screen:'experience-browse' },
+    { label:'Stories', screen:'korea-story' },
+  ];
+  return (
+    <>
+    <div style={{
+      position:'fixed', top:0, left:0, right:0, zIndex:100,
+      background: transparent ? 'transparent' : 'rgba(255,255,255,.97)',
+      backdropFilter: transparent ? 'none' : 'blur(12px)',
+      borderBottom: transparent ? 'none' : `1px solid ${C.g100}`,
+      transition:'all .3s ease',
+    }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:`0 ${mobile?'16px':'40px'}`, height:mobile?60:68, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <button onClick={()=>go('home')} style={{
+          fontFamily:"'Fraunces',serif", fontSize:mobile?20:22, fontWeight:900,
+          color: transparent ? C.w : C.p, letterSpacing:-0.5,
+        }}>Handled</button>
+
+        {!mobile && (
+          <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+            {navLinks.map(nl=>(
+              <button key={nl.screen} onClick={()=>go(nl.screen)} style={{
+                padding:'8px 16px', borderRadius:10, fontSize:14, fontWeight:600,
+                color: transparent ? 'rgba(255,255,255,.88)' : (screen===nl.screen ? C.p : C.g700),
+                background: (!transparent && screen===nl.screen) ? C.pLight : 'transparent',
+                transition:'all .15s',
+              }}>{nl.label}</button>
+            ))}
+          </div>
+        )}
+
+        <div style={{ display:'flex', alignItems:'center', gap:mobile?8:10 }}>
+          {isLoggedIn ? (
+            <button onClick={()=>go('mypage')} style={{
+              display:'flex', alignItems:'center', gap:6, padding:`6px ${mobile?'10px':'14px'}`,
+              borderRadius:999, border: `1.5px solid ${transparent ? 'rgba(255,255,255,.35)' : C.g200}`,
+              background: transparent ? 'rgba(255,255,255,.12)' : C.w, transition:'all .15s',
+            }}>
+              <div style={{ width:26, height:26, borderRadius:'50%', background:C.p, display:'flex', alignItems:'center', justifyContent:'center', color:C.w, fontSize:12, fontWeight:800 }}>{user?.name?.[0]??'U'}</div>
+              {!mobile && <span style={{ fontSize:13, fontWeight:600, color: transparent ? C.w : C.g700 }}>My Page</span>}
+            </button>
+          ) : (
+            <>
+              {!mobile && <Btn v={transparent?'white':'outline'} sz="sm" onClick={()=>go('auth','_','login')}>Sign in</Btn>}
+              <Btn v="primary" sz="sm" onClick={()=>go('auth','_','signup')}>{mobile?'Sign up':'Sign up free'}</Btn>
+            </>
+          )}
+          {mobile && (
+            <button onClick={()=>setMenuOpen(o=>!o)} style={{ padding:'6px', borderRadius:8, background:'transparent', display:'flex', flexDirection:'column', gap:4, alignItems:'center', justifyContent:'center' }}>
+              {[0,1,2].map(i=><div key={i} style={{ width:20, height:2, borderRadius:2, background:transparent?C.w:C.g700, transition:'all .2s' }}/>)}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile menu dropdown */}
+      {mobile && menuOpen && (
+        <div className="slide-down" style={{ background:C.w, borderTop:`1px solid ${C.g100}`, padding:'12px 16px 16px' }}>
+          {navLinks.map(nl=>(
+            <button key={nl.screen} onClick={()=>go(nl.screen)} style={{
+              display:'block', width:'100%', textAlign:'left', padding:'13px 16px', borderRadius:12,
+              fontSize:15, fontWeight:600,
+              color: screen===nl.screen ? C.p : C.g900,
+              background: screen===nl.screen ? C.pLight : 'transparent',
+              marginBottom:4,
+            }}>{nl.label}</button>
+          ))}
+          {!isLoggedIn && (
+            <button onClick={()=>go('auth','_','login')} style={{ display:'block',width:'100%',textAlign:'left',padding:'13px 16px',borderRadius:12,fontSize:15,fontWeight:600,color:C.g700,marginBottom:4 }}>Log In</button>
+          )}
+        </div>
+      )}
+    </div>
+    </>
+  );
+};
+
+/* ─── HomeScreen ─── */
+const HomeScreen = ({ go, isLoggedIn }) => {
+  const mobile = useBreakpoint();
+  const popular = ['Seoul','Busan','Jeju','Jeonju','Gangneung','Gyeongju'];
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh' }}>
+      {/* ── Hero ── */}
+      <div style={{
+        background:`linear-gradient(150deg, ${C.pDark} 0%, ${C.p} 45%, #1A5C96 80%, ${C.pMid} 100%)`,
+        minHeight:mobile?540:680, position:'relative', overflow:'hidden',
+        display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+        padding:mobile?'90px 16px 40px':'130px 24px 80px', textAlign:'center',
+      }}>
+        <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0 }}>
+          <div style={{ position:'absolute', right:'-8%', top:'-5%', width:560, height:560, borderRadius:'50%', background:'radial-gradient(circle, rgba(226,112,58,0.22) 0%, transparent 68%)' }}/>
+          <div style={{ position:'absolute', left:'-6%', bottom:'-10%', width:380, height:380, borderRadius:'50%', background:'radial-gradient(circle, rgba(240,168,48,0.15) 0%, transparent 65%)' }}/>
+        </div>
+        <div style={{ position:'relative', zIndex:1, width:'100%', maxWidth:820, margin:'0 auto' }}>
+          <div className="fade-up" style={{ display:'inline-block', background:'rgba(255,255,255,.12)', color:'rgba(255,255,255,.9)', fontSize:11, fontWeight:600, padding:'6px 16px', borderRadius:999, letterSpacing:1.5, textTransform:'uppercase', marginBottom:mobile?16:22, backdropFilter:'blur(8px)' }}>
+            AI trip planner
+          </div>
+          <h1 className="fade-up" style={{ color:C.w, fontSize:mobile?36:60, fontWeight:700, lineHeight:1.06, marginBottom:mobile?10:14, letterSpacing:mobile?-1:-2, animationDelay:'.06s' }}>
+            Korea,{' '}
+            <span style={{ fontFamily:"'Fraunces',serif", fontWeight:900, fontStyle:'italic' }}>Your Way.</span>
+          </h1>
+          <p className="fade-up" style={{ color:'rgba(255,255,255,.78)', fontSize:mobile?14:18, marginBottom:mobile?32:44, maxWidth:460, margin:`0 auto ${mobile?32:44}px`, lineHeight:1.6, fontWeight:400, animationDelay:'.12s' }}>
+            {mobile
+              ? 'Skip the research — your perfect Korea itinerary, built in minutes.'
+              : 'Skip the research. Tell us what you love and Handled builds your day-by-day Korea itinerary — hotels, guides, and local tips included.'
+            }
+          </p>
+
+          {/* Primary CTA */}
+          <div className="fade-up" style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14, animationDelay:'.18s' }}>
+            <button onClick={()=>go('planner-input')}
+              onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 12px 40px rgba(0,0,0,0.35)'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 8px 28px rgba(0,0,0,0.25)'; }}
+              style={{ display:'inline-flex', alignItems:'center', gap:10, background:'rgba(255,255,255,0.97)', color:C.pDark, padding:mobile?'15px 32px':'17px 40px', borderRadius:999, fontSize:mobile?15:17, fontWeight:700, letterSpacing:-0.2, boxShadow:'0 8px 28px rgba(0,0,0,0.25)', border:'none', cursor:'pointer', transition:'transform .2s, box-shadow .2s', fontFamily:'inherit' }}>
+              <span style={{ color:C.s, fontSize:mobile?15:17 }}>✦</span>
+              Create a New Trip
+            </button>
+            <button onClick={()=>go('experience-browse')} style={{ color:'rgba(255,255,255,0.62)', fontSize:13, fontWeight:500, background:'transparent', border:'none', cursor:'pointer', letterSpacing:0.2 }}>
+              or explore experiences →
+            </button>
+          </div>
+
+          {/* Popular */}
+          {!mobile && (
+            <div className="fade-up" style={{ display:'flex', gap:8, marginTop:28, alignItems:'center', flexWrap:'wrap', justifyContent:'center', animationDelay:'.24s' }}>
+              <span style={{ color:'rgba(255,255,255,.4)', fontSize:12 }}>Popular:</span>
+              {popular.map(d=>(
+                <button key={d} onClick={()=>go('planner-input')} style={{ color:'rgba(255,255,255,.72)', fontSize:12, border:'1px solid rgba(255,255,255,.2)', borderRadius:999, padding:'4px 13px', background:'rgba(255,255,255,.07)', fontFamily:'inherit' }}>{d}</button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+
+      {/* ── Curated Experiences ── */}
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:mobile?'40px 16px':'68px 40px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:mobile?20:32 }}>
+          <div>
+            <div style={{ fontSize:11,fontWeight:700,color:C.p,letterSpacing:1.5,textTransform:'uppercase',marginBottom:6 }}>Curated Experiences</div>
+            <h2 style={{ fontSize:mobile?22:30, fontWeight:700, color:C.g900, letterSpacing:-0.5 }}>Popular Experiences</h2>
+            <p style={{ color:C.g500, marginTop:5, fontSize:mobile?13:15 }}>Handpicked tours designed by certified local guides</p>
+          </div>
+          {!mobile && (
+            <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+              <span style={{ background:C.goldBg, color:C.g700, fontSize:12, fontWeight:700, padding:'4px 12px', borderRadius:999, border:`1px solid ${C.gold}40` }}>🚀 Launching Soon</span>
+              <button onClick={()=>go('experience-browse')} style={{ fontSize:14, fontWeight:700, color:C.p, textDecoration:'underline' }}>View All →</button>
+            </div>
+          )}
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'repeat(3,1fr)', gap:mobile?16:24 }}>
+          {PRODUCTS.slice(0,mobile?2:3).map((p,i)=>(
+            <div key={p.id} className="fade-up" style={{ animationDelay:`${i*.08}s` }}>
+              <XCard p={p} onClick={()=>go('experience-detail',p.id)} comingSoon={true}/>
+            </div>
+          ))}
+        </div>
+        {mobile && (
+          <button onClick={()=>go('experience-browse')} style={{ display:'block',width:'100%',marginTop:16,padding:'14px',borderRadius:14,border:`1.5px solid ${C.p}`,color:C.p,fontSize:14,fontWeight:700,background:'transparent' }}>
+            View All Experiences →
+          </button>
+        )}
+      </div>
+
+      {/* ── Dispatches from Korea (Stories) ── */}
+      <div style={{ background:C.pDark, padding:mobile?'48px 16px':'72px 40px', position:'relative', overflow:'hidden' }}>
+        {/* Subtle texture */}
+        <div style={{ position:'absolute',inset:0,pointerEvents:'none' }}>
+          <div style={{ position:'absolute',right:'-5%',top:'-20%',width:500,height:500,borderRadius:'50%',background:'radial-gradient(circle,rgba(226,112,58,.12) 0%,transparent 65%)' }}/>
+          <div style={{ position:'absolute',left:'-8%',bottom:'-15%',width:380,height:380,borderRadius:'50%',background:'radial-gradient(circle,rgba(240,168,48,.08) 0%,transparent 65%)' }}/>
+        </div>
+        <div style={{ maxWidth:1200, margin:'0 auto', position:'relative' }}>
+          {/* Section header */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:mobile?24:36 }}>
+            <div>
+              <div style={{ fontSize:11,fontWeight:700,color:'rgba(255,255,255,.45)',letterSpacing:2,textTransform:'uppercase',marginBottom:8 }}>Dispatches from Korea</div>
+              <h2 style={{ fontSize:mobile?22:30, fontWeight:700, color:C.w, letterSpacing:-0.5, lineHeight:1.15 }}>
+                Stories that make you<br/>
+                <span style={{ fontFamily:"'Fraunces',serif", fontStyle:'italic', color:C.sMid }}>want to book a flight.</span>
+              </h2>
+            </div>
+            {!mobile && (
+              <button onClick={()=>go('korea-story')} style={{ fontSize:14, fontWeight:600, color:'rgba(255,255,255,.6)', background:'transparent', border:'1px solid rgba(255,255,255,.2)', borderRadius:999, padding:'8px 20px', cursor:'pointer', fontFamily:'inherit', transition:'all .15s' }}
+                onMouseEnter={e=>{e.currentTarget.style.color=C.w;e.currentTarget.style.borderColor='rgba(255,255,255,.5)';}}
+                onMouseLeave={e=>{e.currentTarget.style.color='rgba(255,255,255,.6)';e.currentTarget.style.borderColor='rgba(255,255,255,.2)';}}>
+                All Stories →
+              </button>
+            )}
+          </div>
+
+          {/* Story cards */}
+          <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':BLOG_POSTS.length>=3?'1.5fr 1fr 1fr':'1fr 1fr', gap:mobile?14:20 }}>
+            {BLOG_POSTS.slice(0,mobile?2:3).map((post,i)=>(
+              <div key={i} className="fade-up"
+                style={{ borderRadius:18, overflow:'hidden', cursor:'pointer', position:'relative', animationDelay:`${i*.07}s`,
+                  ...(i===0 && !mobile ? { gridRow:'span 1' } : {}) }}
+                onMouseEnter={e=>e.currentTarget.style.transform='translateY(-3px)'}
+                onMouseLeave={e=>e.currentTarget.style.transform='none'}
+                onClick={()=>go('story-detail', post.id)}>
+                {/* Card image */}
+                <div style={{ height:i===0&&!mobile?240:mobile?160:180, background:post.bg, position:'relative' }}>
+                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.1) 55%,transparent 100%)' }}/>
+                  <div style={{ position:'absolute',top:14,left:14 }}>
+                    <span style={{ fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:999,
+                      background:C.s+'22',color:C.sMid,border:`1px solid ${C.s}44`,backdropFilter:'blur(4px)' }}>
+                      {post.category}
+                    </span>
+                  </div>
+                  <div style={{ position:'absolute',bottom:16,left:16,right:16 }}>
+                    <div style={{ fontWeight:700,color:C.w,fontSize:i===0&&!mobile?18:mobile?14:15,lineHeight:1.35,marginBottom:6 }}>{post.title}</div>
+                    {(i===0||!mobile) && (
+                      <div style={{ fontSize:12,color:'rgba(255,255,255,.55)' }}>{post.date} · {post.readTime}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {mobile && (
+            <button onClick={()=>go('korea-story')} style={{ display:'block',width:'100%',marginTop:18,padding:'13px',borderRadius:14,border:'1px solid rgba(255,255,255,.2)',color:'rgba(255,255,255,.75)',fontSize:14,fontWeight:600,background:'rgba(255,255,255,.06)',cursor:'pointer',fontFamily:'inherit' }}>
+              Read All Stories →
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── How Handled Works ── */}
+      <div style={{ background:C.w, padding:mobile?'52px 20px':'88px 40px' }}>
+        <div style={{ maxWidth:960, margin:'0 auto' }}>
+
+          {/* Header */}
+          <div style={{ textAlign:'center', marginBottom:mobile?44:68 }}>
+            <h2 style={{ fontSize:mobile?28:46, fontWeight:700, color:C.g900, letterSpacing:-1.5, lineHeight:1.08, marginBottom:14 }}>
+              Everything you need.<br/>
+              <span style={{ color:C.p, fontFamily:"'Fraunces',serif", fontStyle:'italic', fontWeight:900 }}>Nothing in the way.</span>
+            </h2>
+            <p style={{ color:C.g500, fontSize:mobile?14:17, maxWidth:400, margin:'0 auto', lineHeight:1.65 }}>
+              One platform for your whole Korea trip — from first idea to last memory.
+            </p>
+          </div>
+
+          {/* 3 Pillars */}
+          <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr', position:'relative' }}>
+            {[
+              { num:'01', title:'Your itinerary, built in minutes', body:'Tell us your destination, travel style, and budget — Handled builds a complete day-by-day plan with hotels, transport, and local tips included.' },
+              { num:'02', title:'Guided by certified locals', body:'Every guide holds an official Korean government tourism license. Certified expertise, not just a popular social media account.' },
+              { num:'03', title:"The Korea tourists don't see", body:"Insider restaurants, hidden galleries, the neighbourhoods Seoul's creatives actually use. Real experiences, not the ones in every guidebook." },
+            ].map((pillar,i)=>(
+              <div key={i} style={{
+                padding: mobile ? `${i>0?28:0}px 0 ${i<2?28:0}px` : '0 40px',
+                borderTop: mobile&&i>0 ? `1px solid ${C.g100}` : 'none',
+                borderLeft: !mobile&&i>0 ? `1px solid ${C.g100}` : 'none',
+              }}>
+                <div style={{ fontSize:12, fontWeight:700, color:C.p, letterSpacing:2, marginBottom:14, opacity:0.7 }}>{pillar.num}</div>
+                <div style={{ fontSize:mobile?17:21, fontWeight:700, color:C.g900, lineHeight:1.3, marginBottom:10 }}>{pillar.title}</div>
+                <div style={{ fontSize:mobile?13:15, color:C.g500, lineHeight:1.75 }}>{pillar.body}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div style={{ textAlign:'center', marginTop:mobile?48:68 }}>
+            <button onClick={()=>go('planner-input')}
+              onMouseEnter={e=>{e.currentTarget.style.background=C.pDark;e.currentTarget.style.transform='translateY(-2px)';}}
+              onMouseLeave={e=>{e.currentTarget.style.background=C.p;e.currentTarget.style.transform='none';}}
+              style={{ display:'inline-flex', alignItems:'center', gap:10, background:C.p, color:C.w, padding:mobile?'15px 32px':'17px 44px', borderRadius:999, fontSize:mobile?15:17, fontWeight:700, border:'none', cursor:'pointer', fontFamily:'inherit', boxShadow:`0 8px 24px ${C.p}38`, transition:'all .2s' }}>
+              <span style={{ color:C.sMid }}>✦</span>
+              Create a New Trip
+            </button>
+            <div style={{ marginTop:12, fontSize:13, color:C.g300 }}>Free to start · No credit card needed</div>
+          </div>
+
+        </div>
+      </div>
+
+      <Footer/>
+    </div>
+  );
+};
+
+/* ─── PlannerInput ─── */
+const PlannerInput = ({ go, isLoggedIn, user, plannerInit }) => {
+  const mobile = useBreakpoint();
+  const init = plannerInit || {};
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
+    dest: init.dest || '',
+    arrivalDate: init.arrivalDate || '',
+    departureDate: init.departureDate || '',
+    adults:1, youth:0, children:0,
+    styles:[], tourClass:'', budgetOverride:null, transport:'public', specialNeeds:'',
+  });
+  const [loading, setLoading] = useState(false);
+
+  // ── Computed helpers ──
+  const tripDays = (() => {
+    if (!form.arrivalDate || !form.departureDate) return 0;
+    const ms = new Date(form.departureDate) - new Date(form.arrivalDate);
+    return Math.max(0, Math.round(ms / (1000*60*60*24)));
+  })();
+  const totalTravelers = form.adults + form.youth + form.children;
+  const budgetMin = tripDays>0 && totalTravelers>0 ? Math.ceil(totalTravelers * tripDays * 100 * 1.3) : 500;
+  const budgetAuto = budgetMin * 2;
+  const displayBudget = form.budgetOverride !== null ? form.budgetOverride : budgetAuto;
+  const getMaxDep = a => { if(!a) return undefined; const d=new Date(a); d.setDate(d.getDate()+5); return d.toISOString().split('T')[0]; };
+
+  const toggle = s => setForm(f=>({ ...f, styles: f.styles.includes(s) ? f.styles.filter(x=>x!==s) : [...f.styles,s] }));
+  const fmtBudget = v => `$${v.toLocaleString()}`;
+  const generate = () => { setLoading(true); setTimeout(()=>go('planner-result', undefined, { transportMode: form.transport, travelers: totalTravelers }), 2400); };
+
+  const cardStyle = { background:C.w, borderRadius:18, padding:24, boxShadow:sh.sm, marginBottom:14 };
+  const labelStyle = { fontSize:11, fontWeight:700, color:C.p, letterSpacing:0.8 };
+
+  const Counter = ({ label, value, onChange, min=0, max=20 }) => (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 0' }}>
+      <span style={{ fontSize:14, color:C.g700 }}>{label}</span>
+      <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+        <button onClick={()=>onChange(Math.max(min,value-1))} disabled={value<=min}
+          style={{ width:32,height:32,borderRadius:'50%',border:`1.5px solid ${value<=min?C.g100:C.g200}`,background:C.w,fontSize:18,display:'flex',alignItems:'center',justifyContent:'center',color:value<=min?C.g200:C.g700 }}>−</button>
+        <span style={{ fontSize:18,fontWeight:800,color:C.g900,minWidth:24,textAlign:'center' }}>{value}</span>
+        <button onClick={()=>onChange(Math.min(max,value+1))} disabled={value>=max}
+          style={{ width:32,height:32,borderRadius:'50%',border:`1.5px solid ${value>=max?C.g100:C.g200}`,background:C.w,fontSize:18,display:'flex',alignItems:'center',justifyContent:'center',color:value>=max?C.g200:C.g700 }}>+</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.g50, paddingTop:mobile?60:72 }}>
+      <div style={{ maxWidth:640, margin:'0 auto', padding:mobile?'36px 16px':'52px 24px' }}>
+        {/* Progress */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:48 }}>
+          {[1,2,3].map(n=>(
+            <span key={n} style={{ display:'contents' }}>
+              <div style={{ width:36,height:36,borderRadius:'50%',background:step>=n?C.p:C.g100,color:step>=n?C.w:C.g300,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:800,transition:'all .25s' }}>
+                {step>n?'✓':n}
+              </div>
+              {n<3 && <div style={{ flex:1,height:2.5,borderRadius:2,background:step>n?C.p:C.g100,transition:'all .25s' }}/>}
+            </span>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="fade-up" style={{ textAlign:'center', padding:'90px 0' }}>
+            <div style={{ width:60,height:60,border:`3px solid ${C.g100}`,borderTopColor:C.p,borderRadius:'50%',margin:'0 auto 28px',animation:'spin .8s linear infinite' }}/>
+            <h3 style={{ color:C.p, fontWeight:800, fontSize:22, marginBottom:8 }}>Crafting your itinerary...</h3>
+            <p style={{ color:C.g500 }}>Your perfect Korea trip is coming together</p>
+          </div>
+        ) : step===1 ? (
+          <div className="fade-up">
+            <h2 style={{ fontSize:32,fontWeight:700,color:C.g900,marginBottom:8,letterSpacing:-0.5 }}>Where are you headed?</h2>
+            <p style={{ color:C.g500, marginBottom:38 }}>Tell us the basics — we'll handle the rest</p>
+            <div style={cardStyle}>
+              <label style={labelStyle}>DESTINATION</label>
+              <select value={form.dest} onChange={e=>setForm(f=>({...f,dest:e.target.value}))}
+                style={{ display:'block',width:'100%',border:'none',fontSize:20,fontWeight:800,marginTop:8,color:form.dest?C.g900:C.g300,background:'transparent',
+                backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23717171' stroke-width='2' fill='none'/%3E%3C/svg%3E")`,
+                backgroundRepeat:'no-repeat',backgroundPosition:'right 4px center',paddingRight:24,cursor:'pointer' }}>
+                <option value="" disabled>Select a city</option>
+                {DESTINATIONS.map(d=><option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:6 }}>
+              <div style={{ ...cardStyle, marginBottom:0 }}>
+                <label style={labelStyle}>ARRIVAL DATE</label>
+                <input type="date" value={form.arrivalDate}
+                  onChange={e=>{
+                    const a=e.target.value, maxD=getMaxDep(a);
+                    setForm(f=>({...f,arrivalDate:a,departureDate:f.departureDate&&maxD&&f.departureDate>maxD?maxD:f.departureDate}));
+                  }}
+                  style={{ display:'block',width:'100%',border:'none',fontSize:15,marginTop:8,color:C.g700 }}/>
+              </div>
+              <div style={{ ...cardStyle, marginBottom:0 }}>
+                <label style={labelStyle}>DEPARTURE DATE</label>
+                <input type="date" value={form.departureDate}
+                  min={form.arrivalDate||undefined}
+                  max={getMaxDep(form.arrivalDate)}
+                  onChange={e=>setForm(f=>({...f,departureDate:e.target.value}))}
+                  style={{ display:'block',width:'100%',border:'none',fontSize:15,marginTop:8,color:C.g700 }}/>
+              </div>
+            </div>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14, paddingLeft:2, paddingRight:2 }}>
+              {tripDays>0
+                ? <span style={{ background:C.pLight,color:C.p,fontSize:12,fontWeight:700,padding:'4px 12px',borderRadius:999 }}>✦ {tripDays}-night trip</span>
+                : <span/>}
+              <span style={{ fontSize:12,color:C.g300 }}>Max 5-night itineraries supported</span>
+            </div>
+            <div style={cardStyle}>
+              <label style={labelStyle}>TRAVELERS</label>
+              <div style={{ marginTop:8 }}>
+                <Counter label="Adults (19+)" value={form.adults} onChange={v=>setForm(f=>({...f,adults:v}))} min={1}/>
+                <div style={{ borderTop:`1px solid ${C.g50}` }}><Counter label="Youth (7–18)" value={form.youth} onChange={v=>setForm(f=>({...f,youth:v}))}/></div>
+                <div style={{ borderTop:`1px solid ${C.g50}` }}><Counter label="Children (0–6)" value={form.children} onChange={v=>setForm(f=>({...f,children:v}))}/></div>
+              </div>
+            </div>
+            <div style={{ marginTop:24 }}><Btn sz="lg" full onClick={()=>setStep(2)}>Next →</Btn></div>
+          </div>
+
+        ) : step===2 ? (
+          <div className="fade-up">
+            <h2 style={{ fontSize:32,fontWeight:700,color:C.g900,marginBottom:8,letterSpacing:-0.5 }}>Customize your trip</h2>
+            <p style={{ color:C.g500, marginBottom:38 }}>Tell us how you like to travel</p>
+            <div style={{ marginBottom:28 }}>
+              <label style={{ ...labelStyle, display:'block', marginBottom:14 }}>TRAVEL INTERESTS</label>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                {STYLES.map(s=>{
+                  const on = form.styles.includes(s);
+                  return <button key={s} onClick={()=>toggle(s)} style={{ padding:'15px 18px',borderRadius:16,border:`2px solid ${on?C.p:C.g100}`,background:on?C.pLight:C.w,color:on?C.p:C.g700,fontSize:14,fontWeight:on?700:400,textAlign:'left',transition:'all .15s' }}>
+                    {on && <span style={{ marginRight:6 }}>✓</span>}{s}
+                  </button>;
+                })}
+              </div>
+            </div>
+            <div style={{ marginBottom:28 }}>
+              <label style={{ ...labelStyle, display:'block', marginBottom:14 }}>TRANSPORTATION</label>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {TRANSPORT_MODES.map(tm=>{
+                  const on = form.transport === tm.value;
+                  return (
+                    <button key={tm.value} onClick={()=>setForm(f=>({...f,transport:tm.value}))}
+                      style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderRadius:16, border:`2px solid ${on?C.p:C.g100}`, background:on?C.pLight:C.w, textAlign:'left', transition:'all .15s', width:'100%' }}>
+                      <span style={{ fontSize:22, flexShrink:0 }}>{tm.icon}</span>
+                      <div style={{ flex:1 }}>
+                        <div style={{ fontSize:14, fontWeight:700, color:on?C.p:C.g900 }}>{tm.label}</div>
+                        <div style={{ fontSize:12, color:on?C.p:C.g500, marginTop:2 }}>{tm.desc}</div>
+                      </div>
+                      <div style={{ width:20, height:20, borderRadius:'50%', border:`2px solid ${on?C.p:C.g200}`, background:on?C.p:'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                        {on && <div style={{ width:8, height:8, borderRadius:'50%', background:C.w }}/>}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={cardStyle}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:14 }}>
+                <label style={labelStyle}>RECOMMENDED BUDGET</label>
+                {form.budgetOverride!==null
+                  ? <button onClick={()=>setForm(f=>({...f,budgetOverride:null}))} style={{ fontSize:11,color:C.g500,fontWeight:600,display:'flex',alignItems:'center',gap:3,background:'none',border:'none',cursor:'pointer' }}>↩ Reset to auto</button>
+                  : <span style={{ fontSize:11,padding:'3px 9px',borderRadius:999,background:C.pLight,color:C.p,fontWeight:700 }}>✦ Auto</span>}
+              </div>
+              <div style={{ display:'flex', alignItems:'baseline', gap:8, marginBottom:6 }}>
+                <span style={{ fontSize:32,fontWeight:900,color:C.p }}>{fmtBudget(displayBudget)}</span>
+                <span style={{ fontSize:13,color:C.g500 }}>group total</span>
+              </div>
+              {tripDays>0 && totalTravelers>0
+                ? <div style={{ fontSize:12,color:C.g500,lineHeight:1.7,marginBottom:14 }}>
+                    {totalTravelers} {totalTravelers===1?'traveler':'travelers'} × {tripDays} {tripDays===1?'night':'nights'} × $100 + 30% buffer
+                    <span style={{ color:C.g300,marginLeft:4 }}>· min {fmtBudget(budgetMin)}</span>
+                  </div>
+                : <div style={{ fontSize:12,color:C.g300,marginBottom:14 }}>Set dates &amp; travelers above to auto-calculate</div>}
+              {form.budgetOverride!==null ? (
+                <>
+                  <input type="range" min={budgetMin} max={Math.max(budgetMin*5,10000)} step={100} value={displayBudget}
+                    onChange={e=>setForm(f=>({...f,budgetOverride:Number(e.target.value)}))}
+                    style={{ width:'100%',marginBottom:8,accentColor:C.p }}/>
+                  <div style={{ display:'flex',justifyContent:'space-between' }}>
+                    <span style={{ fontSize:12,color:C.g500 }}>{fmtBudget(budgetMin)} min</span>
+                    <span style={{ fontSize:12,color:C.g500 }}>{fmtBudget(Math.max(budgetMin*5,10000))}</span>
+                  </div>
+                </>
+              ) : (
+                <button onClick={()=>setForm(f=>({...f,budgetOverride:displayBudget}))}
+                  style={{ fontSize:13,color:C.p,fontWeight:600,padding:'9px 16px',borderRadius:10,border:`1.5px solid ${C.p}30`,background:C.pLight,width:'100%',cursor:'pointer' }}>
+                  Customize Budget →
+                </button>
+              )}
+            </div>
+            <div style={{ display:'flex',gap:10,marginTop:24 }}>
+              <Btn v="outline" sz="lg" onClick={()=>setStep(1)} style={{ flex:1 }}>← Back</Btn>
+              <Btn sz="lg" onClick={()=>setStep(3)} style={{ flex:2 }}>Next →</Btn>
+            </div>
+          </div>
+
+        ) : (
+          <div className="fade-up">
+            <h2 style={{ fontSize:32,fontWeight:700,color:C.g900,marginBottom:8,letterSpacing:-0.5 }}>Review your trip</h2>
+            <p style={{ color:C.g500, marginBottom:38 }}>One last look — then we build your itinerary</p>
+            <div style={{ ...cardStyle, marginBottom:24 }}>
+              <label style={labelStyle}>SPECIAL REQUESTS (OPTIONAL)</label>
+              <textarea value={form.specialNeeds} onChange={e=>{ if(e.target.value.length<=150) setForm(f=>({...f,specialNeeds:e.target.value})); }}
+                placeholder="e.g. Wheelchair accessible routes, vegetarian meals only, traveling with infant..."
+                style={{ display:'block',width:'100%',border:`1.5px solid ${C.g100}`,borderRadius:12,padding:14,fontSize:14,marginTop:10,color:C.g700,resize:'vertical',minHeight:80,lineHeight:1.6 }}/>
+              <div style={{ textAlign:'right',marginTop:6,fontSize:12,color:form.specialNeeds.length>=140?C.s:C.g300 }}>{form.specialNeeds.length}/150</div>
+            </div>
+            {/* Summary */}
+            <div style={{ ...cardStyle, marginBottom:16 }}>
+              {[
+                ['Destination', form.dest||'Not selected'],
+                ['Arrival', form.arrivalDate||'Not set'],
+                ['Departure', form.departureDate||'Not set'],
+                ['Travelers', [form.adults>0&&`${form.adults} Adult${form.adults>1?'s':''}`, form.youth>0&&`${form.youth} Youth`, form.children>0&&`${form.children} Child${form.children>1?'ren':''}`].filter(Boolean).join(', ')||'1 Adult'],
+                ['Interests', form.styles.length?form.styles.join(', '):'Not selected'],
+                ['Transportation', TRANSPORT_MODES.find(tm=>tm.value===form.transport)?.label||'Public Transit'],
+                ['Budget', fmtBudget(displayBudget) + ' (group total)'],
+                ...(form.specialNeeds?[['Special Requests', form.specialNeeds]]:[]),
+              ].map(([k,v])=>(
+                <div key={k} style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',padding:'13px 0',borderBottom:`1px solid ${C.g50}` }}>
+                  <span style={{ color:C.g500,fontSize:14,flexShrink:0,marginRight:16 }}>{k}</span>
+                  <span style={{ fontWeight:600,color:C.g900,fontSize:14,maxWidth:280,textAlign:'right' }}>{v}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Credit / Auth block */}
+            {isLoggedIn ? (
+              <>
+                <div style={{ background:C.pLight,borderRadius:14,padding:'14px 18px',marginBottom:26,display:'flex',gap:12,alignItems:'flex-start' }}>
+                  <span style={{ color:C.p,fontSize:16,marginTop:1 }}>✦</span>
+                  <p style={{ color:C.pText,fontSize:13,lineHeight:1.65 }}>
+                    This plan uses <strong>1 credit</strong> · You have <strong>{user?.credits??3} credits</strong> remaining
+                  </p>
+                </div>
+                <div style={{ display:'flex',gap:10 }}>
+                  <Btn v="outline" sz="lg" onClick={()=>setStep(2)} style={{ flex:1 }}>← Back</Btn>
+                  <Btn sz="lg" onClick={generate} style={{ flex:2 }}>✦ Build My Itinerary</Btn>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ background:C.pLight,borderRadius:18,padding:'22px 22px',marginBottom:22,border:`1px solid ${C.p}20` }}>
+                  <div style={{ display:'flex',alignItems:'flex-start',gap:14 }}>
+                    <span style={{ fontSize:26 }}>🎁</span>
+                    <div>
+                      <div style={{ fontWeight:700,color:C.g900,fontSize:16,marginBottom:6 }}>Sign up — get 3 free credits</div>
+                      <div style={{ color:C.g500,fontSize:14,lineHeight:1.65 }}>
+                        This itinerary uses <strong style={{ color:C.pText }}>1 credit</strong>. Sign up and we'll give you 3 free credits — enough for 3 complete Korea trip plans.
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ marginTop:18 }}>
+                    <Btn sz="lg" full onClick={()=>go('auth','_','signup')}>Sign up &amp; build my itinerary →</Btn>
+                  </div>
+                  <div style={{ textAlign:'center',marginTop:12 }}>
+                    <span style={{ fontSize:13,color:C.g500 }}>Already have an account? </span>
+                    <button onClick={()=>go('auth','_','login')} style={{ fontSize:13,fontWeight:700,color:C.p }}>Sign in</button>
+                  </div>
+                </div>
+                <div style={{ display:'flex',gap:10 }}>
+                  <Btn v="outline" sz="lg" onClick={()=>setStep(2)} style={{ flex:1 }}>← Back</Btn>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─── PlannerResult ─── */
+const StarRating = ({ n }) => (
+  <span>{[...Array(5)].map((_,i)=><span key={i} style={{ color:i<n?C.gold:C.g200,fontSize:12 }}>★</span>)}</span>
+);
+
+const TransitConnector = ({ transits, mode }) => {
+  if (!transits) return null;
+  const tr = transits[mode];
+  if (!tr) return null;
+  const modeLabel = mode==='public' ? (tr.line||'Walking') : mode==='taxi' ? 'Kakao Taxi' : 'Private Driver';
+  const bg = mode==='public' ? C.g50 : mode==='taxi' ? '#FFFBF0' : '#F0FDF4';
+  const bd = mode==='public' ? C.g200 : mode==='taxi' ? '#F0A83060' : '#86EFAC60';
+  return (
+    <div style={{ display:'flex', padding:'8px 22px 8px 72px', marginBottom:6 }}>
+      <div style={{ display:'flex',alignItems:'center',gap:8,background:bg,borderRadius:10,padding:'8px 14px',flex:1,border:`1px dashed ${bd}` }}>
+        <span style={{ fontSize:16 }}>{tr.icon}</span>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:11,fontWeight:700,color:C.g500,marginBottom:2 }}>{modeLabel}</div>
+          <div style={{ fontSize:12,color:C.g700,lineHeight:1.45 }}>{tr.info}</div>
+        </div>
+        <div style={{ textAlign:'right',flexShrink:0,marginLeft:12 }}>
+          <div style={{ fontSize:12,fontWeight:700,color:C.p }}>{tr.time}</div>
+          {tr.note
+            ? <div style={{ fontSize:11,color:'#16A34A',fontWeight:600 }}>{tr.note}</div>
+            : tr.cost>0
+            ? <div style={{ fontSize:11,color:C.g500 }}>${tr.cost.toFixed(2)}</div>
+            : <div style={{ fontSize:11,color:'#16A34A',fontWeight:600 }}>Free</div>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PlannerResult = ({ go, transportMode='public', travelers=1 }) => {
+  const mobile = useBreakpoint();
+  const [di, setDi] = useState(0);
+  const d = DAYS[di];
+  const pax = Math.max(1, travelers);
+
+  const tDay = (day) => day.transportDay[transportMode] ?? day.transportDay.public;
+  const actTotal = d.spots.reduce((s,sp)=>s+sp.budget,0) * pax;
+  const transTotal = tDay(d) * pax;
+  const daySubtotal = actTotal + transTotal;
+  const dayWithHotel = daySubtotal + d.hotel.price;
+  const grandTotal = DAYS.reduce((s,day)=>(s + (day.spots.reduce((a,sp)=>a+sp.budget,0) + tDay(day)) * pax + day.hotel.price),0);
+
+  const tLabel = transportMode==='public' ? '🚇 Public Transit' : transportMode==='taxi' ? '🚕 Taxi (Kakao)' : '🚗 Private Car & Driver';
+  const tLineLabel = transportMode==='public' ? 'Local Transport' : transportMode==='taxi' ? 'Taxi Fares (est.)' : 'Private Driver Service';
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.g50, paddingTop:72 }}>
+      {/* Header */}
+      <div style={{ background:C.w, borderBottom:`1px solid ${C.g100}`, padding:mobile?'14px 16px':'20px 40px' }}>
+        <div style={{ maxWidth:920, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div>
+            <h1 style={{ fontSize:22,fontWeight:900,color:C.g900,letterSpacing:-0.5 }}>Seoul · 3-Day Itinerary ✦</h1>
+            <p style={{ color:C.g500, fontSize:mobile?12:13, marginTop:4 }}>{mobile?`${pax} ${pax===1?'traveler':'travelers'} · Est. $${grandTotal.toLocaleString()} total`:`AI-generated · 1 credit used · Est. group total $${grandTotal.toLocaleString()} for ${pax} ${pax===1?'traveler':'travelers'}`}</p>
+          </div>
+          <div style={{ display:'flex', gap:8 }}>
+            <Btn v="outline" sz="sm">Share</Btn>
+            <Btn sz="sm">Save</Btn>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:920, margin:'0 auto', padding:mobile?'20px 16px':'36px 40px' }}>
+        {/* Transport badge */}
+        <div style={{ display:'inline-flex',alignItems:'center',gap:8,background:C.pLight,borderRadius:999,padding:'6px 14px',marginBottom:16,fontSize:13,fontWeight:700,color:C.p }}>
+          {tLabel}
+        </div>
+
+        {/* Day tabs */}
+        <div style={{ display:'flex', gap:8, marginBottom:24, overflowX:'auto', paddingBottom:4 }}>
+          {DAYS.map((it,i)=>{
+            const dtotal = (it.spots.reduce((s,sp)=>s+sp.budget,0)+tDay(it))*pax+it.hotel.price;
+            return (
+              <button key={i} onClick={()=>setDi(i)} style={{ padding:'10px 22px',borderRadius:14,border:`2px solid ${di===i?C.p:C.g200}`,background:di===i?C.p:C.w,color:di===i?C.w:C.g700,fontSize:14,fontWeight:di===i?700:400,transition:'all .15s',textAlign:'left' }}>
+                <div>Day {i+1}</div>
+                <div style={{ fontSize:11,opacity:.75,marginTop:1 }}>~${dtotal}</div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Day header */}
+        <div className="fade-up" key={'hdr'+di} style={{ background:d.accent,borderRadius:18,padding:'20px 28px',marginBottom:22,display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+          <div>
+            <div style={{ color:'rgba(255,255,255,.65)',fontSize:12,fontWeight:700,letterSpacing:0.8,marginBottom:5 }}>DAY {d.n}</div>
+            <div style={{ color:C.w,fontSize:21,fontWeight:800 }}>{d.theme}</div>
+          </div>
+          <div style={{ textAlign:'right' }}>
+            <div style={{ color:'rgba(255,255,255,.6)',fontSize:12 }}>{d.spots.length} stops</div>
+            <div style={{ color:C.w,fontSize:16,fontWeight:800,marginTop:2 }}>~${dayWithHotel} total</div>
+          </div>
+        </div>
+
+        {/* Hotel card */}
+        <div className="fade-up" key={'hotel'+di} style={{ background:C.w,borderRadius:16,padding:'18px 22px',marginBottom:22,boxShadow:sh.sm,border:`1px solid ${C.g100}`,display:'flex',gap:18,alignItems:'flex-start',animationDelay:'.04s' }}>
+          <div style={{ width:48,height:48,borderRadius:14,background:C.pLight,display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0 }}>🏨</div>
+          <div style={{ flex:1 }}>
+            <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4 }}>
+              <div>
+                <div style={{ fontWeight:800,fontSize:16,color:C.g900 }}>{d.hotel.name}</div>
+                <div style={{ fontSize:13,color:C.g500,marginTop:2 }}>{d.hotel.area} · <StarRating n={d.hotel.stars}/></div>
+              </div>
+              <div style={{ textAlign:'right',flexShrink:0,marginLeft:16 }}>
+                <div style={{ fontWeight:900,fontSize:20,color:C.p }}>${d.hotel.price}</div>
+                <div style={{ fontSize:11,color:C.g500 }}>per night</div>
+              </div>
+            </div>
+            <div style={{ fontSize:13,color:C.g500,lineHeight:1.6,marginTop:6 }}>{d.hotel.desc}</div>
+          </div>
+        </div>
+
+        {/* Spots timeline */}
+        <div style={{ position:'relative', paddingLeft:4 }}>
+          <div style={{ position:'absolute',left:26,top:24,bottom:24,width:2,background:C.g100 }}/>
+          {d.spots.map((sp,i)=>(
+            <div key={di+'-'+i} className="fade-up" style={{ animationDelay:`${(i+1)*.06}s` }}>
+              {sp.transits && <TransitConnector transits={sp.transits} mode={transportMode}/>}
+              <div style={{ display:'flex',gap:20,marginBottom:12 }}>
+                <div style={{ width:52,height:52,borderRadius:'50%',background:C.w,border:`2.5px solid ${d.accent}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,zIndex:1,fontSize:14,fontWeight:900,color:d.accent }}>{i+1}</div>
+                <div style={{ flex:1,background:C.w,borderRadius:16,padding:'16px 22px',boxShadow:sh.sm,transition:'transform .2s,box-shadow .2s' }}
+                  onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=sh.md;}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=sh.sm;}}>
+                  <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8 }}>
+                    <div style={{ display:'flex',alignItems:'center',gap:8 }}>
+                      <span style={{ fontSize:12,color:C.g500,fontWeight:700 }}>{sp.t}</span>
+                      <span style={{ fontSize:11,padding:'2px 9px',borderRadius:6,background:(TYPE_CLR[sp.type]||'#888')+'18',color:TYPE_CLR[sp.type]||'#888',fontWeight:700 }}>{sp.type}</span>
+                    </div>
+                    <span style={{ fontSize:12,color:C.g300 }}>~{sp.dur}</span>
+                  </div>
+                  <div style={{ fontSize:17,fontWeight:800,color:C.g900,marginBottom:7 }}>{sp.place}</div>
+                  <div style={{ fontSize:13,color:C.g500,display:'flex',gap:5,alignItems:'flex-start',marginBottom:10 }}>
+                    <span style={{ color:C.p,flexShrink:0 }}>✦</span>{sp.tip}
+                  </div>
+                  <div style={{ display:'inline-flex',alignItems:'center',gap:5,background:sp.budget===0?'#F0FDF4':'#FEF9EC',borderRadius:8,padding:'4px 10px' }}>
+                    <span style={{ fontSize:13,fontWeight:800,color:sp.budget===0?'#16A34A':C.g700 }}>{sp.budget===0?'Free':'$'+(sp.budget*pax)}</span>
+                    <span style={{ fontSize:11,color:C.g500 }}>· {sp.budgetNote}{pax>1&&sp.budget>0?` × ${pax}`:''}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Day Budget Summary */}
+        <div style={{ background:C.w,borderRadius:18,padding:'22px 26px',marginTop:10,marginBottom:28,boxShadow:sh.sm,border:`1px solid ${C.g100}` }}>
+          <div style={{ fontSize:14,fontWeight:800,color:C.g900,marginBottom:16 }}>Day {d.n} Budget Summary <span style={{ fontWeight:400,color:C.g500,fontSize:13 }}>({pax} {pax===1?'traveler':'travelers'})</span></div>
+          <div style={{ display:'flex',flexDirection:'column',gap:9 }}>
+            {d.spots.map((sp,i)=>(
+              <div key={i} style={{ display:'flex',justifyContent:'space-between',fontSize:13,color:C.g700 }}>
+                <span style={{ display:'flex',alignItems:'center',gap:6 }}>
+                  <span style={{ width:18,height:18,borderRadius:'50%',background:C.g50,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:C.g500,flexShrink:0 }}>{i+1}</span>
+                  {sp.place}
+                </span>
+                <span style={{ fontWeight:600,color:sp.budget===0?'#16A34A':C.g900 }}>{sp.budget===0?'Free':'$'+(sp.budget*pax)}</span>
+              </div>
+            ))}
+            <div style={{ display:'flex',justifyContent:'space-between',fontSize:13,color:C.g700,paddingTop:8,borderTop:`1px dashed ${C.g100}`,marginTop:4 }}>
+              <span>{tLineLabel}</span>
+              <span style={{ fontWeight:600,color:C.g900 }}>${transTotal}</span>
+            </div>
+          </div>
+          <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:18,paddingTop:18,borderTop:`2px solid ${C.g100}` }}>
+            <div style={{ background:C.g50,borderRadius:12,padding:'12px 16px' }}>
+              <div style={{ fontSize:11,color:C.g500,fontWeight:700,marginBottom:4 }}>ACTIVITIES + TRANSPORT</div>
+              <div style={{ fontSize:22,fontWeight:900,color:C.g900 }}>${daySubtotal}</div>
+              <div style={{ fontSize:11,color:C.g500,marginTop:2 }}>group total</div>
+            </div>
+            <div style={{ background:C.pLight,borderRadius:12,padding:'12px 16px' }}>
+              <div style={{ fontSize:11,color:C.p,fontWeight:700,marginBottom:4 }}>INCL. HOTEL ({d.hotel.stars}★)</div>
+              <div style={{ fontSize:22,fontWeight:900,color:C.p }}>${dayWithHotel}</div>
+              <div style={{ fontSize:11,color:C.g500,marginTop:2 }}>group total · 1 night</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Grand Total */}
+        <div style={{ background:`linear-gradient(135deg,${C.pDark},${C.p})`,borderRadius:20,padding:'24px 30px',marginBottom:28,display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+          <div>
+            <div style={{ color:'rgba(255,255,255,.65)',fontSize:11,fontWeight:700,letterSpacing:1,marginBottom:6 }}>3-DAY ESTIMATED TOTAL</div>
+            <div style={{ color:C.w,fontSize:32,fontWeight:900,letterSpacing:-1 }}>${grandTotal.toLocaleString()}</div>
+            <div style={{ color:'rgba(255,255,255,.6)',fontSize:13,marginTop:4 }}>group total · {pax} {pax===1?'traveler':'travelers'} · activities, transport & hotels</div>
+          </div>
+          <div style={{ textAlign:'right',flexShrink:0,marginLeft:24 }}>
+            {DAYS.map((day,i)=>{
+              const dt = (day.spots.reduce((s,sp)=>s+sp.budget,0)+tDay(day))*pax+day.hotel.price;
+              return <div key={i} style={{ color:'rgba(255,255,255,.75)',fontSize:13,marginBottom:4 }}>Day {i+1}: <strong style={{ color:C.w }}>${dt}</strong></div>;
+            })}
+          </div>
+        </div>
+
+        {/* Upsell */}
+        <div style={{ background:`linear-gradient(135deg,${C.sDark},${C.s})`,borderRadius:20,padding:'28px 34px',display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+          <div>
+            <div style={{ color:'rgba(255,255,255,.6)',fontSize:11,fontWeight:700,letterSpacing:1.2,marginBottom:8 }}>EXPERIENCE</div>
+            <div style={{ color:C.w,fontSize:21,fontWeight:800,marginBottom:8 }}>Make this trip unforgettable</div>
+            <div style={{ color:'rgba(255,255,255,.65)',fontSize:14 }}>Add a curated local experience to any day of your itinerary</div>
+          </div>
+          <Btn v="white" sz="md" onClick={()=>go('experience-browse')} style={{ flexShrink:0,fontWeight:800 }}>Browse Experiences →</Btn>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── ExperienceBrowse ─── */
+const ExperienceBrowse = ({ go }) => {
+  const mobile = useBreakpoint();
+  const [cat, setCat] = useState('All');
+  const list = cat==='All' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===cat);
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.w, paddingTop:mobile?60:72 }}>
+      <div style={{ background:`linear-gradient(155deg,${C.pDark},${C.pMid})`, padding:mobile?'36px 16px 32px':'52px 40px 46px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 60% 50% at 80% 100%, rgba(255,255,255,0.05) 0%, transparent 60%)',pointerEvents:'none' }}/>
+        <div style={{ position:'absolute',right:'-5%',top:'-10%',width:400,height:400,borderRadius:'50%',background:'radial-gradient(circle, rgba(226,112,58,0.2) 0%, transparent 68%)',pointerEvents:'none' }}/>
+        <div style={{ maxWidth:1200, margin:'0 auto', position:'relative' }}>
+          <h1 className="fade-up" style={{ color:C.w,fontSize:mobile?28:40,fontWeight:700,marginBottom:6,letterSpacing:-1 }}>All Korean Experiences</h1>
+          <p className="fade-up" style={{ color:'rgba(255,255,255,.7)',fontSize:mobile?13:16,marginBottom:mobile?20:30,animationDelay:'.05s' }}>
+            Handpicked tours designed and led by certified local guides
+          </p>
+          {!mobile && (
+            <div className="fade-up" style={{ background:C.w,borderRadius:14,padding:'13px 20px',maxWidth:520,display:'flex',gap:12,alignItems:'center',boxShadow:sh.lg,animationDelay:'.1s' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.g300} strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input placeholder="Search by theme, location, or guide name" style={{ border:'none',fontSize:15,flex:1,color:C.g900,outline:'none' }}/>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Coming Soon Banner */}
+      <div style={{ background:C.goldBg, borderLeft:`4px solid ${C.gold}`, padding:mobile?'12px 16px':'16px 40px' }}>
+        <div style={{ maxWidth:1200, margin:'0 auto', display:'flex', alignItems:'center', gap:12 }}>
+          <span style={{ fontSize:18, flexShrink:0 }}>🚀</span>
+          <div>
+            <span style={{ fontWeight:700, color:C.g900, fontSize:mobile?13:14 }}>Booking opens soon — </span>
+            <span style={{ color:C.g700, fontSize:mobile?13:14 }}>Browse and submit an inquiry to secure your spot early.</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Pills */}
+      <div style={{ borderBottom:`1px solid ${C.g100}`, position:'sticky', top:mobile?60:72, background:C.w, zIndex:10 }}>
+        <div style={{ maxWidth:1200, margin:'0 auto', padding:mobile?'0 16px':'0 40px' }}>
+          <div style={{ display:'flex',gap:8,overflowX:'auto',padding:'12px 0',scrollbarWidth:'none' }}>
+            {CATS.map(c=><Pill key={c} active={cat===c} onClick={()=>setCat(c)}>{c}</Pill>)}
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:mobile?'24px 16px 40px':'38px 40px' }}>
+        <p style={{ color:C.g500,fontSize:14,marginBottom:mobile?18:28 }}>{list.length} {list.length===1?'experience':'experiences'}</p>
+        <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'repeat(3,1fr)', gap:mobile?16:28 }}>
+          {list.map((p,i)=>(
+            <div key={p.id} className="fade-up" style={{ animationDelay:`${i*.06}s` }}>
+              <XCard p={p} onClick={()=>go('experience-detail',p.id)} comingSoon={true}/>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── ExperienceDetail ─── */
+const ExperienceDetail = ({ go, pid, isLoggedIn, user }) => {
+  const mobile = useBreakpoint();
+  const p = PRODUCTS.find(x=>x.id===pid)||PRODUCTS[0];
+  const [notifyEmail, setNotifyEmail] = useState('');
+  const [notified, setNotified] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.w, paddingTop:mobile?60:72 }}>
+      <div style={{ borderBottom:`1px solid ${C.g100}`, padding:mobile?'12px 16px':'14px 40px' }}>
+        <button onClick={()=>go('experience-browse')} style={{ fontSize:14,color:C.g700,display:'flex',alignItems:'center',gap:5 }}>← All Experiences</button>
+      </div>
+      <div style={{ maxWidth:1120, margin:'0 auto', padding:mobile?'20px 16px 60px':'40px 40px 80px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'1fr 368px', gap:mobile?24:56, alignItems:'flex-start' }}>
+          {/* Left: info */}
+          <div>
+            <div className="fade-up" style={{ height:mobile?240:440,borderRadius:22,background:p.bg,marginBottom:mobile?20:34,position:'relative',display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:mobile?18:30 }}>
+              <span style={{ position:'absolute',top:22,left:22,background:'rgba(255,255,255,.92)',color:C.p,fontSize:12,fontWeight:700,padding:'5px 14px',borderRadius:999 }}>✓ Certified Guide</span>
+              <span style={{ position:'absolute',top:22,right:22,background:C.gold,color:C.g900,fontSize:12,fontWeight:800,padding:'5px 14px',borderRadius:999 }}>🚀 Coming Soon</span>
+              <div style={{ display:'flex',gap:8,marginBottom:12 }}>
+                <span style={{ background:'rgba(255,255,255,.18)',color:C.w,fontSize:12,padding:'4px 10px',borderRadius:8 }}>{p.cat}</span>
+              </div>
+              <h1 style={{ color:C.w,fontSize:32,fontWeight:900,lineHeight:1.2,marginBottom:9 }}>{p.theme}</h1>
+              <p style={{ color:'rgba(255,255,255,.75)',fontSize:14 }}>with {p.guide} · {p.area} · {p.dur}</p>
+            </div>
+            <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:18,paddingBottom:24,borderBottom:`1px solid ${C.g100}` }}>
+              <div>
+                <h2 style={{ fontSize:24,fontWeight:900,color:C.g900,marginBottom:5 }}>{p.theme}</h2>
+                <p style={{ color:C.g500 }}>with {p.guide} · Up to {p.max} guests</p>
+              </div>
+              <div style={{ textAlign:'right' }}>
+                <Stars v={p.rating}/>
+                <p style={{ color:C.g500,fontSize:12,marginTop:3 }}>{p.rev} reviews</p>
+              </div>
+            </div>
+            <p style={{ color:C.g700,lineHeight:1.8,fontSize:15,marginBottom:34,paddingBottom:34,borderBottom:`1px solid ${C.g100}` }}>{p.desc}</p>
+            <div style={{ marginBottom:34,paddingBottom:34,borderBottom:`1px solid ${C.g100}` }}>
+              <h3 style={{ fontSize:19,fontWeight:900,color:C.g900,marginBottom:7 }}>Route &amp; Duration</h3>
+              <p style={{ color:C.g500,fontSize:14,marginBottom:22 }}>{p.dur} total · {p.course.length} stops</p>
+              <div style={{ position:'relative',paddingLeft:18 }}>
+                <div style={{ position:'absolute',left:5,top:10,bottom:10,width:2,background:C.g100 }}/>
+                {p.course.map((c,i)=>{
+                  const first=i===0, last=i===p.course.length-1;
+                  return <div key={i} style={{ display:'flex',gap:16,marginBottom:18,alignItems:'center' }}>
+                    <div style={{ width:13,height:13,borderRadius:'50%',zIndex:1,background:first||last?C.p:C.w,border:`2px solid ${C.p}`,flexShrink:0 }}/>
+                    <span style={{ fontSize:14,color:first||last?C.p:C.g700,fontWeight:first||last?700:400 }}>{c}</span>
+                  </div>;
+                })}
+              </div>
+            </div>
+            <div>
+              <h3 style={{ fontSize:19,fontWeight:900,color:C.g900,marginBottom:18 }}>About Your Guide</h3>
+              <div style={{ display:'flex',gap:18,alignItems:'flex-start' }}>
+                <div style={{ width:64,height:64,borderRadius:'50%',background:C.p,display:'flex',alignItems:'center',justifyContent:'center',color:C.w,fontSize:24,fontWeight:900,flexShrink:0 }}>{p.guide[0]}</div>
+                <div>
+                  <div style={{ fontWeight:800,fontSize:17,color:C.g900 }}>{p.guide}</div>
+                  <div style={{ color:C.g500,fontSize:14,marginTop:3,marginBottom:14 }}>Licensed Tourism Guide · Fluent in English &amp; Korean</div>
+                  <div style={{ display:'flex',gap:7,flexWrap:'wrap' }}>
+                    {['✓ Gov. Certified','✓ 3+ Yrs Experience','✓ English Fluent',`✓ ${p.rev} Reviews`].map(b=>(
+                      <span key={b} style={{ fontSize:12,padding:'5px 12px',borderRadius:999,background:C.pLight,color:C.p,fontWeight:700 }}>{b}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Booking Panel */}
+          <div style={{ position:'sticky', top:100 }}>
+            <div className="fade-up" style={{ background:C.w,border:`1px solid ${C.g200}`,borderRadius:22,padding:26,boxShadow:sh.md }}>
+              <div style={{ display:'flex',alignItems:'baseline',gap:4,marginBottom:6 }}>
+                <span style={{ fontSize:26,fontWeight:900,color:C.g900 }}>${p.price}</span>
+                <span style={{ color:C.g500,fontSize:14 }}>/ person</span>
+              </div>
+              <div style={{ display:'flex',gap:6,marginBottom:22,flexWrap:'wrap' }}>
+                {['✓ Certified Guide','✓ Up to '+p.max+' guests','✓ '+p.dur].map(b=>(
+                  <span key={b} style={{ fontSize:11,padding:'3px 10px',borderRadius:999,background:C.pLight,color:C.p,fontWeight:700 }}>{b}</span>
+                ))}
+              </div>
+              {isLoggedIn ? (
+                <>
+                  <Btn sz="lg" full onClick={()=>setShowModal(true)}>Request This Experience →</Btn>
+                  <div style={{ background:C.g50,borderRadius:14,padding:'14px 16px',marginTop:16,display:'flex',gap:10,alignItems:'flex-start' }}>
+                    <span style={{ fontSize:18,flexShrink:0 }}>⏱</span>
+                    <p style={{ fontSize:13,color:C.g700,lineHeight:1.6 }}>
+                      We'll review your request and reply within <strong>24 hours</strong>.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div style={{ background:C.pLight,borderRadius:18,padding:'24px 20px',textAlign:'center' }}>
+                  <div style={{ fontSize:36,marginBottom:12 }}>🔒</div>
+                  <div style={{ fontWeight:700,fontSize:17,color:C.g900,marginBottom:8 }}>Sign in to book this experience</div>
+                  <div style={{ color:C.g700,fontSize:13,lineHeight:1.65,marginBottom:20 }}>
+                    Create your free Handled account to send an inquiry and hear back from your guide within 24 hours.
+                  </div>
+                  <Btn sz="lg" full onClick={()=>go('auth','_','signup')}>Sign up — it's free →</Btn>
+                  <div style={{ marginTop:12 }}>
+                    <span style={{ fontSize:13,color:C.g500 }}>Already have an account? </span>
+                    <button onClick={()=>go('auth','_','login')} style={{ fontSize:13,fontWeight:700,color:C.p,background:'none',border:'none',cursor:'pointer' }}>Sign in</button>
+                  </div>
+                </div>
+              )}
+              <p style={{ textAlign:'center',color:C.g300,fontSize:12,marginTop:16 }}>No payment now · Inquiry only</p>
+            </div>
+          </div>
+
+          {/* 24hr Reply Modal */}
+          {showModal && (
+            <div style={{ position:'fixed',inset:0,background:'rgba(0,0,0,.45)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:24 }}>
+              <div className="scale-in" style={{ background:C.w,borderRadius:24,padding:'40px 32px',maxWidth:420,width:'100%',textAlign:'center',boxShadow:sh.lg }}>
+                <div style={{ fontSize:52,marginBottom:16 }}>✅</div>
+                <div style={{ fontWeight:900,fontSize:22,color:C.g900,marginBottom:10 }}>Request Submitted!</div>
+                <div style={{ color:C.g700,fontSize:15,lineHeight:1.75,marginBottom:28 }}>
+                  Your inquiry for <strong>{p.theme}</strong> has been sent to <strong>{p.guide}</strong>.<br/><br/>
+                  You'll receive a personal reply at <strong style={{ color:C.p }}>{user?.email||'your email'}</strong> within <strong style={{ color:C.p }}>24 hours</strong>.
+                </div>
+                <Btn sz="lg" full onClick={()=>setShowModal(false)}>Got it!</Btn>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── AuthScreen ─── */
+const AuthScreen = ({ go, login, initMode='signup' }) => {
+  const [mode, setMode] = useState(initMode);
+  const [form, setForm] = useState({ name:'', email:'', password:'' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = () => {
+    if (!form.email || !form.password) { setError('Please fill in all fields.'); return; }
+    if (mode==='signup' && !form.name) { setError('Please enter your name.'); return; }
+    setError('');
+    setLoading(true);
+    setTimeout(()=>{
+      const userData = { name: form.name||(form.email.split('@')[0]), email: form.email, credits:3, memberSince:'May 2026' };
+      login(userData);
+      go('home');
+    }, 1400);
+  };
+
+  const fieldStyle = { display:'block',width:'100%',border:`1.5px solid ${C.g200}`,borderRadius:12,padding:'13px 16px',fontSize:15,color:C.g900,outline:'none',transition:'border-color .15s' };
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.g50, paddingTop:72 }}>
+      <div style={{ minHeight:'calc(100vh - 72px)', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 24px' }}>
+        <div className="scale-in" style={{ width:'100%', maxWidth:480 }}>
+          {/* Logo */}
+          <div style={{ textAlign:'center', marginBottom:32 }}>
+            <div style={{ fontFamily:"'Fraunces',serif",fontSize:28,fontWeight:900,color:C.p,marginBottom:8 }}>Handled</div>
+            <p style={{ color:C.g500,fontSize:14 }}>
+              {mode==='signup' ? 'Create your trip with Handled' : 'Welcome back'}
+            </p>
+          </div>
+
+          <div style={{ background:C.w, borderRadius:24, padding:36, boxShadow:sh.lg }}>
+            {/* Tab toggle */}
+            <div style={{ display:'flex', background:C.g50, borderRadius:14, padding:4, marginBottom:28 }}>
+              {[['login','Sign in'],['signup','Sign up']].map(([m,l])=>(
+                <button key={m} onClick={()=>{setMode(m);setError('');}} style={{ flex:1,padding:'10px 0',borderRadius:10,fontSize:14,fontWeight:mode===m?700:500,color:mode===m?C.p:C.g500,background:mode===m?C.w:'transparent',boxShadow:mode===m?sh.sm:'none',transition:'all .2s' }}>{l}</button>
+              ))}
+            </div>
+
+            {mode==='signup' && (
+              <div style={{ marginBottom:16 }}>
+                <label style={{ display:'block',fontSize:12,fontWeight:700,color:C.g700,marginBottom:6 }}>FULL NAME</label>
+                <input value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} placeholder="Your full name" style={fieldStyle}
+                  onFocus={e=>e.target.style.borderColor=C.p} onBlur={e=>e.target.style.borderColor=C.g200}/>
+              </div>
+            )}
+            <div style={{ marginBottom:16 }}>
+              <label style={{ display:'block',fontSize:12,fontWeight:700,color:C.g700,marginBottom:6 }}>EMAIL</label>
+              <input type="email" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} placeholder="your@email.com" style={fieldStyle}
+                onFocus={e=>e.target.style.borderColor=C.p} onBlur={e=>e.target.style.borderColor=C.g200}/>
+            </div>
+            <div style={{ marginBottom:mode==='login'?8:20 }}>
+              <label style={{ display:'block',fontSize:12,fontWeight:700,color:C.g700,marginBottom:6 }}>PASSWORD</label>
+              <input type="password" value={form.password} onChange={e=>setForm(f=>({...f,password:e.target.value}))} placeholder={mode==='login'?'Your password':'Min. 8 characters'} style={fieldStyle}
+                onFocus={e=>e.target.style.borderColor=C.p} onBlur={e=>e.target.style.borderColor=C.g200}/>
+            </div>
+            {mode==='login' && (
+              <div style={{ textAlign:'right', marginBottom:20 }}>
+                <button style={{ fontSize:13, color:C.g500 }}>Forgot password?</button>
+              </div>
+            )}
+
+            {mode==='signup' && (
+              <div style={{ background:C.pLight,borderRadius:12,padding:'12px 16px',marginBottom:20,display:'flex',gap:10,alignItems:'center' }}>
+                <span style={{ fontSize:18 }}>🎁</span>
+                <span style={{ fontSize:13,color:C.pText,lineHeight:1.5 }}>Sign up and we'll give you <strong>3 free credits</strong> — enough for 3 AI-crafted itineraries. No credit card needed.</span>
+              </div>
+            )}
+
+            {error && <div style={{ background:'#FEF0F0',border:'1px solid #FECACA',borderRadius:10,padding:'10px 14px',marginBottom:16,fontSize:13,color:'#DC2626' }}>{error}</div>}
+
+            <button onClick={handleSubmit} disabled={loading} style={{ width:'100%',padding:'16px',borderRadius:14,background:C.p,color:C.w,fontSize:15,fontWeight:800,cursor:loading?'default':'pointer',opacity:loading?.75:1,transition:'all .15s' }}>
+              {loading ? (
+                <span style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:10 }}>
+                  <span style={{ width:16,height:16,border:`2px solid rgba(255,255,255,.4)`,borderTopColor:C.w,borderRadius:'50%',display:'inline-block',animation:'spin .7s linear infinite' }}/>
+                  {mode==='signup'?'Creating your account...':'Signing in...'}
+                </span>
+              ) : mode==='signup' ? 'Sign up — get 3 free credits' : 'Sign in and continue'}
+            </button>
+
+            <div style={{ textAlign:'center',marginTop:20,fontSize:14,color:C.g500 }}>
+              {mode==='signup' ? <>Already have an account? <button onClick={()=>setMode('login')} style={{ fontWeight:700,color:C.p }}>Sign in</button></>
+                : <>New to Handled? <button onClick={()=>setMode('signup')} style={{ fontWeight:700,color:C.p }}>Sign up free</button></>}
+            </div>
+          </div>
+
+          <div style={{ textAlign:'center', marginTop:20 }}>
+            <button onClick={()=>go('home')} style={{ fontSize:13,color:C.g500 }}>← Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── MyPage ─── */
+const MyPage = ({ go, user, logout }) => {
+  const [activeTab, setActiveTab] = useState('itineraries');
+  const mockItineraries = [
+    { dest:'Seoul', days:3, dates:'Jun 14–17, 2026', style:'History & Food', status:'ready' },
+    { dest:'Busan', days:4, dates:'Jul 5–9, 2026', style:'Nature & Adventure', status:'ready' },
+  ];
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.g50, paddingTop:72 }}>
+      {/* Profile Hero */}
+      <div style={{ background:`linear-gradient(150deg,${C.pDark},${C.p})`, padding:'52px 40px 56px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute',right:'-5%',top:'-20%',width:320,height:320,borderRadius:'50%',background:'radial-gradient(circle,rgba(226,112,58,.22) 0%,transparent 68%)',pointerEvents:'none' }}/>
+        <div style={{ maxWidth:1000, margin:'0 auto', position:'relative', display:'flex', alignItems:'center', gap:28 }}>
+          <div style={{ width:80,height:80,borderRadius:'50%',background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',color:C.w,fontSize:32,fontWeight:900,border:'2px solid rgba(255,255,255,.4)',flexShrink:0 }}>{user?.name?.[0]??'U'}</div>
+          <div>
+            <h1 style={{ color:C.w,fontSize:28,fontWeight:900,marginBottom:4 }}>{user?.name??'Traveler'}</h1>
+            <p style={{ color:'rgba(255,255,255,.7)',fontSize:14,marginBottom:12 }}>{user?.email}</p>
+            <span style={{ background:'rgba(255,255,255,.15)',color:'rgba(255,255,255,.9)',fontSize:12,fontWeight:600,padding:'4px 12px',borderRadius:999 }}>Member since {user?.memberSince??'2026'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:1000, margin:'0 auto', padding:'0 40px 80px' }}>
+        {/* Credits card */}
+        <div style={{ background:C.w,borderRadius:20,padding:24,boxShadow:sh.md,marginTop:-28,marginBottom:32,display:'flex',gap:28,alignItems:'center',flexWrap:'wrap' }}>
+          <div style={{ flex:1, minWidth:200 }}>
+            <div style={{ fontSize:12,fontWeight:700,color:C.g500,marginBottom:8,letterSpacing:0.5 }}>ITINERARY CREDITS</div>
+            <div style={{ display:'flex',alignItems:'center',gap:12 }}>
+              {[...Array(3)].map((_,i)=>(
+                <div key={i} style={{ width:44,height:44,borderRadius:12,background:i<(user?.credits??3)?C.p:C.g100,display:'flex',alignItems:'center',justifyContent:'center',color:i<(user?.credits??3)?C.w:C.g300,fontSize:18,transition:'all .2s' }}>✦</div>
+              ))}
+              <div style={{ marginLeft:8 }}>
+                <div style={{ fontWeight:800,fontSize:18,color:C.g900 }}>{user?.credits??3} / 3</div>
+                <div style={{ fontSize:12,color:C.g500 }}>credits remaining</div>
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft:`1px solid ${C.g100}`,paddingLeft:28,flex:1,minWidth:200 }}>
+            <div style={{ fontSize:13,color:C.g500,lineHeight:1.65,marginBottom:12 }}>Each credit generates one AI-crafted day-by-day itinerary.</div>
+            <button style={{ fontSize:13,fontWeight:700,color:C.g300,padding:'8px 16px',borderRadius:10,border:`1.5px solid ${C.g100}`,cursor:'not-allowed' }}>Get More Credits — Coming Soon</button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display:'flex',gap:4,background:C.g50,borderRadius:14,padding:4,marginBottom:28,maxWidth:400 }}>
+          {[['itineraries','My Itineraries'],['bookings','Bookings'],['account','Account']].map(([t,l])=>(
+            <button key={t} onClick={()=>setActiveTab(t)} style={{ flex:1,padding:'10px 0',borderRadius:10,fontSize:13,fontWeight:activeTab===t?700:500,color:activeTab===t?C.p:C.g500,background:activeTab===t?C.w:'transparent',boxShadow:activeTab===t?sh.sm:'none',transition:'all .2s',whiteSpace:'nowrap' }}>{l}</button>
+          ))}
+        </div>
+
+        {activeTab==='itineraries' && (
+          <div>
+            <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20 }}>
+              <h2 style={{ fontSize:20,fontWeight:800,color:C.g900 }}>My Itineraries</h2>
+              <Btn sz="sm" onClick={()=>go('planner-input')}>+ Plan New Trip</Btn>
+            </div>
+            {mockItineraries.length > 0 ? (
+              <div style={{ display:'flex',flexDirection:'column',gap:14 }}>
+                {mockItineraries.map((it,i)=>(
+                  <div key={i} style={{ background:C.w,borderRadius:18,padding:'20px 24px',boxShadow:sh.sm,display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+                    <div style={{ display:'flex',gap:18,alignItems:'center' }}>
+                      <div style={{ width:48,height:48,borderRadius:14,background:C.pLight,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20 }}>🗺</div>
+                      <div>
+                        <div style={{ fontWeight:800,fontSize:17,color:C.g900,marginBottom:3 }}>{it.dest} · {it.days}-Day Trip</div>
+                        <div style={{ color:C.g500,fontSize:13 }}>{it.dates} · {it.style}</div>
+                      </div>
+                    </div>
+                    <div style={{ display:'flex',gap:10,alignItems:'center' }}>
+                      <span style={{ fontSize:12,fontWeight:700,color:C.p,background:C.pLight,padding:'4px 12px',borderRadius:999 }}>Saved</span>
+                      <Btn v="outline" sz="sm" onClick={()=>go('planner-result')}>View</Btn>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ textAlign:'center',padding:'60px 0',background:C.w,borderRadius:20,boxShadow:sh.sm }}>
+                <div style={{ fontSize:40,marginBottom:16 }}>🗺</div>
+                <div style={{ fontWeight:700,fontSize:18,color:C.g900,marginBottom:8 }}>No itineraries yet</div>
+                <div style={{ color:C.g500,marginBottom:24 }}>Plan your first Korea trip with our AI Planner</div>
+                <Btn onClick={()=>go('planner-input')}>Plan a Trip →</Btn>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab==='bookings' && (
+          <div>
+            <h2 style={{ fontSize:20,fontWeight:800,color:C.g900,marginBottom:20 }}>Experience Bookings</h2>
+            <div style={{ background:C.w,borderRadius:20,padding:'40px 32px',boxShadow:sh.sm,textAlign:'center' }}>
+              <div style={{ width:64,height:64,borderRadius:20,background:C.goldBg,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px',fontSize:28 }}>🚀</div>
+              <div style={{ fontWeight:800,fontSize:18,color:C.g900,marginBottom:8 }}>Experience bookings coming soon</div>
+              <div style={{ color:C.g500,fontSize:14,marginBottom:24,maxWidth:380,margin:'0 auto 24px' }}>
+                Once Experience officially launches, your booked tours will appear here.
+              </div>
+              <Btn v="outline" onClick={()=>go('experience-browse')}>Browse Experiences</Btn>
+            </div>
+          </div>
+        )}
+
+        {activeTab==='account' && (
+          <div>
+            <h2 style={{ fontSize:20,fontWeight:800,color:C.g900,marginBottom:20 }}>Account Settings</h2>
+            <div style={{ background:C.w,borderRadius:20,padding:'24px',boxShadow:sh.sm,marginBottom:14 }}>
+              <div style={{ fontWeight:700,color:C.g900,marginBottom:16 }}>Profile</div>
+              {[['Full Name',user?.name],['Email',user?.email],['Member Since',user?.memberSince??'2026']].map(([k,v])=>(
+                <div key={k} style={{ display:'flex',justifyContent:'space-between',padding:'12px 0',borderBottom:`1px solid ${C.g50}` }}>
+                  <span style={{ color:C.g500,fontSize:14 }}>{k}</span>
+                  <span style={{ fontWeight:600,color:C.g900,fontSize:14 }}>{v}</span>
+                </div>
+              ))}
+              <div style={{ marginTop:16 }}>
+                <button style={{ fontSize:14,fontWeight:700,color:C.g300,cursor:'not-allowed' }}>Edit Profile — Coming Soon</button>
+              </div>
+            </div>
+            <div style={{ background:C.w,borderRadius:20,padding:'24px',boxShadow:sh.sm }}>
+              <div style={{ fontWeight:700,color:C.g900,marginBottom:16 }}>Security</div>
+              <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
+                <button style={{ textAlign:'left',fontSize:14,fontWeight:600,color:C.g700,padding:'12px 0',borderBottom:`1px solid ${C.g50}` }}>Change Password →</button>
+                <button onClick={logout} style={{ textAlign:'left',fontSize:14,fontWeight:700,color:'#DC2626' }}>Log Out</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─── StoryDetail ─── */
+const StoryDetail = ({ go, storyId }) => {
+  const mobile = useBreakpoint();
+  const story = BLOG_POSTS.find(s => s.id === storyId) || BLOG_POSTS[0];
+  const related = BLOG_POSTS.filter(s => s.id !== story.id).slice(0, 3);
+  const catColors = { Culture:'#0F4C81', Food:'#C0413A', 'Travel Tips':'#0F766E', Neighborhoods:'#A21CAF', Nature:'#136C34', Destinations:'#4338CA' };
+  const catColor = catColors[story.category] || '#475569';
+  const catBg = catColor + '15';
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.w, paddingTop:mobile?60:68 }}>
+
+      {/* ── Hero ── */}
+      <div style={{ background:story.bg, minHeight:mobile?300:440, position:'relative', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.22) 55%, transparent 100%)' }}/>
+        <div style={{ maxWidth:800, margin:'0 auto', width:'100%', padding:mobile?'28px 20px 36px':'52px 80px', position:'relative' }}>
+          <button onClick={()=>go('korea-story')} style={{ display:'inline-flex', alignItems:'center', gap:6, color:'rgba(255,255,255,.65)', fontSize:13, fontWeight:500, background:'transparent', border:'none', cursor:'pointer', fontFamily:'inherit', marginBottom:20, transition:'color .15s' }}
+            onMouseEnter={e=>e.currentTarget.style.color=C.w} onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,.65)'}>
+            ← Back to Stories
+          </button>
+          <div style={{ marginBottom:14 }}>
+            <span style={{ fontSize:11, fontWeight:700, padding:'4px 13px', borderRadius:999, background:'rgba(255,255,255,.15)', color:'rgba(255,255,255,.92)', letterSpacing:1.5, textTransform:'uppercase', backdropFilter:'blur(6px)' }}>
+              {story.category}
+            </span>
+          </div>
+          <h1 style={{ color:C.w, fontSize:mobile?24:44, fontWeight:700, lineHeight:1.15, letterSpacing:mobile?-0.5:-1.5, marginBottom:18 }}>{story.title}</h1>
+          <div style={{ display:'flex', alignItems:'center', gap:12, color:'rgba(255,255,255,.6)', fontSize:13 }}>
+            <span>Handled Editorial</span>
+            <span style={{ opacity:.5 }}>·</span>
+            <span>{story.date}</span>
+            <span style={{ opacity:.5 }}>·</span>
+            <span>{story.readTime}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Summary lede ── */}
+      <div style={{ borderBottom:`1px solid ${C.g100}` }}>
+        <div style={{ maxWidth:800, margin:'0 auto', padding:mobile?'24px 20px':'32px 80px' }}>
+          <p style={{ fontSize:mobile?16:21, color:C.g700, lineHeight:1.75, fontStyle:'italic', fontWeight:400, fontFamily:"'Fraunces',serif" }}>{story.summary}</p>
+        </div>
+      </div>
+
+      {/* ── Body ── */}
+      <div style={{ maxWidth:800, margin:'0 auto', padding:mobile?'36px 20px 16px':'56px 80px 24px' }}>
+        {story.body.map((para, i) => (
+          <p key={i} style={{ fontSize:mobile?16:18, color:C.g700, lineHeight:1.95, marginBottom:mobile?22:28, fontWeight:400 }}>{para}</p>
+        ))}
+      </div>
+
+      {/* ── Tags ── */}
+      {story.tags && (
+        <div style={{ maxWidth:800, margin:'0 auto', padding:mobile?'16px 20px 48px':'16px 80px 64px' }}>
+          <div style={{ display:'flex', gap:8, flexWrap:'wrap', paddingTop:28, borderTop:`1px solid ${C.g100}` }}>
+            {story.tags.map(tag => (
+              <span key={tag} style={{ fontSize:12, fontWeight:600, padding:'5px 14px', borderRadius:999, background:catBg, color:catColor }}>{tag}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Related stories ── */}
+      <div style={{ background:C.g50, padding:mobile?'40px 20px 56px':'60px 80px' }}>
+        <div style={{ maxWidth:1060, margin:'0 auto' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:mobile?20:32 }}>
+            <h3 style={{ fontSize:mobile?20:26, fontWeight:700, color:C.g900, letterSpacing:-0.5 }}>More from Korea Story</h3>
+            <button onClick={()=>go('korea-story')} style={{ fontSize:13, fontWeight:600, color:C.p, background:'transparent', border:'none', cursor:'pointer', fontFamily:'inherit' }}>All Stories →</button>
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'repeat(3,1fr)', gap:mobile?14:20 }}>
+            {related.map((r,i)=>(
+              <div key={i} onClick={()=>go('story-detail', r.id)}
+                style={{ borderRadius:18, overflow:'hidden', cursor:'pointer', boxShadow:sh.sm, background:C.w, transition:'transform .2s, box-shadow .2s' }}
+                onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-4px)';e.currentTarget.style.boxShadow=sh.md;}}
+                onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=sh.sm;}}>
+                <div style={{ height:mobile?140:160, background:r.bg, position:'relative' }}>
+                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%)' }}/>
+                  <div style={{ position:'absolute', bottom:14, left:16, right:16 }}>
+                    <div style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,.72)', textTransform:'uppercase', letterSpacing:1.2, marginBottom:5 }}>{r.category}</div>
+                    <div style={{ fontSize:mobile?14:15, fontWeight:700, color:C.w, lineHeight:1.3 }}>{r.title}</div>
+                  </div>
+                </div>
+                <div style={{ padding:'12px 16px' }}>
+                  <div style={{ fontSize:12, color:C.g500 }}>{r.date} · {r.readTime}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── CTA ── */}
+      <div style={{ background:C.w, padding:mobile?'40px 20px':'56px 80px', textAlign:'center' }}>
+        <p style={{ fontSize:mobile?14:16, color:C.g500, marginBottom:20 }}>Ready to experience Korea for yourself?</p>
+        <button onClick={()=>go('planner-input')}
+          onMouseEnter={e=>{e.currentTarget.style.background=C.pDark;e.currentTarget.style.transform='translateY(-2px)';}}
+          onMouseLeave={e=>{e.currentTarget.style.background=C.p;e.currentTarget.style.transform='none';}}
+          style={{ display:'inline-flex', alignItems:'center', gap:10, background:C.p, color:C.w, padding:mobile?'14px 28px':'16px 36px', borderRadius:999, fontSize:mobile?14:16, fontWeight:700, border:'none', cursor:'pointer', fontFamily:'inherit', boxShadow:`0 6px 20px ${C.p}35`, transition:'all .2s' }}>
+          <span style={{ color:C.sMid }}>✦</span>
+          Create a New Trip
+        </button>
+      </div>
+
+      <Footer/>
+    </div>
+  );
+};
+
+/* ─── KoreaStory ─── */
+const KoreaStory = ({ go }) => {
+  const mobile = useBreakpoint();
+  const [cat, setCat] = useState('All');
+  const featured = BLOG_POSTS[0];
+  const rest = BLOG_POSTS.slice(1);
+  const filtered = cat==='All' ? rest : rest.filter(p=>p.category===cat);
+
+  return (
+    <div id="page-scroll" style={{ overflowY:'auto', height:'100vh', background:C.w, paddingTop:mobile?60:72 }}>
+      {/* Hero */}
+      <div style={{ background:`linear-gradient(150deg,${C.pDark},${C.p})`, padding:mobile?'36px 16px 32px':'52px 40px 48px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute',right:0,top:0,bottom:0,width:'40%',background:'radial-gradient(ellipse at right,rgba(226,112,58,.18),transparent 70%)',pointerEvents:'none' }}/>
+        <div style={{ maxWidth:1200, margin:'0 auto', position:'relative' }}>
+          <div style={{ display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.12)',borderRadius:999,padding:'6px 14px',marginBottom:16 }}>
+            <span style={{ color:'rgba(255,255,255,.9)',fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:'uppercase' }}>Korea Story</span>
+          </div>
+          <h1 style={{ color:C.w,fontSize:mobile?28:44,fontWeight:700,letterSpacing:-1,marginBottom:10 }}>Stories from<br/><span style={{ fontFamily:"'Fraunces',serif",fontStyle:'italic' }}>the heart of Korea</span></h1>
+          <p style={{ color:'rgba(255,255,255,.7)',fontSize:mobile?13:17,maxWidth:520 }}>Insider guides, local perspectives, and the stories that make Korea impossible to forget.</p>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:mobile?'28px 16px 56px':'52px 40px 80px' }}>
+        {/* Featured */}
+        <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'1.4fr 1fr', gap:mobile?20:32, marginBottom:mobile?32:56 }}>
+          <div style={{ height:mobile?220:400, borderRadius:22, background:featured.bg, position:'relative', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:mobile?20:32, cursor:'pointer', overflow:'hidden', transition:'transform .2s' }}
+            onMouseEnter={e=>e.currentTarget.style.transform='scale(1.01)'}
+            onMouseLeave={e=>e.currentTarget.style.transform='none'}
+            onClick={()=>go('story-detail', featured.id)}>
+            <div style={{ position:'absolute',inset:0,background:'linear-gradient(to top, rgba(0,0,0,.7) 0%, rgba(0,0,0,.15) 60%, transparent 100%)' }}/>
+            <div style={{ position:'relative' }}>
+              <span style={{ display:'inline-block',background:C.gold,color:C.g900,fontSize:11,fontWeight:800,padding:'4px 12px',borderRadius:999,marginBottom:12 }}>✦ Featured</span>
+              <h2 style={{ color:C.w,fontSize:26,fontWeight:900,lineHeight:1.3,marginBottom:10 }}>{featured.title}</h2>
+              <p style={{ color:'rgba(255,255,255,.75)',fontSize:14,lineHeight:1.65,marginBottom:16 }}>{featured.summary}</p>
+              <div style={{ display:'flex',alignItems:'center',gap:14 }}>
+                <span style={{ color:'rgba(255,255,255,.6)',fontSize:13 }}>{featured.date}</span>
+                <span style={{ color:'rgba(255,255,255,.4)' }}>·</span>
+                <span style={{ color:'rgba(255,255,255,.6)',fontSize:13 }}>{featured.readTime}</span>
+                <span style={{ color:C.gold,fontSize:13,fontWeight:700,marginLeft:'auto' }}>Read More →</span>
+              </div>
+            </div>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+            <h3 style={{ fontSize:14,fontWeight:700,color:C.g500,letterSpacing:1,textTransform:'uppercase',marginBottom:4 }}>Latest Stories</h3>
+            {BLOG_POSTS.slice(1,4).map((post,i)=>(
+              <div key={i} style={{ display:'flex',gap:16,padding:'14px',borderRadius:16,border:`1px solid ${C.g100}`,background:C.w,cursor:'pointer',transition:'all .15s' }}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.g50;e.currentTarget.style.borderColor=C.g200;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.w;e.currentTarget.style.borderColor=C.g100;}}
+                onClick={()=>go('story-detail', post.id)}>
+                <div style={{ width:72,height:72,borderRadius:12,background:post.bg,flexShrink:0 }}/>
+                <div>
+                  <span style={{ fontSize:11,fontWeight:700,color:C.p,background:C.pLight,padding:'2px 8px',borderRadius:999 }}>{post.category}</span>
+                  <div style={{ fontWeight:700,color:C.g900,fontSize:15,marginTop:6,marginBottom:4,lineHeight:1.3 }}>{post.title}</div>
+                  <div style={{ fontSize:12,color:C.g500 }}>{post.date} · {post.readTime}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Category filter */}
+        <div style={{ display:'flex', gap:8, marginBottom:mobile?24:36, overflowX:'auto', paddingBottom:4, scrollbarWidth:'none' }}>
+          {BLOG_CATS.map(c=><Pill key={c} active={cat===c} onClick={()=>setCat(c)}>{c}</Pill>)}
+        </div>
+
+        {/* Grid */}
+        <div style={{ display:'grid', gridTemplateColumns:mobile?'1fr':'repeat(3,1fr)', gap:mobile?16:24 }}>
+          {filtered.map((post,i)=>(
+            <div key={i} className="fade-up" style={{ borderRadius:20,overflow:'hidden',background:C.w,boxShadow:sh.sm,cursor:'pointer',transition:'transform .2s,box-shadow .2s',animationDelay:`${i*.06}s` }}
+              onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-4px)';e.currentTarget.style.boxShadow=sh.lg;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=sh.sm;}}
+              onClick={()=>go('story-detail', post.id)}>
+              <div style={{ height:180, background:post.bg, position:'relative' }}>
+                <span style={{ position:'absolute',top:14,left:14,background:'rgba(255,255,255,.9)',color:C.g700,fontSize:11,fontWeight:800,padding:'4px 10px',borderRadius:999 }}>{post.category}</span>
+              </div>
+              <div style={{ padding:'18px 20px' }}>
+                <h3 style={{ fontWeight:800,fontSize:16,color:C.g900,lineHeight:1.35,marginBottom:8 }}>{post.title}</h3>
+                <p style={{ color:C.g500,fontSize:13,lineHeight:1.65,marginBottom:14 }}>{post.summary}</p>
+                <div style={{ display:'flex',alignItems:'center',gap:8,fontSize:12,color:C.g300 }}>
+                  <span>{post.date}</span>
+                  <span>·</span>
+                  <span>{post.readTime}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom teaser */}
+        <div style={{ textAlign:'center',marginTop:64,padding:'48px 40px',background:C.pDark,borderRadius:24 }}>
+          <h3 style={{ color:C.w,fontSize:26,fontWeight:900,marginBottom:12 }}>More stories every week</h3>
+          <p style={{ color:'rgba(255,255,255,.65)',fontSize:15,marginBottom:24 }}>Follow Handled for the latest Korea travel guides, insider tips, and cultural stories.</p>
+          <Btn v="white">Subscribe to Korea Story</Btn>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─── App ─── */
+const App = () => {
+  const [screen, setScreen] = useState('home');
+  const [pid, setPid] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [authMode, setAuthMode] = useState('signup');
+  const [plannerInit, setPlannerInit] = useState({});
+  const [transportMode, setTransportMode] = useState('public');
+  const [travelers, setTravelers] = useState(1);
+  const [storyId, setStoryId] = useState(BLOG_POSTS[0].id);
+
+  const go = (s, id, extra) => {
+    if (s === 'story-detail' && id !== undefined) { setStoryId(id); setScreen(s); const el=document.getElementById('page-scroll'); if(el)el.scrollTop=0; return; }
+    if (s === 'experience-detail' && id !== undefined) { setPid(Number(id)); setScreen(s); const el=document.getElementById('page-scroll'); if(el)el.scrollTop=0; return; }
+    if (id !== undefined && id !== '_') setPid(Number(id));
+    if (typeof extra === 'string') {
+      setAuthMode(extra);
+    } else if (extra && typeof extra === 'object') {
+      if (extra.transportMode || extra.travelers) {
+        if (extra.transportMode) setTransportMode(extra.transportMode);
+        if (extra.travelers) setTravelers(extra.travelers);
+      } else {
+        setPlannerInit(extra);
+      }
+    }
+    setScreen(s);
+    const el = document.getElementById('page-scroll');
+    if (el) el.scrollTop = 0;
+  };
+
+  const login = userData => { setIsLoggedIn(true); setUser(userData); };
+  const logout = () => { setIsLoggedIn(false); setUser(null); setScreen('home'); };
+
+  const screens = {
+    'home':              <HomeScreen go={go} isLoggedIn={isLoggedIn}/>,
+    'planner-input':     <PlannerInput go={go} isLoggedIn={isLoggedIn} user={user} plannerInit={plannerInit}/>,
+    'planner-result':    <PlannerResult go={go} transportMode={transportMode} travelers={travelers}/>,
+    'experience-browse': <ExperienceBrowse go={go}/>,
+    'experience-detail': <ExperienceDetail go={go} pid={pid} isLoggedIn={isLoggedIn} user={user}/>,
+    'auth':              <AuthScreen go={go} login={login} initMode={authMode}/>,
+    'mypage':            <MyPage go={go} user={user} logout={logout}/>,
+    'korea-story':       <KoreaStory go={go}/>,
+    'story-detail':      <StoryDetail go={go} storyId={storyId}/>,
+  };
+
+  return (
+    <div style={{ height:'100vh', overflow:'hidden' }}>
+      <NavBar screen={screen} go={go} isLoggedIn={isLoggedIn} user={user}/>
+      {screens[screen] || screens['home']}
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
